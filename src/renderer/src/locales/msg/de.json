@@ -1,0 +1,112 @@
+{
+  "dev-tag": "Dev",
+  "general": {
+    "loading": "Laden",
+    "info": "Info",
+    "error": "Fehler",
+    "warning": "Warnung",
+    "success": "Erfolg",
+    "btn-ok": "OK",
+    "btn-cancel": "Abbrechen",
+    "btn-confirm": "Bestätigen",
+    "text-leave-warning-title": "Achtung",
+    "text-leave-warning-content": "Wir arbeiten noch daran. Bitte verlassen Sie diese Seite nicht."
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "label-restore-defaults": "Einstellungen Zurücksetzen",
+    "btn-restore": "Zurücksetzen",
+    "text-confirm-restore": "Möchten Sie die Einstellungen wirklich zurücksetzen?",
+    "text-restore-done": "Einstellungen wurden zurückgesetzt.",
+    "label-language": "Sprache",
+    "text-auto-language": "Automatisch ({0})",
+    "label-github-token": "GitHub-Token",
+    "label-source-code": "Quellcode",
+    "btn-github": "GitHub"
+  },
+  "home": {
+    "title": "RDrive (XYY-Wiki-Edition)"
+  },
+  "github-files": {
+    "title": "GitHub-Dateien",
+    "table-header-name": "Name",
+    "table-header-date-modified": "Geändert",
+    "table-header-uploader": "Geändert von",
+    "table-header-size": "Größe",
+    "table-header-status": "Status",
+    "status-normal": "Normal",
+    "status-unused": "Verwaist",
+    "status-wanted": "Gewünscht",
+    "status-no-source": "Keine Quelle",
+    "status-no-licence": "Keine Lizenz",
+    "status-asset-broken": "Asset defekt",
+    "label-file-type": "Typ",
+    "label-file-size": "Größe",
+    "btn-search": "Suchen",
+    "btn-new": "Neu",
+    "msg-upload-success": "Hochladen erfolgreich",
+    "msg-upload-failed": "Hochladen fehlgeschlagen",
+    "btn-details": "Details",
+    "btn-preview": "Vorschau",
+    "btn-link-copy": "Link kopieren",
+    "msg-link-copied": "Link kopiert",
+    "btn-delete": "Löschen",
+    "msg-delete-confirmation": "Möchten Sie dieses Element wirklich in den Papierkorb verschieben?",
+    "msg-delete-success": "Löschen erfolgreich",
+    "msg-delete-failed": "Löschen fehlgeschlagen",
+    "btn-download": "Herunterladen",
+    "msg-download-failed": "Herunterladen fehlgeschlagen",
+    "msg-download-failed-desc": "Die Datei, die Sie herunterladen möchten ({0}), ist nicht verfügbar.",
+    "btn-rename": "Umbenennen",
+    "msg-rename-placeholder": "Neuen Namen eingeben",
+    "msg-rename-success": "Umbenennen erfolgreich",
+    "msg-rename-failed": "Umbenennen fehlgeschlagen",
+    "btn-cut": "Ausschneiden",
+    "btn-copy": "Kopieren",
+    "btn-paste": "Einfügen",
+    "btn-select-file": "Datei auswählen",
+    "msg-number-files-selected": "{0} Dateien ausgewählt",
+    "btn-view-in-github": "In GitHub anzeigen",
+    "msg-no-preview": "Für diese Datei scheint es keine Vorschau zu geben, die wir Ihnen zeigen können.",
+    "label-basic-info": "Basisinformationen",
+    "label-file-desc": "Dateibeschreibung",
+    "label-file-usage": "Dateiverwendung",
+    "label-file-source": "Dateiquelle",
+    "label-file-licence": "Dateilizenz",
+    "msg-file-no-usage": "Keine Seiten verlinkt auf diese Datei.",
+    "label-code-snippet": "Code-Schnipsel",
+    "code-snippet-image": "Bild: ",
+    "code-snippet-link": "Link: ",
+    "code-snippet-gallery": "Galerie: ",
+    "sort": {
+      "btn-sort": "Sortieren",
+      "btn-type": "Typ",
+      "btn-name": "Name",
+      "btn-size": "Größe",
+      "btn-date-modified": "Geändert",
+      "btn-uploader": "Geändert von",
+      "btn-asc": "Aufsteigend",
+      "btn-desc": "Absteigend"
+    },
+    "view": {
+      "btn-view": "Ansicht",
+      "btn-list": "Kompakt",
+      "btn-details": "Details",
+      "btn-tiles": "Kacheln"
+    }
+  },
+  "help-docs": {
+    "title": "Technische Dokumentation"
+  },
+  "undefined": {
+    "title": "Laden..."
+  },
+  "init": {
+    "title": "Initialisierung",
+    "welcome-title": "Willkommen bei RDrive",
+    "msg-login-desc": "Bitte melden Sie sich an, um fortzufahren",
+    "btn-login": "Anmelden",
+    "msg-login-success": "Anmeldung erfolgreich",
+    "msg-login-failed": "Anmeldung fehlgeschlagen"
+  }
+}

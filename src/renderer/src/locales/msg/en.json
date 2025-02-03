@@ -1,0 +1,112 @@
+{
+  "dev-tag": "Dev",
+  "general": {
+    "loading": "Loading",
+    "info": "Info",
+    "error": "Error",
+    "warning": "Warning",
+    "success": "Success",
+    "btn-ok": "OK",
+    "btn-cancel": "Cancel",
+    "btn-confirm": "Confirm",
+    "text-leave-warning-title": "Attention",
+    "text-leave-warning-content": "We are still working on it. Please do not leave this page."
+  },
+  "settings": {
+    "title": "Settings",
+    "label-restore-defaults": "Restore Defaults",
+    "btn-restore": "Restore",
+    "text-confirm-restore": "Are you sure you want to restore the default settings?",
+    "text-restore-done": "Default settings restored",
+    "label-language": "Language",
+    "text-auto-language": "Auto ({0})",
+    "label-github-token": "GitHub Token",
+    "label-source-code": "Source Code",
+    "btn-github": "GitHub"
+  },
+  "home": {
+    "title": "RDrive (XYY Wiki Edition)"
+  },
+  "github-files": {
+    "title": "GitHub Files",
+    "table-header-name": "Name",
+    "table-header-date-modified": "Date modified",
+    "table-header-uploader": "Uploader",
+    "table-header-size": "Size",
+    "table-header-status": "Status",
+    "status-normal": "Normal",
+    "status-unused": "Not Used",
+    "status-wanted": "Wanted",
+    "status-no-source": "No Source",
+    "status-no-licence": "No License",
+    "status-asset-broken": "Asset Broken",
+    "label-file-type": "Type",
+    "label-file-size": "Size",
+    "btn-search": "Search",
+    "btn-new": "New",
+    "msg-upload-success": "Upload successful",
+    "msg-upload-failed": "Upload failed",
+    "btn-details": "Details",
+    "btn-preview": "Preview",
+    "btn-link-copy": "Copy Link",
+    "msg-link-copied": "Link copied",
+    "btn-delete": "Delete",
+    "msg-delete-confirmation": "Do you really want to move this item to the trash?",
+    "msg-delete-success": "Delete successful",
+    "msg-delete-failed": "Delete failed",
+    "btn-download": "Download",
+    "msg-download-failed": "Download failed",
+    "msg-download-failed-desc": "The file you are trying to download ({0}) is not available.",
+    "btn-rename": "Rename",
+    "msg-rename-placeholder": "Enter new name",
+    "msg-rename-success": "Rename successful",
+    "msg-rename-failed": "Rename failed",
+    "btn-cut": "Cut",
+    "btn-copy": "Copy",
+    "btn-paste": "Paste",
+    "btn-select-file": "Select File",
+    "msg-number-files-selected": "{0} files selected",
+    "btn-view-in-github": "View in GitHub",
+    "msg-no-preview": "Hmm… looks like this file doesn't have a preview we can show you.",
+    "label-basic-info": "Basic Info",
+    "label-file-desc": "File Description",
+    "label-file-usage": "File Usage",
+    "label-file-source": "File Source",
+    "label-file-licence": "File License",
+    "msg-file-no-usage": "No pages link to this file.",
+    "label-code-snippet": "Code Snippet",
+    "code-snippet-image": "Image: ",
+    "code-snippet-link": "Link: ",
+    "code-snippet-gallery": "Gallery: ",
+    "sort": {
+      "btn-sort": "Sort",
+      "btn-type": "Type",
+      "btn-name": "Name",
+      "btn-size": "Size",
+      "btn-date-modified": "Date modified",
+      "btn-uploader": "Uploader",
+      "btn-asc": "Ascending",
+      "btn-desc": "Descending"
+    },
+    "view": {
+      "btn-view": "View",
+      "btn-list": "List",
+      "btn-details": "Details",
+      "btn-tiles": "Tiles"
+    }
+  },
+  "help-docs": {
+    "title": "Technical Documentation"
+  },
+  "undefined": {
+    "title": "Loading..."
+  },
+  "init": {
+    "title": "Initialisation",
+    "welcome-title": "Welcome to RDrive",
+    "msg-login-desc": "Please log in to continue",
+    "btn-login": "Log In",
+    "msg-login-success": "Login successful",
+    "msg-login-failed": "Login failed"
+  }
+}

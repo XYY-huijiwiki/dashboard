@@ -1,0 +1,112 @@
+{
+  "dev-tag": "开发模式",
+  "general": {
+    "loading": "加载中",
+    "info": "信息",
+    "error": "错误",
+    "warning": "警告",
+    "success": "成功",
+    "btn-ok": "确定",
+    "btn-cancel": "取消",
+    "btn-confirm": "确认",
+    "text-leave-warning-title": "注意",
+    "text-leave-warning-content": "我们仍在处理。请不要离开本页面。"
+  },
+  "settings": {
+    "title": "设置",
+    "label-restore-defaults": "恢复默认设置",
+    "btn-restore": "恢复",
+    "text-confirm-restore": "确定要恢复默认设置吗？",
+    "text-restore-done": "已恢复默认设置",
+    "label-language": "语言",
+    "text-auto-language": "自动（{0}）",
+    "label-github-token": "GitHub Token",
+    "label-source-code": "源代码",
+    "btn-github": "GitHub"
+  },
+  "home": {
+    "title": "RDrive (羊羊百科版)"
+  },
+  "github-files": {
+    "title": "GitHub 文件",
+    "table-header-name": "名称",
+    "table-header-date-modified": "修改时间",
+    "table-header-uploader": "上传者",
+    "table-header-size": "大小",
+    "table-header-status": "状态",
+    "status-normal": "正常",
+    "status-unused": "未使用",
+    "status-wanted": "无文件",
+    "status-no-source": "无来源",
+    "status-no-licence": "无许可",
+    "status-asset-broken": "资源损坏",
+    "label-file-type": "类型",
+    "label-file-size": "大小",
+    "btn-search": "搜索",
+    "btn-new": "新建",
+    "msg-upload-success": "上传成功",
+    "msg-upload-failed": "上传失败",
+    "btn-details": "详细信息",
+    "btn-preview": "预览",
+    "btn-link-copy": "复制链接",
+    "msg-link-copied": "链接已复制",
+    "btn-delete": "删除",
+    "msg-delete-confirmation": "确定要将此项移至回收站吗？",
+    "msg-delete-success": "删除成功",
+    "msg-delete-failed": "删除失败",
+    "btn-download": "下载",
+    "msg-download-failed": "下载失败",
+    "msg-download-failed-desc": "你要下载的文件（{0}）不可用。",
+    "btn-rename": "重命名",
+    "msg-rename-placeholder": "输入新名称",
+    "msg-rename-success": "重命名成功",
+    "msg-rename-failed": "重命名失败",
+    "btn-cut": "剪切",
+    "btn-copy": "复制",
+    "btn-paste": "粘贴",
+    "btn-select-file": "选择文件",
+    "msg-number-files-selected": "已选择{0}个文件",
+    "btn-view-in-github": "在GitHub中查看",
+    "msg-no-preview": "嗯… 看起来此文件没有可向你显示的预览。",
+    "label-basic-info": "基本信息",
+    "label-file-desc": "文件描述",
+    "label-file-usage": "文件用途",
+    "label-file-source": "文件来源",
+    "label-file-licence": "文件许可",
+    "msg-file-no-usage": "没有页面链接至此文件。",
+    "label-code-snippet": "代码片段",
+    "code-snippet-image": "图片：",
+    "code-snippet-link": "链接：",
+    "code-snippet-gallery": "图库：",
+    "sort": {
+      "btn-sort": "排序",
+      "btn-type": "类型",
+      "btn-name": "名称",
+      "btn-size": "大小",
+      "btn-date-modified": "修改时间",
+      "btn-uploader": "上传者",
+      "btn-asc": "递增",
+      "btn-desc": "递减"
+    },
+    "view": {
+      "btn-view": "查看",
+      "btn-list": "列表",
+      "btn-details": "详细信息",
+      "btn-tiles": "平铺"
+    }
+  },
+  "help-docs": {
+    "title": "技术文档"
+  },
+  "undefined": {
+    "title": "加载中……"
+  },
+  "init": {
+    "title": "初始化",
+    "welcome-title": "欢迎使用 RDrive",
+    "msg-login-desc": "请登录以继续",
+    "btn-login": "登录",
+    "msg-login-success": "登录成功",
+    "msg-login-failed": "登录失败"
+  }
+}
