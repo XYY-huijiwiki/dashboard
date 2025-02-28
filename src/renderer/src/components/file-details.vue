@@ -34,7 +34,21 @@
           </n-statistic>
         </n-flex>
         <!-- file details / desc -->
-        <n-divider>{{ t('github-files.label-file-desc') }}</n-divider>
+        <n-divider>
+          {{ t('github-files.label-file-desc') }}
+          <n-tooltip trigger="hover">
+            <template #trigger>
+              <n-button quaternary circle @click="emit('edit-file')">
+                <template #icon>
+                  <n-icon><edit16-regular /></n-icon>
+                </template>
+              </n-button>
+            </template>
+            <template #default>
+              {{ t('github-files.title-edit') }}
+            </template>
+          </n-tooltip>
+        </n-divider>
         <n-table :single-line="false">
           <tbody>
             <tr>
@@ -101,6 +115,7 @@ import { filesize as filesizeNoLocale } from 'filesize'
 import { storeToRefs } from 'pinia'
 import { useFetch } from '@vueuse/core'
 import sleep from '@anmiles/sleep'
+import { Edit16Regular } from '@vicons/fluent'
 
 import { useLocalesStore } from '@renderer/stores/locales'
 import { genThumbUrl } from '@renderer/utils/genUrl'
@@ -111,7 +126,7 @@ const { t } = useI18n()
 const { fileDetails } = defineProps<{
   fileDetails: FileRecord[]
 }>()
-const emit = defineEmits(['close'])
+const emit = defineEmits(['close', 'edit-file'])
 
 const fileUsageUrl = computed(() =>
   fileDetails.length === 1

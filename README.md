@@ -52,5 +52,4 @@ npm run dev
 - [ ] Download files using native Electron Node APIs for correct file naming
 - [ ] Transactional operations
 - [ ] Better integration with XYY Wiki
-- [ ] editable file source and file licence
 - [ ] dragable upload

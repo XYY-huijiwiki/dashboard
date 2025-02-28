@@ -65,7 +65,11 @@
         </template>
       </template>
       <template v-if="showDetailsPane" #2>
-        <file-details :file-details="checkedItems" @close="showDetailsPane = false" />
+        <file-details
+          :file-details="checkedItems"
+          @close="showDetailsPane = false"
+          @edit-file="editFile"
+        />
       </template>
     </n-split>
   </n-flex>
@@ -269,7 +273,7 @@ async function newFile() {
   const NewFileDialog = (await import('@renderer/components/NewFileDialog.vue')).default
   const modalInstance = window.$modal.create({
     autoFocus: false,
-    title: 'Datei hochladen',
+    title: t('github-files.title-new'),
     preset: 'dialog',
     showIcon: false,
     style: 'width: 440px; max-width: 100%',
@@ -293,10 +297,11 @@ async function newFile() {
 
 // delete files
 async function deleteFiles() {
+  const isPlural = checkedItems.value.length > 1
   const DeleteFileDialog = (await import('@renderer/components/DeleteFileDialog.vue')).default
   const modalInstance = window.$modal.create({
     autoFocus: false,
-    title: 'Datei löschen',
+    title: isPlural ? t(`github-files.title-files-delete`) : t(`github-files.title-file-delete`),
     preset: 'dialog',
     showIcon: false,
     style: 'width: 440px; max-width: 100%',
@@ -324,12 +329,40 @@ async function renameFile() {
   const RenameFileDialog = (await import('@renderer/components/RenameFileDialog.vue')).default
   const modalInstance = window.$modal.create({
     autoFocus: false,
-    title: 'Datei umbenennen',
+    title: t('github-files.title-rename'),
     preset: 'dialog',
     showIcon: false,
     style: 'width: 440px; max-width: 100%',
     content: () =>
       h(RenameFileDialog, {
+        onClose: () => modalInstance.destroy(),
+        onDone: () => queryData(),
+        onLoadingStart: () => {
+          modalInstance.closable = false
+          modalInstance.closeOnEsc = false
+          modalInstance.maskClosable = false
+        },
+        onLoadingEnd: () => {
+          modalInstance.closable = true
+          modalInstance.closeOnEsc = true
+          modalInstance.maskClosable = true
+        },
+        fileRecord: checkedItems.value[0]
+      })
+  })
+}
+
+// edit file (source and licence)
+async function editFile() {
+  const EditFileDialog = (await import('@renderer/components/EditFileDialog.vue')).default
+  const modalInstance = window.$modal.create({
+    autoFocus: false,
+    title: t('github-files.title-edit'),
+    preset: 'dialog',
+    showIcon: false,
+    style: 'width: 440px; max-width: 100%',
+    content: () =>
+      h(EditFileDialog, {
         onClose: () => modalInstance.destroy(),
         onDone: () => queryData(),
         onLoadingStart: () => {

@@ -1,7 +1,11 @@
 <template>
   <n-flex vertical>
     <div style="margin: 32px 0">
-      <n-text>{{ t('github-files.msg-delete-confirmation') }}</n-text>
+      <n-text>{{
+        fileRecords.length > 1
+          ? t('github-files.msg-files-delete-confirmation')
+          : t('github-files.msg-file-delete-confirmation')
+      }}</n-text>
     </div>
     <!-- footer (action) -->
     <n-flex justify="end">

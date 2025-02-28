@@ -44,6 +44,7 @@ import localizedFormat from 'dayjs/plugin/localizedFormat'
 import { useSettingsStore } from '@renderer/stores/settings'
 import { dayjsLocales } from '@renderer/stores/locales'
 import db from '@renderer/utils/queryDB'
+import licenceOptions from '@renderer/utils/licenceOptions'
 
 dayjs.extend(localizedFormat).locale(dayjsLocales.value)
 
@@ -56,20 +57,6 @@ const fileName = ref('')
 const fileLicense: Ref<null | string> = ref(null)
 const fileSource: Ref<null | string> = ref(null)
 const selectedFile = ref<Awaited<ReturnType<typeof window.api.openFileDialog>> | null>(null)
-const licenceOptions = ref([
-  {
-    label: '合理使用（这个文件受到著作权保护，但在羊羊百科属于合理使用）',
-    value: '合理使用'
-  },
-  {
-    label: '已获授权（这个文件受到著作权保护，著作权方已授权羊羊百科使用）',
-    value: '已获授权'
-  },
-  {
-    label: '公有领域（这个文件属于公有领域）',
-    value: '公有领域'
-  }
-])
 const canUpload = computed(
   () => !!selectedFile.value && !!fileName.value && !!fileLicense.value && !!fileSource.value
 )
