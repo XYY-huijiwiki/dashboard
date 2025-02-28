@@ -199,15 +199,6 @@ onMounted(async () => {
   // remove "GitHub:" from filesInUse
   filesInUse.value = filesInUseTemp.map((item) => item.replace('GitHub:', ''))
 
-  // get total item count
-  const url = new URL('https://xyy-huijiwiki-gh-files-db.karsten-zhou-773.workers.dev/')
-  url.searchParams.set('query', 'SELECT COUNT(1) FROM `files` WHERE `is_deleted` IS NULL;')
-  totalItemCount.value = (
-    await (await fetch(url.href)).json().catch((error) => {
-      console.table(error)
-    })
-  )[0]['results'][0][`COUNT(1)`] as number
-
   await queryData()
 
   loading.value = false
@@ -243,10 +234,22 @@ async function queryData(type: 'more' | 'refresh' = 'refresh') {
     query.whereLike('file_name', `%${searchText.value}%`)
   }
 
+  // get total item count
+  const url = new URL('https://xyy-huijiwiki-gh-files-db.karsten-zhou-773.workers.dev/')
+  if (type === 'refresh') {
+    const queryStr = query.clone().count().toString()
+    url.searchParams.set('query', queryStr)
+    totalItemCount.value = (
+      await (await fetch(url.href)).json().catch((error) => {
+        console.table(error)
+      })
+    )[0]['results'][0][`count(*)`] as number
+    console.log('totalItemCount', totalItemCount.value)
+  }
+
   // get data from database
   const queryStr = query.toString()
   console.log(queryStr)
-  const url = new URL('https://xyy-huijiwiki-gh-files-db.karsten-zhou-773.workers.dev/')
   url.searchParams.set('query', queryStr)
 
   if (type === 'more') {

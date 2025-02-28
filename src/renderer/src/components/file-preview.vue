@@ -18,6 +18,7 @@
         controls
         class="w-full h-0 flex-1 object-contain bg-black"
         :poster="genThumbUrl(fileRecord)"
+        preload="metadata"
       >
         <source :src="genRawFileUrl(fileRecord)" :type="fileRecord?.content_type" />
       </video>
@@ -33,6 +34,7 @@
         ref="audioEle"
         controls
         class="w-full"
+        preload="metadata"
       >
         <source :src="genRawFileUrl(fileRecord)" :type="fileRecord?.content_type" />
       </audio>
