@@ -1,27 +1,25 @@
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
 import { useDialog, useMessage, useModal, useLoadingBar, useNotification } from 'naive-ui'
-import { useFullscreen, useTitle } from '@vueuse/core'
-
-const fullscreenHTML = ref<HTMLElement>()
-const { isFullscreen, toggle } = useFullscreen(fullscreenHTML)
+import { useTitle } from '@vueuse/core'
 
 const dev = import.meta.env.DEV
-
 const { t } = useI18n()
 
-useTitle(computed(() => t('home.title')))
-
+// naive-ui register
 window.$dialog = useDialog()
 window.$message = useMessage()
 window.$modal = useModal()
 window.$loadingBar = useLoadingBar()
 window.$notification = useNotification()
+
+// set title
+useTitle(computed(() => t('home.title')))
 </script>
 
 <template>
-  <n-card ref="fullscreenHTML" content-class="shrink-0 h-0" class="h-screen !rounded-none">
+  <n-card content-class="shrink-0 h-0" class="h-screen !rounded-none">
     <!-- 卡片左上角：返回 | 前进 | 刷新 | 主页 | 标题 -->
     <template #header>
       <n-space id="mini-dashboard-title-bar" align="center" :wrap="false" :wrap-item="false">
@@ -59,15 +57,8 @@ window.$notification = useNotification()
       </n-space>
     </template>
 
-    <!-- 卡片右上角按钮：全屏、设置 -->
+    <!-- 卡片右上角按钮：设置 -->
     <template #header-extra>
-      <n-button quaternary circle @click="toggle">
-        <template #icon>
-          <material-symbol>
-            {{ isFullscreen ? 'fullscreen_exit' : 'fullscreen' }}
-          </material-symbol>
-        </template>
-      </n-button>
       <n-button
         v-if="$route.name !== 'settings'"
         quaternary
