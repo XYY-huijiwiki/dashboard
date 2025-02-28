@@ -2,6 +2,9 @@
   <n-flex vertical>
     <div style="margin: 32px 0">
       <n-flex vertical>
+        <n-alert v-if="fileName.match(/\s/)" type="warning">
+          {{ t('github-files.msg-space-replacement-warning') }}
+        </n-alert>
         <n-input-group>
           <n-button @click="handleSelectFile">
             {{ t('github-files.btn-select-file') }}
@@ -90,6 +93,9 @@ async function confirmNewFile() {
   // start loading
   loading.value = true
 
+  // replace space with underscore in file name
+  const fileNameToBeUsed = fileName.value.replace(/\s/g, '_')
+
   try {
     // step 1: upload to github
     const ghRes = await window.api.uploadToGitHub({
@@ -98,7 +104,7 @@ async function confirmNewFile() {
       releaseId: `${settings.value.rootReleaseId}`,
       ghToken: settings.value.ghToken,
       filePath: selectedFile.value.path,
-      fileName: fileName.value
+      fileName: fileNameToBeUsed
     })
 
     console.log('ghRes', ghRes)
@@ -108,7 +114,7 @@ async function confirmNewFile() {
     const query = db('files')
       .insert({
         id: ghRes.id,
-        file_name: fileName.value,
+        file_name: fileNameToBeUsed,
         file_name_base62: ghRes.name,
         file_size: ghRes.size,
         content_type: ghRes.content_type,

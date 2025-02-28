@@ -44,6 +44,7 @@
     "label-file-size": "Größe",
     "btn-search": "Suchen",
     "btn-new": "Neu",
+    "msg-space-replacement-warning": "Leerzeichen in Dateinamen werden durch Unterstriche ersetzt, um den Dateinamenanforderungen des Wikis zu entsprechen.",
     "msg-upload-success": "Hochladen erfolgreich",
     "msg-upload-failed": "Hochladen fehlgeschlagen",
     "btn-details": "Details",

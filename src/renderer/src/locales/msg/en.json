@@ -44,6 +44,7 @@
     "label-file-size": "Size",
     "btn-search": "Search",
     "btn-new": "New",
+    "msg-space-replacement-warning": "Spaces in file names will be replaced with underscores to comply with the Wiki's file name requirements.",
     "msg-upload-success": "Upload successful",
     "msg-upload-failed": "Upload failed",
     "btn-details": "Details",
