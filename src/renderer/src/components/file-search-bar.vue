@@ -9,11 +9,15 @@
         @keydown.enter="doSearch"
       >
         <template #prefix>
-          <n-button circle quaternary size="tiny" @click="cancelSearch">
+          <!-- show search icon only if searched text is empty -->
+          <n-icon v-if="!searchedText" :size="20">
+            <search20-regular />
+          </n-icon>
+          <!-- show cancel icon only if searched text is not empty -->
+          <n-button v-else circle quaternary size="tiny" @click="cancelSearch">
             <template #icon>
               <n-icon :size="20">
                 <arrow-left20-regular v-if="searchText" />
-                <search20-regular v-else />
               </n-icon>
             </template>
           </n-button>
@@ -34,16 +38,21 @@ import { Search20Regular, ArrowLeft20Regular } from '@vicons/fluent'
 const { t } = useI18n()
 const emit = defineEmits(['search'])
 const searchBarEle = ref()
-const searchText = defineModel<string>('searchText')
+const searchText = defineModel<string>('search-text', { required: true })
+const searchedText = ref('')
 
 function cancelSearch() {
   searchText.value = ``
-  emit('search')
+  // do search only if non empty string have been searched
+  if (searchedText.value !== '') emit('search')
+  // clear searched text
+  searchedText.value = ''
   // cancel focus on search bar
   searchBarEle.value.blur()
 }
 
 function doSearch() {
+  searchedText.value = searchText.value
   emit('search')
 }
 </script>
