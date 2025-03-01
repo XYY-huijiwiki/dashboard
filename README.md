@@ -48,7 +48,8 @@ npm run dev
 ## To-Do List 📝
 
 - [ ] File filtering
-- [ ] Multiple file uploads
-- [ ] Download files using native Electron Node APIs for correct file naming
-- [ ] Transactional operations
-- [ ] dragable upload
+- [ ] Support for multiple file uploads
+- [ ] Enable file downloads using native Electron Node APIs to preserve correct file names
+- [ ] Implement transactional operations
+- [ ] Draggable file uploads
+- [ ] Cross-platform support

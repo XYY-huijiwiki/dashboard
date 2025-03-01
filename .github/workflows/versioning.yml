@@ -1,0 +1,30 @@
+name: Automated Versioning
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  versioning:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run versioning script
+        run: |
+          npx tsc .github/workflows/versioning.ts --outDir dist/ --module NodeNext --moduleResolution nodenext
+          node dist/versioning.js
