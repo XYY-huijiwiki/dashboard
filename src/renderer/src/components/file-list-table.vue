@@ -16,7 +16,7 @@
     @update:sorter="
       (data: DataTableSortState | null) => {
         sorterKey = data?.columnKey as SorterKey
-        sorterOrder = data?.order as DataTableSortOrder
+        sorterOrder = data?.order as SorterOrder
       }
     "
     @update-filters="(data: DataTableFilterState) => (filters = data)"
@@ -46,8 +46,7 @@ import type {
   DataTableColumns,
   DataTableSortState,
   DataTableCreateRowKey,
-  DataTableFilterState,
-  DataTableSortOrder
+  DataTableFilterState
 } from 'naive-ui'
 import fileIcon from '@renderer/components/file-icon.vue'
 import { useI18n } from 'vue-i18n'
@@ -98,7 +97,7 @@ const checkedRowKeys = defineModel<ReturnType<DataTableCreateRowKey>[]>('checked
 const sorterKey = defineModel<SorterKey>('sorterKey', {
   required: true
 })
-const sorterOrder = defineModel<DataTableSortOrder>('sorterOrder', { required: true })
+const sorterOrder = defineModel<SorterOrder>('sorterOrder', { required: true })
 const filters = defineModel<DataTableFilterState>('filters', { required: true })
 watch([sorterKey, sorterOrder], ([key, order]) => {
   dataTable.value?.sort(key, order)

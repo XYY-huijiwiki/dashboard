@@ -53,3 +53,4 @@ npm run dev
 - [ ] Transactional operations
 - [ ] Better integration with XYY Wiki
 - [ ] dragable upload
+- [ ] do not trigger queryData() if searchText remains the same

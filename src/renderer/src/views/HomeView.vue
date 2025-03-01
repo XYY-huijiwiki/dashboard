@@ -78,7 +78,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch, h } from 'vue'
 import type { Ref } from 'vue'
-import type { DataTableRowKey, DataTableFilterState, DataTableSortOrder } from 'naive-ui'
+import type { DataTableRowKey, DataTableFilterState } from 'naive-ui'
 import { useI18n } from 'vue-i18n'
 import dayjs from 'dayjs'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
@@ -118,8 +118,8 @@ const linkCopy = () => {
 // preview
 const preview: Ref<FileRecord | undefined> = ref(undefined)
 
-const sorterKey: Ref<SorterKey> = ref('name')
-const sorterOrder: Ref<DataTableSortOrder> = ref(false)
+const sorterKey: Ref<SorterKey> = ref('updated_at')
+const sorterOrder: Ref<SorterOrder> = ref('ascend')
 
 const filters = ref<DataTableFilterState>({})
 
@@ -221,9 +221,7 @@ async function queryData(type: 'more' | 'refresh' = 'refresh') {
 
   // sorter
   const order = sorterOrder.value === 'ascend' ? 'ASC' : 'DESC'
-  if (sorterOrder.value === false) {
-    query.orderBy('updated_at', 'DESC')
-  } else if (sorterKey.value === 'name') {
+  if (sorterKey.value === 'name') {
     query.orderBy('file_name', order)
   } else if (sorterKey.value === 'size') {
     query.orderBy('file_size', order)

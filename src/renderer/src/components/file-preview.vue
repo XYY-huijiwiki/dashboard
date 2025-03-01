@@ -45,7 +45,9 @@
         :description="t('github-files.msg-no-preview')"
       >
         <template #icon>
-          <material-symbol :size="80">unknown_document</material-symbol>
+          <n-icon :size="80">
+            <Document48Regular />
+          </n-icon>
         </template>
         <template #footer>
           <n-button tag="a" :href="fileRecord && genRawFileUrl(fileRecord)">
@@ -58,9 +60,10 @@
 </template>
 
 <script setup lang="ts">
-import fileIcon from './file-icon.vue'
 import { useI18n } from 'vue-i18n'
+import { Document48Regular } from '@vicons/fluent'
 
+import fileIcon from './file-icon.vue'
 import { genThumbUrl, genRawFileUrl } from '@renderer/utils/genUrl'
 
 const { t } = useI18n()

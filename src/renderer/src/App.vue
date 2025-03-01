@@ -3,6 +3,13 @@ import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
 import { useDialog, useMessage, useModal, useLoadingBar, useNotification } from 'naive-ui'
 import { useTitle } from '@vueuse/core'
+import {
+  ArrowLeft24Regular,
+  ArrowRight24Regular,
+  ArrowClockwise24Regular,
+  Home24Regular,
+  Settings24Regular
+} from '@vicons/fluent'
 
 const dev = import.meta.env.DEV
 const { t } = useI18n()
@@ -26,19 +33,25 @@ useTitle(computed(() => t('home.title')))
         <!-- back btn -->
         <n-button quaternary circle @click="$router.back()">
           <template #icon>
-            <material-symbol> arrow_back </material-symbol>
+            <n-icon :size="24">
+              <arrow-left24-regular />
+            </n-icon>
           </template>
         </n-button>
         <!-- forward btn -->
         <n-button quaternary circle @click="$router.forward()">
           <template #icon>
-            <material-symbol> arrow_forward </material-symbol>
+            <n-icon :size="24">
+              <arrow-right24-regular />
+            </n-icon>
           </template>
         </n-button>
         <!-- refresh btn -->
         <n-button quaternary circle @click="$router.go(0)">
           <template #icon>
-            <material-symbol> refresh </material-symbol>
+            <n-icon :size="24">
+              <arrow-clockwise24-regular />
+            </n-icon>
           </template>
         </n-button>
         <!-- home btn -->
@@ -49,7 +62,9 @@ useTitle(computed(() => t('home.title')))
           @click="$router.push({ name: 'home' })"
         >
           <template #icon>
-            <material-symbol> home </material-symbol>
+            <n-icon :size="24">
+              <home24-regular />
+            </n-icon>
           </template>
         </n-button>
         <n-tag v-if="dev">{{ t('dev-tag') }}</n-tag>
@@ -66,9 +81,9 @@ useTitle(computed(() => t('home.title')))
         @click="$router.push('/settings')"
       >
         <template #icon>
-          <material-symbol class="duration-1000 ease-in-out hover:rotate-180">
-            settings
-          </material-symbol>
+          <n-icon :size="24">
+            <settings24-regular class="duration-1000 ease-in-out hover:rotate-180" />
+          </n-icon>
         </template>
       </n-button>
     </template>

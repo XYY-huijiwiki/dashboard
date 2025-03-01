@@ -11,9 +11,10 @@
         <template #prefix>
           <n-button circle quaternary size="tiny" @click="cancelSearch">
             <template #icon>
-              <materialSymbol :size="24">
-                {{ searchText ? ' arrow_back ' : 'search' }}
-              </materialSymbol>
+              <n-icon :size="20">
+                <arrow-left20-regular v-if="searchText" />
+                <search20-regular v-else />
+              </n-icon>
             </template>
           </n-button>
         </template>
@@ -28,6 +29,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { Search20Regular, ArrowLeft20Regular } from '@vicons/fluent'
 
 const { t } = useI18n()
 const emit = defineEmits(['search'])

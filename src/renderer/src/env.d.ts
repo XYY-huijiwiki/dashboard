@@ -11,6 +11,7 @@ declare global {
   }
 
   type ViewMode = 'details' | 'list' | 'tiles'
+  type SorterOrder = 'ascend' | 'descend'
   type SorterKey = 'type' | 'name' | 'updated_at' | 'uploader' | 'size'
   type WarningType = 'unused' | 'wanted' | 'no source' | 'no licence'
 

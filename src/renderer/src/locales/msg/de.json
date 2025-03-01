@@ -27,6 +27,9 @@
   "home": {
     "title": "RDrive (XYY-Wiki-Edition)"
   },
+  "error": {
+    "title": "Fehler"
+  },
   "github-files": {
     "title": "GitHub-Dateien",
     "table-header-name": "Name",

@@ -17,11 +17,18 @@
 
 <script setup lang="ts">
 import { computed, h } from 'vue'
-import type { ComputedRef } from 'vue'
-import { NDropdown } from 'naive-ui'
+import type { ComputedRef, Component } from 'vue'
+import { NDropdown, NIcon } from 'naive-ui'
 import type { DropdownOption } from 'naive-ui'
-import materialSymbol from './material-symbol.vue'
 import { useI18n } from 'vue-i18n'
+import {
+  FullScreenMaximize20Regular,
+  Link20Regular,
+  Delete20Regular,
+  ArrowDownload20Regular,
+  Rename20Regular,
+  PanelRightExpand20Regular
+} from '@vicons/fluent'
 
 const { t } = useI18n()
 
@@ -43,17 +50,21 @@ const emit = defineEmits([
   'details'
 ])
 
+function genIcon(rawIcon: Component) {
+  return h(NIcon, { size: 20 }, () => h(rawIcon))
+}
+
 // options
 const options: ComputedRef<DropdownOption[]> = computed(() => [
   {
     label: t('github-files.btn-preview'),
-    icon: () => h(materialSymbol, { size: 20 }, () => 'visibility'),
+    icon: () => genIcon(FullScreenMaximize20Regular),
     key: 'preview',
     disabled: props.data.length > 1
   },
   {
     label: t('github-files.btn-link-copy'),
-    icon: () => h(materialSymbol, { size: 20 }, () => 'link'),
+    icon: () => genIcon(Link20Regular),
     key: 'link-copy'
   },
   {
@@ -61,19 +72,19 @@ const options: ComputedRef<DropdownOption[]> = computed(() => [
   },
   {
     label: t('github-files.btn-delete'),
-    icon: () => h(materialSymbol, { size: 20 }, () => 'delete'),
+    icon: () => genIcon(Delete20Regular),
     disabled: props.data.length === 0,
     key: 'delete'
   },
   {
     label: t('github-files.btn-download'),
-    icon: () => h(materialSymbol, { size: 20 }, () => 'download'),
+    icon: () => genIcon(ArrowDownload20Regular),
     disabled: props.data.length === 0,
     key: 'download'
   },
   {
     label: t('github-files.btn-rename'),
-    icon: () => h(materialSymbol, { size: 20 }, () => 'edit'),
+    icon: () => genIcon(Rename20Regular),
     disabled: props.data.length !== 1,
     key: 'rename'
   },
@@ -82,7 +93,7 @@ const options: ComputedRef<DropdownOption[]> = computed(() => [
   },
   {
     label: t('github-files.btn-details'),
-    icon: () => h(materialSymbol, { size: 20 }, () => 'info'),
+    icon: () => genIcon(PanelRightExpand20Regular),
     key: 'details',
     disabled: props.data.length > 1
   }

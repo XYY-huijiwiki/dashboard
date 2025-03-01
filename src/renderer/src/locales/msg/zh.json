@@ -27,6 +27,9 @@
   "home": {
     "title": "RDrive (羊羊百科版)"
   },
+  "error": {
+    "title": "错误"
+  },
   "github-files": {
     "title": "GitHub 文件",
     "table-header-name": "名称",
