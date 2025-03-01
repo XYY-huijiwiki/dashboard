@@ -100,11 +100,11 @@
       </n-scrollbar>
     </template>
     <!-- action btns -->
-    <!-- <template v-if="fileDetails.length === 1" #action>
-      <n-button tag="a" :href="fileDetails[0].html_url" target="_blank">
-        {{ t('github-files.btn-view-in-github') }}
+    <template v-if="fileDetails.length === 1" #action>
+      <n-button @click="viewInXYYWiki">
+        {{ t('github-files.btn-view-in-XYY-wiki') }}
       </n-button>
-    </template> -->
+    </template>
   </n-card>
 </template>
 
@@ -127,6 +127,12 @@ const { fileDetails } = defineProps<{
   fileDetails: FileRecord[]
 }>()
 const emit = defineEmits(['close', 'edit-file'])
+
+function viewInXYYWiki() {
+  window.api.openExternal(
+    `https://xyy.huijiwiki.com/wiki/Project:迷你控制中心#/github-file/${fileDetails[0].file_name}`
+  )
+}
 
 const fileUsageUrl = computed(() =>
   fileDetails.length === 1
@@ -154,9 +160,3 @@ const { isFetching: fileUsageLoading, data: fileUsageData } = useFetch(fileUsage
   }
 }).json()
 </script>
-
-<style>
-.markdown-body ul {
-  list-style-type: disc;
-}
-</style>
