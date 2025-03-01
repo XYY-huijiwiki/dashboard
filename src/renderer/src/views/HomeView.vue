@@ -85,8 +85,8 @@ import localizedFormat from 'dayjs/plugin/localizedFormat'
 import { storeToRefs } from 'pinia'
 
 import { dayjsLocales } from '@renderer/stores/locales'
-import fileListTable from '@renderer/components/file-list-table.vue'
-import FileOperationsBar from '@renderer/components/file-operations-bar.vue'
+import fileListTable from '@renderer/components/FileListTable.vue'
+import FileOperationsBar from '@renderer/components/FileOperationsBar.vue'
 import db from '@renderer/utils/queryDB'
 import { genRawFileUrl } from '@renderer/utils/genUrl'
 import { useSettingsStore } from '@renderer/stores/settings'
@@ -97,20 +97,22 @@ const { settings } = storeToRefs(useSettingsStore())
 
 dayjs.extend(localizedFormat).locale(dayjsLocales.value)
 
-const fileDownload = () => {
+function fileDownload(): void {
   checkedItems.value.forEach((item) => {
     const download_url = genRawFileUrl(item)
-    download_url
-      ? window.open(download_url)
-      : window.$notification.error({
-          title: t('github-files.msg-download-failed'),
-          content: t('github-files.msg-download-failed-desc', [item.file_name]),
-          meta: new Date().toLocaleString()
-        })
+    if (download_url) {
+      window.open(download_url)
+    } else {
+      window.$notification.error({
+        title: t('github-files.msg-download-failed'),
+        content: t('github-files.msg-download-failed-desc', [item.file_name]),
+        meta: new Date().toLocaleString()
+      })
+    }
   })
 }
 
-const linkCopy = () => {
+function linkCopy(): void {
   navigator.clipboard.writeText(checkedItems.value.map((item) => genRawFileUrl(item)).join('\n'))
   window.$message.success(t('github-files.msg-link-copied'))
 }
@@ -210,14 +212,14 @@ onMounted(async () => {
 
 const searchText = ref('')
 const totalItemCount = ref(0)
-async function queryData(type: 'more' | 'refresh' = 'refresh') {
+async function queryData(type: 'more' | 'refresh' = 'refresh'): Promise<void> {
   if (type === 'more' && data.value.length >= totalItemCount.value) return
 
   loading.value = true
 
   const query = db('files').limit(settings.value.fileListPageSize).whereNull('is_deleted')
 
-  type === 'more' && query.offset(data.value.length)
+  if (type === 'more') query.offset(data.value.length)
 
   // sorter
   const order = sorterOrder.value === 'ascend' ? 'ASC' : 'DESC'
@@ -267,7 +269,7 @@ async function queryData(type: 'more' | 'refresh' = 'refresh') {
 watch([sorterKey, sorterOrder, filters], () => queryData())
 
 // new file
-async function newFile() {
+async function newFile(): Promise<void> {
   const NewFileDialog = (await import('@renderer/components/NewFileDialog.vue')).default
   const modalInstance = window.$modal.create({
     autoFocus: false,
@@ -294,7 +296,7 @@ async function newFile() {
 }
 
 // delete files
-async function deleteFiles() {
+async function deleteFiles(): Promise<void> {
   const isPlural = checkedItems.value.length > 1
   const DeleteFileDialog = (await import('@renderer/components/DeleteFileDialog.vue')).default
   const modalInstance = window.$modal.create({
@@ -323,7 +325,7 @@ async function deleteFiles() {
 }
 
 // rename file
-async function renameFile() {
+async function renameFile(): Promise<void> {
   const RenameFileDialog = (await import('@renderer/components/RenameFileDialog.vue')).default
   const modalInstance = window.$modal.create({
     autoFocus: false,
@@ -351,7 +353,7 @@ async function renameFile() {
 }
 
 // edit file (source and licence)
-async function editFile() {
+async function editFile(): Promise<void> {
   const EditFileDialog = (await import('@renderer/components/EditFileDialog.vue')).default
   const modalInstance = window.$modal.create({
     autoFocus: false,

@@ -67,14 +67,14 @@ watch(loading, (v) => {
   else emit('loading-end')
 })
 
-async function handleSelectFile() {
+async function handleSelectFile(): Promise<void> {
   const file = await window.api.openFileDialog()
   if (!file) return
   selectedFile.value = file
   fileName.value = file.name
 }
 
-async function confirmNewFile() {
+async function confirmNewFile(): Promise<void> {
   if (!selectedFile.value) return
 
   // start loading

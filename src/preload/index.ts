@@ -2,7 +2,7 @@ import { contextBridge, ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
 
 // Custom APIs for renderer
-const api = {
+const api: typeof window.api = {
   openFileDialog: () => ipcRenderer.invoke('open-file-dialog'),
   uploadToGitHub: (params) => ipcRenderer.invoke('upload-to-github', params),
   openExternal: (url) => ipcRenderer.invoke('open-external', url),
@@ -20,8 +20,6 @@ if (process.contextIsolated) {
     console.error(error)
   }
 } else {
-  // @ts-ignore (define in dts)
   window.electron = electronAPI
-  // @ts-ignore (define in dts)
   window.api = api
 }

@@ -30,7 +30,7 @@ export const useSettingsStore = defineStore('settings', () => {
   })
 
   // function of reset settings
-  function resetSettings() {
+  function resetSettings(): void {
     settings.value = cloneDeep(defaultSettings)
   }
 

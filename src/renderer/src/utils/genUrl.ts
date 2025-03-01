@@ -3,10 +3,10 @@ import { storeToRefs } from 'pinia'
 
 const { settings } = storeToRefs(useSettingsStore())
 
-function genRawFileUrl(file: FileRecord) {
+function genRawFileUrl(file: FileRecord): string {
   return `https://github.com/${settings.value.ghOwner}/${settings.value.ghRepo}/releases/download/${settings.value.ghRelease}/${file.file_name_base62}`
 }
-function genThumbUrl(file: FileRecord) {
+function genThumbUrl(file: FileRecord): string {
   const rawFileUrl = genRawFileUrl(file)
   return file.content_type.startsWith('image')
     ? `https://karsten-zhou.gumlet.io/${rawFileUrl}`

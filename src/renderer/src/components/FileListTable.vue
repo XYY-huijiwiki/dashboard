@@ -40,7 +40,7 @@
 
 <script setup lang="ts">
 import { h, ref, nextTick, watch } from 'vue'
-import type { Ref } from 'vue'
+import type { Ref, VNode } from 'vue'
 import { NText, NTag, NSpace, NDataTable } from 'naive-ui'
 import type {
   DataTableColumns,
@@ -48,7 +48,7 @@ import type {
   DataTableCreateRowKey,
   DataTableFilterState
 } from 'naive-ui'
-import fileIcon from '@renderer/components/file-icon.vue'
+import fileIcon from '@renderer/components/FileIcon.vue'
 import { useI18n } from 'vue-i18n'
 import dayjs from 'dayjs'
 import { dayjsLocales } from '@renderer/stores/locales'
@@ -61,7 +61,7 @@ import { ArrowDownIcon } from 'naive-ui/es/_internal/icons'
 import ClickableText from './ClickableText.vue'
 
 const { langCode } = storeToRefs(useLocalesStore())
-const filesize = (size: number) => filesizeNoLocale(size, { locale: langCode.value })
+const filesize = (size: number): string => filesizeNoLocale(size, { locale: langCode.value })
 dayjs.extend(localizedFormat).locale(dayjsLocales.value)
 const { t } = useI18n()
 
@@ -123,7 +123,7 @@ const columns: Ref<DataTableColumns<FileRecord>> = ref([
     fixed: 'left'
   },
   {
-    title: () => {
+    title: (): VNode => {
       if (sorterKey.value === 'type') {
         return h(
           'span',
@@ -178,7 +178,7 @@ const columns: Ref<DataTableColumns<FileRecord>> = ref([
     key: 'uploader',
     width: '10em',
     sorter: 'default',
-    render: (row) => {
+    render: (row): VNode => {
       return h(ClickableText, {
         onClick: () => window.api.openExternal(`https://github.com/${row.uploader}`),
         text: row.uploader
@@ -206,7 +206,7 @@ const columns: Ref<DataTableColumns<FileRecord>> = ref([
     // filter: (value, row) => {
     //   return row.warnings.includes(value as WarningType)
     // },
-    render: (row) => {
+    render: (row): VNode => {
       const warnings: string[] = []
       if (!row.licence) warnings.push('no licence')
       if (!row.source) warnings.push('no source')
@@ -237,9 +237,14 @@ const columns: Ref<DataTableColumns<FileRecord>> = ref([
 const showDropdown = ref(false)
 const dropdownX = ref(0)
 const dropdownY = ref(0)
-const rowProps = (row: FileRecord) => {
+const rowProps = (
+  row: FileRecord
+): {
+  onContextmenu: (e: MouseEvent) => Promise<void>
+  onclick: (e: MouseEvent) => Promise<void>
+} => {
   return {
-    onContextmenu: async (e: MouseEvent) => {
+    onContextmenu: async (e): Promise<void> => {
       e.preventDefault()
       // if this row is unchecked, cancel other checked rows and check this row
       if (!checkedRowKeys.value.includes(row.file_name)) {
@@ -250,7 +255,7 @@ const rowProps = (row: FileRecord) => {
       dropdownY.value = e.clientY
       showDropdown.value = true
     },
-    onclick: async (e: MouseEvent) => {
+    onclick: async (e): Promise<void> => {
       const triggerClassList = (e.target as HTMLElement).classList
       if (e.button !== 0) {
         // do nothing if click event is not triggered by left button
@@ -280,7 +285,7 @@ const rowProps = (row: FileRecord) => {
 }
 
 // scroll handler
-async function handleScroll(e: Event) {
+async function handleScroll(e: Event): Promise<void> {
   const target = e.target as HTMLElement
   const { scrollTop, scrollHeight, clientHeight } = target
   const distance = 270

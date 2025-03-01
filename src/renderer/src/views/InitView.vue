@@ -34,7 +34,7 @@ const { settings } = storeToRefs(useSettingsStore())
 
 const loading = ref(false)
 
-async function login() {
+async function login(): Promise<void> {
   loading.value = true
 
   try {

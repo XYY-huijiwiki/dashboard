@@ -1,13 +1,13 @@
 import { ElectronAPI } from '@electron-toolkit/preload'
 
-interface FileMetadata {
+type FileMetadata = {
   name: string
   path: string
   size: number
   type: string
 }
 
-interface UploadParams {
+type UploadParams = {
   ghToken: string
   owner: string
   repo: string
@@ -52,14 +52,16 @@ type GhAssetUploadResponse = {
   browser_download_url: string
 }
 
+type CustomApi = {
+  openFileDialog: () => Promise<FileMetadata | null>
+  uploadToGitHub: (params: UploadParams) => Promise<GhAssetUploadResponse>
+  openExternal: (url: string) => void
+  ghLogin: () => Promise<string>
+}
+
 declare global {
   interface Window {
     electron: ElectronAPI
-    api: {
-      openFileDialog: () => Promise<FileMetadata | null>
-      uploadToGitHub: (params: UploadParams) => Promise<GhAssetUploadResponse>
-      openExternal: (url: string) => void
-      ghLogin: () => Promise<string>
-    }
+    api: CustomApi
   }
 }

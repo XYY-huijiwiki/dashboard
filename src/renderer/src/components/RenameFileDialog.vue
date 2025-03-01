@@ -58,7 +58,7 @@ watch(loading, (v) => {
   else emit('loading-end')
 })
 
-async function confirmRename() {
+async function confirmRename(): Promise<void> {
   // if no new name, do nothing
   if (!newName.value) return
   // if new name is the same as the current name, do nothing

@@ -121,14 +121,14 @@ import { useLocalesStore } from '@renderer/stores/locales'
 import { genThumbUrl } from '@renderer/utils/genUrl'
 
 const { langCode } = storeToRefs(useLocalesStore())
-const filesize = (size: number) => filesizeNoLocale(size, { locale: langCode.value })
+const filesize = (size: number): string => filesizeNoLocale(size, { locale: langCode.value })
 const { t } = useI18n()
 const { fileDetails } = defineProps<{
   fileDetails: FileRecord[]
 }>()
 const emit = defineEmits(['close', 'edit-file'])
 
-function viewInXYYWiki() {
+function viewInXYYWiki(): void {
   window.api.openExternal(
     `https://xyy.huijiwiki.com/wiki/Project:迷你控制中心#/github-file/${fileDetails[0].file_name}`
   )

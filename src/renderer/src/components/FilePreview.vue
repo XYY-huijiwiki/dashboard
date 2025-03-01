@@ -63,7 +63,7 @@
 import { useI18n } from 'vue-i18n'
 import { Document48Regular } from '@vicons/fluent'
 
-import fileIcon from './file-icon.vue'
+import fileIcon from './FileIcon.vue'
 import { genThumbUrl, genRawFileUrl } from '@renderer/utils/genUrl'
 
 const { t } = useI18n()

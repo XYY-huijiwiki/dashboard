@@ -22,7 +22,7 @@ function createWindow(): void {
     }
   })
 
-  IS_WINDOWS_11 && mainWindow.setMicaEffect()
+  if (IS_WINDOWS_11) mainWindow.setMicaEffect()
   mainWindow.removeMenu()
 
   mainWindow.on('ready-to-show', () => {

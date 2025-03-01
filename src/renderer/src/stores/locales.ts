@@ -29,7 +29,7 @@ const langPacks = Object.fromEntries(
 const supportedLangs: string[] = Object.keys(langPacks)
 
 const userLangs = navigator.languages.map((lang) => lang.slice(0, 2))
-const userLang = (() => {
+const userLang = ((): string => {
   let userLang = 'en'
   for (let index = 0; index < userLangs.length; index++) {
     const element = userLangs[index]

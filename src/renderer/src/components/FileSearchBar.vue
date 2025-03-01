@@ -41,7 +41,7 @@ const searchBarEle = ref()
 const searchText = defineModel<string>('search-text', { required: true })
 const searchedText = ref('')
 
-function cancelSearch() {
+function cancelSearch(): void {
   searchText.value = ``
   // do search only if non empty string have been searched
   if (searchedText.value !== '') emit('search')
@@ -51,7 +51,7 @@ function cancelSearch() {
   searchBarEle.value.blur()
 }
 
-function doSearch() {
+function doSearch(): void {
   searchedText.value = searchText.value
   emit('search')
 }

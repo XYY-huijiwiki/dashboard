@@ -49,7 +49,7 @@ watch(loading, (v) => {
   else emit('loading-end')
 })
 
-async function confirmDelete() {
+async function confirmDelete(): Promise<void> {
   loading.value = true
 
   try {

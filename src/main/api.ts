@@ -5,7 +5,7 @@ import mime from 'mime-types'
 import base62 from './utils/base62.js'
 import ghLogin from './utils/ghLogin.js'
 
-function registerIPC() {
+function registerIPC(): void {
   ipcMain.handle('open-file-dialog', async () => {
     const { canceled, filePaths } = await dialog.showOpenDialog({
       properties: ['openFile']

@@ -62,7 +62,7 @@ watch(loading, (v) => {
   else emit('loading-end')
 })
 
-async function confirmEdit() {
+async function confirmEdit(): Promise<void> {
   // basic validation
   if (!isOK.value) return
 

@@ -17,7 +17,7 @@
 
 <script setup lang="ts">
 import { computed, h } from 'vue'
-import type { ComputedRef, Component } from 'vue'
+import type { ComputedRef, Component, VNode } from 'vue'
 import { NDropdown, NIcon } from 'naive-ui'
 import type { DropdownOption } from 'naive-ui'
 import { useI18n } from 'vue-i18n'
@@ -50,7 +50,7 @@ const emit = defineEmits([
   'details'
 ])
 
-function genIcon(rawIcon: Component) {
+function genIcon(rawIcon: Component): VNode {
   return h(NIcon, { size: 20 }, () => h(rawIcon))
 }
 

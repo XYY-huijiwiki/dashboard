@@ -2,7 +2,7 @@
   <n-spin :show="loading" class="h-full" content-class="h-full">
     <n-card class="h-full" content-class="shrink-0 h-0">
       <n-infinite-scroll :distance="270" @load="emit('load-more')">
-        <drag-select v-model="checkedRowKeys" class="h-full" @click="showDropdown = false">
+        <drag-select v-model="checkedRowKeys as any" class="h-full" @click="showDropdown = false">
           <drag-select-option v-for="item in data" :key="item.file_name" :value="item.file_name">
             <n-el
               tag="div"
@@ -99,7 +99,7 @@ const checkedRowKeys = defineModel<ReturnType<DataTableCreateRowKey>[]>('checked
 const showDropdown = ref(false)
 const dropdownX = ref(0)
 const dropdownY = ref(0)
-async function handleContextMenu(item: FileRecord, e: MouseEvent) {
+async function handleContextMenu(item: FileRecord, e: MouseEvent): Promise<void> {
   e.preventDefault()
   // if this row is unchecked, cancel other checked rows and check this row
   if (!checkedRowKeys.value.includes(item.file_name)) {

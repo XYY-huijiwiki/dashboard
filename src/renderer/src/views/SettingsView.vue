@@ -12,7 +12,7 @@ const { resetSettings } = useSettingsStore()
 
 const { t } = useI18n()
 
-function clearData() {
+function clearData(): void {
   window.$dialog.warning({
     title: t('general.warning'),
     content: t('settings.text-confirm-restore'),

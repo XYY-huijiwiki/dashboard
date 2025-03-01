@@ -53,3 +53,4 @@ npm run dev
 - [ ] Implement transactional operations
 - [ ] Draggable file uploads
 - [ ] Cross-platform support
+- [ ] Remove `any` from `src/renderer/src/components/file-list-grid.vue` once `@coleqiu/vue-drag-select` gets update
