@@ -1,28 +1,26 @@
 import { app, shell, BrowserWindow } from 'electron'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import path from 'path'
-import { MicaBrowserWindow, IS_WINDOWS_11 } from 'mica-electron'
 
 import icon from '../../resources/icon.png?asset'
 import registerIPC from './api.js'
 
-let mainWindow: MicaBrowserWindow
+let mainWindow: BrowserWindow
 
 function createWindow(): void {
   // Create the browser window.
-  mainWindow = new MicaBrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 1280,
     height: 720,
     show: false,
     icon,
+    backgroundMaterial: 'mica', // for Windows only
     webPreferences: {
       preload: path.join(__dirname, '../preload/index.mjs'),
-      sandbox: false,
-      devTools: is.dev
+      sandbox: false
     }
   })
 
-  if (IS_WINDOWS_11) mainWindow.setMicaEffect()
   mainWindow.removeMenu()
 
   mainWindow.on('ready-to-show', () => {

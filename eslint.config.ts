@@ -13,6 +13,9 @@ export default defineConfigWithVueTs([
   vueTsConfigs.recommended,
   prettierConfig,
   {
-    ignores: ['node_modules', 'dist', 'out', '.gitignore']
+    ignores: ['node_modules', 'dist', 'out', '.gitignore'],
+    rules: {
+      '@typescript-eslint/no-unused-vars': 'off' // dual warning with eslint
+    }
   }
 ])
