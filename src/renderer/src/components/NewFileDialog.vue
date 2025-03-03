@@ -1,27 +1,25 @@
 <template>
   <n-flex vertical>
-    <div style="margin: 32px 0">
-      <n-flex vertical>
-        <n-alert v-if="fileName.match(/\s/)" type="warning">
-          {{ t('github-files.msg-space-replacement-warning') }}
-        </n-alert>
-        <n-input-group>
-          <n-button @click="handleSelectFile">
-            {{ t('github-files.btn-select-file') }}
-          </n-button>
-          <n-input v-model:value="fileName" :disabled="!selectedFile" />
-        </n-input-group>
-        <n-input
-          v-model:value="fileSource"
-          :placeholder="t('github-files.label-file-source')"
-        ></n-input>
-        <n-select
-          v-model:value="fileLicense"
-          :placeholder="t('github-files.label-file-licence')"
-          :options="licenceOptions"
-        ></n-select>
-      </n-flex>
-    </div>
+    <n-flex vertical class="my-8">
+      <n-alert v-if="fileName.match(/\s/)" type="warning">
+        {{ t('github-files.msg-space-replacement-warning') }}
+      </n-alert>
+      <n-input-group>
+        <n-button @click="handleSelectFile">
+          {{ t('github-files.btn-select-file') }}
+        </n-button>
+        <n-input v-model:value="fileName" :disabled="!selectedFile" />
+      </n-input-group>
+      <n-input
+        v-model:value="fileSource"
+        :placeholder="t('github-files.label-file-source')"
+      ></n-input>
+      <n-select
+        v-model:value="fileLicense"
+        :placeholder="t('github-files.label-file-licence')"
+        :options="licenceOptions"
+      ></n-select>
+    </n-flex>
     <!-- footer (action) -->
     <n-flex justify="end">
       <n-button :disabled="loading" @click="$emit('close')">

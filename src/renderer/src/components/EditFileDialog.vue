@@ -1,19 +1,17 @@
 <template>
   <n-flex vertical>
-    <div style="margin: 32px 0">
-      <n-form>
-        <n-form-item :label="t('github-files.label-file-source')">
-          <n-input v-model:value="newSource" :placeholder="t('github-files.label-file-source')" />
-        </n-form-item>
-        <n-form-item :label="t('github-files.label-file-licence')">
-          <n-select
-            v-model:value="newLicence"
-            :placeholder="t('github-files.label-file-licence')"
-            :options="licenceOptions"
-          ></n-select>
-        </n-form-item>
-      </n-form>
-    </div>
+    <n-form class="my-8">
+      <n-form-item :label="t('github-files.label-file-source')">
+        <n-input v-model:value="newSource" :placeholder="t('github-files.label-file-source')" />
+      </n-form-item>
+      <n-form-item :label="t('github-files.label-file-licence')">
+        <n-select
+          v-model:value="newLicence"
+          :placeholder="t('github-files.label-file-licence')"
+          :options="licenceOptions"
+        ></n-select>
+      </n-form-item>
+    </n-form>
     <!-- footer (action) -->
     <n-flex justify="end">
       <n-button :disabled="loading" @click="$emit('close')">

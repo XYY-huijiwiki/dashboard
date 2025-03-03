@@ -64,7 +64,7 @@
         <!-- file details / file usage -->
         <n-divider>{{ t('github-files.label-file-usage') }}</n-divider>
         <template v-if="fileUsageLoading || fileUsageData === null">
-          <n-skeleton text :repeat="2" /> <n-skeleton text style="width: 60%" />
+          <n-skeleton text :repeat="2" /> <n-skeleton text class="!w-6/10" />
         </template>
         <n-empty
           v-else-if="fileUsageData.length === 0"

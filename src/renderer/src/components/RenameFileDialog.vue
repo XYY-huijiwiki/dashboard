@@ -1,6 +1,6 @@
 <template>
   <n-flex vertical>
-    <div style="margin: 32px 0">
+    <n-flex class="my-8" vertical>
       <n-alert v-if="newName.match(/\s/)" type="warning">
         {{ t('github-files.msg-space-replacement-warning') }}
       </n-alert>
@@ -14,7 +14,7 @@
           {{ fileExt }}
         </template>
       </n-input>
-    </div>
+    </n-flex>
     <!-- footer (action) -->
     <n-flex justify="end">
       <n-button :disabled="loading" @click="$emit('close')">

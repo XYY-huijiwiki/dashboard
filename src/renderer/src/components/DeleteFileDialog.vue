@@ -1,12 +1,10 @@
 <template>
   <n-flex vertical>
-    <div style="margin: 32px 0">
-      <n-text>{{
-        fileRecords.length > 1
-          ? t('github-files.msg-files-delete-confirmation')
-          : t('github-files.msg-file-delete-confirmation')
-      }}</n-text>
-    </div>
+    <n-text class="my-8">{{
+      fileRecords.length > 1
+        ? t('github-files.msg-files-delete-confirmation')
+        : t('github-files.msg-file-delete-confirmation')
+    }}</n-text>
     <!-- footer (action) -->
     <n-flex justify="end">
       <n-button :disabled="loading" @click="$emit('close')">
