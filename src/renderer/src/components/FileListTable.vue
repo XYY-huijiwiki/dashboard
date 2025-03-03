@@ -9,17 +9,10 @@
     remote
     max-height="calc(100vh - 215.4px)"
     :loading="loading"
-    :size="viewMode === 'details' ? undefined : 'small'"
+    :size="explorerState.viewMode === 'details' ? undefined : 'small'"
     :row-key="(row: FileRecord) => row.file_name"
     :row-props="rowProps"
     :scroll-x="800"
-    @update:sorter="
-      (data: DataTableSortState | null) => {
-        sorterKey = data?.columnKey as SorterKey
-        sorterOrder = data?.order as SorterOrder
-      }
-    "
-    @update-filters="(data: DataTableFilterState) => (filters = data)"
     @scroll="(e) => handleScroll(e)"
   />
   <file-menu
@@ -39,16 +32,11 @@
 </template>
 
 <script setup lang="ts">
-import { h, ref, nextTick, watch } from 'vue'
+import { h, ref, nextTick } from 'vue'
 import type { Ref, VNode } from 'vue'
 import { NText, NTag, NSpace, NDataTable } from 'naive-ui'
-import type {
-  DataTableColumns,
-  DataTableSortState,
-  DataTableCreateRowKey,
-  DataTableFilterState
-} from 'naive-ui'
-import fileIcon from '@renderer/components/FileIcon.vue'
+import type { DataTableColumns, DataTableCreateRowKey } from 'naive-ui'
+import FileIcon from '@renderer/components/FileIcon.vue'
 import { useI18n } from 'vue-i18n'
 import dayjs from 'dayjs'
 import { dayjsLocales } from '@renderer/stores/locales'
@@ -56,9 +44,15 @@ import localizedFormat from 'dayjs/plugin/localizedFormat'
 import { filesize as filesizeNoLocale } from 'filesize'
 import { useLocalesStore } from '@renderer/stores/locales'
 import { storeToRefs } from 'pinia'
-import { NBaseIcon } from 'naive-ui/es/_internal'
-import { ArrowDownIcon } from 'naive-ui/es/_internal/icons'
 import ClickableText from './ClickableText.vue'
+import TableHeaderName from './FileListTableHeader/TableHeaderName.vue'
+import TableHeaderUpdatedAt from './FileListTableHeader/TableHeaderUpdatedAt.vue'
+import TableHeaderUploader from './FileListTableHeader/TableHeaderUploader.vue'
+import TableHeaderType from './FileListTableHeader/TableHeaderType.vue'
+import TableHeaderSize from './FileListTableHeader/TableHeaderSize.vue'
+import { useExplorerStateStore } from '@renderer/stores/explorerState'
+
+const { explorerState } = storeToRefs(useExplorerStateStore())
 
 const { langCode } = storeToRefs(useLocalesStore())
 const filesize = (size: number): string => filesizeNoLocale(size, { locale: langCode.value })
@@ -71,7 +65,6 @@ const { data, filesInUse } = defineProps<{
   filesInUse: string[]
   data: FileRecord[]
   loading: boolean
-  viewMode: 'details' | 'list'
   checkedItems: FileRecord[]
 }>()
 
@@ -86,31 +79,9 @@ const emit = defineEmits([
   'load-more'
 ])
 
-/*
- *
- * Data Table sorter and filters
- *
- */
 const checkedRowKeys = defineModel<ReturnType<DataTableCreateRowKey>[]>('checkedRowKeys', {
   required: true
 })
-const sorterKey = defineModel<SorterKey>('sorterKey', {
-  required: true
-})
-const sorterOrder = defineModel<SorterOrder>('sorterOrder', { required: true })
-const filters = defineModel<DataTableFilterState>('filters', { required: true })
-watch([sorterKey, sorterOrder], ([key, order]) => {
-  dataTable.value?.sort(key, order)
-})
-watch(
-  filters,
-  (value) => {
-    dataTable.value?.filter(value)
-  },
-  {
-    deep: true
-  }
-)
 
 /*
  *
@@ -123,38 +94,19 @@ const columns: Ref<DataTableColumns<FileRecord>> = ref([
     fixed: 'left'
   },
   {
-    title: (): VNode => {
-      if (sorterKey.value === 'type') {
-        return h(
-          'span',
-          {
-            class: [
-              'n-data-table-sorter',
-              sorterOrder.value === 'ascend' && 'n-data-table-sorter--asc',
-              sorterOrder.value === 'descend' && 'n-data-table-sorter--desc'
-            ],
-            style: { marginLeft: '6px' }
-          },
-          h(NBaseIcon, { clsPrefix: 'n' }, () => h(ArrowDownIcon))
-        )
-      } else {
-        return h(fileIcon, { size: 28 })
-      }
-    },
+    title: () => h(TableHeaderType),
     renderSorter: () => undefined,
     key: 'type',
     width: '4em',
-    sorter: 'default',
-    render: (row) => h(fileIcon, { fileType: row.content_type, size: 28 })
+    align: 'center',
+    render: (row) => h(FileIcon, { clss: 'mx-auto', fileType: row.content_type, size: 28 })
   },
   {
-    title: () => t('github-files.table-header-name'),
+    title: () => h(TableHeaderName),
     key: 'name',
     resizable: true,
     width: 350,
     minWidth: 200,
-    maxWidth: 500,
-    sorter: 'default',
     render: (row) =>
       h(ClickableText, {
         onClick: (e: MouseEvent) => {
@@ -163,21 +115,22 @@ const columns: Ref<DataTableColumns<FileRecord>> = ref([
           emit('file-preview')
         },
         text: row.file_name
-      }),
-    filter: (value, row) => row.file_name.toLowerCase().includes(value.toString().toLowerCase())
+      })
   },
   {
-    title: () => t('github-files.table-header-date-modified'),
+    title: () => h(TableHeaderUpdatedAt),
     key: 'updated_at',
+    minWidth: 100,
     width: '10em',
-    sorter: 'default',
+    resizable: true,
     render: (row) => h(NText, () => dayjs(row.updated_at).format('ll'))
   },
   {
-    title: () => t('github-files.table-header-uploader'),
+    title: () => h(TableHeaderUploader),
     key: 'uploader',
     width: '10em',
-    sorter: 'default',
+    minWidth: 100,
+    resizable: true,
     render: (row): VNode => {
       return h(ClickableText, {
         onClick: () => window.api.openExternal(`https://github.com/${row.uploader}`),
@@ -186,14 +139,15 @@ const columns: Ref<DataTableColumns<FileRecord>> = ref([
     }
   },
   {
-    title: () => t('github-files.table-header-size'),
+    title: () => h(TableHeaderSize),
     key: 'size',
-    width: '8em',
-    sorter: 'default',
+    width: '10em',
+    minWidth: 100,
+    resizable: true,
     render: (row) => h(NText, () => filesize(row.file_size))
   },
   {
-    title: () => t('github-files.table-header-status'),
+    title: t('github-files.table-header.label-status'),
     key: 'status',
     minWidth: '10em',
     // filterOptions: [

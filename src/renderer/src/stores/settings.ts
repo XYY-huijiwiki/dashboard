@@ -25,7 +25,7 @@ export const useSettingsStore = defineStore('settings', () => {
     fileListPageSize: 50
   }
   // init settings from localStorage or use default settings
-  const settings: Ref<Settings> = useLocalStorage('miniDashboardSettings', defaultSettings, {
+  const settings: Ref<Settings> = useLocalStorage('settings', defaultSettings, {
     mergeDefaults: true
   })
 

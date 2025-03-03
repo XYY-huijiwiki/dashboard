@@ -14,7 +14,6 @@ function createWindow(): void {
     height: 720,
     show: false,
     icon,
-    backgroundMaterial: 'mica', // for Windows only
     webPreferences: {
       preload: path.join(__dirname, '../preload/index.mjs'),
       sandbox: false
@@ -22,6 +21,7 @@ function createWindow(): void {
   })
 
   mainWindow.removeMenu()
+  mainWindow.setBackgroundMaterial('mica')
 
   mainWindow.on('ready-to-show', () => {
     mainWindow.show()

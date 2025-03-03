@@ -1,5 +1,5 @@
 <template>
-  <Teleport to="#mini-dashboard-title-bar">
+  <Teleport to="#title-bar">
     <n-input-group class="flex-1">
       <n-input
         ref="searchBarEle"

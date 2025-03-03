@@ -9,9 +9,7 @@ import App from './AppOuter.vue'
 import { userLang, langPacks } from '@renderer/stores/locales'
 
 // ===== i18n =====
-const language = JSON.parse(
-  localStorage.getItem('miniDashboardSettings') || `{"language":"auto"}`
-).language
+const language = JSON.parse(localStorage.getItem('settings') || `{"language":"auto"}`).language
 const locale = language === 'auto' ? userLang : language
 const i18n = createI18n({
   legacy: false,

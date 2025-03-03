@@ -3,9 +3,6 @@
     <file-search-bar v-model:search-text="searchText" @search="queryData" />
     <file-operations-bar
       v-model:checked-row-keys="checkedRowKeys"
-      v-model:view-mode="viewMode"
-      v-model:sorter-key="sorterKey"
-      v-model:sorter-order="sorterOrder"
       v-model:show-details-pane="showDetailsPane"
       @file-preview="preview = checkedItems[0]"
       @link-copy="linkCopy"
@@ -28,15 +25,11 @@
         <file-preview v-if="preview" v-model="preview" />
         <template v-else>
           <file-list-table
-            v-if="viewMode === 'details' || viewMode === 'list'"
+            v-if="explorerState.viewMode === 'details' || explorerState.viewMode === 'list'"
             v-model:checked-row-keys="checkedRowKeys"
-            v-model:sorter-key="sorterKey"
-            v-model:sorter-order="sorterOrder"
-            v-model:filters="filters"
             :checked-items="checkedItems"
             :data="data"
             :loading="loading"
-            :view-mode="viewMode"
             :files-in-use="filesInUse"
             @load-more="!loading && queryData('more')"
             @file-preview="preview = checkedItems[0]"
@@ -78,11 +71,12 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch, h } from 'vue'
 import type { Ref } from 'vue'
-import type { DataTableRowKey, DataTableFilterState } from 'naive-ui'
+import type { DataTableRowKey } from 'naive-ui'
 import { useI18n } from 'vue-i18n'
 import dayjs from 'dayjs'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
 import { storeToRefs } from 'pinia'
+import ky from 'ky'
 
 import { dayjsLocales } from '@renderer/stores/locales'
 import fileListTable from '@renderer/components/FileListTable.vue'
@@ -90,10 +84,12 @@ import FileOperationsBar from '@renderer/components/FileOperationsBar.vue'
 import db from '@renderer/utils/queryDB'
 import { genRawFileUrl } from '@renderer/utils/genUrl'
 import { useSettingsStore } from '@renderer/stores/settings'
+import { useExplorerStateStore } from '@renderer/stores/explorerState'
 
 const { t } = useI18n()
 
 const { settings } = storeToRefs(useSettingsStore())
+const { explorerState } = storeToRefs(useExplorerStateStore())
 
 dayjs.extend(localizedFormat).locale(dayjsLocales.value)
 
@@ -120,18 +116,11 @@ function linkCopy(): void {
 // preview
 const preview: Ref<FileRecord | undefined> = ref(undefined)
 
-const sorterKey: Ref<SorterKey> = ref('updated_at')
-const sorterOrder: Ref<SorterOrder> = ref('ascend')
-
-const filters = ref<DataTableFilterState>({})
-
 const loading: Ref<boolean> = ref(true)
 
 const data: Ref<FileRecord[]> = ref([])
 const filesInUse: Ref<string[]> = ref([])
 const checkedRowKeys = ref<DataTableRowKey[]>([])
-
-const viewMode: Ref<ViewMode> = ref('list')
 
 /*
  *
@@ -161,53 +150,60 @@ onMounted(async () => {
   loading.value = true
 
   // get data from XYY-huijiwiki
-  let filesInUseTemp: string[] = []
-  let ifContinue = true
-  do {
-    const params = {
-      action: 'query',
-      list: 'querypage',
-      qppage: 'Wantedfiles',
-      format: 'json',
-      qplimit: 'max',
-      qpoffset: filesInUseTemp.length.toString()
-    }
-    const res: {
-      batchcomplete: string
-      continue:
-        | {
-            qpoffset: number
-            continue: string
-          }
-        | undefined
-      query: {
-        querypage: {
-          name: string
-          results: {
-            value: string
-            ns: number
-            title: string
-          }[]
-        }
+  try {
+    let filesInUseTemp: string[] = []
+    let ifContinue = true
+    do {
+      const params = {
+        action: 'query',
+        list: 'querypage',
+        qppage: 'Wantedfiles',
+        format: 'json',
+        qplimit: 'max',
+        qpoffset: filesInUseTemp.length.toString()
       }
-    } = await (
-      await fetch('https://xyy.huijiwiki.com/api.php?' + new URLSearchParams(params))
-    ).json()
-    filesInUseTemp.push(
-      ...res.query.querypage.results.map((item) =>
-        decodeURIComponent(item.title).replace(/ /g, '_').replace('文件:', '')
+      const res: {
+        batchcomplete: string
+        continue:
+          | {
+              qpoffset: number
+              continue: string
+            }
+          | undefined
+        query: {
+          querypage: {
+            name: string
+            results: {
+              value: string
+              ns: number
+              title: string
+            }[]
+          }
+        }
+      } = await ky.get('https://xyy.huijiwiki.com/api.php?' + new URLSearchParams(params)).json()
+      filesInUseTemp.push(
+        ...res.query.querypage.results.map((item) =>
+          decodeURIComponent(item.title).replace(/ /g, '_').replace('文件:', '')
+        )
       )
-    )
-    ifContinue = res.continue !== undefined
-  } while (ifContinue)
-  // filter filesInUse
-  filesInUseTemp = filesInUseTemp.filter((item) => item.startsWith('GitHub:'))
-  // remove "GitHub:" from filesInUse
-  filesInUse.value = filesInUseTemp.map((item) => item.replace('GitHub:', ''))
+      ifContinue = res.continue !== undefined
+    } while (ifContinue)
+    // filter filesInUse
+    filesInUseTemp = filesInUseTemp.filter((item) => item.startsWith('GitHub:'))
+    // remove "GitHub:" from filesInUse
+    filesInUse.value = filesInUseTemp.map((item) => item.replace('GitHub:', ''))
 
-  await queryData()
-
-  loading.value = false
+    await queryData()
+  } catch (error) {
+    console.dir(error)
+    window.$notification.error({
+      title: t('github-files.msg-rename-failed'),
+      content: `${error}`,
+      meta: dayjs().format('lll')
+    })
+  } finally {
+    loading.value = false
+  }
 })
 
 const searchText = ref('')
@@ -217,56 +213,66 @@ async function queryData(type: 'more' | 'refresh' = 'refresh'): Promise<void> {
 
   loading.value = true
 
-  const query = db('files').limit(settings.value.fileListPageSize).whereNull('is_deleted')
+  try {
+    const query = db('files').limit(settings.value.fileListPageSize).whereNull('is_deleted')
 
-  if (type === 'more') query.offset(data.value.length)
+    if (type === 'more') query.offset(data.value.length)
 
-  // sorter
-  const order = sorterOrder.value === 'ascend' ? 'ASC' : 'DESC'
-  if (sorterKey.value === 'name') {
-    query.orderBy('file_name', order)
-  } else if (sorterKey.value === 'size') {
-    query.orderBy('file_size', order)
-  } else if (sorterKey.value === 'type') {
-    query.orderBy('file_type', order)
-  } else if (sorterKey.value === 'updated_at') {
-    query.orderBy('updated_at', order)
-  }
+    // sorter
+    const order = explorerState.value.sorterOrder === 'ascend' ? 'ASC' : 'DESC'
+    if (explorerState.value.sorterKey === 'name') {
+      query.orderBy('file_name', order)
+    } else if (explorerState.value.sorterKey === 'size') {
+      query.orderBy('file_size', order)
+    } else if (explorerState.value.sorterKey === 'type') {
+      query.orderBy('content_type', order)
+    } else if (explorerState.value.sorterKey === 'updated_at') {
+      query.orderBy('updated_at', order)
+    }
 
-  // filter
-  if (searchText.value) {
-    query.whereLike('file_name', `%${searchText.value}%`)
-  }
+    // search
+    if (searchText.value) {
+      query.andWhereLike('file_name', `%${searchText.value}%`)
+    }
 
-  // get total item count
-  const url = new URL('https://xyy-huijiwiki-gh-files-db.karsten-zhou-773.workers.dev/')
-  if (type === 'refresh') {
-    const queryStr = query.clone().count().toString()
+    // get total item count
+    const url = new URL('https://xyy-huijiwiki-gh-files-db.karsten-zhou-773.workers.dev/')
+    if (type === 'refresh') {
+      const queryStr = query.clone().count().toString()
+      url.searchParams.set('query', queryStr)
+      totalItemCount.value = ((await ky.get(url.href).json()) as DbResponse)[0]['results'][0][
+        `count(*)`
+      ]
+      console.log('totalItemCount', totalItemCount.value)
+    }
+
+    // get data from database
+    const queryStr = query.toString()
+    console.log(queryStr)
     url.searchParams.set('query', queryStr)
-    totalItemCount.value = (
-      await (await fetch(url.href)).json().catch((error) => {
-        console.table(error)
-      })
-    )[0]['results'][0][`count(*)`] as number
-    console.log('totalItemCount', totalItemCount.value)
+
+    if (type === 'more') {
+      data.value.push(...((await ky.get(url.href).json()) as DbResponse)[0].results)
+    } else {
+      data.value = ((await ky.get(url.href).json()) as DbResponse)[0].results
+    }
+  } catch (error) {
+    console.dir(error)
+    window.$notification.error({
+      title: t('general.error'),
+      content: `${error}`,
+      meta: dayjs().format('lll')
+    })
+  } finally {
+    loading.value = false
   }
-
-  // get data from database
-  const queryStr = query.toString()
-  console.log(queryStr)
-  url.searchParams.set('query', queryStr)
-
-  if (type === 'more') {
-    data.value.push(...((await (await fetch(url.href)).json()) as DbResponse)[0].results)
-  } else {
-    data.value = ((await (await fetch(url.href)).json()) as DbResponse)[0].results
-  }
-
-  loading.value = false
 }
 
-// watch sorter and filters
-watch([sorterKey, sorterOrder, filters], () => queryData())
+// watch sorter
+watch(
+  () => [explorerState.value.sorterKey, explorerState.value.sorterOrder],
+  () => queryData()
+)
 
 // new file
 async function newFile(): Promise<void> {
@@ -276,7 +282,7 @@ async function newFile(): Promise<void> {
     title: t('github-files.title-new'),
     preset: 'dialog',
     showIcon: false,
-    style: 'width: 440px; max-width: 100%',
+    style: 'width: 480px; max-width: 100%',
     content: () =>
       h(NewFileDialog, {
         onClose: () => modalInstance.destroy(),
@@ -304,7 +310,7 @@ async function deleteFiles(): Promise<void> {
     title: isPlural ? t(`github-files.title-files-delete`) : t(`github-files.title-file-delete`),
     preset: 'dialog',
     showIcon: false,
-    style: 'width: 440px; max-width: 100%',
+    style: 'width: 480px; max-width: 100%',
     content: () =>
       h(DeleteFileDialog, {
         onClose: () => modalInstance.destroy(),
@@ -332,7 +338,7 @@ async function renameFile(): Promise<void> {
     title: t('github-files.title-rename'),
     preset: 'dialog',
     showIcon: false,
-    style: 'width: 440px; max-width: 100%',
+    style: 'width: 480px; max-width: 100%',
     content: () =>
       h(RenameFileDialog, {
         onClose: () => modalInstance.destroy(),
@@ -360,7 +366,7 @@ async function editFile(): Promise<void> {
     title: t('github-files.title-edit'),
     preset: 'dialog',
     showIcon: false,
-    style: 'width: 440px; max-width: 100%',
+    style: 'width: 480px; max-width: 100%',
     content: () =>
       h(EditFileDialog, {
         onClose: () => modalInstance.destroy(),

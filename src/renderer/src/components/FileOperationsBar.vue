@@ -86,13 +86,13 @@
           <n-dropdown
             trigger="click"
             :options="viewOptions"
-            @select="(key: ViewMode) => (viewMode = key)"
+            @select="(key: ViewMode) => (explorerState.viewMode = key)"
           >
             <n-button quaternary>
               <template #icon>
                 <n-icon :size="24">
-                  <apps-list24-regular v-if="viewMode === 'details'" />
-                  <list24-regular v-else-if="viewMode === 'list'" />
+                  <apps-list24-regular v-if="explorerState.viewMode === 'details'" />
+                  <list24-regular v-else-if="explorerState.viewMode === 'list'" />
                   <grid24-regular v-else />
                 </n-icon>
               </template>
@@ -129,7 +129,7 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { ref, h, VNode } from 'vue'
+import { ref, h } from 'vue'
 import { NIcon } from 'naive-ui'
 import {
   AddCircle24Regular,
@@ -149,21 +149,17 @@ import {
   ClipboardPaste24Regular,
   Cut24Regular
 } from '@vicons/fluent'
+import { storeToRefs } from 'pinia'
+
+import { useExplorerStateStore } from '@renderer/stores/explorerState'
+
+const { explorerState } = storeToRefs(useExplorerStateStore())
 
 const { t } = useI18n()
 const checkedRowKeys = defineModel<(string | number)[]>('checkedRowKeys', {
   required: true
 })
 const showDetailsPane = defineModel<boolean>('showDetailsPane', {
-  required: true
-})
-const viewMode = defineModel<ViewMode>('viewMode', {
-  required: true
-})
-const sorterKey = defineModel<SorterKey>('sorterKey', {
-  required: true
-})
-const sorterOrder = defineModel<SorterOrder>('sorterOrder', {
   required: true
 })
 
@@ -185,40 +181,44 @@ const sortOptions = ref([
   {
     label: t('github-files.sort.btn-type'),
     key: 'type',
-    icon: (): VNode =>
-      h(NIcon, { size: 20, class: { invisible: sorterKey.value !== 'type' } }, () =>
+    icon: () =>
+      h(NIcon, { size: 20, class: { invisible: explorerState.value.sorterKey !== 'type' } }, () =>
         h(Checkmark24Regular)
       )
   },
   {
     label: t('github-files.sort.btn-name'),
     key: 'name',
-    icon: (): VNode =>
-      h(NIcon, { size: 20, class: { invisible: sorterKey.value !== 'name' } }, () =>
+    icon: () =>
+      h(NIcon, { size: 20, class: { invisible: explorerState.value.sorterKey !== 'name' } }, () =>
         h(Checkmark24Regular)
       )
   },
   {
     label: t('github-files.sort.btn-date-modified'),
     key: 'updated_at',
-    icon: (): VNode =>
-      h(NIcon, { size: 20, class: { invisible: sorterKey.value !== 'updated_at' } }, () =>
-        h(Checkmark24Regular)
+    icon: () =>
+      h(
+        NIcon,
+        { size: 20, class: { invisible: explorerState.value.sorterKey !== 'updated_at' } },
+        () => h(Checkmark24Regular)
       )
   },
   {
     label: t('github-files.sort.btn-uploader'),
     key: 'uploader',
-    icon: (): VNode =>
-      h(NIcon, { size: 20, class: { invisible: sorterKey.value !== 'uploader' } }, () =>
-        h(Checkmark24Regular)
+    icon: () =>
+      h(
+        NIcon,
+        { size: 20, class: { invisible: explorerState.value.sorterKey !== 'uploader' } },
+        () => h(Checkmark24Regular)
       )
   },
   {
     label: t('github-files.sort.btn-size'),
     key: 'size',
-    icon: (): VNode =>
-      h(NIcon, { size: 20, class: { invisible: sorterKey.value !== 'size' } }, () =>
+    icon: () =>
+      h(NIcon, { size: 20, class: { invisible: explorerState.value.sorterKey !== 'size' } }, () =>
         h(Checkmark24Regular)
       )
   },
@@ -229,25 +229,29 @@ const sortOptions = ref([
   {
     label: t('github-files.sort.btn-asc'),
     key: 'ascend',
-    icon: (): VNode =>
-      h(NIcon, { size: 20, class: { invisible: sorterOrder.value !== 'ascend' } }, () =>
-        h(Checkmark24Regular)
+    icon: () =>
+      h(
+        NIcon,
+        { size: 20, class: { invisible: explorerState.value.sorterOrder !== 'ascend' } },
+        () => h(Checkmark24Regular)
       )
   },
   {
     label: t('github-files.sort.btn-desc'),
     key: 'descend',
-    icon: (): VNode =>
-      h(NIcon, { size: 20, class: { invisible: sorterOrder.value !== 'descend' } }, () =>
-        h(Checkmark24Regular)
+    icon: () =>
+      h(
+        NIcon,
+        { size: 20, class: { invisible: explorerState.value.sorterOrder !== 'descend' } },
+        () => h(Checkmark24Regular)
       )
   }
 ])
 function sortHandler(key: SorterKey | SorterOrder): void {
   if (['ascend', 'descend'].includes(key)) {
-    sorterOrder.value = key as SorterOrder
+    explorerState.value.sorterOrder = key as SorterOrder
   } else {
-    sorterKey.value = key as SorterKey
+    explorerState.value.sorterKey = key as SorterKey
   }
 }
 
@@ -258,41 +262,41 @@ function sortHandler(key: SorterKey | SorterOrder): void {
  */
 const viewOptions = ref([
   {
-    label: (): VNode[] => [
+    label: () => [
       h(NIcon, { size: 20, class: 'mr-1 align-sub' }, { default: () => h(AppsList24Regular) }),
       h('span', undefined, t('github-files.view.btn-details'))
     ],
     key: 'details',
-    icon: (): VNode =>
+    icon: () =>
       h(
         NIcon,
-        { size: 24, class: { invisible: viewMode.value !== 'details' } },
+        { size: 24, class: { invisible: explorerState.value.viewMode !== 'details' } },
         { default: () => h(Checkmark24Regular) }
       )
   },
   {
-    label: (): VNode[] => [
+    label: () => [
       h(NIcon, { size: 20, class: 'mr-1 align-sub' }, { default: () => h(List24Regular) }),
       h('span', undefined, t('github-files.view.btn-list'))
     ],
     key: 'list',
-    icon: (): VNode =>
+    icon: () =>
       h(
         NIcon,
-        { size: 24, class: { invisible: viewMode.value !== 'list' } },
+        { size: 24, class: { invisible: explorerState.value.viewMode !== 'list' } },
         { default: () => h(Checkmark24Regular) }
       )
   },
   {
-    label: (): VNode[] => [
+    label: () => [
       h(NIcon, { size: 20, class: 'mr-1 align-sub' }, { default: () => h(Grid24Regular) }),
       h('span', undefined, t('github-files.view.btn-tiles'))
     ],
     key: 'tiles',
-    icon: (): VNode =>
+    icon: () =>
       h(
         NIcon,
-        { size: 24, class: { invisible: viewMode.value !== 'tiles' } },
+        { size: 24, class: { invisible: explorerState.value.viewMode !== 'tiles' } },
         { default: () => h(Checkmark24Regular) }
       )
   }

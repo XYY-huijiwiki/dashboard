@@ -29,7 +29,7 @@ useTitle(computed(() => t('home.title')))
   <n-card content-class="shrink-0 h-0" class="h-screen !rounded-none">
     <!-- 卡片左上角：返回 | 前进 | 刷新 | 主页 | 标题 -->
     <template #header>
-      <n-space id="mini-dashboard-title-bar" align="center" :wrap="false" :wrap-item="false">
+      <n-space id="title-bar" align="center" :wrap="false" :wrap-item="false">
         <!-- back btn -->
         <n-button quaternary circle @click="$router.back()">
           <template #icon>
