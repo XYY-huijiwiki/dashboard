@@ -31,6 +31,10 @@
   "error": {
     "title": "Fehler"
   },
+  "download-manage": {
+    "msg-downloading": "Lade {0} herunter ({1}%)",
+    "msg-downloaded": "Heruntergeladen {0}"
+  },
   "github-files": {
     "title": "GitHub-Dateien",
     "status-normal": "Normal",

@@ -134,7 +134,7 @@ const columns: Ref<DataTableColumns<FileRecord>> = ref([
     resizable: true,
     render: (row): VNode => {
       return h(ClickableText, {
-        onClick: () => window.api.openExternal(`https://github.com/${row.uploader}`),
+        onClick: () => window.open(`https://github.com/${row.uploader}`),
         text: row.uploader
       })
     }

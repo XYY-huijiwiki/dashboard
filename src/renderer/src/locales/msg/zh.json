@@ -30,6 +30,10 @@
   "error": {
     "title": "错误"
   },
+  "download-manage": {
+    "msg-downloading": "正在下载 {0}（{1}%）",
+    "msg-downloaded": "已下载 {0}"
+  },
   "github-files": {
     "title": "GitHub 文件",
     "status-normal": "正常",

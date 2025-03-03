@@ -1,4 +1,6 @@
 import { ElectronAPI } from '@electron-toolkit/preload'
+import { DownloadItem } from 'electron'
+import { Progress } from 'electron-dl'
 
 type FileMetadata = {
   name: string
@@ -55,8 +57,10 @@ type GhAssetUploadResponse = {
 type CustomApi = {
   openFileDialog: () => Promise<FileMetadata | null>
   uploadToGitHub: (params: UploadParams) => Promise<GhAssetUploadResponse>
-  openExternal: (url: string) => void
   ghLogin: () => Promise<string>
+  downloadFile: (url: string, fileName: string) => void
+  onDownloadProgress: (callback: (fileName: string, progress: Progress) => void) => void
+  onDownloadCompleted: (callback: (fileName: string) => void) => void
 }
 
 declare global {

@@ -114,7 +114,7 @@ import { useI18n } from 'vue-i18n'
 import { filesize as filesizeNoLocale } from 'filesize'
 import { storeToRefs } from 'pinia'
 import { useFetch } from '@vueuse/core'
-import sleep from '@anmiles/sleep'
+import sleep from '@renderer/utils/sleep'
 import { Edit16Regular } from '@vicons/fluent'
 
 import { useLocalesStore } from '@renderer/stores/locales'
@@ -129,7 +129,7 @@ const { fileDetails } = defineProps<{
 const emit = defineEmits(['close', 'edit-file'])
 
 function viewInXYYWiki(): void {
-  window.api.openExternal(
+  window.open(
     `https://xyy.huijiwiki.com/wiki/Project:迷你控制中心#/github-file/${fileDetails[0].file_name}`
   )
 }

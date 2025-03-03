@@ -5,8 +5,14 @@ import { electronAPI } from '@electron-toolkit/preload'
 const api: typeof window.api = {
   openFileDialog: () => ipcRenderer.invoke('open-file-dialog'),
   uploadToGitHub: (params) => ipcRenderer.invoke('upload-to-github', params),
-  openExternal: (url) => ipcRenderer.invoke('open-external', url),
-  ghLogin: () => ipcRenderer.invoke('gh-login')
+  ghLogin: () => ipcRenderer.invoke('gh-login'),
+  downloadFile: (url, fileName) => ipcRenderer.invoke('download-file', url, fileName),
+  onDownloadProgress: (callback) => {
+    ipcRenderer.on('download-progress', (_, fileName, progress) => callback(fileName, progress))
+  },
+  onDownloadCompleted: (callback) => {
+    ipcRenderer.on('download-completed', (_, fileName) => callback(fileName))
+  }
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to

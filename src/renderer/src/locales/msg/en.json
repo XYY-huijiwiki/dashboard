@@ -31,6 +31,10 @@
   "error": {
     "title": "Error"
   },
+  "download-manage": {
+    "msg-downloading": "Downloading {0} ({1}%)",
+    "msg-downloaded": "Downloaded {0}"
+  },
   "github-files": {
     "title": "GitHub Files",
     "status-normal": "Normal",

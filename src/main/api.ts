@@ -1,11 +1,18 @@
-import { ipcMain, dialog, shell } from 'electron'
+import { ipcMain, dialog, BrowserWindow } from 'electron'
 import path from 'path'
 import fs from 'fs'
 import mime from 'mime-types'
+import { download, CancelError } from 'electron-dl'
+import type { Options } from 'electron-dl'
+
 import base62 from './utils/base62.js'
 import ghLogin from './utils/ghLogin.js'
 
 function registerIPC(): void {
+  // Third Party IPCs
+  // registerDownloadIpc()
+
+  // Custom IPCs
   ipcMain.handle('open-file-dialog', async () => {
     const { canceled, filePaths } = await dialog.showOpenDialog({
       properties: ['openFile']
@@ -50,12 +57,33 @@ function registerIPC(): void {
     }
   )
 
-  ipcMain.handle('open-external', (_, url: string) => {
-    shell.openExternal(url)
-  })
-
   ipcMain.handle('gh-login', async () => {
     return ghLogin()
+  })
+
+  ipcMain.handle('download-file', async (event, url: string, fileName: string) => {
+    const win = BrowserWindow.fromWebContents(event.sender)
+    if (!win) throw new Error('No BrowserWindow found')
+    const options = {
+      filename: fileName,
+      saveAs: true,
+      onProgress: (progress) => {
+        win.webContents.send('download-progress', fileName, progress)
+      },
+      onCompleted: () => {
+        win.webContents.send('download-completed', fileName)
+      }
+    } satisfies Options
+    try {
+      console.dir(await download(win, url, options))
+    } catch (error) {
+      if (error instanceof CancelError) {
+        console.info('item.cancel() was called')
+      } else {
+        console.error(error)
+      }
+      throw error
+    }
   })
 }
 

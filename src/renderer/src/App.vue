@@ -45,7 +45,7 @@ watch(
     <template #header>
       <n-space id="title-bar" align="center" :wrap="false" :wrap-item="false">
         <!-- back btn -->
-        <n-button v-show="canBack" quaternary circle @click="router.back()">
+        <n-button quaternary circle :disabled="!canBack" @click="router.back()">
           <template #icon>
             <n-icon :size="24">
               <arrow-left24-regular />

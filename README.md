@@ -48,7 +48,8 @@ npm run dev
 ## To-Do List 📝
 
 - [ ] Support for multiple file uploads
-- [ ] Enable file downloads using native Electron Node APIs to preserve correct file names
+- [ ] Support for multiple file downloads
+- [ ] Error handling for download
 - [ ] Implement transactional operations
 - [ ] Draggable file uploads
 - [ ] Cross-platform support
