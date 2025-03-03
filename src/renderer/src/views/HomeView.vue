@@ -276,7 +276,7 @@ async function queryData(type: 'more' | 'refresh' = 'refresh'): Promise<void> {
 
     // search
     if (searchText.value) {
-      query.andWhereLike('file_name', `%${searchText.value}%`)
+      query.andWhereLike('file_name', `%${searchText.value.trim().replaceAll(' ', '_')}%`)
     }
 
     // filter file type

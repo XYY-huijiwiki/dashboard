@@ -79,7 +79,7 @@ async function confirmNewFile(): Promise<void> {
   loading.value = true
 
   // replace space with underscore in file name
-  const fileNameToBeUsed = fileName.value.replace(/\s/g, '_')
+  const fileNameToBeUsed = fileName.value.trim().replaceAll(' ', '_')
 
   try {
     // step 1: upload to github
@@ -99,7 +99,7 @@ async function confirmNewFile(): Promise<void> {
     const query = db('files')
       .insert({
         id: ghRes.id,
-        file_name: fileNameToBeUsed.trim(),
+        file_name: fileNameToBeUsed,
         file_name_base62: ghRes.name,
         file_size: ghRes.size,
         content_type: ghRes.content_type,

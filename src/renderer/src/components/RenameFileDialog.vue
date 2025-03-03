@@ -79,7 +79,7 @@ async function confirmRename(): Promise<void> {
     const query = db('files')
       .where('id', fileRecord.id)
       .update({
-        file_name: newName.value.replaceAll(' ', '_').trim() + fileExt,
+        file_name: newName.value.trim().replaceAll(' ', '_') + fileExt,
         file_name_base62: ghRes.name,
         updated_at: ghRes.updated_at
       })
