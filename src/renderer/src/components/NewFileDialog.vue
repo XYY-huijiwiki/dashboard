@@ -99,7 +99,7 @@ async function confirmNewFile(): Promise<void> {
     const query = db('files')
       .insert({
         id: ghRes.id,
-        file_name: fileNameToBeUsed,
+        file_name: fileNameToBeUsed.trim(),
         file_name_base62: ghRes.name,
         file_size: ghRes.size,
         content_type: ghRes.content_type,
