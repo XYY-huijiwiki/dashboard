@@ -5,6 +5,7 @@ import { NaiveUiResolver } from 'unplugin-vue-components/resolvers'
 import Components from 'unplugin-vue-components/vite'
 import tailwindcss from '@tailwindcss/vite'
 import { nodePolyfills } from 'vite-plugin-node-polyfills'
+import vueDevTools from 'vite-plugin-vue-devtools'
 
 export default defineConfig({
   main: {
@@ -25,7 +26,8 @@ export default defineConfig({
         resolvers: [NaiveUiResolver()]
       }),
       tailwindcss(),
-      nodePolyfills()
+      nodePolyfills(),
+      vueDevTools()
     ]
   }
 })
