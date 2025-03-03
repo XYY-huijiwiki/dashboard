@@ -2,7 +2,7 @@
   <n-card size="small" content-style="padding-bottom: 4px">
     <n-flex justify="space-between" :wrap="false" :size="120">
       <n-scrollbar x-scrollable class="flex-1 w-0 shrink-0 pb-2">
-        <n-flex :wrap="false">
+        <n-flex :wrap="false" size="small">
           <!-- new -->
           <n-button quaternary @click="emit('new-file')">
             <template #icon>
@@ -102,7 +102,7 @@
         </n-flex>
       </n-scrollbar>
 
-      <n-flex :wrap="false" class="pb-2">
+      <n-flex :wrap="false" class="pb-2" size="small">
         <!-- preview -->
         <n-button quaternary :disabled="checkedRowKeys.length !== 1" @click="emit('file-preview')">
           {{ t('github-files.btn-preview') }}

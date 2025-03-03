@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
-import { computed } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useDialog, useMessage, useModal, useLoadingBar, useNotification } from 'naive-ui'
 import { useTitle } from '@vueuse/core'
 import {
@@ -10,7 +10,9 @@ import {
   Home24Regular,
   Settings24Regular
 } from '@vicons/fluent'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const dev = import.meta.env.DEV
 const { t } = useI18n()
 
@@ -23,6 +25,18 @@ window.$notification = useNotification()
 
 // set title
 useTitle(computed(() => t('home.title')))
+
+// reactive navigation controls display
+const canBack = ref(false)
+const canForward = ref(false)
+watch(
+  () => router.currentRoute.value,
+  () => {
+    canBack.value = router.options.history.state.back !== null
+    canForward.value = router.options.history.state.forward !== null
+  },
+  { immediate: true }
+)
 </script>
 
 <template>
@@ -31,7 +45,7 @@ useTitle(computed(() => t('home.title')))
     <template #header>
       <n-space id="title-bar" align="center" :wrap="false" :wrap-item="false">
         <!-- back btn -->
-        <n-button quaternary circle @click="$router.back()">
+        <n-button v-show="canBack" quaternary circle @click="router.back()">
           <template #icon>
             <n-icon :size="24">
               <arrow-left24-regular />
@@ -39,7 +53,7 @@ useTitle(computed(() => t('home.title')))
           </template>
         </n-button>
         <!-- forward btn -->
-        <n-button quaternary circle @click="$router.forward()">
+        <n-button v-show="canForward" quaternary circle @click="router.forward()">
           <template #icon>
             <n-icon :size="24">
               <arrow-right24-regular />
@@ -47,7 +61,7 @@ useTitle(computed(() => t('home.title')))
           </template>
         </n-button>
         <!-- refresh btn -->
-        <n-button quaternary circle @click="$router.go(0)">
+        <n-button quaternary circle @click="router.go(0)">
           <template #icon>
             <n-icon :size="24">
               <arrow-clockwise24-regular />
@@ -59,7 +73,7 @@ useTitle(computed(() => t('home.title')))
           v-if="$route.name !== 'home'"
           quaternary
           circle
-          @click="$router.push({ name: 'home' })"
+          @click="router.push({ name: 'home' })"
         >
           <template #icon>
             <n-icon :size="24">
@@ -78,7 +92,7 @@ useTitle(computed(() => t('home.title')))
         v-if="$route.name !== 'settings'"
         quaternary
         circle
-        @click="$router.push('/settings')"
+        @click="router.push('/settings')"
       >
         <template #icon>
           <n-icon :size="24">

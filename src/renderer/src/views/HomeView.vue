@@ -81,7 +81,6 @@ import ky from 'ky'
 
 import { dayjsLocales } from '@renderer/stores/locales'
 import fileListTable from '@renderer/components/FileListTable.vue'
-import FileOperationsBar from '@renderer/components/FileOperationsBar.vue'
 import db from '@renderer/utils/queryDB'
 import { genRawFileUrl } from '@renderer/utils/genUrl'
 import { useSettingsStore } from '@renderer/stores/settings'

@@ -78,6 +78,7 @@ const emit = defineEmits([
   'file-delete',
   'file-rename',
   'load-more',
+  'new-file',
   'update:filters'
 ])
 
