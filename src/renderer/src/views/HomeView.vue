@@ -11,6 +11,7 @@
       @file-rename="renameFile"
       @new-file="newFile"
     />
+    <filter-alert />
     <n-split
       v-model:size="detailsDrawerSize"
       direction="horizontal"
@@ -235,6 +236,37 @@ async function queryData(type: 'more' | 'refresh' = 'refresh'): Promise<void> {
       query.andWhereLike('file_name', `%${searchText.value}%`)
     }
 
+    // filter file type
+    const fileType = explorerState.value.filters.type
+    if (fileType && fileType.length > 0 && fileType.length !== 5) {
+      query.andWhere((builder) => {
+        for (let index = 0; index < fileType.length; index++) {
+          const element = fileType[index]
+          if (element === 'image') builder.orWhereLike('content_type', 'image%')
+          if (element === 'audio') builder.orWhereLike('content_type', 'audio%')
+          if (element === 'video') builder.orWhereLike('content_type', 'video%')
+          if (element === 'text') builder.orWhereLike('content_type', 'text%')
+          if (element === 'other')
+            builder.orWhereNot((innerBuilder) => {
+              innerBuilder
+                .orWhereLike('content_type', 'image%')
+                .orWhereLike('content_type', 'audio%')
+                .orWhereLike('content_type', 'video%')
+                .orWhereLike('content_type', 'text%')
+            })
+        }
+      })
+    }
+
+    // filter file status
+    const fileStaus = explorerState.value.filters.status
+    if (fileStaus.includes('no source')) {
+      query.andWhere('source', '')
+    }
+    if (fileStaus.includes('no licence')) {
+      query.andWhere('licence', '')
+    }
+
     // get total item count
     const url = new URL('https://xyy-huijiwiki-gh-files-db.karsten-zhou-773.workers.dev/')
     if (type === 'refresh') {
@@ -268,9 +300,14 @@ async function queryData(type: 'more' | 'refresh' = 'refresh'): Promise<void> {
   }
 }
 
-// watch sorter
+// watch sorter and filters
 watch(
-  () => [explorerState.value.sorterKey, explorerState.value.sorterOrder],
+  () => [
+    explorerState.value.sorterKey,
+    explorerState.value.sorterOrder,
+    explorerState.value.filters.type,
+    explorerState.value.filters.status
+  ],
   () => queryData()
 )
 

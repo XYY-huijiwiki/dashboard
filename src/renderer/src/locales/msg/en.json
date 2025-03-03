@@ -10,7 +10,8 @@
     "btn-cancel": "Cancel",
     "btn-confirm": "Confirm",
     "text-leave-warning-title": "Attention",
-    "text-leave-warning-content": "We are still working on it. Please do not leave this page."
+    "text-leave-warning-content": "We are still working on it. Please do not leave this page.",
+    "colon": ": "
   },
   "settings": {
     "title": "Settings",
@@ -37,7 +38,6 @@
     "status-wanted": "Wanted",
     "status-no-source": "No Source",
     "status-no-licence": "No License",
-    "status-asset-broken": "Asset Broken",
     "label-file-type": "Type",
     "label-file-size": "Size",
     "btn-search": "Search",
@@ -86,6 +86,14 @@
     "code-snippet-link": "Link: ",
     "code-snippet-gallery": "Gallery: ",
     "table-header": {
+      "label-filtered-type": "Filtered type: ",
+      "label-filtered-status": "Filtered status: ",
+      "btn-filter-by": "Filter by",
+      "btn-filter-by-image": "Image",
+      "btn-filter-by-audio": "Audio",
+      "btn-filter-by-video": "Video",
+      "btn-filter-by-text": "Text",
+      "btn-filter-by-other": "Other",
       "label-type": "Type",
       "btn-type-asc": "Ascending",
       "btn-type-desc": "Descending",
@@ -93,14 +101,14 @@
       "btn-name-asc": "Ascending",
       "btn-name-desc": "Descending",
       "label-date-modified": "Date modified",
-      "btn-date-modified-asc": "Oldest first",
-      "btn-date-modified-desc": "Newest first",
+      "btn-date-modified-asc": "Older to newer",
+      "btn-date-modified-desc": "Newer to older",
       "label-uploader": "Uploader",
       "btn-uploader-asc": "A to Z",
       "btn-uploader-desc": "Z to A",
       "label-size": "Size",
-      "btn-size-asc": "Smallest first",
-      "btn-size-desc": "Largest first",
+      "btn-size-asc": "Smaller to larger",
+      "btn-size-desc": "Larger to smaller",
       "label-status": "Status"
     },
     "sort": {

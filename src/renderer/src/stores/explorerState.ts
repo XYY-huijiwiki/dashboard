@@ -6,6 +6,10 @@ interface explorerState {
   sorterKey: SorterKey
   sorterOrder: SorterOrder
   viewMode: ViewMode
+  filters: {
+    type: FilterType[]
+    status: FilterStatus[]
+  }
 }
 
 export const useExplorerStateStore = defineStore('explorerState', () => {
@@ -13,12 +17,15 @@ export const useExplorerStateStore = defineStore('explorerState', () => {
   const defaultExplorerState: explorerState = {
     sorterKey: 'updated_at',
     sorterOrder: 'descend',
-    viewMode: 'list'
+    viewMode: 'list',
+    filters: {
+      type: [],
+      status: []
+    }
   }
   // init store from localStorage or use default
   const explorerState: Ref<explorerState> = useLocalStorage('explorerState', defaultExplorerState, {
     mergeDefaults: true
   })
-
   return { explorerState }
 })

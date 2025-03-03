@@ -47,7 +47,6 @@ npm run dev
 
 ## To-Do List 📝
 
-- [ ] File filtering
 - [ ] Support for multiple file uploads
 - [ ] Enable file downloads using native Electron Node APIs to preserve correct file names
 - [ ] Implement transactional operations

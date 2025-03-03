@@ -7,12 +7,11 @@
     :data="data"
     virtual-scroll
     remote
-    max-height="calc(100vh - 215.4px)"
+    :max-height="explorerState.viewMode === 'details' ? maxHeight - 53 : maxHeight - 45"
     :loading="loading"
     :size="explorerState.viewMode === 'details' ? undefined : 'small'"
     :row-key="(row: FileRecord) => row.file_name"
     :row-props="rowProps"
-    :scroll-x="800"
     @scroll="(e) => handleScroll(e)"
   />
   <file-menu
@@ -45,12 +44,14 @@ import { filesize as filesizeNoLocale } from 'filesize'
 import { useLocalesStore } from '@renderer/stores/locales'
 import { storeToRefs } from 'pinia'
 import ClickableText from './ClickableText.vue'
-import TableHeaderName from './FileListTableHeader/TableHeaderName.vue'
-import TableHeaderUpdatedAt from './FileListTableHeader/TableHeaderUpdatedAt.vue'
-import TableHeaderUploader from './FileListTableHeader/TableHeaderUploader.vue'
-import TableHeaderType from './FileListTableHeader/TableHeaderType.vue'
-import TableHeaderSize from './FileListTableHeader/TableHeaderSize.vue'
+import TableHeaderName from './TableHeaderName.vue'
+import TableHeaderUpdatedAt from './TableHeaderUpdatedAt.vue'
+import TableHeaderUploader from './TableHeaderUploader.vue'
+import TableHeaderType from './TableHeaderType.vue'
+import TableHeaderSize from './TableHeaderSize.vue'
 import { useExplorerStateStore } from '@renderer/stores/explorerState'
+import { useElementSize } from '@vueuse/core'
+import TableHeaderStatus from './TableHeaderStatus.vue'
 
 const { explorerState } = storeToRefs(useExplorerStateStore())
 
@@ -60,6 +61,7 @@ dayjs.extend(localizedFormat).locale(dayjsLocales.value)
 const { t } = useI18n()
 
 const dataTable = ref()
+const { height: maxHeight } = useElementSize(dataTable)
 
 const { data, filesInUse } = defineProps<{
   filesInUse: string[]
@@ -75,8 +77,8 @@ const emit = defineEmits([
   'file-download',
   'file-delete',
   'file-rename',
-  'new-file',
-  'load-more'
+  'load-more',
+  'update:filters'
 ])
 
 const checkedRowKeys = defineModel<ReturnType<DataTableCreateRowKey>[]>('checkedRowKeys', {
@@ -95,11 +97,9 @@ const columns: Ref<DataTableColumns<FileRecord>> = ref([
   },
   {
     title: () => h(TableHeaderType),
-    renderSorter: () => undefined,
     key: 'type',
     width: '4em',
-    align: 'center',
-    render: (row) => h(FileIcon, { clss: 'mx-auto', fileType: row.content_type, size: 28 })
+    render: (row) => h(FileIcon, { class: 'ml-1', fileType: row.content_type, size: 28 })
   },
   {
     title: () => h(TableHeaderName),
@@ -147,19 +147,9 @@ const columns: Ref<DataTableColumns<FileRecord>> = ref([
     render: (row) => h(NText, () => filesize(row.file_size))
   },
   {
-    title: t('github-files.table-header.label-status'),
+    title: () => h(TableHeaderStatus),
     key: 'status',
     minWidth: '10em',
-    // filterOptions: [
-    //   { label: t('github-files.status-unused'), value: 'unused' },
-    //   { label: t('github-files.status-wanted'), value: 'wanted' },
-    //   { label: t('github-files.status-no-source'), value: 'no source' },
-    //   { label: t('github-files.status-no-licence'), value: 'no licence' },
-    //   { label: t('github-files.status-asset-broken'), value: 'asset broken' }
-    // ],
-    // filter: (value, row) => {
-    //   return row.warnings.includes(value as WarningType)
-    // },
     render: (row): VNode => {
       const warnings: string[] = []
       if (!row.licence) warnings.push('no licence')

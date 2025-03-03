@@ -2,13 +2,15 @@
   <n-dropdown :options="dropdownOptions" placement="bottom-start" trigger="click" size="small">
     <n-button quaternary block strong size="small">
       <template #icon>
-        <n-icon v-if="explorerState.sorterKey === 'type'">
-          <arrow-sort-up16-regular v-if="explorerState.sorterOrder === 'ascend'" />
-          <arrow-sort-down16-regular v-else />
-        </n-icon>
-        <n-icon v-else>
-          <document16-regular />
-        </n-icon>
+        <n-badge :show="explorerState.filters.type.length !== 0" dot>
+          <n-icon v-if="explorerState.sorterKey === 'type'">
+            <arrow-sort-up16-regular v-if="explorerState.sorterOrder === 'ascend'" />
+            <arrow-sort-down16-regular v-else />
+          </n-icon>
+          <n-icon v-else>
+            <document16-regular />
+          </n-icon>
+        </n-badge>
       </template>
     </n-button>
   </n-dropdown>
@@ -24,9 +26,10 @@ import {
   Document16Regular
 } from '@vicons/fluent'
 import { ref, h } from 'vue'
-import { NIcon } from 'naive-ui'
+import { NBadge, NIcon } from 'naive-ui'
 
 import { useExplorerStateStore } from '@renderer/stores/explorerState'
+import { xor } from 'lodash-es'
 
 const { explorerState } = storeToRefs(useExplorerStateStore())
 const { t } = useI18n()
@@ -79,8 +82,57 @@ const dropdownOptions = ref([
         explorerState.value.sorterOrder = 'descend'
       }
     }
+  },
+  {
+    type: 'divider'
+  },
+  {
+    label: () => h('span', { class: 'mr-4' }, t('github-files.table-header.btn-filter-by')),
+    key: 'filter',
+    icon: () =>
+      h(
+        NIcon,
+        {
+          size: 20,
+          class: {
+            invisible: !explorerState.value.filters.type.length
+          }
+        },
+        { default: () => h(Checkmark24Regular) }
+      ),
+    children: [
+      genFilterChild('image'),
+      genFilterChild('audio'),
+      genFilterChild('video'),
+      genFilterChild('text'),
+      genFilterChild('other')
+    ]
   }
 ])
+
+function genFilterChild(filterText: FilterType) {
+  return {
+    label: () =>
+      h('span', { class: 'mr-4' }, t(`github-files.table-header.btn-filter-by-${filterText}`)),
+    key: filterText,
+    props: {
+      // if the filterText is in the array, remove it, otherwise add it
+      onclick: () =>
+        (explorerState.value.filters.type = xor(explorerState.value.filters.type, [filterText]))
+    },
+    icon: () =>
+      h(
+        NIcon,
+        {
+          size: 20,
+          class: {
+            invisible: !explorerState.value.filters.type.includes(filterText)
+          }
+        },
+        { default: () => h(Checkmark24Regular) }
+      )
+  }
+}
 </script>
 
 <style scoped></style>

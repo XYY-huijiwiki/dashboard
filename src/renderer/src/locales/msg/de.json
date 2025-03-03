@@ -10,7 +10,8 @@
     "btn-cancel": "Abbrechen",
     "btn-confirm": "Bestätigen",
     "text-leave-warning-title": "Achtung",
-    "text-leave-warning-content": "Wir arbeiten noch daran. Bitte verlassen Sie diese Seite nicht."
+    "text-leave-warning-content": "Wir arbeiten noch daran. Bitte verlassen Sie diese Seite nicht.",
+    "colon": ": "
   },
   "settings": {
     "title": "Einstellungen",
@@ -37,7 +38,6 @@
     "status-wanted": "Gewünscht",
     "status-no-source": "Keine Quelle",
     "status-no-licence": "Keine Lizenz",
-    "status-asset-broken": "Asset defekt",
     "label-file-type": "Typ",
     "label-file-size": "Größe",
     "btn-search": "Suchen",
@@ -86,6 +86,14 @@
     "code-snippet-link": "Link: ",
     "code-snippet-gallery": "Galerie: ",
     "table-header": {
+      "label-filtered-type": "Gefilterter Typ: ",
+      "label-filtered-status": "Gefilterter Status: ",
+      "btn-filter-by": "Filtern nach",
+      "btn-filter-by-image": "Bild",
+      "btn-filter-by-audio": "Audio",
+      "btn-filter-by-video": "Video",
+      "btn-filter-by-text": "Text",
+      "btn-filter-by-other": "Andere",
       "label-type": "Typ",
       "btn-type-asc": "Aufsteigend",
       "btn-type-desc": "Absteigend",

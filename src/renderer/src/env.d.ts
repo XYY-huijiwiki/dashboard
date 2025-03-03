@@ -6,7 +6,8 @@ declare global {
   type ViewMode = 'details' | 'list' | 'tiles'
   type SorterOrder = 'ascend' | 'descend'
   type SorterKey = 'type' | 'name' | 'updated_at' | 'uploader' | 'size'
-  type WarningType = 'unused' | 'wanted' | 'no source' | 'no licence'
+  type FilterType = 'image' | 'video' | 'audio' | 'text' | 'other'
+  type FilterStatus = 'unused' | 'wanted' | 'no source' | 'no licence'
 
   interface Window {
     $dialog: DialogApi
