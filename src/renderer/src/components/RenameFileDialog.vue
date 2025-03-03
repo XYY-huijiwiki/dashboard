@@ -1,6 +1,9 @@
 <template>
   <n-flex vertical>
     <div style="margin: 32px 0">
+      <n-alert v-if="newName.match(/\s/)" type="warning">
+        {{ t('github-files.msg-space-replacement-warning') }}
+      </n-alert>
       <n-input
         v-model:value="newName"
         :placeholder="t('github-files.msg-rename-placeholder')"
