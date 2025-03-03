@@ -1,6 +1,6 @@
 <template>
   <n-flex vertical class="h-full">
-    <file-search-bar v-model:search-text="searchText" @search="queryData" />
+    <file-search-bar v-model:search-text="searchText" :loading="loading" @search="handleSearch" />
     <file-operations-bar
       v-model:checked-row-keys="checkedRowKeys"
       v-model:show-details-pane="showDetailsPane"
@@ -246,6 +246,10 @@ onMounted(async () => {
   }
 })
 
+function handleSearch() {
+  preview.value = undefined
+  queryData()
+}
 const searchText = ref('')
 const totalItemCount = ref(0)
 async function queryData(type: 'more' | 'refresh' = 'refresh'): Promise<void> {

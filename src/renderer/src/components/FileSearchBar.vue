@@ -14,7 +14,14 @@
             <search20-regular />
           </n-icon>
           <!-- show cancel icon only if searched text is not empty -->
-          <n-button v-else circle quaternary size="tiny" @click="cancelSearch">
+          <n-button
+            v-else
+            circle
+            quaternary
+            size="tiny"
+            :disabled="props.loading"
+            @click="cancelSearch"
+          >
             <template #icon>
               <n-icon :size="20">
                 <arrow-left20-regular v-if="searchText" />
@@ -39,6 +46,9 @@ const { t } = useI18n()
 const emit = defineEmits(['search'])
 const searchBarEle = ref()
 const searchText = defineModel<string>('search-text', { required: true })
+const props = defineProps<{
+  loading: boolean
+}>()
 const searchedText = ref('')
 
 function cancelSearch(): void {
@@ -52,6 +62,7 @@ function cancelSearch(): void {
 }
 
 function doSearch(): void {
+  if (props.loading) return
   searchedText.value = searchText.value
   emit('search')
 }
