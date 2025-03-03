@@ -12,7 +12,7 @@
     :size="explorerState.viewMode === 'details' ? undefined : 'small'"
     :row-key="(row: FileRecord) => row.file_name"
     :row-props="rowProps"
-    @scroll="(e) => handleScroll(e)"
+    @scroll="(e: Event) => handleScroll(e)"
   />
   <file-menu
     v-model:show="showDropdown"
@@ -33,7 +33,7 @@
 <script setup lang="ts">
 import { h, ref, nextTick } from 'vue'
 import type { Ref, VNode } from 'vue'
-import { NText, NTag, NSpace, NDataTable } from 'naive-ui'
+import { NText, NTag, NSpace } from 'naive-ui'
 import type { DataTableColumns, DataTableCreateRowKey } from 'naive-ui'
 import FileIcon from '@renderer/components/FileIcon.vue'
 import { useI18n } from 'vue-i18n'

@@ -9,9 +9,23 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 
 export default defineConfig({
   main: {
+    build: {
+      rollupOptions: {
+        output: {
+          format: 'es'
+        }
+      }
+    },
     plugins: [externalizeDepsPlugin()]
   },
   preload: {
+    build: {
+      rollupOptions: {
+        output: {
+          format: 'es'
+        }
+      }
+    },
     plugins: [externalizeDepsPlugin()]
   },
   renderer: {

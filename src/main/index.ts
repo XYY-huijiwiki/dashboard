@@ -1,6 +1,7 @@
 import { app, shell, BrowserWindow } from 'electron'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
-import path from 'path'
+import { join } from 'path'
+import { fileURLToPath } from 'url'
 
 import icon from '../../resources/icon.png?asset'
 import registerIPC from './api.js'
@@ -15,7 +16,7 @@ function createWindow(): void {
     show: false,
     icon,
     webPreferences: {
-      preload: path.join(__dirname, '../preload/index.mjs'),
+      preload: fileURLToPath(new URL('../preload/index.mjs', import.meta.url)),
       sandbox: false
     }
   })
@@ -37,7 +38,7 @@ function createWindow(): void {
   if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
     mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL'])
   } else {
-    mainWindow.loadFile(path.join(__dirname, '../renderer/index.html'))
+    mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
   }
 }
 
