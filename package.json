@@ -1,6 +1,6 @@
 {
   "name": "r-drive",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "A convenient file manager for accessing and managing files stored on GitHub, (almost) seamlessly integrated with XYY Wiki.",
   "main": "./out/main/index.js",
   "author": "Karsten Zhou",
