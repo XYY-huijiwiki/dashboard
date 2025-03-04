@@ -53,6 +53,25 @@ try {
     await $`git push origin main`
     await $`git push origin v${newVersion}`
 
+    // Build and release the new version
+    const os = process.platform
+    if (os === 'linux') {
+      await $`npm run build:linux`
+    } else if (os === 'darwin') {
+      await $`npm run build:mac`
+    } else if (os === 'win32') {
+      await $`npm run build:win`
+    }
+    await $`gh release create v${newVersion} --generate-notes --verify-tag --files \
+      "dist/*.exe" \
+      "dist/*.zip" \
+      "dist/*.dmg" \
+      "dist/*.AppImage" \
+      "dist/*.snap" \
+      "dist/*.deb" \
+      "dist/*.rpm" \
+      "dist/*.tar.gz"`
+
     console.log(`Successfully released ${newVersion}`)
   } else {
     console.log(`Only ${commitCount}/10 commits since last tag. No version bump needed.`)
