@@ -29,6 +29,8 @@ try {
     console.log('Manual version bump detected. Tagging current commit.')
     await $`git tag v${currentVersion}`
     await $`git push origin v${currentVersion}`
+    await releaseApp(currentVersion)
+    console.log(`Successfully released ${currentVersion}`)
     process.exit(0)
   }
 
@@ -53,24 +55,7 @@ try {
     await $`git push origin main`
     await $`git push origin v${newVersion}`
 
-    // Build and release the new version
-    const os = process.platform
-    if (os === 'linux') {
-      await $`npm run build:linux`
-    } else if (os === 'darwin') {
-      await $`npm run build:mac`
-    } else if (os === 'win32') {
-      await $`npm run build:win`
-    }
-    await $`gh release create v${newVersion} --generate-notes --verify-tag --files \
-      "dist/*.exe" \
-      "dist/*.zip" \
-      "dist/*.dmg" \
-      "dist/*.AppImage" \
-      "dist/*.snap" \
-      "dist/*.deb" \
-      "dist/*.rpm" \
-      "dist/*.tar.gz"`
+    await releaseApp(newVersion)
 
     console.log(`Successfully released ${newVersion}`)
   } else {
@@ -81,4 +66,25 @@ try {
   console.error(error instanceof Error ? error.message : error)
   console.error(error instanceof Error ? error.stack : error)
   process.exit(1)
+}
+
+// Build and release the new version
+async function releaseApp(newVersion: string) {
+  const os = process.platform
+  if (os === 'linux') {
+    await $`npm run build:linux`
+  } else if (os === 'darwin') {
+    await $`npm run build:mac`
+  } else if (os === 'win32') {
+    await $`npm run build:win`
+  }
+  await $`gh release create v${newVersion} --generate-notes --verify-tag --files \
+        "dist/*.exe" \
+        "dist/*.zip" \
+        "dist/*.dmg" \
+        "dist/*.AppImage" \
+        "dist/*.snap" \
+        "dist/*.deb" \
+        "dist/*.rpm" \
+        "dist/*.tar.gz"`
 }
