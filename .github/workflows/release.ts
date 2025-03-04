@@ -1,5 +1,9 @@
 import { $ } from 'zx'
-import { readFileSync, writeFileSync } from 'fs'
+import { readdirSync, readFileSync, writeFileSync } from 'fs'
+
+// Typecheck and Lint
+await $`npm run typecheck`
+await $`npm run lint`
 
 interface PackageJson {
   version: string
@@ -78,13 +82,12 @@ async function releaseApp(newVersion: string) {
   } else if (os === 'win32') {
     await $`npm run build:win`
   }
-  await $`gh release create v${newVersion} --generate-notes --verify-tag --files \
-        "dist/*.exe" \
-        "dist/*.zip" \
-        "dist/*.dmg" \
-        "dist/*.AppImage" \
-        "dist/*.snap" \
-        "dist/*.deb" \
-        "dist/*.rpm" \
-        "dist/*.tar.gz"`
+
+  // Generate release file list
+  const extList = ['exe', 'zip', 'dmg', 'AppImage', 'snap', 'deb', 'rpm', 'tar.gz']
+  let fileList = readdirSync('dist')
+  fileList = fileList.filter((file) => extList.some((ext) => file.endsWith(ext)))
+  fileList = fileList.map((file) => `dist/${file}`)
+  const flags = ['--generate-notes', '--verify-tag']
+  await $`gh release create v${newVersion} ${fileList} ${flags}`
 }
