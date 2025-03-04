@@ -62,7 +62,7 @@ import { useExplorerStateStore } from '@renderer/stores/explorerState'
 
 const { t } = useI18n()
 const { explorerState } = storeToRefs(useExplorerStateStore())
-const props = defineProps<{
+const { loading } = defineProps<{
   loading: boolean
 }>()
 
