@@ -12,7 +12,8 @@ const api: typeof window.api = {
   },
   onDownloadCompleted: (callback) => {
     ipcRenderer.on('download-completed', (_, fileName) => callback(fileName))
-  }
+  },
+  toggleFullScreen: () => ipcRenderer.invoke('toggle-fullscreen')
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to

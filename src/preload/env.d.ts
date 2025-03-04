@@ -61,6 +61,7 @@ type CustomApi = {
   downloadFile: (url: string, fileName: string) => void
   onDownloadProgress: (callback: (fileName: string, progress: Progress) => void) => void
   onDownloadCompleted: (callback: (fileName: string) => void) => void
+  toggleFullScreen: () => void
 }
 
 declare global {

@@ -9,10 +9,8 @@ import base62 from './utils/base62.js'
 import ghLogin from './utils/ghLogin.js'
 
 function registerIPC(): void {
-  // Third Party IPCs
-  // registerDownloadIpc()
+  // #region file upload
 
-  // Custom IPCs
   ipcMain.handle('open-file-dialog', async () => {
     const { canceled, filePaths } = await dialog.showOpenDialog({
       properties: ['openFile']
@@ -57,9 +55,17 @@ function registerIPC(): void {
     }
   )
 
+  // #endregion
+
+  // #region github login
+
   ipcMain.handle('gh-login', async () => {
     return ghLogin()
   })
+
+  // #endregion
+
+  // #region download file
 
   ipcMain.handle('download-file', async (event, url: string, fileName: string) => {
     const win = BrowserWindow.fromWebContents(event.sender)
@@ -84,6 +90,15 @@ function registerIPC(): void {
       }
       throw error
     }
+  })
+
+  // #endregion
+
+  // #region fullscreen
+  ipcMain.handle('toggle-fullscreen', (event) => {
+    const win = BrowserWindow.fromWebContents(event.sender)
+    if (!win) throw new Error('No BrowserWindow found')
+    win.setFullScreen(!win.isFullScreen())
   })
 }
 
