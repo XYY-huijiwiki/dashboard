@@ -46,6 +46,7 @@ try {
     // Update package.json
     packageJson.version = newVersion
     writeFileSync('package.json', JSON.stringify(packageJson))
+    await $`npm install`
     await $`npm run format`
 
     // Commit and push changes
