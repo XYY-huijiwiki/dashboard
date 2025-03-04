@@ -21,11 +21,11 @@ try {
   const latestVersion = latestTag.replace(/^v/, '')
 
   // Parse versions
-  const [currentMajor, currentMinor] = currentVersion.split('.').map(Number)
+  const [currentMajor, currentMinor, currentPatch] = currentVersion.split('.').map(Number)
   const [latestMajor, latestMinor, latestPatch] = latestVersion.split('.').map(Number)
 
   // Detect manual version bump
-  if (currentMajor > latestMajor || currentMinor > latestMinor) {
+  if (currentMajor > latestMajor || currentMinor > latestMinor || currentPatch > latestPatch) {
     console.log('Manual version bump detected. Tagging current commit.')
     await $`git tag v${currentVersion}`
     await $`git push origin v${currentVersion}`
