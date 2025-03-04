@@ -81,15 +81,18 @@
         <n-divider>{{ t('github-files.label-code-snippet') }}</n-divider>
         <p>{{ t('github-files.code-snippet-image') }}</p>
         <suspense>
-          <code-block :code="`[[文件:GitHub:${fileDetails[0].file_name}]]`" />
+          <code-block :code="`[[文件:GitHub:${fileDetails[0].file_name}]]`" lang="wikitext" />
         </suspense>
         <p>{{ t('github-files.code-snippet-link') }}</p>
         <suspense>
-          <code-block :code="`[[:文件:GitHub:${fileDetails[0].file_name}]]`" />
+          <code-block :code="`[[:文件:GitHub:${fileDetails[0].file_name}]]`" lang="wikitext" />
         </suspense>
         <p>{{ t('github-files.code-snippet-gallery') }}</p>
         <suspense>
-          <code-block :code="`<gallery>\nGitHub:${fileDetails[0].file_name}\n</gallery>`" />
+          <code-block
+            :code="`<gallery>\nGitHub:${fileDetails[0].file_name}\n</gallery>`"
+            lang="wikitext"
+          />
         </suspense>
       </n-scrollbar>
     </template>

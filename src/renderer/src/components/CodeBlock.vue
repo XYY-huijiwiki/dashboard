@@ -5,7 +5,7 @@
       class="copy"
       @click="copyToClipboard(code)"
     ></button>
-    <span class="lang">wikitext</span>
+    <span class="lang">{{ lang }}</span>
     <n-scrollbar x-scrollable>
       <component :is="htmlToVNode(html)" />
     </n-scrollbar>
