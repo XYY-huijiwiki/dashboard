@@ -6,6 +6,7 @@
         v-model:value="searchText"
         round
         clearable
+        :disabled="props.loading"
         @keydown.enter="doSearch"
       >
         <template #prefix>
@@ -30,7 +31,7 @@
           </n-button>
         </template>
       </n-input>
-      <n-button round secondary @click="doSearch">
+      <n-button round secondary :disabled="props.loading" @click="doSearch">
         {{ t('github-files.btn-search') }}
       </n-button>
     </n-input-group>

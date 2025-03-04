@@ -11,7 +11,7 @@
       @file-rename="renameFile"
       @new-file="newFile"
     />
-    <filter-alert />
+    <filter-alert :loading="loading" />
     <n-split
       v-model:size="detailsDrawerSize"
       direction="horizontal"
@@ -253,7 +253,7 @@ function handleSearch() {
 const searchText = ref('')
 const totalItemCount = ref(0)
 async function queryData(type: 'more' | 'refresh' = 'refresh'): Promise<void> {
-  if (type === 'more' && data.value.length >= totalItemCount.value) return
+  if (type === 'more' && data.value.length >= totalItemCount.value) return // cancel if no more data
 
   loading.value = true
 
