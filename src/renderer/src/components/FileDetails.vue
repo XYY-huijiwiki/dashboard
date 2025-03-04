@@ -80,23 +80,17 @@
         <!-- code snippet -->
         <n-divider>{{ t('github-files.label-code-snippet') }}</n-divider>
         <p>{{ t('github-files.code-snippet-image') }}</p>
-        <n-card size="small" content-class="font-mono flex text-nowrap overflow-auto !pb-1">
-          <n-scrollbar x-scrollable class="pb-2">
-            [[文件:GitHub:{{ fileDetails[0].file_name }}]]
-          </n-scrollbar>
-        </n-card>
+        <suspense>
+          <code-block :code="`[[文件:GitHub:${fileDetails[0].file_name}]]`" />
+        </suspense>
         <p>{{ t('github-files.code-snippet-link') }}</p>
-        <n-card size="small" content-class="font-mono flex text-nowrap overflow-auto !pb-1">
-          <n-scrollbar x-scrollable class="pb-2">
-            [[:文件:GitHub:{{ fileDetails[0].file_name }}]]
-          </n-scrollbar>
-        </n-card>
+        <suspense>
+          <code-block :code="`[[:文件:GitHub:${fileDetails[0].file_name}]]`" />
+        </suspense>
         <p>{{ t('github-files.code-snippet-gallery') }}</p>
-        <n-card size="small" content-class="font-mono flex text-nowrap overflow-auto !pb-1">
-          <n-scrollbar x-scrollable class="pb-2">
-            {{ `<gallery>`}}<br />{{ `GitHub:${fileDetails[0].file_name}` }}<br />{{`</gallery>` }}
-          </n-scrollbar>
-        </n-card>
+        <suspense>
+          <code-block :code="`<gallery>\nGitHub:${fileDetails[0].file_name}\n</gallery>`" />
+        </suspense>
       </n-scrollbar>
     </template>
     <!-- action btns -->
