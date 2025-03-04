@@ -43,14 +43,17 @@ try {
   if (commitCount >= 10) {
     const newVersion = `${latestMajor}.${latestMinor}.${latestPatch + 1}`
 
-    // Update package.json
+    // Update package.json and CHANGELOG.md
     packageJson.version = newVersion
     writeFileSync('package.json', JSON.stringify(packageJson))
-    await $`npm install`
+    await $`npm install` // Update lockfile
+    await $`npm install -g conventional-changelog-cli`
+    await $`conventional-changelog -p angular -i CHANGELOG.md -s`
     await $`npm run format`
 
     // Commit and push changes
     await $`git add package.json`
+    await $`git add CHANGELOG.md`
     await $`git commit -m "chore: auto-bump version to ${newVersion}"`
     await $`git tag v${newVersion}`
 
