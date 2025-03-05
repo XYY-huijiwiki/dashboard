@@ -286,11 +286,14 @@ async function queryData(type: 'more' | 'refresh' = 'refresh'): Promise<void> {
       return ((await ky.get(url.href).json()) as DbResponse)[0].results
     }
 
-    const [totalItemCountTemp, itemsTemp] = await Promise.all([getTotalItemCount(), getItems()])
-    totalItemCount.value = totalItemCountTemp
     if (type === 'more') {
+      // load more
+      const itemsTemp = await getItems()
       data.value.push(...itemsTemp)
     } else {
+      // refresh
+      const [totalItemCountTemp, itemsTemp] = await Promise.all([getTotalItemCount(), getItems()])
+      totalItemCount.value = totalItemCountTemp
       data.value = itemsTemp
     }
   } catch (error) {
