@@ -58,3 +58,4 @@ npm run dev
 - [ ] recycle bin
 - [ ] Auto update
 - [ ] Copyable links for XYY Wiki
+- [ ] image thumbnails not displaying due to electron's inner url

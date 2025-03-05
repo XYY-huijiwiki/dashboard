@@ -70,12 +70,12 @@
           v-else-if="fileUsageData.length === 0"
           :description="t(`github-files.msg-file-no-usage`)"
         />
-        <div v-else class="markdown-body">
-          <n-ul>
-            <n-li v-for="item in fileUsageData" :key="item.title">
-              <n-a :href="item.url" target="_blank">{{ item.title }}</n-a>
-            </n-li>
-          </n-ul>
+        <div v-else class="markdown-body !bg-transparent">
+          <ul>
+            <li v-for="item in fileUsageData" :key="item">
+              <a :href="`https://xyy.huijiwiki.com/wiki/${item}`" target="_blank">{{ item }}</a>
+            </li>
+          </ul>
         </div>
         <!-- code snippet -->
         <n-divider>{{ t('github-files.label-code-snippet') }}</n-divider>
@@ -106,16 +106,17 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { ref } from 'vue'
+import type { Ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { filesize as filesizeNoLocale } from 'filesize'
 import { storeToRefs } from 'pinia'
-import { useFetch } from '@vueuse/core'
-import sleep from '@renderer/utils/sleep'
+import { computedAsync } from '@vueuse/core'
 import { Edit16Regular } from '@vicons/fluent'
 
 import { useLocalesStore } from '@renderer/stores/locales'
 import { genThumbUrl } from '@renderer/utils/genUrl'
+import getWhatLinksHere from '@renderer/utils/getWhatLinksHere'
 
 const { langCode } = storeToRefs(useLocalesStore())
 const filesize = (size: number): string => filesizeNoLocale(size, { locale: langCode.value })
@@ -131,29 +132,13 @@ function viewInXYYWiki(): void {
   )
 }
 
-const fileUsageUrl = computed(() =>
-  fileDetails.length === 1
-    ? `https://xyy.huijiwiki.com/api.php?format=json&action=query&list=backlinks&bltitle=File:GitHub:${fileDetails[0].file_name}`
-    : ''
-)
-const { isFetching: fileUsageLoading, data: fileUsageData } = useFetch(fileUsageUrl, {
-  refetch: true,
-  beforeFetch: async ({ url, cancel }) => {
-    if (url === '') cancel()
-    await sleep(1000)
+const fileUsageLoading = ref(false)
+const fileUsageData: Ref<string[]> = computedAsync(
+  async () => {
+    if (fileDetails.length !== 1) return []
+    else return await getWhatLinksHere(`File:GitHub:${fileDetails[0].file_name}`)
   },
-  afterFetch: (ctx) => {
-    const res = ctx.data.query.backlinks.map((item: { title: string }) => ({
-      url: `https://xyy.huijiwiki.com/wiki/${item.title}`,
-      title: item.title
-    }))
-    if (ctx.data.query.continue)
-      res.push({
-        url: `https://xyy.huijiwiki.com/index.php?title=特殊:链入页面&target=文件:GitHub:${fileDetails[0].file_name}`,
-        title: t('github-files.btn-file-usage-more')
-      })
-    ctx.data = res
-    return ctx
-  }
-}).json()
+  [], // initial state
+  fileUsageLoading // loading state
+)
 </script>

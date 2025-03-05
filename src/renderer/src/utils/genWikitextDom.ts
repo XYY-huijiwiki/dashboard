@@ -1,6 +1,5 @@
 import { parse } from 'wikity'
 import { h, type VNode } from 'vue'
-import '@renderer/assets/github-markdown.css'
 
 function genWikitextDom(wikitext: string): VNode {
   const rawHtmlStr = parse(wikitext)
@@ -13,7 +12,7 @@ function genWikitextDom(wikitext: string): VNode {
     link.setAttribute('target', '_blank')
   })
 
-  return h('article', { innerHTML: articleEle.innerHTML, class: 'markdown-body p-2 rounded' })
+  return h('article', { innerHTML: articleEle.innerHTML, class: 'markdown-body' })
 }
 
 export default genWikitextDom
