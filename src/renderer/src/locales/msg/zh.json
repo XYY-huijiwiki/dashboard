@@ -111,7 +111,8 @@
       "label-size": "大小",
       "btn-size-asc": "最小的在前",
       "btn-size-desc": "最大的在前",
-      "label-status": "状态"
+      "label-status": "状态",
+      "label-type": "类型"
     },
     "sort": {
       "btn-sort": "排序",
@@ -128,7 +129,8 @@
       "btn-list": "列表",
       "btn-details": "详细信息",
       "btn-tiles": "平铺"
-    }
+    },
+    "copy-code": "复制代码"
   },
   "help-docs": {
     "title": "技术文档"

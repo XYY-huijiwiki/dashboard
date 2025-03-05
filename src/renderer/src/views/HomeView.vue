@@ -141,7 +141,7 @@ window.api.onDownloadProgress((fileName, progress) => {
 window.api.onDownloadCompleted(async (fileName) => {
   const messageInstance = dlList.value[fileName]
   if (messageInstance) {
-    messageInstance.content = `downloaded ${fileName}`
+    messageInstance.content = t('download-manage.msg-downloaded', [fileName])
     messageInstance.type = 'success'
     await sleep(5000)
     messageInstance.destroy()

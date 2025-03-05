@@ -10,8 +10,7 @@
     "btn-cancel": "Cancel",
     "btn-confirm": "Confirm",
     "text-leave-warning-title": "Attention",
-    "text-leave-warning-content": "We are still working on it. Please do not leave this page.",
-    "colon": ": "
+    "text-leave-warning-content": "We are still working on it. Please do not leave this page."
   },
   "settings": {
     "title": "Settings",
@@ -130,7 +129,8 @@
       "btn-list": "List",
       "btn-details": "Details",
       "btn-tiles": "Tiles"
-    }
+    },
+    "copy-code": "Copy code"
   },
   "help-docs": {
     "title": "Technical Documentation"

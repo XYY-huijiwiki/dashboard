@@ -1,4 +1,3 @@
-appId: com.electron.app
 productName: RDrive
 directories:
   buildResources: build

@@ -33,7 +33,7 @@ try {
     console.log('Manual version bump detected. Tagging current commit.')
     await $`git tag v${currentVersion}`
     await $`git push origin v${currentVersion}`
-    await $`echo "SHOULD_RELEASE=true" >> "$GITHUB_OUTPUT"`
+    await $`echo "version=${currentVersion}" >> $GITHUB_OUTPUT`
     console.log(`Successfully tagged ${currentVersion}`)
     process.exit(0)
   }
@@ -52,8 +52,7 @@ try {
     await $`npm run format`
 
     // Commit and push changes
-    await $`git add package.json`
-    await $`git add CHANGELOG.md`
+    await $`git add .`
     await $`git commit -m "chore: auto-bump version to ${newVersion}"`
     await $`git tag v${newVersion}`
 
@@ -62,8 +61,8 @@ try {
     await $`git remote set-url origin https://github-actions:${process.env.GITHUB_TOKEN}@github.com/${repo}.git`
     await $`git push origin main`
     await $`git push origin v${newVersion}`
-    await $`echo "SHOULD_RELEASE=true" >> "$GITHUB_OUTPUT"`
     console.log(`Successfully bumped to ${newVersion}`)
+    await $`echo "version=${newVersion}" >> $GITHUB_OUTPUT`
   } else {
     console.log(`Only ${commitCount}/10 commits since last tag. No version bump needed.`)
   }
