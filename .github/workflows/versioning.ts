@@ -33,8 +33,8 @@ try {
     console.log('Manual version bump detected. Tagging current commit.')
     await $`git tag v${currentVersion}`
     await $`git push origin v${currentVersion}`
-    await releaseApp(currentVersion)
-    console.log(`Successfully released ${currentVersion}`)
+    await $`echo "SHOULD_RELEASE=true" >> "$GITHUB_OUTPUT"`
+    console.log(`Successfully tagged ${currentVersion}`)
     process.exit(0)
   }
 
@@ -62,10 +62,8 @@ try {
     await $`git remote set-url origin https://github-actions:${process.env.GITHUB_TOKEN}@github.com/${repo}.git`
     await $`git push origin main`
     await $`git push origin v${newVersion}`
-
-    await releaseApp(newVersion)
-
-    console.log(`Successfully released ${newVersion}`)
+    await $`echo "SHOULD_RELEASE=true" >> "$GITHUB_OUTPUT"`
+    console.log(`Successfully bumped to ${newVersion}`)
   } else {
     console.log(`Only ${commitCount}/10 commits since last tag. No version bump needed.`)
   }
@@ -74,24 +72,4 @@ try {
   console.error(error instanceof Error ? error.message : error)
   console.error(error instanceof Error ? error.stack : error)
   process.exit(1)
-}
-
-// Build and release the new version
-async function releaseApp(newVersion: string) {
-  const os = process.platform
-  if (os === 'linux') {
-    await $`npm run build:linux`
-  } else if (os === 'darwin') {
-    await $`npm run build:mac`
-  } else if (os === 'win32') {
-    await $`npm run build:win`
-  }
-
-  // Generate release file list
-  const extList = ['exe', 'zip', 'dmg', 'AppImage', 'snap', 'deb', 'rpm', 'tar.gz']
-  let fileList = readdirSync('dist')
-  fileList = fileList.filter((file) => extList.some((ext) => file.endsWith(ext)))
-  fileList = fileList.map((file) => `dist/${file}`)
-  const flags = ['--generate-notes', '--verify-tag']
-  await $`gh release create v${newVersion} ${fileList} ${flags}`
 }
