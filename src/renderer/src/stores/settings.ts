@@ -11,6 +11,7 @@ interface Settings {
   ghRepo: 'files'
   ghRelease: 'eOsizdoz'
   fileListPageSize: number
+  databaseUrl: string
 }
 
 export const useSettingsStore = defineStore('settings', () => {
@@ -22,7 +23,8 @@ export const useSettingsStore = defineStore('settings', () => {
     ghOwner: 'XYY-huijiwiki',
     ghRepo: 'files',
     ghRelease: 'eOsizdoz',
-    fileListPageSize: 50
+    fileListPageSize: 50,
+    databaseUrl: `https://xyy-huijiwiki-gh-files-db.karsten-zhou-773.workers.dev/`
   }
   // init settings from localStorage or use default settings
   const settings: Ref<Settings> = useLocalStorage('settings', defaultSettings, {

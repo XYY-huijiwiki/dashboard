@@ -85,7 +85,7 @@ async function confirmRename(): Promise<void> {
       })
       .toString()
 
-    const url = new URL('https://xyy-huijiwiki-gh-files-db.karsten-zhou-773.workers.dev/')
+    const url = new URL(settings.value.databaseUrl)
     url.searchParams.set('query', query)
     url.searchParams.set('gh_token', settings.value.ghToken)
 

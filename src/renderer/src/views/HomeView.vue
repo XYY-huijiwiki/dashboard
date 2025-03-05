@@ -87,6 +87,7 @@ import { genRawFileUrl } from '@renderer/utils/genUrl'
 import { useSettingsStore } from '@renderer/stores/settings'
 import { useExplorerStateStore } from '@renderer/stores/explorerState'
 import sleep from '@renderer/utils/sleep'
+import fetchFilesInUse from '@renderer/utils/fetchFilesInUse'
 
 const { t } = useI18n()
 
@@ -189,51 +190,10 @@ watch(showDetailsPane, (value) => {
 onMounted(async () => {
   loading.value = true
 
-  // get data from XYY-huijiwiki
   try {
-    let filesInUseTemp: string[] = []
-    let ifContinue = true
-    do {
-      const params = {
-        action: 'query',
-        list: 'querypage',
-        qppage: 'Wantedfiles',
-        format: 'json',
-        qplimit: 'max',
-        qpoffset: filesInUseTemp.length.toString()
-      }
-      const res: {
-        batchcomplete: string
-        continue:
-          | {
-              qpoffset: number
-              continue: string
-            }
-          | undefined
-        query: {
-          querypage: {
-            name: string
-            results: {
-              value: string
-              ns: number
-              title: string
-            }[]
-          }
-        }
-      } = await ky.get('https://xyy.huijiwiki.com/api.php?' + new URLSearchParams(params)).json()
-      filesInUseTemp.push(
-        ...res.query.querypage.results.map((item) =>
-          decodeURIComponent(item.title).replace(/ /g, '_').replace('文件:', '')
-        )
-      )
-      ifContinue = res.continue !== undefined
-    } while (ifContinue)
-    // filter filesInUse
-    filesInUseTemp = filesInUseTemp.filter((item) => item.startsWith('GitHub:'))
-    // remove "GitHub:" from filesInUse
-    filesInUse.value = filesInUseTemp.map((item) => item.replace('GitHub:', ''))
-
-    await queryData()
+    console.time('init fetching')
+    await Promise.all([(filesInUse.value = await fetchFilesInUse()), queryData()])
+    console.timeEnd('init fetching')
   } catch (error) {
     console.dir(error)
     window.$notification.error({
@@ -311,25 +271,27 @@ async function queryData(type: 'more' | 'refresh' = 'refresh'): Promise<void> {
     }
 
     // get total item count
-    const url = new URL('https://xyy-huijiwiki-gh-files-db.karsten-zhou-773.workers.dev/')
-    if (type === 'refresh') {
+    async function getTotalItemCount(): Promise<number> {
+      const url = new URL(settings.value.databaseUrl)
       const queryStr = query.clone().count().toString()
       url.searchParams.set('query', queryStr)
-      totalItemCount.value = ((await ky.get(url.href).json()) as DbResponse)[0]['results'][0][
-        `count(*)`
-      ]
-      console.log('totalItemCount', totalItemCount.value)
+      return ((await ky.get(url.href).json()) as DbResponse)[0]['results'][0][`count(*)`]
     }
 
     // get data from database
-    const queryStr = query.toString()
-    console.log(queryStr)
-    url.searchParams.set('query', queryStr)
+    async function getItems(): Promise<FileRecord[]> {
+      const url = new URL(settings.value.databaseUrl)
+      const queryStr = query.clone().toString()
+      url.searchParams.set('query', queryStr)
+      return ((await ky.get(url.href).json()) as DbResponse)[0].results
+    }
 
+    const [totalItemCountTemp, itemsTemp] = await Promise.all([getTotalItemCount(), getItems()])
+    totalItemCount.value = totalItemCountTemp
     if (type === 'more') {
-      data.value.push(...((await ky.get(url.href).json()) as DbResponse)[0].results)
+      data.value.push(...itemsTemp)
     } else {
-      data.value = ((await ky.get(url.href).json()) as DbResponse)[0].results
+      data.value = itemsTemp
     }
   } catch (error) {
     console.dir(error)
