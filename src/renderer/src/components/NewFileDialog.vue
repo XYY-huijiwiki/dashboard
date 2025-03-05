@@ -10,15 +10,17 @@
         </n-button>
         <n-input v-model:value="fileName" :disabled="!selectedFile" />
       </n-input-group>
-      <n-input
-        v-model:value="fileSource"
-        :placeholder="t('github-files.label-file-source')"
-      ></n-input>
       <n-select
         v-model:value="fileLicense"
         :placeholder="t('github-files.label-file-licence')"
         :options="licenceOptions"
       ></n-select>
+      <n-input
+        v-model:value="fileSource"
+        type="textarea"
+        :placeholder="t('github-files.label-file-source')"
+      ></n-input>
+      <component :is="genWikitextDom(fileSource)" v-if="fileSource" />
     </n-flex>
     <!-- footer (action) -->
     <n-flex justify="end">
@@ -43,6 +45,7 @@ import { useSettingsStore } from '@renderer/stores/settings'
 import { dayjsLocales } from '@renderer/stores/locales'
 import db from '@renderer/utils/queryDB'
 import licenceOptions from '@renderer/utils/licenceOptions'
+import genWikitextDom from '@renderer/utils/genWikitextDom'
 
 dayjs.extend(localizedFormat).locale(dayjsLocales.value)
 
