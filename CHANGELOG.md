@@ -1,3 +1,23 @@
+## [0.1.4](https://github.com/XYY-huijiwiki/r-drive/compare/v0.1.3...v0.1.4) (2025-03-06)
+
+### Bug Fixes
+
+- **ci:** correct arguments for `gh release create` in `release.yaml` ([843bfb6](https://github.com/XYY-huijiwiki/r-drive/commit/843bfb68d860c15c12638a4fa53e20ee1bd6782e))
+- **ci:** prevent multiple version bump commits ([8ad111a](https://github.com/XYY-huijiwiki/r-drive/commit/8ad111a54f2e3daa6d5f4b321bfa17a61879bae5))
+- **renderer:** remove unused 'props' to fix TypeScript type check error ([259eb9b](https://github.com/XYY-huijiwiki/r-drive/commit/259eb9b37eb5e429644bcf52f6c3502d234933a0))
+- resolve issue where loading more items refreshed total item count ([044c736](https://github.com/XYY-huijiwiki/r-drive/commit/044c736284236362128742fc32967a9f38d6e6ed))
+
+### Features
+
+- add preview for Wikitext input ([464d511](https://github.com/XYY-huijiwiki/r-drive/commit/464d511a3ff78bfe7a3c997e221c48655f839269))
+- **ci:** add Linux version building to GitHub Actions workflow ([f8f4844](https://github.com/XYY-huijiwiki/r-drive/commit/f8f48446b02e90aef96e472833b210b7221a6c69))
+- **i18n:** introduce [i18n Ally](https://github.com/lokalise/i18n-ally) for improved localisation workflow ([6bfdd65](https://github.com/XYY-huijiwiki/r-drive/commit/6bfdd65d49a24c9b96ce1e529e339857f5cf6c42))
+- update `getWhatLinksHere()` to parse HTML instead of using query API ([2d3cca5](https://github.com/XYY-huijiwiki/r-drive/commit/2d3cca5d8e2e38d8bb3f6afbbf4b592208896ed6))
+
+### Performance Improvements
+
+- optimise start-up data fetching ([51137a6](https://github.com/XYY-huijiwiki/r-drive/commit/51137a6ffc0393c6b71b3520794dddc6ccf560c0))
+
 ## [0.1.3](https://github.com/XYY-huijiwiki/r-drive/compare/v0.1.2...v0.1.3) (2025-03-04)
 
 ### Bug Fixes
