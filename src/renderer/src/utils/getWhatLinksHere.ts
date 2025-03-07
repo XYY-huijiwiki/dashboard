@@ -1,6 +1,6 @@
 import ky from 'ky'
 
-async function parseHTML(html: string) {
+function parseHTML(html: string) {
   let nextPageLink: string | null = null
   const links: string[] = []
   // prepare html
@@ -34,15 +34,23 @@ async function getWhatLinksHere(pageName: string): Promise<string[]> {
   const url = new URL('https://xyy.huijiwiki.com/index.php')
   url.searchParams.set('title', `Special:Whatlinkshere/${pageName}`)
   url.searchParams.set('limit', '5000')
+  url.searchParams.set('t', Date.now().toString()) // avoid cache
 
   const links: string[] = []
   let nextPageLink: string | null = url.toString()
 
   while (nextPageLink) {
     const html = await ky.get(nextPageLink).text()
-    const { nextPageLink: newNextPageLink, links: newLinks } = await parseHTML(html)
+    const { nextPageLink: newNextPageLink, links: newLinks } = parseHTML(html)
     links.push(...newLinks)
-    nextPageLink = newNextPageLink
+    // nextPageLink = newNextPageLink
+    if (newNextPageLink) {
+      const url = new URL(newNextPageLink)
+      url.searchParams.set('t', Date.now().toString()) // avoid cache
+      nextPageLink = url.toString()
+    } else {
+      nextPageLink = null
+    }
   }
 
   return links

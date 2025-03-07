@@ -7,7 +7,7 @@
     :data="data"
     virtual-scroll
     remote
-    :max-height="explorerState.viewMode === 'details' ? maxHeight - 53 : maxHeight - 45"
+    :max-height="explorerState.viewMode === 'details' ? maxHeight - 54 : maxHeight - 46"
     :loading="loading"
     :size="explorerState.viewMode === 'details' ? undefined : 'small'"
     :row-key="(row: FileRecord) => row.file_name"

@@ -26,6 +26,7 @@ async function fetchFilesInUse(): Promise<string[]> {
 
   do {
     const searchParams = {
+      t: Date.now().toString(), // avoid cache
       action: 'query',
       list: 'querypage',
       qppage: 'Wantedfiles',
