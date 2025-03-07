@@ -7,14 +7,15 @@
     ></button>
     <span class="lang">{{ lang }}</span>
     <n-scrollbar x-scrollable>
-      <component :is="htmlToVNode(html)" />
+      <component :is="vnode" />
     </n-scrollbar>
   </div>
 </template>
 
 <script setup lang="ts">
+import { computedAsync } from '@vueuse/core'
 import { codeToHtml } from 'shiki'
-import { h, VNode } from 'vue'
+import { h } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
@@ -30,20 +31,21 @@ const { code, lang } = defineProps({
   }
 })
 
-function htmlToVNode(html: string): VNode {
+const vnode = computedAsync(async () => {
+  // generate html string
+  const html = await codeToHtml(code, {
+    lang: lang,
+    themes: {
+      light: 'github-light',
+      dark: 'github-dark'
+    }
+  })
+  // convert html string to vnode
   const wrapped = h('div', { innerHTML: html })
   if (!wrapped.children) {
     return wrapped
   }
   return h(wrapped.children)
-}
-
-const html = await codeToHtml(code, {
-  lang: lang,
-  themes: {
-    light: 'github-light',
-    dark: 'github-dark'
-  }
 })
 
 // #region copy code
