@@ -14,7 +14,7 @@ $.verbose = false
 await $`git config --global user.name "Versioning Bot"`
 await $`git config --global user.email "bot@example.com"`
 
-// Main execution
+// #region Main execution
 try {
   // Read package.json
   const packageJson = JSON.parse(readFileSync('package.json', 'utf-8')) as PackageJson
@@ -30,41 +30,28 @@ try {
 
   // Detect manual version bump
   if (currentMajor > latestMajor || currentMinor > latestMinor || currentPatch > latestPatch) {
-    console.log('Manual version bump detected. Tagging current commit.')
-    await $`git tag v${currentVersion}`
-    await $`git push origin v${currentVersion}`
-    await $`echo "version=${currentVersion}" >> $GITHUB_OUTPUT`
-    console.log(`Successfully tagged ${currentVersion}`)
-    process.exit(0)
+    console.log(`Manual version bump detected, releasing ${currentVersion}`)
+    await doRelease(`${currentVersion}`)
   }
 
-  // Auto-increment patch after 10 commits
+  // Detect breaking changes
+  const latestCommitInfo = (
+    await $`git log -1 --pretty=format:"%s" ${latestTag}..HEAD`
+  ).stdout.trim()
+  // consider `something!:...`, `something(something else)!:...`, `BREAKING CHANGE`
+  const isBreakingChange = /(?:!: |\(.+\)!: |BREAKING CHANGE:)/.test(latestCommitInfo)
+  if (isBreakingChange) {
+    console.log(`Breaking changes detected, bumping minor version`)
+    await doBumpAndRelease(`${latestMajor}.${latestMinor + 1}.0`)
+  }
+
+  // Auto-increment patch after 5 commits
   const commitCount = parseInt((await $`git rev-list --count ${latestTag}..HEAD`).stdout.trim(), 10)
-  if (commitCount >= 10) {
-    const newVersion = `${latestMajor}.${latestMinor}.${latestPatch + 1}`
-
-    // Update package.json and CHANGELOG.md
-    packageJson.version = newVersion
-    writeFileSync('package.json', JSON.stringify(packageJson))
-    await $`npm install` // Update lockfile
-    await $`npm install -g conventional-changelog-cli`
-    await $`conventional-changelog -p angular -i CHANGELOG.md -s`
-    await $`npm run format`
-
-    // Commit and push changes
-    await $`git add .`
-    await $`git commit -m "chore: auto-bump version to ${newVersion}"`
-    await $`git tag v${newVersion}`
-
-    // Push using GitHub token
-    const repo = process.env.GITHUB_REPOSITORY
-    await $`git remote set-url origin https://github-actions:${process.env.GITHUB_TOKEN}@github.com/${repo}.git`
-    await $`git push origin main`
-    await $`git push origin v${newVersion}`
-    console.log(`Successfully bumped to ${newVersion}`)
-    await $`echo "version=${newVersion}" >> $GITHUB_OUTPUT`
+  if (commitCount >= 5) {
+    console.log(`5 commits since last tag, bumping patch version`)
+    await doBumpAndRelease(`${latestMajor}.${latestMinor}.${latestPatch + 1}`)
   } else {
-    console.log(`Only ${commitCount}/10 commits since last tag. No version bump needed.`)
+    console.log(`Only ${commitCount}/5 commits since last tag. No version bump needed.`)
   }
 } catch (error) {
   console.error('Versioning failed:')
@@ -72,3 +59,40 @@ try {
   console.error(error instanceof Error ? error.stack : error)
   process.exit(1)
 }
+
+// #endregion
+
+// #region Helper Functions
+
+async function doRelease(version) {
+  await $`git tag v${version}`
+  await $`git push origin v${version}`
+  await $`echo "version=v${version}" >> $GITHUB_OUTPUT`
+  console.log(`Successfully tagged v${version}`)
+  process.exit(0)
+}
+
+async function doBumpAndRelease(version) {
+  // Update package.json
+  const packageJson = JSON.parse(readFileSync('package.json', 'utf-8')) as PackageJson
+  packageJson.version = version
+  writeFileSync('package.json', JSON.stringify(packageJson))
+  await $`npm install` // Update lockfile
+
+  // Update CHANGELOG.md
+  await $`npm install -g conventional-changelog-cli`
+  await $`conventional-changelog -p angular -i CHANGELOG.md -s`
+  await $`npm run format`
+
+  // Commit and push changes
+  await $`git add .`
+  await $`git commit -m "chore: auto-bump version to v${version}"`
+  await $`git tag v${version}`
+  await $`git push origin main`
+  await $`git push origin v${version}`
+  await $`echo "version=v${version}" >> $GITHUB_OUTPUT`
+  console.log(`Successfully bumped to v${version}`)
+  process.exit(0)
+}
+
+// #endregion

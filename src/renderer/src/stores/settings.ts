@@ -24,7 +24,7 @@ export const useSettingsStore = defineStore('settings', () => {
     ghRepo: 'files',
     ghRelease: 'eOsizdoz',
     fileListPageSize: 50,
-    databaseUrl: `https://xyy-huijiwiki-gh-files-db.karsten-zhou-773.workers.dev/`
+    databaseUrl: `https://xyy-file-db.24218079.xyz/`
   }
   // init settings from localStorage or use default settings
   const settings: Ref<Settings> = useLocalStorage('settings', defaultSettings, {
