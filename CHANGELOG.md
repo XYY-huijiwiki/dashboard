@@ -1,3 +1,11 @@
+# [0.2.0](https://github.com/XYY-huijiwiki/r-drive/compare/v0.1.4...v0.2.0) (2025-03-07)
+
+- feat(auth)!: update GitHub OAuth URL ([5db234f](https://github.com/XYY-huijiwiki/r-drive/commit/5db234f360e44a9678dfd76897a7b45daf02b022))
+
+### BREAKING CHANGES
+
+- The GitHub OAuth URL has been changed, rendering old versions incompatible.
+
 ## [0.1.4](https://github.com/XYY-huijiwiki/r-drive/compare/v0.1.3...v0.1.4) (2025-03-06)
 
 ### Bug Fixes
