@@ -25,6 +25,10 @@ function clearData(): void {
     }
   })
 }
+
+function toggleDevtools(): void {
+  window.api.toggleDevTools()
+}
 </script>
 
 <template>
@@ -62,10 +66,16 @@ function clearData(): void {
         {{ t('settings.btn-restore') }}
       </n-button>
     </n-form-item>
+    <!-- toggle devtools -->
+    <n-form-item :label="t('settings.label-toggle-devtools')">
+      <n-button @click="toggleDevtools()">
+        {{ t('settings.btn-toggle') }}
+      </n-button>
+    </n-form-item>
     <!-- source code -->
     <n-form-item :label="t('settings.label-source-code')">
       <n-space>
-        <n-button tag="a" href="//github.com/XYY-huijiwiki/gh-drive" target="_blank">
+        <n-button tag="a" href="//github.com/XYY-huijiwiki/r-drive" target="_blank">
           {{ t('settings.btn-github') }}
         </n-button>
       </n-space>

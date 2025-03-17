@@ -22,7 +22,9 @@
     "text-auto-language": "Automatisch ({0})",
     "label-github-token": "GitHub-Token",
     "label-source-code": "Quellcode",
-    "btn-github": "GitHub"
+    "btn-github": "GitHub",
+    "label-toggle-devtools": "Entwicklerwerkzeuge umschalten",
+    "btn-toggle": "Umschalten"
   },
   "home": {
     "title": "RDrive (XYY-Wiki-Edition)"

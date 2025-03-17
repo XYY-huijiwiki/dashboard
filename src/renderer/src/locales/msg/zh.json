@@ -22,7 +22,9 @@
     "text-auto-language": "自动（{0}）",
     "label-github-token": "GitHub Token",
     "label-source-code": "源代码",
-    "btn-github": "GitHub"
+    "btn-github": "GitHub",
+    "label-toggle-devtools": "切换开发者工具",
+    "btn-toggle": "切换"
   },
   "home": {
     "title": "RDrive (羊羊百科版)"

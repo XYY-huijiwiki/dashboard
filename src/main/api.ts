@@ -100,6 +100,15 @@ function registerIPC(): void {
     if (!win) throw new Error('No BrowserWindow found')
     win.setFullScreen(!win.isFullScreen())
   })
+  // #endregion
+
+  // #region toggle devtools
+  ipcMain.handle('toggle-devtools', (event) => {
+    const win = BrowserWindow.fromWebContents(event.sender)
+    if (!win) throw new Error('No BrowserWindow found')
+    win.webContents.toggleDevTools()
+  })
+  // #endregion
 }
 
 export default registerIPC
