@@ -4,10 +4,17 @@ import { storeToRefs } from 'pinia'
 const { settings } = storeToRefs(useSettingsStore())
 
 function genRawFileUrl(file: FileRecord): string {
-  return `https://github.com/${settings.value.ghOwner}/${settings.value.ghRepo}/releases/download/${settings.value.ghFileRelease}/${file.file_name_base62}`
+  let corsProxy = ''
+  if (import.meta.env.DEV && file.content_type.startsWith('model')) {
+    corsProxy = 'https://cors-proxy.24218079.xyz/'
+  }
+  return `${corsProxy}https://github.com/${settings.value.ghOwner}/${settings.value.ghRepo}/releases/download/${settings.value.ghFileRelease}/${file.file_name_base62}`
 }
 function genThumbUrl(file: FileRecord): string {
-  const hasThumb = file.content_type.startsWith('image') || file.content_type.startsWith('video')
+  const hasThumb =
+    file.content_type.startsWith('image') ||
+    file.content_type.startsWith('video') ||
+    file.content_type.startsWith('model')
   return hasThumb
     ? `https://karsten-zhou.gumlet.io/https://github.com/${settings.value.ghOwner}/${settings.value.ghRepo}/releases/download/${settings.value.ghThumbRelease}/${file.file_name_base62}`
     : ''

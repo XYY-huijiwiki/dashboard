@@ -56,9 +56,9 @@ app.whenReady().then(() => {
     optimizer.watchWindowShortcuts(window)
 
     // in dev mode, open devtools automatically
-    if (is.dev) {
-      window.webContents.openDevTools({ mode: 'right' })
-    }
+    // if (is.dev) {
+    window.webContents.openDevTools({ mode: 'right' })
+    // }
   })
 
   // IPC

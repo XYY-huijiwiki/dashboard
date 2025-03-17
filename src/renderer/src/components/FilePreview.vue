@@ -38,6 +38,12 @@
       >
         <source :src="genRawFileUrl(fileRecord)" :type="fileRecord?.content_type" />
       </audio>
+      <!-- model -->
+      <model-viewer-vue
+        v-else-if="fileRecord?.content_type?.startsWith('model')"
+        :src="genRawFileUrl(fileRecord)"
+        :poster="genThumbUrl(fileRecord)"
+      ></model-viewer-vue>
       <!-- no preview -->
       <n-result
         v-else

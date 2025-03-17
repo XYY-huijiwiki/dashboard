@@ -35,7 +35,13 @@ export default defineConfig({
       }
     },
     plugins: [
-      vue(),
+      vue({
+        template: {
+          compilerOptions: {
+            isCustomElement: (tag) => ['model-viewer'].includes(tag)
+          }
+        }
+      }),
       Components({
         resolvers: [NaiveUiResolver()]
       }),
