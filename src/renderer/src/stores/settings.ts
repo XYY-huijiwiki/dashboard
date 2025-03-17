@@ -9,7 +9,8 @@ interface Settings {
   ghToken: string
   ghOwner: 'XYY-huijiwiki'
   ghRepo: 'files'
-  ghRelease: 'eOsizdoz'
+  ghFileRelease: 'eOsizdoz'
+  ghThumbRelease: 'thumb'
   fileListPageSize: number
   databaseUrl: string
 }
@@ -22,7 +23,8 @@ export const useSettingsStore = defineStore('settings', () => {
     rootReleaseId: 202273771,
     ghOwner: 'XYY-huijiwiki',
     ghRepo: 'files',
-    ghRelease: 'eOsizdoz',
+    ghFileRelease: 'eOsizdoz',
+    ghThumbRelease: 'thumb',
     fileListPageSize: 50,
     databaseUrl: `https://xyy-file-db.24218079.xyz/`
   }
