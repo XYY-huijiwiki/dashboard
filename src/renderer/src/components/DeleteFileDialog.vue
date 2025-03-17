@@ -76,6 +76,14 @@ async function confirmDelete(): Promise<void> {
         })
         .toString()
 
+      // Step 3: rename thumbnail (if exists)
+      if (fileRecord.thumb_id) {
+        const gh_res_thumb = await ghUpdateAsset(fileRecord.thumb_id, uuidName)
+        console.log('Renaming result for thumbnail', fileRecord.thumb_id, ':', gh_res_thumb.name)
+        console.log(`===gh_res_thumb===`)
+        console.log(gh_res_thumb)
+      }
+
       const url = new URL(settings.value.databaseUrl)
       url.searchParams.set('query', query)
       url.searchParams.set('gh_token', settings.value.ghToken)

@@ -90,5 +90,6 @@ declare global {
     source: string
     is_deleted?: number
     file_name_before_delete?: string
+    thumb_id?: number
   }
 }

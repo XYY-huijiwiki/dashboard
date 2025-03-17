@@ -6,6 +6,7 @@ import { cloneDeep } from 'lodash-es'
 interface Settings {
   language: string | 'auto'
   rootReleaseId: 202273771
+  thumbsReleaseId: 206099778
   ghToken: string
   ghOwner: 'XYY-huijiwiki'
   ghRepo: 'files'
@@ -21,6 +22,7 @@ export const useSettingsStore = defineStore('settings', () => {
     language: 'auto',
     ghToken: '',
     rootReleaseId: 202273771,
+    thumbsReleaseId: 206099778,
     ghOwner: 'XYY-huijiwiki',
     ghRepo: 'files',
     ghFileRelease: 'eOsizdoz',
