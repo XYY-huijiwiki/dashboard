@@ -1,3 +1,16 @@
+## [0.2.1](https://github.com/XYY-huijiwiki/r-drive/compare/v0.2.0...v0.2.1) (2025-03-17)
+
+### Bug Fixes
+
+- add file name length check before renaming and uploading ([fc0417a](https://github.com/XYY-huijiwiki/r-drive/commit/fc0417aec72e1f9f0048ffa53aadb1234151dd36))
+- ensure code snippets update with file name ([a5d7a87](https://github.com/XYY-huijiwiki/r-drive/commit/a5d7a8764660cd1e245de28c87aa90bbfa0457d5))
+
+### Features
+
+- add support for 3D model preview ([59aa2c2](https://github.com/XYY-huijiwiki/r-drive/commit/59aa2c265c950cfcf072e9fa0824a6c9a95e1deb))
+- add timestamp parameter to URL to prevent caching ([78e398c](https://github.com/XYY-huijiwiki/r-drive/commit/78e398c0adccfdfa5b1e3f6dbb919851efd5f8c7))
+- introduce new thumbnail storing and displaying method ([1947e58](https://github.com/XYY-huijiwiki/r-drive/commit/1947e58cb6e19ab03cc55db3eaf590e51ef619fb))
+
 # [0.2.0](https://github.com/XYY-huijiwiki/r-drive/compare/v0.1.4...v0.2.0) (2025-03-07)
 
 - feat(auth)!: update GitHub OAuth URL ([5db234f](https://github.com/XYY-huijiwiki/r-drive/commit/5db234f360e44a9678dfd76897a7b45daf02b022))
