@@ -130,7 +130,8 @@
       "btn-details": "详细信息",
       "btn-tiles": "平铺"
     },
-    "copy-code": "复制代码"
+    "copy-code": "复制代码",
+    "msg-file-name-too-long": "文件名太长！"
   },
   "help-docs": {
     "title": "技术文档"

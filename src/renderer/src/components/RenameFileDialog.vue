@@ -35,11 +35,11 @@ import path from 'path'
 import dayjs from 'dayjs'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
 
-import base62 from '@renderer/utils/base62'
 import db from '@renderer/utils/queryDB'
 import { ghUpdateAsset } from '@renderer/utils/octokit'
 import { useSettingsStore } from '@renderer/stores/settings'
 import { dayjsLocales } from '@renderer/stores/locales'
+import { fileNameLengthLimitFromOrg, fileNameOrgToBase62 } from '@renderer/utils/fileName'
 
 dayjs.extend(localizedFormat).locale(dayjsLocales.value)
 const { t } = useI18n()
@@ -66,12 +66,18 @@ async function confirmRename(): Promise<void> {
   if (!newName.value) return
   // if new name is the same as the current name, do nothing
   if (newName.value === fileNameWithoutExt) return
+  // if file name is too long
+  const orgName = `${newName.value}${fileExt}`
+  if (!fileNameLengthLimitFromOrg(orgName)) {
+    window.$message.error(t('github-files.msg-file-name-too-long'))
+    return
+  }
 
   loading.value = true
 
   try {
     // Update filename in GitHub
-    const base62Name = base62.encode(newName.value) + fileExt
+    const base62Name = fileNameOrgToBase62(orgName)
     const ghRes = await ghUpdateAsset(fileRecord.id, base62Name)
     console.log('Renaming result:', ghRes)
 

@@ -130,7 +130,8 @@
       "btn-details": "Details",
       "btn-tiles": "Tiles"
     },
-    "copy-code": "Copy code"
+    "copy-code": "Copy code",
+    "msg-file-name-too-long": "File name is too long!"
   },
   "help-docs": {
     "title": "Technical Documentation"

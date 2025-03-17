@@ -46,6 +46,7 @@ import { dayjsLocales } from '@renderer/stores/locales'
 import db from '@renderer/utils/queryDB'
 import licenceOptions from '@renderer/utils/licenceOptions'
 import genWikitextDom from '@renderer/utils/genWikitextDom'
+import { fileNameLengthLimitFromOrg } from '@renderer/utils/fileName'
 
 dayjs.extend(localizedFormat).locale(dayjsLocales.value)
 
@@ -76,7 +77,16 @@ async function handleSelectFile(): Promise<void> {
 }
 
 async function confirmNewFile(): Promise<void> {
+  // if no file selected, do nothing
   if (!selectedFile.value) return
+  // if no file name, do nothing
+  if (!fileName.value) return
+  // if file name is too long
+  const orgName = fileName.value
+  if (!fileNameLengthLimitFromOrg(orgName)) {
+    window.$message.error(t('github-files.msg-file-name-too-long'))
+    return
+  }
 
   // start loading
   loading.value = true
