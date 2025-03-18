@@ -1,6 +1,6 @@
 import { ElectronAPI } from '@electron-toolkit/preload'
 import { DownloadItem } from 'electron'
-import { Progress } from 'electron-dl'
+import { File, Options, Progress } from 'electron-dl'
 
 type FileMetadata = {
   name: string
@@ -58,11 +58,30 @@ type CustomApi = {
   openFileDialog: () => Promise<FileMetadata | null>
   uploadToGitHub: (params: UploadParams) => Promise<GhAssetUploadResponse>
   ghLogin: () => Promise<string>
-  downloadFile: (url: string, fileName: string) => void
-  onDownloadProgress: (callback: (fileName: string, progress: Progress) => void) => void
-  onDownloadCompleted: (callback: (fileName: string) => void) => void
-  toggleFullScreen: () => void
-  toggleDevTools: () => void
+
+  downloadFile: ({
+    id,
+    url,
+    options
+  }: {
+    id: string
+    url: string
+    options: Options
+  }) => Promise<DownloadItem>
+  onDownloadStarted: (callback: (args: { id: string }) => void) => void
+  onDownloadProgress: (callback: (args: { id: string } & Progress) => void) => void
+  onDownloadCompleted: (
+    callback: (args: { id: string; filePath: string; fileName: string }) => void
+  ) => void
+  onDownloadCancelled: (callback: (args: { id: string }) => void) => void
+  onDownloadError: (callback: (args: { id: string; error: Error }) => void) => void
+  cancelDownload: (id: string) => Promise<void>
+
+  toggleFullScreen: () => Promise<void>
+  toggleDevTools: () => Promise<void>
+
+  showInFolder: (filePath: string) => Promise<void>
+  openFile: (filePath: string) => Promise<void>
 }
 
 declare global {

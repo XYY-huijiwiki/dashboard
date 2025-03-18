@@ -72,13 +72,14 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch, h } from 'vue'
 import type { Ref } from 'vue'
-import type { DataTableRowKey, MessageReactive } from 'naive-ui'
+import type { DataTableRowKey } from 'naive-ui'
 import { useI18n } from 'vue-i18n'
 import dayjs from 'dayjs'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
 import { storeToRefs } from 'pinia'
 import ky from 'ky'
 import { debounce } from 'lodash-es'
+import { useRouter } from 'vue-router'
 
 import { dayjsLocales } from '@renderer/stores/locales'
 import fileListTable from '@renderer/components/FileListTable.vue'
@@ -86,68 +87,27 @@ import db from '@renderer/utils/queryDB'
 import { genRawFileUrl } from '@renderer/utils/genUrl'
 import { useSettingsStore } from '@renderer/stores/settings'
 import { useExplorerStateStore } from '@renderer/stores/explorerState'
-import sleep from '@renderer/utils/sleep'
 import fetchFilesInUse from '@renderer/utils/fetchFilesInUse'
+import { useDownloadStore } from '@renderer/stores/download'
 
 const { t } = useI18n()
-
+const { startDownload } = useDownloadStore()
 const { settings } = storeToRefs(useSettingsStore())
 const { explorerState } = storeToRefs(useExplorerStateStore())
+const router = useRouter()
 
 dayjs.extend(localizedFormat).locale(dayjsLocales.value)
 
 const fileDownload = debounce(fileDownloadUndebounced, 300)
 function fileDownloadUndebounced(): void {
   checkedItems.value.forEach((item) => {
-    const download_url = genRawFileUrl(item)
-    if (download_url) {
-      window.api.downloadFile(download_url, item.file_name)
-      const messageInstance = window.$message.create(
-        t('download-manage.msg-downloading', [item.file_name, 0]),
-        {
-          duration: 0,
-          type: 'loading'
-        }
-      )
-      dlList.value[item.file_name] = messageInstance
-    } else {
-      window.$notification.error({
-        title: t('github-files.msg-download-failed'),
-        content: t('github-files.msg-download-failed-desc', [item.file_name]),
-        meta: new Date().toLocaleString()
-      })
-    }
+    startDownload(item, {
+      filename: item.file_name,
+      overwrite: false
+    })
+    router.push({ name: 'download-manager' })
   })
 }
-
-type DlList = {
-  [fileName: string]: MessageReactive
-}
-
-const dlList: Ref<DlList> = ref({})
-
-// on download progress
-window.api.onDownloadProgress((fileName, progress) => {
-  const messageInstance = dlList.value[fileName]
-  if (messageInstance) {
-    messageInstance.content = t('download-manage.msg-downloading', [
-      fileName,
-      Math.ceil(progress.percent * 100)
-    ])
-  }
-})
-
-// on download completed
-window.api.onDownloadCompleted(async (fileName) => {
-  const messageInstance = dlList.value[fileName]
-  if (messageInstance) {
-    messageInstance.content = t('download-manage.msg-downloaded', [fileName])
-    messageInstance.type = 'success'
-    await sleep(5000)
-    messageInstance.destroy()
-    delete dlList.value[fileName]
-  }
-})
 
 function linkCopy(): void {
   navigator.clipboard.writeText(checkedItems.value.map((item) => genRawFileUrl(item)).join('\n'))

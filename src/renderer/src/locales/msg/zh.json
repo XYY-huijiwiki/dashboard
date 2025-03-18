@@ -153,7 +153,9 @@
     "label-settings": "设置"
   },
   "download-manager": {
-    "title": "下载管理器"
+    "title": "下载管理器",
+    "btn-show-in-folder": "在文件夹中显示",
+    "btn-remove-from-list": "从列表中移除"
   },
   "recycle-bin": {
     "title": "回收站"

@@ -152,7 +152,9 @@
     "label-settings": "Einstellungen"
   },
   "download-manager": {
-    "title": "Download-Manager"
+    "title": "Download-Manager",
+    "btn-show-in-folder": "Im Ordner anzeigen",
+    "btn-remove-from-list": "Aus Liste entfernen"
   },
   "recycle-bin": {
     "title": "Papierkorb"

@@ -3,18 +3,28 @@ import { electronAPI } from '@electron-toolkit/preload'
 
 // Custom APIs for renderer
 const api: typeof window.api = {
+  // upload
   openFileDialog: () => ipcRenderer.invoke('open-file-dialog'),
   uploadToGitHub: (params) => ipcRenderer.invoke('upload-to-github', params),
   ghLogin: () => ipcRenderer.invoke('gh-login'),
-  downloadFile: (url, fileName) => ipcRenderer.invoke('download-file', url, fileName),
-  onDownloadProgress: (callback) => {
-    ipcRenderer.on('download-progress', (_, fileName, progress) => callback(fileName, progress))
-  },
-  onDownloadCompleted: (callback) => {
-    ipcRenderer.on('download-completed', (_, fileName) => callback(fileName))
-  },
+  // download
+  downloadFile: (args) => ipcRenderer.invoke('download-file', args),
+  onDownloadStarted: (callback) =>
+    ipcRenderer.on('downloadStarted', (_event, args) => callback(args)),
+  onDownloadProgress: (callback) =>
+    ipcRenderer.on('downloadProgress', (_event, args) => callback(args)),
+  onDownloadCompleted: (callback) =>
+    ipcRenderer.on('downloadCompleted', (_event, args) => callback(args)),
+  onDownloadCancelled: (callback) =>
+    ipcRenderer.on('downloadCancelled', (_event, args) => callback(args)),
+  onDownloadError: (callback) => ipcRenderer.on('downloadError', (_event, args) => callback(args)),
+  cancelDownload: (id) => ipcRenderer.invoke('cancel-download', id),
+  // window
   toggleFullScreen: () => ipcRenderer.invoke('toggle-fullscreen'),
-  toggleDevTools: () => ipcRenderer.invoke('toggle-devtools')
+  toggleDevTools: () => ipcRenderer.invoke('toggle-devtools'),
+  // file operations
+  showInFolder: (filePath) => ipcRenderer.invoke('show-in-folder', filePath),
+  openFile: (filePath) => ipcRenderer.invoke('open-file', filePath)
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to

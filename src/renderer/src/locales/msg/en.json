@@ -152,7 +152,9 @@
     "label-settings": "Settings"
   },
   "download-manager": {
-    "title": "Download Manager"
+    "title": "Download Manager",
+    "btn-show-in-folder": "Show in folder",
+    "btn-remove-from-list": "Remove from list"
   },
   "recycle-bin": {
     "title": "Recycle Bin"

@@ -1,5 +1,8 @@
 <template>
   <n-menu v-model:value="$route.name" :options="options"></n-menu>
+  <pre v-if="isDev">
+    {{ JSON.stringify('', null, 2) }}
+  </pre>
 </template>
 
 <script setup lang="ts">
@@ -9,6 +12,7 @@ import { useRoute, RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { Icon } from '@iconify/vue'
 
+const isDev = import.meta.env.DEV
 const { t } = useI18n()
 const route = useRoute()
 const isDisabled = computed(() => route.name === 'init')
@@ -36,7 +40,7 @@ const options: Ref<MenuOption[]> = computed(() => [
   {
     label: renderLabel(t('side-menu.label-download-manager'), 'download-manager'),
     key: 'download-manager',
-    disabled: true,
+    disabled: isDisabled.value,
     icon: renderIcon('arrow-download')
   },
   {

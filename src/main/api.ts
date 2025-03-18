@@ -1,4 +1,4 @@
-import { ipcMain, dialog, BrowserWindow } from 'electron'
+import { ipcMain, dialog, BrowserWindow, shell } from 'electron'
 import path from 'path'
 import fs from 'fs'
 import mime from 'mime-types'
@@ -7,6 +7,7 @@ import type { Options } from 'electron-dl'
 
 import base62 from './utils/base62.js'
 import ghLogin from './utils/ghLogin.js'
+import safeRename from './utils/safeRename.js'
 
 function registerIPC(): void {
   // #region file upload
@@ -67,28 +68,62 @@ function registerIPC(): void {
 
   // #region download file
 
-  ipcMain.handle('download-file', async (event, url: string, fileName: string) => {
-    const win = BrowserWindow.fromWebContents(event.sender)
-    if (!win) throw new Error('No BrowserWindow found')
-    const options = {
-      filename: fileName,
-      saveAs: true,
-      onProgress: (progress) => {
-        win.webContents.send('download-progress', fileName, progress)
-      },
-      onCompleted: () => {
-        win.webContents.send('download-completed', fileName)
+  const downloadItems: Record<string, Electron.DownloadItem> = {}
+
+  ipcMain.handle(
+    'download-file',
+    async (event, { id, url, options }: { id: string; url: string; options: Options }) => {
+      const win = BrowserWindow.fromWebContents(event.sender)
+      if (!win) throw new Error('No BrowserWindow found')
+
+      let targetFilename = options.filename
+
+      try {
+        download(win, url, {
+          ...options,
+          filename: id,
+          onStarted: (item) => {
+            event.sender.send('downloadStarted', { id })
+            downloadItems[id] = item
+          },
+          onProgress: (progress) => {
+            event.sender.send('downloadProgress', {
+              id,
+              ...progress
+            })
+          },
+          onCompleted: async (data) => {
+            if (!targetFilename) targetFilename = downloadItems[id].getFilename()
+            const filePath = await safeRename(data.path, targetFilename)
+            const fileName = path.basename(filePath)
+            event.sender.send('downloadCompleted', {
+              id,
+              filePath,
+              fileName
+            })
+            delete downloadItems[id]
+          },
+          onCancel: (_item) => {
+            event.sender.send('downloadCancelled', { id })
+            delete downloadItems[id]
+          }
+        })
+      } catch (error) {
+        if (error instanceof CancelError) {
+          console.info('item.cancel() was called')
+        } else {
+          console.error(error)
+        }
+        event.sender.send('downloadError', { id, error })
+        throw error
       }
-    } satisfies Options
-    try {
-      console.dir(await download(win, url, options))
-    } catch (error) {
-      if (error instanceof CancelError) {
-        console.info('item.cancel() was called')
-      } else {
-        console.error(error)
-      }
-      throw error
+    }
+  )
+
+  ipcMain.handle('cancel-download', async (_event, id: string) => {
+    const item = downloadItems[id]
+    if (item) {
+      item.cancel()
     }
   })
 
@@ -108,6 +143,18 @@ function registerIPC(): void {
     if (!win) throw new Error('No BrowserWindow found')
     win.webContents.toggleDevTools()
   })
+  // #endregion
+
+  // #region file operations
+
+  ipcMain.handle('show-in-folder', async (_event, filePath: string) => {
+    shell.showItemInFolder(filePath)
+  })
+
+  ipcMain.handle('open-file', async (_event, filePath: string) => {
+    shell.openPath(filePath)
+  })
+
   // #endregion
 }
 
