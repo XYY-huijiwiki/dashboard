@@ -56,4 +56,3 @@ npm run dev
 - [ ] Remove `any` from `src/renderer/src/components/file-list-grid.vue` once `@coleqiu/vue-drag-select` gets update
 - [ ] recycle bin
 - [ ] Auto update
-- [ ] image thumbnails not displaying due to electron's inner url

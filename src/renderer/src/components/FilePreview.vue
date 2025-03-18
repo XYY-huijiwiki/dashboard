@@ -39,11 +39,16 @@
         <source :src="genRawFileUrl(fileRecord)" :type="fileRecord?.content_type" />
       </audio>
       <!-- model -->
-      <model-viewer-vue
+      <model-viewer
         v-else-if="fileRecord?.content_type?.startsWith('model')"
+        autoplay
+        auto-rotate
         :src="genRawFileUrl(fileRecord)"
+        camera-controls
+        touch-action="pan-y"
+        style="width: 100%; height: 100%"
         :poster="genThumbUrl(fileRecord)"
-      ></model-viewer-vue>
+      ></model-viewer>
       <!-- no preview -->
       <n-result
         v-else
@@ -68,6 +73,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { Document48Regular } from '@vicons/fluent'
+import '@google/model-viewer'
 
 import fileIcon from './FileIcon.vue'
 import { genThumbUrl, genRawFileUrl } from '@renderer/utils/genUrl'
