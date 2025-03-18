@@ -1,3 +1,11 @@
+## [0.2.2](https://github.com/XYY-huijiwiki/r-drive/compare/v0.2.1...v0.2.2) (2025-03-18)
+
+### Features
+
+- **model-viewer:** optimise component loading method ([c0cc41c](https://github.com/XYY-huijiwiki/r-drive/commit/c0cc41c790a2113d85f9af73c4a1687714df9f8c))
+- remove thumbnail when deleting file ([e7cef4f](https://github.com/XYY-huijiwiki/r-drive/commit/e7cef4ff3a4c17b8654dbf8e3d118ca92731b6ef))
+- **settings:** add option to toggle DevTools ([37a8a3a](https://github.com/XYY-huijiwiki/r-drive/commit/37a8a3afc23d72b56be277e7c785660b07741d17))
+
 ## [0.2.1](https://github.com/XYY-huijiwiki/r-drive/compare/v0.2.0...v0.2.1) (2025-03-17)
 
 ### Bug Fixes
