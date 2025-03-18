@@ -43,7 +43,7 @@ async function login(): Promise<void> {
     settings.value.ghToken = token
 
     window.$message.success(t('init.msg-login-success'))
-    router.push('/')
+    router.push({ name: 'file-explorer' })
   } catch (e) {
     console.dir(e)
     window.$notification.error({
@@ -58,7 +58,7 @@ async function login(): Promise<void> {
 
 onMounted(() => {
   if (settings.value.ghToken) {
-    router.push('/')
+    router.push({ name: 'file-explorer' })
   }
 })
 </script>

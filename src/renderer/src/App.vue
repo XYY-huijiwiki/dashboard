@@ -7,8 +7,6 @@ import {
   ArrowLeft24Regular,
   ArrowRight24Regular,
   ArrowClockwise24Regular,
-  Home24Regular,
-  Settings24Regular,
   FullScreenMaximize24Regular,
   FullScreenMinimize24Regular
 } from '@vicons/fluent'
@@ -49,105 +47,86 @@ const toggleFullscreen = () => {
 </script>
 
 <template>
-  <n-card content-class="shrink-0 h-0" class="h-screen !rounded-none">
-    <!-- 卡片左上角：返回 | 前进 | 刷新 | 主页 | 标题 -->
-    <template #header>
-      <n-space id="title-bar" align="center" :wrap="false" :wrap-item="false">
-        <!-- back btn -->
-        <n-button quaternary circle :disabled="!canBack" @click="router.back()">
-          <template #icon>
-            <n-icon :size="24">
-              <arrow-left24-regular />
-            </n-icon>
-          </template>
-        </n-button>
-        <!-- forward btn -->
-        <n-button v-show="canForward" quaternary circle @click="router.forward()">
-          <template #icon>
-            <n-icon :size="24">
-              <arrow-right24-regular />
-            </n-icon>
-          </template>
-        </n-button>
-        <!-- refresh btn -->
-        <n-button quaternary circle @click="router.go(0)">
-          <template #icon>
-            <n-icon :size="24">
-              <arrow-clockwise24-regular />
-            </n-icon>
-          </template>
-        </n-button>
-        <!-- home btn -->
-        <n-button
-          v-if="$route.name !== 'home'"
-          quaternary
-          circle
-          @click="router.push({ name: 'home' })"
-        >
-          <template #icon>
-            <n-icon :size="24">
-              <home24-regular />
-            </n-icon>
-          </template>
-        </n-button>
-        <n-tag v-if="dev">{{ t('dev-tag') }}</n-tag>
-        {{ t(`${$route.name?.toString()}.title`) }}
-      </n-space>
-    </template>
-
-    <!-- 卡片右上角按钮：fullscreen, settings -->
-    <template #header-extra>
-      <n-button
-        quaternary
-        circle
-        :class="isFullscreen ? 'hvr-icon-push' : 'hvr-icon-pop'"
-        @click="toggleFullscreen"
-      >
-        <template #icon>
-          <n-icon :size="24">
-            <full-screen-minimize24-regular v-if="isFullscreen" class="hvr-icon" />
-            <full-screen-maximize24-regular v-else class="hvr-icon" />
-          </n-icon>
+  <n-layout has-sider>
+    <n-layout-sider bordered :width="240" :native-scrollbar="false">
+      <side-menu />
+    </n-layout-sider>
+    <n-layout-content>
+      <n-card content-class="shrink-0 h-0" class="h-screen !rounded-none !border-none">
+        <!-- 卡片左上角：返回 | 前进 | 刷新  | 标题 -->
+        <template #header>
+          <n-space id="title-bar" align="center" :wrap="false" :wrap-item="false">
+            <!-- back btn -->
+            <n-button quaternary circle :disabled="!canBack" @click="router.back()">
+              <template #icon>
+                <n-icon :size="24">
+                  <arrow-left24-regular />
+                </n-icon>
+              </template>
+            </n-button>
+            <!-- forward btn -->
+            <n-button v-show="canForward" quaternary circle @click="router.forward()">
+              <template #icon>
+                <n-icon :size="24">
+                  <arrow-right24-regular />
+                </n-icon>
+              </template>
+            </n-button>
+            <!-- refresh btn -->
+            <n-button quaternary circle @click="router.go(0)">
+              <template #icon>
+                <n-icon :size="24">
+                  <arrow-clockwise24-regular />
+                </n-icon>
+              </template>
+            </n-button>
+            <!-- dev tag -->
+            <n-tag v-if="dev">{{ t('dev-tag') }}</n-tag>
+            <!-- navigation title -->
+            {{
+              {
+                'file-explorer': t('file-explorer.title'),
+                'recycle-bin': t('recycle-bin.title'),
+                'download-manager': t('download-manager.title'),
+                settings: t('settings.title'),
+                init: t('init.title'),
+                error: t('error.title'),
+                undefined: t('undefined.title')
+              }[$route.name || 'undefined']
+            }}
+          </n-space>
         </template>
-      </n-button>
-      <n-button
-        v-if="$route.name !== 'settings'"
-        quaternary
-        circle
-        class="hvr-icon-spin"
-        @click="router.push('/settings')"
-      >
-        <template #icon>
-          <n-icon :size="24">
-            <settings24-regular class="hvr-icon" />
-          </n-icon>
-        </template>
-      </n-button>
-    </template>
 
-    <!-- 卡片主体部分：路由 -->
-    <template #default>
-      <router-view v-slot="{ Component }">
-        <component :is="Component" />
-      </router-view>
-    </template>
-  </n-card>
+        <!-- 卡片右上角按钮：fullscreen -->
+        <template #header-extra>
+          <n-button
+            quaternary
+            circle
+            :class="isFullscreen ? 'hvr-icon-push' : 'hvr-icon-pop'"
+            @click="toggleFullscreen"
+          >
+            <template #icon>
+              <n-icon :size="24">
+                <full-screen-minimize24-regular v-if="isFullscreen" class="hvr-icon" />
+                <full-screen-maximize24-regular v-else class="hvr-icon" />
+              </n-icon>
+            </template>
+          </n-button>
+        </template>
+
+        <!-- 卡片主体部分：路由 -->
+        <template #default>
+          <router-view v-slot="{ Component }">
+            <component :is="Component" />
+          </router-view>
+        </template>
+      </n-card>
+    </n-layout-content>
+  </n-layout>
 </template>
 
 <style scoped>
 /* The following css are based on Hover.css (https://ianlunn.github.io/Hover/) */
-
-/* Icon Spin */
-.hvr-icon-spin .hvr-icon {
-  transition-duration: 0.3s;
-  transition-property: transform;
-  transition-timing-function: ease-in-out;
-}
-.hvr-icon-spin:hover .hvr-icon,
-.hvr-icon-spin:focus .hvr-icon,
-.hvr-icon-spin:active .hvr-icon {
-  transform: rotate(180deg);
-}
 
 /* Icon Pop */
 @-webkit-keyframes hvr-icon-pop {

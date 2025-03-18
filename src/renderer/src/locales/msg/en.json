@@ -37,7 +37,6 @@
     "msg-downloaded": "Downloaded {0}"
   },
   "github-files": {
-    "title": "GitHub Files",
     "status-normal": "Normal",
     "status-unused": "Not Used",
     "status-wanted": "Wanted",
@@ -135,9 +134,6 @@
     "copy-code": "Copy code",
     "msg-file-name-too-long": "File name is too long!"
   },
-  "help-docs": {
-    "title": "Technical Documentation"
-  },
   "undefined": {
     "title": "Loading..."
   },
@@ -148,5 +144,21 @@
     "btn-login": "Log In",
     "msg-login-success": "Login successful",
     "msg-login-failed": "Login failed"
-  }
+  },
+  "side-menu": {
+    "label-file-explorer": "File Explorer",
+    "label-recycle-bin": "Recycle Bin",
+    "label-download-manager": "Download Manager",
+    "label-settings": "Settings"
+  },
+  "download-manager": {
+    "title": "Download Manager"
+  },
+  "recycle-bin": {
+    "title": "Recycle Bin"
+  },
+  "file-explorer": {
+    "title": "File Explorer"
+  },
+  "help-docs": {}
 }

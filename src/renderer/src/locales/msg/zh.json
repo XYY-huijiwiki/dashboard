@@ -37,7 +37,6 @@
     "msg-downloaded": "已下载 {0}"
   },
   "github-files": {
-    "title": "GitHub 文件",
     "status-normal": "正常",
     "status-unused": "未使用",
     "status-wanted": "无文件",
@@ -135,9 +134,7 @@
     "copy-code": "复制代码",
     "msg-file-name-too-long": "文件名太长！"
   },
-  "help-docs": {
-    "title": "技术文档"
-  },
+  "help-docs": {},
   "undefined": {
     "title": "加载中……"
   },
@@ -148,5 +145,20 @@
     "btn-login": "登录",
     "msg-login-success": "登录成功",
     "msg-login-failed": "登录失败"
+  },
+  "side-menu": {
+    "label-file-explorer": "文件浏览器",
+    "label-recycle-bin": "回收站",
+    "label-download-manager": "下载管理器",
+    "label-settings": "设置"
+  },
+  "download-manager": {
+    "title": "下载管理器"
+  },
+  "recycle-bin": {
+    "title": "回收站"
+  },
+  "file-explorer": {
+    "title": "文件浏览器"
   }
 }

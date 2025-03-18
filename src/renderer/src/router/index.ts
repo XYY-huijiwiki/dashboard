@@ -4,10 +4,21 @@ import { useSettingsStore } from '@renderer/stores/settings'
 const views = import.meta.glob('@renderer/views/**/*.vue')
 
 const routes: Array<RouteRecordRaw> = [
+  { path: '/', redirect: { name: 'file-explorer' } },
   {
-    path: '/',
-    name: 'home',
-    component: views['/src/views/HomeView.vue']
+    path: '/recycle-bin',
+    name: 'recycle-bin',
+    component: views['/src/views/RecycleBin.vue']
+  },
+  {
+    path: '/file-explorer',
+    name: 'file-explorer',
+    component: views['/src/views/FileExplorer.vue']
+  },
+  {
+    path: '/download-manager',
+    name: 'download-manager',
+    component: views['/src/views/DownloadManager.vue']
   },
   {
     path: '/settings',
