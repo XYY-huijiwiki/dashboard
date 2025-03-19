@@ -1,14 +1,16 @@
 import { defineStore } from 'pinia'
 import { computed } from 'vue'
 import type { Ref } from 'vue'
+import { v4 as uuidv4 } from 'uuid'
 import { useLocalStorage } from '@vueuse/core'
 import { genRawFileUrl } from '@renderer/utils/genUrl'
 
 interface downloadRecord {
-  id: string
+  uuid: string
+  downloadId: string | null
   url: string
   mimeType: string
-  status: 'downloading' | 'completed' | 'error' | 'cancelled' | 'deleted' | 'paused'
+  status: 'pending' | 'downloading' | 'completed' | 'error' | 'cancelled' | 'deleted' | 'paused'
   progress: number
   transferredBytes: number
   totalBytes: number
@@ -25,11 +27,34 @@ export const useDownloadStore = defineStore('download', () => {
 
   // Actions
   const startDownload = async (fileRecord: FileRecord) => {
+    const url = genRawFileUrl(fileRecord)
+    const uuid = uuidv4()
+
     window.api.downloadFile({
-      url: genRawFileUrl(fileRecord),
+      uuid: uuid,
+      url: url,
       filename: fileRecord.file_name,
       directory: undefined
     })
+
+    const initialData: downloadRecord = {
+      uuid: uuid,
+      downloadId: null,
+      url: url,
+      mimeType: fileRecord.content_type,
+      status: 'pending',
+      progress: 0,
+      transferredBytes: 0,
+      totalBytes: 0,
+      path: null,
+      filename: fileRecord.file_name,
+      error: null,
+      startedAt: new Date(),
+      completedAt: null
+    }
+
+    // Add the new download to the beginning of the list
+    downloads.value.unshift(initialData)
   }
 
   const cancelDownload = (downloadId) => {
@@ -55,31 +80,18 @@ export const useDownloadStore = defineStore('download', () => {
 
   // Listen for download started from the main process
   window.api.onDownloadStarted((args) => {
-    const { id, url, mimeType, filename, totalBytes, path } = args
-    console.log(`onDownloadStarted: ${id}, ${path}`)
-    const initialData: downloadRecord = {
-      id: id,
-      url: url,
-      mimeType: mimeType,
-      status: 'downloading',
-      progress: 0,
-      transferredBytes: 0,
-      totalBytes: totalBytes,
-      path: path,
-      filename: filename,
-      error: null,
-      startedAt: new Date(),
-      completedAt: null
+    const { uuid, downloadId } = args
+    const download = downloads.value.find((d) => d.uuid === uuid)
+    if (download) {
+      download.downloadId = downloadId
+      download.status = 'downloading'
     }
-
-    // Add the new download to the beginning of the list
-    downloads.value.unshift(initialData)
   })
 
   // Listen for progress updates from the main process
   window.api.onDownloadProgress((args) => {
-    const { id, percentCompleted, bytesReceived } = args
-    const download = downloads.value.find((d) => d.id === id)
+    const { uuid, percentCompleted, bytesReceived } = args
+    const download = downloads.value.find((d) => d.uuid === uuid)
     if (download) {
       download.progress = percentCompleted
       download.transferredBytes = bytesReceived
@@ -88,9 +100,8 @@ export const useDownloadStore = defineStore('download', () => {
 
   // Listen for completion events
   window.api.onDownloadCompleted((args) => {
-    const { id, filePath, filename } = args
-    console.log(`onDownloadCompleted: ${id}, ${filePath}`)
-    const download = downloads.value.find((d) => d.id === id)
+    const { uuid, filePath, filename } = args
+    const download = downloads.value.find((d) => d.uuid === uuid)
     if (download) {
       download.status = 'completed'
       download.path = filePath
@@ -101,8 +112,8 @@ export const useDownloadStore = defineStore('download', () => {
 
   // Listen for errors
   window.api.onDownloadError((args) => {
-    const { id, error } = args
-    const download = downloads.value.find((d) => d.id === id)
+    const { uuid, error } = args
+    const download = downloads.value.find((d) => d.uuid === uuid)
     if (download) {
       download.status = 'error'
       download.error = error
@@ -111,8 +122,8 @@ export const useDownloadStore = defineStore('download', () => {
 
   // Listen for cancelled
   window.api.onDownloadCancelled((args) => {
-    const { id } = args
-    const download = downloads.value.find((d) => d.id === id)
+    const { uuid } = args
+    const download = downloads.value.find((d) => d.uuid === uuid)
     if (download) {
       download.status = 'cancelled'
     }

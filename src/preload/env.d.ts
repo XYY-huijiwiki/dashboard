@@ -59,36 +59,34 @@ type CustomApi = {
   ghLogin: () => Promise<string>
 
   downloadFile: ({
+    uuid,
     url,
     filename,
     directory
   }: {
+    uuid: string
     url: string
     filename: string
     directory?: string
   }) => Promise<void>
-  onDownloadStarted: (
+  onDownloadStarted: (callback: (args: { uuid: string; downloadId: string }) => void) => void
+  onDownloadProgress: (
     callback: (args: {
-      id: string
-      url: string
-      filename: string
-      mimeType: string
+      uuid: string
+      percentCompleted: number
+      bytesReceived: number
       totalBytes: number
-      path: string
     }) => void
   ) => void
-  onDownloadProgress: (
-    callback: (args: { id: string; percentCompleted: number; bytesReceived: number }) => void
-  ) => void
   onDownloadCompleted: (
-    callback: (args: { id: string; filePath: string; filename: string }) => void
+    callback: (args: { uuid: string; filePath: string; filename: string }) => void
   ) => void
-  onDownloadCancelled: (callback: (args: { id: string }) => void) => void
-  onDownloadError: (callback: (args: { id: string; error: Error }) => void) => void
+  onDownloadCancelled: (callback: (args: { uuid: string }) => void) => void
+  onDownloadError: (callback: (args: { uuid: string; error: Error }) => void) => void
 
-  cancelDownload: (id: string) => Promise<void>
-  pauseDownload: (id: string) => Promise<void>
-  resumeDownload: (id: string) => Promise<void>
+  cancelDownload: (downloadId: string) => Promise<void>
+  pauseDownload: (downloadId: string) => Promise<void>
+  resumeDownload: (downloadId: string) => Promise<void>
 
   toggleFullScreen: () => Promise<void>
   toggleDevTools: () => Promise<void>

@@ -3,8 +3,8 @@
     <n-list v-if="downloads.length" hoverable class="download-list">
       <n-list-item
         v-for="download in downloads"
-        :key="download.id"
-        :style="{ 'view-transition-name': download.id }"
+        :key="download.uuid"
+        :style="{ 'view-transition-name': download.uuid }"
       >
         <n-thing content-indented>
           <template #avatar>
@@ -28,7 +28,7 @@
               quaternary
               size="small"
               :title="t('download-manager.btn-remove-from-list')"
-              @click="removeDownload(download.id)"
+              @click="removeDownload(download.uuid)"
             >
               <template #icon>
                 <icon icon="fluent:dismiss-20-regular" />
@@ -39,12 +39,18 @@
             <n-progress type="line" :percentage="download.progress" />
           </template>
           <template #action>
-            <n-button v-if="download.status === 'downloading'" @click="cancelDownload(download.id)">
-              Cancel
-            </n-button>
-            <n-button size="small" @click="showInFolder(download.path)">
-              {{ t('download-manager.btn-show-in-folder') }}
-            </n-button>
+            <n-flex>
+              <n-button
+                v-if="download.status === 'downloading'"
+                size="small"
+                @click="cancelDownload(download.downloadId)"
+              >
+                Cancel
+              </n-button>
+              <n-button size="small" @click="showInFolder(download.path)">
+                {{ t('download-manager.btn-show-in-folder') }}
+              </n-button>
+            </n-flex>
           </template>
         </n-thing>
       </n-list-item>
@@ -72,8 +78,8 @@ dayjs.extend(localizedFormat).locale(dayjsLocales.value)
 const { cancelDownload } = useDownloadStore()
 const { downloads } = storeToRefs(useDownloadStore())
 
-function removeDownload(id: string) {
-  document.startViewTransition(() => remove(downloads.value, (download) => download.id === id))
+function removeDownload(uuid: string) {
+  document.startViewTransition(() => remove(downloads.value, (download) => download.uuid === uuid))
 }
 
 function getOrigin(url: string) {

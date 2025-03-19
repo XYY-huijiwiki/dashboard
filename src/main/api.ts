@@ -2,7 +2,6 @@ import { ipcMain, dialog, BrowserWindow, shell } from 'electron'
 import path from 'path'
 import fs from 'fs'
 import mime from 'mime-types'
-import { v4 as uuidv4 } from 'uuid'
 import { ElectronDownloadManager } from 'electron-dl-manager'
 
 import base62 from './utils/base62.js'
@@ -74,12 +73,17 @@ function registerIPC(): void {
     'download-file',
     async (
       event,
-      { url, filename, directory }: { url: string; filename: string; directory?: string }
+      {
+        uuid,
+        url,
+        filename,
+        directory
+      }: { uuid: string; url: string; filename: string; directory?: string }
     ) => {
       const win = BrowserWindow.fromWebContents(event.sender)
       if (!win) throw new Error('No BrowserWindow found')
 
-      const tempFilename = uuidv4()
+      const tempFilename = uuid
       const targetFilename = filename
 
       await dlManager.download({
@@ -88,41 +92,37 @@ function registerIPC(): void {
         saveAsFilename: tempFilename,
         directory: directory,
         callbacks: {
-          onDownloadStarted: async ({ id, item }) => {
+          onDownloadStarted: async ({ id }) => {
             event.sender.send('download-started', {
-              id,
-              url: item.getURL(),
-              filename: targetFilename,
-              mimeType: item.getMimeType(),
-              totalBytes: item.getTotalBytes(),
-              path: item.getSavePath()
+              uuid: uuid,
+              downloadId: id
             })
           },
-          onDownloadProgress: async ({ id, item, percentCompleted }) => {
+          onDownloadProgress: async ({ item, percentCompleted }) => {
             event.sender.send('download-progress', {
-              id,
+              uuid: uuid,
               percentCompleted,
-              bytesReceived: item.getReceivedBytes()
+              bytesReceived: item.getReceivedBytes(),
+              totalBytes: item.getTotalBytes()
             })
           },
-          onDownloadCompleted: async ({ id, item }) => {
+          onDownloadCompleted: async ({ item }) => {
             const filePath = await safeRename(item.getSavePath(), targetFilename)
             const filename = path.basename(filePath)
             event.sender.send('download-completed', {
-              id,
+              uuid: uuid,
               filePath,
               filename
             })
           },
-          onDownloadCancelled: async ({ id }) => {
+          onDownloadCancelled: async () => {
             event.sender.send('download-cancelled', {
-              id
+              uuid: uuid
             })
           },
-          onError: (err, data) => {
-            if (!data) throw err
+          onError: (err) => {
             event.sender.send('download-error', {
-              id: data.id,
+              uuid: uuid,
               err
             })
           }

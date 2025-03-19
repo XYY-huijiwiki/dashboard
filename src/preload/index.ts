@@ -18,9 +18,9 @@ const api: typeof window.api = {
   onDownloadCancelled: (callback) =>
     ipcRenderer.on('download-cancelled', (_event, args) => callback(args)),
   onDownloadError: (callback) => ipcRenderer.on('download-error', (_event, args) => callback(args)),
-  cancelDownload: (id) => ipcRenderer.invoke('cancel-download', id),
-  pauseDownload: (id) => ipcRenderer.invoke('pause-download', id),
-  resumeDownload: (id) => ipcRenderer.invoke('resume-download', id),
+  cancelDownload: (downloadId) => ipcRenderer.invoke('cancel-download', downloadId),
+  pauseDownload: (downloadId) => ipcRenderer.invoke('pause-download', downloadId),
+  resumeDownload: (downloadId) => ipcRenderer.invoke('resume-download', downloadId),
   // window
   toggleFullScreen: () => ipcRenderer.invoke('toggle-fullscreen'),
   toggleDevTools: () => ipcRenderer.invoke('toggle-devtools'),
