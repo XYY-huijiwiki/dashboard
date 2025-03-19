@@ -1,8 +1,10 @@
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
 import { computed, ref, watch } from 'vue'
+import type { Ref } from 'vue'
 import { useDialog, useMessage, useModal, useLoadingBar, useNotification } from 'naive-ui'
-import { useTitle } from '@vueuse/core'
+import { useTitle, useFullscreen } from '@vueuse/core'
+import isElectron from 'is-electron'
 import {
   ArrowLeft24Regular,
   ArrowRight24Regular,
@@ -39,15 +41,22 @@ watch(
 )
 
 // #region fullscreen
-const isFullscreen = ref(false)
-const toggleFullscreen = () => {
-  isFullscreen.value = !isFullscreen.value
-  window.api.toggleFullScreen()
+const fullscreenHTML: Ref<null | HTMLElement> = ref(null)
+const { isFullscreen: isFullscreenWeb, toggle } = useFullscreen(fullscreenHTML)
+const isFullscreen = isElectron() ? ref(false) : isFullscreenWeb
+const toggleFullscreen = async () => {
+  if (isElectron()) {
+    isFullscreen.value = !isFullscreen.value
+    window.api.toggleFullScreen()
+  } else {
+    toggle()
+  }
 }
+// #endregion
 </script>
 
 <template>
-  <n-layout has-sider>
+  <n-layout ref="fullscreenHTML" has-sider>
     <n-layout-sider bordered :width="240" :native-scrollbar="false">
       <side-menu />
     </n-layout-sider>

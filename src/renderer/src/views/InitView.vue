@@ -20,6 +20,7 @@ import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import dayjs from 'dayjs'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
+import isElectron from 'is-electron'
 
 import { useSettingsStore } from '@renderer/stores/settings'
 import { dayjsLocales } from '@renderer/stores/locales'
@@ -57,7 +58,7 @@ async function login(): Promise<void> {
 }
 
 onMounted(() => {
-  if (settings.value.ghToken) {
+  if (settings.value.ghToken || !isElectron()) {
     router.push({ name: 'file-explorer' })
   }
 })

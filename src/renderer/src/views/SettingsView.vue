@@ -1,7 +1,9 @@
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
-import { useSettingsStore } from '@renderer/stores/settings'
 import { storeToRefs } from 'pinia'
+import isElectron from 'is-electron'
+
+import { useSettingsStore } from '@renderer/stores/settings'
 import { useLocalesStore, supportedLangs, userLang } from '@renderer/stores/locales'
 
 const { langCode } = storeToRefs(useLocalesStore())
@@ -67,7 +69,7 @@ function toggleDevtools(): void {
       </n-button>
     </n-form-item>
     <!-- toggle devtools -->
-    <n-form-item :label="t('settings.label-toggle-devtools')">
+    <n-form-item v-if="isElectron()" :label="t('settings.label-toggle-devtools')">
       <n-button @click="toggleDevtools()">
         {{ t('settings.btn-toggle') }}
       </n-button>

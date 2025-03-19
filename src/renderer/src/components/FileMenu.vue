@@ -21,6 +21,7 @@ import type { ComputedRef, Component, VNode } from 'vue'
 import { NDropdown, NIcon } from 'naive-ui'
 import type { DropdownOption } from 'naive-ui'
 import { useI18n } from 'vue-i18n'
+import isElectron from 'is-electron'
 import {
   FullScreenMaximize20Regular,
   Link20Regular,
@@ -73,7 +74,7 @@ const options: ComputedRef<DropdownOption[]> = computed(() => [
   {
     label: t('github-files.btn-delete'),
     icon: () => genIcon(Delete20Regular),
-    disabled: props.data.length === 0,
+    disabled: !isElectron() || props.data.length === 0,
     key: 'delete'
   },
   {
@@ -85,7 +86,7 @@ const options: ComputedRef<DropdownOption[]> = computed(() => [
   {
     label: t('github-files.btn-rename'),
     icon: () => genIcon(Rename20Regular),
-    disabled: props.data.length !== 1,
+    disabled: !isElectron() || props.data.length !== 1,
     key: 'rename'
   },
   {

@@ -4,6 +4,7 @@ import type { Ref } from 'vue'
 import { v4 as uuidv4 } from 'uuid'
 import { useLocalStorage } from '@vueuse/core'
 import { genRawFileUrl } from '@renderer/utils/genUrl'
+import isElectron from 'is-electron'
 
 interface downloadRecord {
   uuid: string
@@ -28,7 +29,7 @@ export const useDownloadStore = defineStore('download', () => {
   const downloads: Ref<downloadRecord[]> = useLocalStorage('downloads', [])
 
   // Actions
-  const startDownload = async (fileRecord: FileRecord) => {
+  async function startDownload(fileRecord: FileRecord) {
     const url = genRawFileUrl(fileRecord)
     const uuid = uuidv4()
 
@@ -61,15 +62,15 @@ export const useDownloadStore = defineStore('download', () => {
     downloads.value.unshift(initialData)
   }
 
-  const cancelDownload = (downloadId) => {
+  function cancelDownload(downloadId) {
     window.api.cancelDownload(downloadId)
   }
 
-  const pauseDownload = (downloadId) => {
+  function pauseDownload(downloadId) {
     window.api.pauseDownload(downloadId)
   }
 
-  const resumeDownload = (downloadId) => {
+  function resumeDownload(downloadId) {
     window.api.resumeDownload(downloadId)
   }
 
@@ -80,68 +81,70 @@ export const useDownloadStore = defineStore('download', () => {
 
   const completedDownloads = computed(() => downloads.value.filter((d) => d.status === 'completed'))
 
-  // Listeners
+  // Listeners (electron only)
 
-  // Listen for download started from the main process
-  window.api.onDownloadStarted((args) => {
-    const { uuid, downloadId } = args
-    const download = downloads.value.find((d) => d.uuid === uuid)
-    if (download) {
-      download.downloadId = downloadId
-      download.status = 'downloading'
-    }
-  })
+  if (isElectron()) {
+    // Listen for download started from the main process
+    window.api.onDownloadStarted((args) => {
+      const { uuid, downloadId } = args
+      const download = downloads.value.find((d) => d.uuid === uuid)
+      if (download) {
+        download.downloadId = downloadId
+        download.status = 'downloading'
+      }
+    })
 
-  // Listen for progress updates from the main process
-  window.api.onDownloadProgress((args) => {
-    const {
-      uuid,
-      percentCompleted,
-      bytesReceived,
-      totalBytes,
-      downloadRateBytesPerSecond,
-      estimatedTimeRemainingSeconds
-    } = args
-    const download = downloads.value.find((d) => d.uuid === uuid)
-    if (download) {
-      download.progress = percentCompleted
-      download.transferredBytes = bytesReceived
-      download.totalBytes = totalBytes
-      download.downloadRateBytesPerSecond = downloadRateBytesPerSecond
-      download.estimatedTimeRemainingSeconds = estimatedTimeRemainingSeconds
-    }
-  })
+    // Listen for progress updates from the main process
+    window.api.onDownloadProgress((args) => {
+      const {
+        uuid,
+        percentCompleted,
+        bytesReceived,
+        totalBytes,
+        downloadRateBytesPerSecond,
+        estimatedTimeRemainingSeconds
+      } = args
+      const download = downloads.value.find((d) => d.uuid === uuid)
+      if (download) {
+        download.progress = percentCompleted
+        download.transferredBytes = bytesReceived
+        download.totalBytes = totalBytes
+        download.downloadRateBytesPerSecond = downloadRateBytesPerSecond
+        download.estimatedTimeRemainingSeconds = estimatedTimeRemainingSeconds
+      }
+    })
 
-  // Listen for completion events
-  window.api.onDownloadCompleted((args) => {
-    const { uuid, filePath, filename } = args
-    const download = downloads.value.find((d) => d.uuid === uuid)
-    if (download) {
-      download.status = 'completed'
-      download.path = filePath
-      download.filename = filename
-      download.completedAt = new Date()
-    }
-  })
+    // Listen for completion events
+    window.api.onDownloadCompleted((args) => {
+      const { uuid, filePath, filename } = args
+      const download = downloads.value.find((d) => d.uuid === uuid)
+      if (download) {
+        download.status = 'completed'
+        download.path = filePath
+        download.filename = filename
+        download.completedAt = new Date()
+      }
+    })
 
-  // Listen for errors
-  window.api.onDownloadError((args) => {
-    const { uuid, err } = args
-    const download = downloads.value.find((d) => d.uuid === uuid)
-    if (download) {
-      download.status = 'error'
-      download.error = err
-    }
-  })
+    // Listen for errors
+    window.api.onDownloadError((args) => {
+      const { uuid, err } = args
+      const download = downloads.value.find((d) => d.uuid === uuid)
+      if (download) {
+        download.status = 'error'
+        download.error = err
+      }
+    })
 
-  // Listen for cancelled
-  window.api.onDownloadCancelled((args) => {
-    const { uuid } = args
-    const download = downloads.value.find((d) => d.uuid === uuid)
-    if (download) {
-      download.status = 'cancelled'
-    }
-  })
+    // Listen for cancelled
+    window.api.onDownloadCancelled((args) => {
+      const { uuid } = args
+      const download = downloads.value.find((d) => d.uuid === uuid)
+      if (download) {
+        download.status = 'cancelled'
+      }
+    })
+  }
 
   return {
     downloads,

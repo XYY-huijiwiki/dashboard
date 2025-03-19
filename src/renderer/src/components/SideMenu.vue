@@ -8,10 +8,10 @@ import type { MenuOption } from 'naive-ui'
 import { useRoute, RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { Icon } from '@iconify/vue'
+import isElectron from 'is-electron'
 
 const { t } = useI18n()
 const route = useRoute()
-const isDisabled = computed(() => route.name === 'init')
 
 function renderIcon(icon: string) {
   return () => h(Icon, { icon: `fluent:${icon}-24-regular` })
@@ -24,7 +24,7 @@ const options: Ref<MenuOption[]> = computed(() => [
   {
     label: renderLabel(t('side-menu.label-file-explorer'), 'file-explorer'),
     key: 'file-explorer',
-    disabled: isDisabled.value,
+    disabled: route.name === 'init',
     icon: renderIcon('folder')
   },
   {
@@ -36,13 +36,13 @@ const options: Ref<MenuOption[]> = computed(() => [
   {
     label: renderLabel(t('side-menu.label-download-manager'), 'download-manager'),
     key: 'download-manager',
-    disabled: isDisabled.value,
+    disabled: route.name === 'init' || !isElectron(),
     icon: renderIcon('arrow-download')
   },
   {
     label: renderLabel(t('side-menu.label-settings'), 'settings'),
     key: 'settings',
-    disabled: isDisabled.value,
+    disabled: route.name === 'init',
     icon: renderIcon('settings')
   }
 ])
