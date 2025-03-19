@@ -14,9 +14,11 @@ interface downloadRecord {
   progress: number
   transferredBytes: number
   totalBytes: number
+  downloadRateBytesPerSecond: number
+  estimatedTimeRemainingSeconds: number
   path: string | null
   filename: string
-  error: Error | null
+  error: string | null
   startedAt: Date
   completedAt: Date | null
 }
@@ -46,6 +48,8 @@ export const useDownloadStore = defineStore('download', () => {
       progress: 0,
       transferredBytes: 0,
       totalBytes: 0,
+      downloadRateBytesPerSecond: 0,
+      estimatedTimeRemainingSeconds: 0,
       path: null,
       filename: fileRecord.file_name,
       error: null,
@@ -90,11 +94,21 @@ export const useDownloadStore = defineStore('download', () => {
 
   // Listen for progress updates from the main process
   window.api.onDownloadProgress((args) => {
-    const { uuid, percentCompleted, bytesReceived } = args
+    const {
+      uuid,
+      percentCompleted,
+      bytesReceived,
+      totalBytes,
+      downloadRateBytesPerSecond,
+      estimatedTimeRemainingSeconds
+    } = args
     const download = downloads.value.find((d) => d.uuid === uuid)
     if (download) {
       download.progress = percentCompleted
       download.transferredBytes = bytesReceived
+      download.totalBytes = totalBytes
+      download.downloadRateBytesPerSecond = downloadRateBytesPerSecond
+      download.estimatedTimeRemainingSeconds = estimatedTimeRemainingSeconds
     }
   })
 
@@ -112,11 +126,11 @@ export const useDownloadStore = defineStore('download', () => {
 
   // Listen for errors
   window.api.onDownloadError((args) => {
-    const { uuid, error } = args
+    const { uuid, err } = args
     const download = downloads.value.find((d) => d.uuid === uuid)
     if (download) {
       download.status = 'error'
-      download.error = error
+      download.error = err
     }
   })
 

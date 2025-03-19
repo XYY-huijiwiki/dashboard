@@ -48,8 +48,6 @@ npm run dev
 ## To-Do List 📝
 
 - [ ] Support for multiple file uploads
-- [ ] Support for multiple file downloads
-- [ ] Error handling for download
 - [ ] Implement transactional operations
 - [ ] Draggable file uploads
 - [ ] Web browser support

@@ -156,7 +156,18 @@
     "title": "下载管理器",
     "btn-show-in-folder": "在文件夹中显示",
     "btn-remove-from-list": "从列表中移除",
-    "msg-no-downloads": "无下载"
+    "msg-no-downloads": "无下载",
+    "btn-pause": "暂停",
+    "btn-resume": "继续",
+    "btn-cancel": "取消",
+    "msg-downloading-info": "{speed}/s - {downloadedSize} / {totalSize}，剩余 {eta} 秒",
+    "label-pending": "等待中",
+    "label-downloading": "下载中",
+    "label-completed": "已完成",
+    "label-error": "错误",
+    "label-cancelled": "已取消",
+    "label-deleted": "已删除",
+    "label-paused": "已暂停"
   },
   "recycle-bin": {
     "title": "回收站"

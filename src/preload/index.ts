@@ -26,7 +26,8 @@ const api: typeof window.api = {
   toggleDevTools: () => ipcRenderer.invoke('toggle-devtools'),
   // file operations
   showInFolder: (filePath) => ipcRenderer.invoke('show-in-folder', filePath),
-  openFile: (filePath) => ipcRenderer.invoke('open-file', filePath)
+  openFile: (filePath) => ipcRenderer.invoke('open-file', filePath),
+  isFileExists: (filePath) => ipcRenderer.invoke('is-file-exists', filePath)
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to

@@ -24,9 +24,9 @@
           </template>
           <template #header-extra>
             <n-button
-              v-if="download.status === 'completed'"
+              v-if="['completed', 'error', 'cancelled', 'deleted'].includes(download.status)"
               quaternary
-              size="small"
+              size="tiny"
               :title="t('download-manager.btn-remove-from-list')"
               @click="removeDownload(download.uuid)"
             >
@@ -36,20 +36,74 @@
             </n-button>
           </template>
           <template #footer>
-            <n-progress type="line" :percentage="download.progress" />
+            <n-text v-if="download.status === 'error'" class="text-xs" type="error">
+              {{ download.error }}
+            </n-text>
+            <n-progress
+              type="line"
+              :percentage="download.progress"
+              :status="progressStatusMapper[download.status]"
+              :processing="download.status === 'downloading'"
+            />
           </template>
           <template #action>
-            <n-flex>
-              <n-button
-                v-if="download.status === 'downloading'"
-                size="small"
-                @click="cancelDownload(download.downloadId)"
-              >
-                Cancel
-              </n-button>
-              <n-button size="small" @click="showInFolder(download.path)">
-                {{ t('download-manager.btn-show-in-folder') }}
-              </n-button>
+            <n-flex justify="space-between">
+              <n-flex>
+                <n-text class="text-xs" strong>
+                  {{
+                    {
+                      pending: t('download-manager.label-pending'),
+                      downloading: t('download-manager.label-downloading'),
+                      completed: t('download-manager.label-completed'),
+                      error: t('download-manager.label-error'),
+                      cancelled: t('download-manager.label-cancelled'),
+                      deleted: t('download-manager.label-deleted'),
+                      paused: t('download-manager.label-paused')
+                    }[download.status]
+                  }}
+                </n-text>
+                <n-divider v-if="download.status === 'downloading'" vertical />
+                <n-text v-if="download.status === 'downloading'" class="text-xs">
+                  {{
+                    t('download-manager.msg-downloading-info', {
+                      downloadedSize: filesize(download.transferredBytes),
+                      totalSize: filesize(download.totalBytes),
+                      speed: filesize(download.downloadRateBytesPerSecond),
+                      eta: Math.ceil(download.estimatedTimeRemainingSeconds)
+                    })
+                  }}
+                </n-text>
+              </n-flex>
+              <n-flex>
+                <n-button
+                  v-if="download.status === 'completed'"
+                  size="tiny"
+                  @click="showInFolder(download.path)"
+                >
+                  {{ t('download-manager.btn-show-in-folder') }}
+                </n-button>
+                <n-button
+                  v-if="download.status === 'downloading'"
+                  size="tiny"
+                  @click="(pauseDownload(download.downloadId), (download.status = 'paused'))"
+                >
+                  {{ t('download-manager.btn-pause') }}
+                </n-button>
+                <n-button
+                  v-if="download.status === 'paused'"
+                  size="tiny"
+                  @click="(resumeDownload(download.downloadId), (download.status = 'downloading'))"
+                >
+                  {{ t('download-manager.btn-resume') }}
+                </n-button>
+                <n-button
+                  v-if="['downloading', 'paused'].includes(download.status)"
+                  size="tiny"
+                  @click="(cancelDownload(download.downloadId), (download.status = 'cancelled'))"
+                >
+                  {{ t('download-manager.btn-cancel') }}
+                </n-button>
+              </n-flex>
             </n-flex>
           </template>
         </n-thing>
@@ -62,20 +116,20 @@
 </template>
 
 <script setup lang="ts">
-import { useDownloadStore } from '@renderer/stores/download'
 import { storeToRefs } from 'pinia'
-import dayjs from 'dayjs'
-import localizedFormat from 'dayjs/plugin/localizedFormat'
-import { dayjsLocales } from '@renderer/stores/locales'
 import { remove } from 'lodash-es'
 import { Icon } from '@iconify/vue'
 import { useI18n } from 'vue-i18n'
+import { filesize as filesizeNoLocale } from 'filesize'
+
+import { useLocalesStore } from '@renderer/stores/locales'
+import { useDownloadStore } from '@renderer/stores/download'
+import { onMounted } from 'vue'
 
 const { t } = useI18n()
-
-dayjs.extend(localizedFormat).locale(dayjsLocales.value)
-
-const { cancelDownload } = useDownloadStore()
+const { langCode } = storeToRefs(useLocalesStore())
+const filesize = (size: number): string => filesizeNoLocale(size, { locale: langCode.value })
+const { pauseDownload, resumeDownload, cancelDownload } = useDownloadStore()
 const { downloads } = storeToRefs(useDownloadStore())
 
 function removeDownload(uuid: string) {
@@ -96,6 +150,28 @@ function openFile(path: string | null) {
   if (!path) throw new Error('Path is not available')
   window.api.openFile(path)
 }
+
+const progressStatusMapper = {
+  pending: 'default',
+  downloading: 'default',
+  completed: 'success',
+  error: 'error',
+  cancelled: 'warning',
+  deleted: 'error',
+  paused: 'warning'
+}
+
+onMounted(async () => {
+  for (const download of downloads.value) {
+    if (download.status === 'completed') {
+      if (await window.api.isFileExists(download.path || '')) {
+        download.status = 'completed'
+      } else {
+        download.status = 'deleted'
+      }
+    }
+  }
+})
 </script>
 
 <style scoped>

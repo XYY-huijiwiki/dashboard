@@ -98,12 +98,19 @@ function registerIPC(): void {
               downloadId: id
             })
           },
-          onDownloadProgress: async ({ item, percentCompleted }) => {
+          onDownloadProgress: async ({
+            item,
+            percentCompleted,
+            downloadRateBytesPerSecond,
+            estimatedTimeRemainingSeconds
+          }) => {
             event.sender.send('download-progress', {
               uuid: uuid,
               percentCompleted,
               bytesReceived: item.getReceivedBytes(),
-              totalBytes: item.getTotalBytes()
+              totalBytes: item.getTotalBytes(),
+              downloadRateBytesPerSecond,
+              estimatedTimeRemainingSeconds
             })
           },
           onDownloadCompleted: async ({ item }) => {
@@ -169,6 +176,10 @@ function registerIPC(): void {
 
   ipcMain.handle('open-file', async (_event, filePath: string) => {
     shell.openPath(filePath)
+  })
+
+  ipcMain.handle('is-file-exists', async (_event, filePath: string) => {
+    return fs.existsSync(filePath)
   })
 
   // #endregion

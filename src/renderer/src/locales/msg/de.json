@@ -155,7 +155,18 @@
     "title": "Download-Manager",
     "btn-show-in-folder": "Im Ordner anzeigen",
     "btn-remove-from-list": "Aus Liste entfernen",
-    "msg-no-downloads": "Keine Downloads"
+    "msg-no-downloads": "Keine Downloads",
+    "btn-pause": "Anhalten",
+    "btn-resume": "Fortsetzen",
+    "btn-cancel": "Abbrechen",
+    "msg-downloading-info": "{speed}/s - {downloadedSize} von {totalSize}, {eta} Sekunden verbleibend",
+    "label-pending": "Ausstehend",
+    "label-downloading": "Herunterladen",
+    "label-completed": "Abgeschlossen",
+    "label-error": "Fehler",
+    "label-cancelled": "Abgebrochen",
+    "label-deleted": "Gelöscht",
+    "label-paused": "Angehalten"
   },
   "recycle-bin": {
     "title": "Papierkorb"

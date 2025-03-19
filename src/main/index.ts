@@ -2,10 +2,12 @@ import { app, shell, BrowserWindow } from 'electron'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import { join } from 'path'
 import { fileURLToPath } from 'url'
+import debug from 'electron-debug'
 
 import icon from '../../resources/icon.png?asset'
 import registerIPC from './api.js'
 
+debug()
 let mainWindow: BrowserWindow
 
 function createWindow(): void {
@@ -54,11 +56,6 @@ app.whenReady().then(() => {
   // see https://github.com/alex8088/electron-toolkit/tree/master/packages/utils
   app.on('browser-window-created', (_, window) => {
     optimizer.watchWindowShortcuts(window)
-
-    // in dev mode, open devtools automatically
-    if (is.dev) {
-      window.webContents.openDevTools({ mode: 'right' })
-    }
   })
 
   // IPC

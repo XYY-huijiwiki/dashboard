@@ -155,7 +155,18 @@
     "title": "Download Manager",
     "btn-show-in-folder": "Show in folder",
     "btn-remove-from-list": "Remove from list",
-    "msg-no-downloads": "No downloads"
+    "msg-no-downloads": "No downloads",
+    "btn-pause": "Pause",
+    "btn-resume": "Resume",
+    "btn-cancel": "Cancel",
+    "msg-downloading-info": "{speed}/s - {downloadedSize} of {totalSize}, {eta} secs left",
+    "label-pending": "Pending",
+    "label-downloading": "Downloading",
+    "label-completed": "Completed",
+    "label-error": "Error",
+    "label-cancelled": "Cancelled",
+    "label-deleted": "Deleted",
+    "label-paused": "Paused"
   },
   "recycle-bin": {
     "title": "Recycle Bin"

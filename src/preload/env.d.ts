@@ -76,13 +76,15 @@ type CustomApi = {
       percentCompleted: number
       bytesReceived: number
       totalBytes: number
+      downloadRateBytesPerSecond: number
+      estimatedTimeRemainingSeconds: number
     }) => void
   ) => void
   onDownloadCompleted: (
     callback: (args: { uuid: string; filePath: string; filename: string }) => void
   ) => void
   onDownloadCancelled: (callback: (args: { uuid: string }) => void) => void
-  onDownloadError: (callback: (args: { uuid: string; error: Error }) => void) => void
+  onDownloadError: (callback: (args: { uuid: string; err: string }) => void) => void
 
   cancelDownload: (downloadId: string) => Promise<void>
   pauseDownload: (downloadId: string) => Promise<void>
@@ -93,6 +95,7 @@ type CustomApi = {
 
   showInFolder: (filePath: string) => Promise<void>
   openFile: (filePath: string) => Promise<void>
+  isFileExists: (filePath: string) => Promise<boolean>
 }
 
 declare global {
