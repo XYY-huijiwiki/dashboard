@@ -1,3 +1,13 @@
+## [0.2.3](https://github.com/XYY-huijiwiki/r-drive/compare/v0.2.2...v0.2.3) (2025-03-19)
+
+### Features
+
+- add file download page ([8bbc835](https://github.com/XYY-huijiwiki/r-drive/commit/8bbc835e05daf39a5e47e87c87b164c2301d5c40))
+- **download:** add 'pending' status before 'downloading' ([40c538c](https://github.com/XYY-huijiwiki/r-drive/commit/40c538cc0a224ab32f2e467f4876f241e681095f))
+- **download:** allow multiple file downloads ([2c7e923](https://github.com/XYY-huijiwiki/r-drive/commit/2c7e9234b2baa6374823c21ac1bd1ba03b91fd01))
+- **download:** display download details ([c897436](https://github.com/XYY-huijiwiki/r-drive/commit/c89743693d2634ae5f69168c346a162849bf6a52))
+- **ui:** add sidebar ([13bc774](https://github.com/XYY-huijiwiki/r-drive/commit/13bc774122e0f5bb84a5119f652722a00b646c2b))
+
 ## [0.2.2](https://github.com/XYY-huijiwiki/r-drive/compare/v0.2.1...v0.2.2) (2025-03-18)
 
 ### Features
