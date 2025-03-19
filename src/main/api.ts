@@ -2,12 +2,14 @@ import { ipcMain, dialog, BrowserWindow, shell } from 'electron'
 import path from 'path'
 import fs from 'fs'
 import mime from 'mime-types'
-import { download, CancelError } from 'electron-dl'
-import type { Options } from 'electron-dl'
+import { v4 as uuidv4 } from 'uuid'
+import { ElectronDownloadManager } from 'electron-dl-manager'
 
 import base62 from './utils/base62.js'
 import ghLogin from './utils/ghLogin.js'
 import safeRename from './utils/safeRename.js'
+
+const dlManager = new ElectronDownloadManager()
 
 function registerIPC(): void {
   // #region file upload
@@ -68,63 +70,77 @@ function registerIPC(): void {
 
   // #region download file
 
-  const downloadItems: Record<string, Electron.DownloadItem> = {}
-
   ipcMain.handle(
     'download-file',
-    async (event, { id, url, options }: { id: string; url: string; options: Options }) => {
+    async (
+      event,
+      { url, filename, directory }: { url: string; filename: string; directory?: string }
+    ) => {
       const win = BrowserWindow.fromWebContents(event.sender)
       if (!win) throw new Error('No BrowserWindow found')
 
-      let targetFilename = options.filename
+      const tempFilename = uuidv4()
+      const targetFilename = filename
 
-      try {
-        download(win, url, {
-          ...options,
-          filename: id,
-          onStarted: (item) => {
-            event.sender.send('downloadStarted', { id })
-            downloadItems[id] = item
-          },
-          onProgress: (progress) => {
-            event.sender.send('downloadProgress', {
+      await dlManager.download({
+        window: win,
+        url: url,
+        saveAsFilename: tempFilename,
+        directory: directory,
+        callbacks: {
+          onDownloadStarted: async ({ id, item }) => {
+            event.sender.send('download-started', {
               id,
-              ...progress
+              url: item.getURL(),
+              filename: targetFilename,
+              mimeType: item.getMimeType(),
+              totalBytes: item.getTotalBytes(),
+              path: item.getSavePath()
             })
           },
-          onCompleted: async (data) => {
-            if (!targetFilename) targetFilename = downloadItems[id].getFilename()
-            const filePath = await safeRename(data.path, targetFilename)
-            const fileName = path.basename(filePath)
-            event.sender.send('downloadCompleted', {
+          onDownloadProgress: async ({ id, item, percentCompleted }) => {
+            event.sender.send('download-progress', {
+              id,
+              percentCompleted,
+              bytesReceived: item.getReceivedBytes()
+            })
+          },
+          onDownloadCompleted: async ({ id, item }) => {
+            const filePath = await safeRename(item.getSavePath(), targetFilename)
+            const filename = path.basename(filePath)
+            event.sender.send('download-completed', {
               id,
               filePath,
-              fileName
+              filename
             })
-            delete downloadItems[id]
           },
-          onCancel: (_item) => {
-            event.sender.send('downloadCancelled', { id })
-            delete downloadItems[id]
+          onDownloadCancelled: async ({ id }) => {
+            event.sender.send('download-cancelled', {
+              id
+            })
+          },
+          onError: (err, data) => {
+            if (!data) throw err
+            event.sender.send('download-error', {
+              id: data.id,
+              err
+            })
           }
-        })
-      } catch (error) {
-        if (error instanceof CancelError) {
-          console.info('item.cancel() was called')
-        } else {
-          console.error(error)
         }
-        event.sender.send('downloadError', { id, error })
-        throw error
-      }
+      })
     }
   )
 
   ipcMain.handle('cancel-download', async (_event, id: string) => {
-    const item = downloadItems[id]
-    if (item) {
-      item.cancel()
-    }
+    dlManager.cancelDownload(id)
+  })
+
+  ipcMain.handle('pause-download', async (_event, id: string) => {
+    dlManager.pauseDownload(id)
+  })
+
+  ipcMain.handle('resume-download', async (_event, id: string) => {
+    dlManager.resumeDownload(id)
   })
 
   // #endregion

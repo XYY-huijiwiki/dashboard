@@ -155,7 +155,8 @@
   "download-manager": {
     "title": "下载管理器",
     "btn-show-in-folder": "在文件夹中显示",
-    "btn-remove-from-list": "从列表中移除"
+    "btn-remove-from-list": "从列表中移除",
+    "msg-no-downloads": "无下载"
   },
   "recycle-bin": {
     "title": "回收站"

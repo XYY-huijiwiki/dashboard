@@ -154,7 +154,8 @@
   "download-manager": {
     "title": "Download Manager",
     "btn-show-in-folder": "Show in folder",
-    "btn-remove-from-list": "Remove from list"
+    "btn-remove-from-list": "Remove from list",
+    "msg-no-downloads": "No downloads"
   },
   "recycle-bin": {
     "title": "Recycle Bin"

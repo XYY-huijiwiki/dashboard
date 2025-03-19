@@ -1,8 +1,6 @@
 import { defineStore } from 'pinia'
 import { computed } from 'vue'
 import type { Ref } from 'vue'
-import { v4 as uuidv4 } from 'uuid'
-import type { Options } from 'electron-dl'
 import { useLocalStorage } from '@vueuse/core'
 import { genRawFileUrl } from '@renderer/utils/genUrl'
 
@@ -10,7 +8,7 @@ interface downloadRecord {
   id: string
   url: string
   mimeType: string
-  status: 'pending' | 'downloading' | 'completed' | 'error' | 'cancelled'
+  status: 'downloading' | 'completed' | 'error' | 'cancelled' | 'deleted' | 'paused'
   progress: number
   transferredBytes: number
   totalBytes: number
@@ -26,39 +24,29 @@ export const useDownloadStore = defineStore('download', () => {
   const downloads: Ref<downloadRecord[]> = useLocalStorage('downloads', [])
 
   // Actions
-  const startDownload = async (fileRecord: FileRecord, options: Options = {}) => {
-    const downloadId = uuidv4()
-    const url = genRawFileUrl(fileRecord)
-    const initialData: downloadRecord = {
-      id: downloadId,
-      url,
-      mimeType: fileRecord.content_type,
-      status: 'pending',
-      progress: 0,
-      transferredBytes: 0,
-      totalBytes: 0,
-      path: null,
+  const startDownload = async (fileRecord: FileRecord) => {
+    window.api.downloadFile({
+      url: genRawFileUrl(fileRecord),
       filename: fileRecord.file_name,
-      error: null,
-      startedAt: new Date(),
-      completedAt: null
-    }
-
-    // Add the new download to the list
-    downloads.value.push(initialData)
-
-    // Start the download by sending a request to the main process
-    window.api.downloadFile({ id: downloadId, url, options })
+      directory: undefined
+    })
   }
 
   const cancelDownload = (downloadId) => {
-    // Send a cancellation request to the main process
     window.api.cancelDownload(downloadId)
+  }
+
+  const pauseDownload = (downloadId) => {
+    window.api.pauseDownload(downloadId)
+  }
+
+  const resumeDownload = (downloadId) => {
+    window.api.resumeDownload(downloadId)
   }
 
   // Getters
   const activeDownloads = computed(() =>
-    downloads.value.filter((d) => ['pending', 'downloading'].includes(d.status))
+    downloads.value.filter((d) => ['downloading'].includes(d.status))
   )
 
   const completedDownloads = computed(() => downloads.value.filter((d) => d.status === 'completed'))
@@ -67,33 +55,46 @@ export const useDownloadStore = defineStore('download', () => {
 
   // Listen for download started from the main process
   window.api.onDownloadStarted((args) => {
-    const { id } = args
-    const download = downloads.value.find((d) => d.id === id)
-    if (download && download.status === 'pending') {
-      download.status = 'downloading'
+    const { id, url, mimeType, filename, totalBytes, path } = args
+    console.log(`onDownloadStarted: ${id}, ${path}`)
+    const initialData: downloadRecord = {
+      id: id,
+      url: url,
+      mimeType: mimeType,
+      status: 'downloading',
+      progress: 0,
+      transferredBytes: 0,
+      totalBytes: totalBytes,
+      path: path,
+      filename: filename,
+      error: null,
+      startedAt: new Date(),
+      completedAt: null
     }
+
+    // Add the new download to the beginning of the list
+    downloads.value.unshift(initialData)
   })
 
   // Listen for progress updates from the main process
   window.api.onDownloadProgress((args) => {
-    const { id, percent, transferredBytes, totalBytes } = args
+    const { id, percentCompleted, bytesReceived } = args
     const download = downloads.value.find((d) => d.id === id)
     if (download) {
-      download.progress = percent
-      download.transferredBytes = transferredBytes
-      download.totalBytes = totalBytes
+      download.progress = percentCompleted
+      download.transferredBytes = bytesReceived
     }
   })
 
   // Listen for completion events
   window.api.onDownloadCompleted((args) => {
-    console.table(args)
-    const { id, fileName, filePath } = args
+    const { id, filePath, filename } = args
+    console.log(`onDownloadCompleted: ${id}, ${filePath}`)
     const download = downloads.value.find((d) => d.id === id)
     if (download) {
       download.status = 'completed'
       download.path = filePath
-      download.filename = fileName
+      download.filename = filename
       download.completedAt = new Date()
     }
   })
@@ -121,6 +122,8 @@ export const useDownloadStore = defineStore('download', () => {
     downloads,
     startDownload,
     cancelDownload,
+    pauseDownload,
+    resumeDownload,
     activeDownloads,
     completedDownloads
   }

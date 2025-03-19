@@ -1,7 +1,11 @@
 <template>
   <n-scrollbar>
     <n-list v-if="downloads.length" hoverable class="download-list">
-      <n-list-item v-for="download in downloads" :key="download.id">
+      <n-list-item
+        v-for="download in downloads"
+        :key="download.id"
+        :style="{ 'view-transition-name': download.id }"
+      >
         <n-thing content-indented>
           <template #avatar>
             <file-icon :file-type="download.mimeType" :size="28" />
@@ -32,13 +36,10 @@
             </n-button>
           </template>
           <template #footer>
-            <n-progress type="line" :percentage="Math.floor(download.progress * 100)" />
+            <n-progress type="line" :percentage="download.progress" />
           </template>
           <template #action>
-            <n-button
-              v-if="download.status === 'downloading' || download.status === 'pending'"
-              @click="cancelDownload(download.id)"
-            >
+            <n-button v-if="download.status === 'downloading'" @click="cancelDownload(download.id)">
               Cancel
             </n-button>
             <n-button size="small" @click="showInFolder(download.path)">
@@ -48,7 +49,9 @@
         </n-thing>
       </n-list-item>
     </n-list>
-    <n-empty v-else> No downloads </n-empty>
+    <n-empty v-else>
+      {{ t('download-manager.msg-no-downloads') }}
+    </n-empty>
   </n-scrollbar>
 </template>
 

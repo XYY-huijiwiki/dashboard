@@ -99,14 +99,11 @@ const router = useRouter()
 dayjs.extend(localizedFormat).locale(dayjsLocales.value)
 
 const fileDownload = debounce(fileDownloadUndebounced, 300)
-function fileDownloadUndebounced(): void {
-  checkedItems.value.forEach((item) => {
-    startDownload(item, {
-      filename: item.file_name,
-      overwrite: false
-    })
-    router.push({ name: 'download-manager' })
-  })
+async function fileDownloadUndebounced() {
+  router.push({ name: 'download-manager' })
+  for (const item of checkedItems.value) {
+    startDownload(item)
+  }
 }
 
 function linkCopy(): void {

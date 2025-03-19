@@ -154,7 +154,8 @@
   "download-manager": {
     "title": "Download-Manager",
     "btn-show-in-folder": "Im Ordner anzeigen",
-    "btn-remove-from-list": "Aus Liste entfernen"
+    "btn-remove-from-list": "Aus Liste entfernen",
+    "msg-no-downloads": "Keine Downloads"
   },
   "recycle-bin": {
     "title": "Papierkorb"

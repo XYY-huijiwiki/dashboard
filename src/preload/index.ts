@@ -10,15 +10,17 @@ const api: typeof window.api = {
   // download
   downloadFile: (args) => ipcRenderer.invoke('download-file', args),
   onDownloadStarted: (callback) =>
-    ipcRenderer.on('downloadStarted', (_event, args) => callback(args)),
+    ipcRenderer.on('download-started', (_event, args) => callback(args)),
   onDownloadProgress: (callback) =>
-    ipcRenderer.on('downloadProgress', (_event, args) => callback(args)),
+    ipcRenderer.on('download-progress', (_event, args) => callback(args)),
   onDownloadCompleted: (callback) =>
-    ipcRenderer.on('downloadCompleted', (_event, args) => callback(args)),
+    ipcRenderer.on('download-completed', (_event, args) => callback(args)),
   onDownloadCancelled: (callback) =>
-    ipcRenderer.on('downloadCancelled', (_event, args) => callback(args)),
-  onDownloadError: (callback) => ipcRenderer.on('downloadError', (_event, args) => callback(args)),
+    ipcRenderer.on('download-cancelled', (_event, args) => callback(args)),
+  onDownloadError: (callback) => ipcRenderer.on('download-error', (_event, args) => callback(args)),
   cancelDownload: (id) => ipcRenderer.invoke('cancel-download', id),
+  pauseDownload: (id) => ipcRenderer.invoke('pause-download', id),
+  resumeDownload: (id) => ipcRenderer.invoke('resume-download', id),
   // window
   toggleFullScreen: () => ipcRenderer.invoke('toggle-fullscreen'),
   toggleDevTools: () => ipcRenderer.invoke('toggle-devtools'),
