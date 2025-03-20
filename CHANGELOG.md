@@ -1,3 +1,16 @@
+## [0.2.4](https://github.com/XYY-huijiwiki/r-drive/compare/v0.2.3...v0.2.4) (2025-03-20)
+
+### Bug Fixes
+
+- **file-usage:** show empty list if 404 is returned ([69f8caf](https://github.com/XYY-huijiwiki/r-drive/commit/69f8caf21200c852abb57151829bdfe2b9c68920))
+
+### Features
+
+- add more icons for file types ([4a339d8](https://github.com/XYY-huijiwiki/r-drive/commit/4a339d8932274bc10ed00ae8f491bf806fa3b58c))
+- enforce single instance lock ([4c5d01f](https://github.com/XYY-huijiwiki/r-drive/commit/4c5d01fa38655842ffb587b530b8ae6cedd99e76))
+- improve browser environment compatibility ([0cc3802](https://github.com/XYY-huijiwiki/r-drive/commit/0cc38021078cc555aa2d79db84dffd5f80264e38))
+- **ui:** add downloading indicator in sidebar ([9437dfb](https://github.com/XYY-huijiwiki/r-drive/commit/9437dfb7b994250e2529967794dda56ba1d8a386))
+
 ## [0.2.3](https://github.com/XYY-huijiwiki/r-drive/compare/v0.2.2...v0.2.3) (2025-03-19)
 
 ### Features
