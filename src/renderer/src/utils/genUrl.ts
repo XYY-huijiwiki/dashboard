@@ -1,11 +1,13 @@
-import { useSettingsStore } from '@renderer/stores/settings'
 import { storeToRefs } from 'pinia'
+
+import { is } from '@renderer/utils'
+import { useSettingsStore } from '@renderer/stores/settings'
 
 const { settings } = storeToRefs(useSettingsStore())
 
 function genRawFileUrl(file: FileRecord): string {
   let corsProxy = ''
-  if (import.meta.env.DEV && file.content_type.startsWith('model')) {
+  if (is.dev && file.content_type.startsWith('model')) {
     corsProxy = 'https://cors-proxy.24218079.xyz/'
   }
   return `${corsProxy}https://github.com/${settings.value.ghOwner}/${settings.value.ghRepo}/releases/download/${settings.value.ghFileRelease}/${file.file_name_base62}`

@@ -18,14 +18,9 @@ import { onMounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
-import dayjs from 'dayjs'
-import localizedFormat from 'dayjs/plugin/localizedFormat'
-import isElectron from 'is-electron'
 
+import { is, errNotify } from '@renderer/utils'
 import { useSettingsStore } from '@renderer/stores/settings'
-import { dayjsLocales } from '@renderer/stores/locales'
-
-dayjs.extend(localizedFormat).locale(dayjsLocales.value)
 
 const { t } = useI18n()
 
@@ -36,31 +31,95 @@ const { settings } = storeToRefs(useSettingsStore())
 const loading = ref(false)
 
 async function login(): Promise<void> {
-  loading.value = true
+  // #region web login
+  if (is.web) {
+    const serverlessURL = 'https://r-drive.24218079.xyz/'
+    const url = new URL(serverlessURL + 'login')
+    url.searchParams.set('redirect_uri', location.href)
+    url.searchParams.set('scope', 'public_repo')
+    location.href = url.href
+  }
+  // #endregion
 
-  try {
-    const token = await window.api.ghLogin()
-    if (!token) throw new Error('No token')
-    settings.value.ghToken = token
+  // #region electron login
+  else {
+    loading.value = true
 
-    window.$message.success(t('init.msg-login-success'))
-    router.push({ name: 'file-explorer' })
-  } catch (e) {
-    console.dir(e)
-    window.$notification.error({
-      title: t('init.msg-login-failed'),
-      content: `${e}`,
-      meta: dayjs().format('lll')
-    })
-  } finally {
-    loading.value = false
+    try {
+      const token = await window.api.ghLogin()
+      if (!token) throw new Error('No token')
+      settings.value.ghToken = token
+
+      window.$message.success(t('init.msg-login-success'))
+      router.push({ name: 'file-explorer' })
+    } catch (e) {
+      errNotify(t('init.msg-login-failed'), e as Error)
+    } finally {
+      loading.value = false
+    }
   }
 }
 
-onMounted(() => {
-  if (settings.value.ghToken || !isElectron()) {
-    router.push({ name: 'file-explorer' })
+onMounted(async () => {
+  // #region web onMounted
+  if (is.web) {
+    try {
+      // check if `access_token` is returned from GitHub
+      const accessToken = new URLSearchParams(location.search).get('access_token')
+      if (accessToken) {
+        settings.value.ghToken = accessToken
+        location.href = (() => {
+          const url = new URL(location.href)
+          url.searchParams.delete('access_token')
+          return url.href
+        })()
+      }
+
+      // check if user is already logged in
+      if (settings.value.ghToken) {
+        const res = await (
+          await fetch('https://api.github.com/repos/XYY-huijiwiki/files', {
+            headers: {
+              Authorization: `bearer ${settings.value.ghToken}`,
+              'X-GitHub-Api-Version': '2022-11-28'
+            }
+          })
+        ).json()
+        console.log(res)
+        if (res.status === '401') {
+          // bad credentials
+          settings.value.ghToken = ''
+        } else if (res.permissions?.admin) {
+          loading.value = false
+          router.push({ name: 'file-explorer' })
+          return
+        } else {
+          window.$dialog.warning({
+            autoFocus: false,
+            title: t('miui-themes.step1-permission-denied-title'),
+            content: t('miui-themes.step1-permission-denied-content')
+          })
+        }
+
+        loading.value = false
+        return
+      }
+
+      // not logged in
+      loading.value = false
+    } catch (error) {
+      errNotify(t('init.msg-login-failed'), error as Error)
+    }
   }
+  // #endregion
+
+  // #region electron onMounted
+  else {
+    if (settings.value.ghToken) {
+      router.push({ name: 'file-explorer' })
+    }
+  }
+  // #endregion
 })
 </script>
 

@@ -4,7 +4,7 @@
       <n-scrollbar x-scrollable class="flex-1 w-0 shrink-0 pb-2">
         <n-flex :wrap="false" size="small">
           <!-- new -->
-          <n-button quaternary @click="emit('new-file')">
+          <n-button quaternary :disabled="is.web" @click="emit('new-file')">
             <template #icon>
               <n-icon :size="24">
                 <add-circle24-regular />
@@ -40,7 +40,7 @@
           <!-- rename -->
           <tooltipped-icon-button
             :text="t('github-files.btn-rename')"
-            :disabled="!isElectron() || checkedRowKeys.length !== 1"
+            :disabled="is.web || checkedRowKeys.length !== 1"
             @click="emit('file-rename')"
           >
             <rename24-regular />
@@ -48,7 +48,7 @@
           <!-- delete -->
           <tooltipped-icon-button
             :text="t('github-files.btn-delete')"
-            :disabled="!isElectron() || checkedRowKeys.length === 0"
+            :disabled="is.web || checkedRowKeys.length === 0"
             @click="emit('file-delete')"
           >
             <delete24-regular />
@@ -150,9 +150,9 @@ import {
   Cut24Regular
 } from '@vicons/fluent'
 import { storeToRefs } from 'pinia'
-import isElectron from 'is-electron'
 
 import { useExplorerStateStore } from '@renderer/stores/explorerState'
+import { is } from '@renderer/utils'
 
 const { explorerState } = storeToRefs(useExplorerStateStore())
 

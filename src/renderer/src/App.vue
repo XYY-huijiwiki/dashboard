@@ -4,7 +4,6 @@ import { computed, ref, watch } from 'vue'
 import type { Ref } from 'vue'
 import { useDialog, useMessage, useModal, useLoadingBar, useNotification } from 'naive-ui'
 import { useTitle, useFullscreen } from '@vueuse/core'
-import isElectron from 'is-electron'
 import {
   ArrowLeft24Regular,
   ArrowRight24Regular,
@@ -14,8 +13,9 @@ import {
 } from '@vicons/fluent'
 import { useRouter } from 'vue-router'
 
+import { is } from '@renderer/utils'
+
 const router = useRouter()
-const dev = import.meta.env.DEV
 const { t } = useI18n()
 
 // naive-ui register
@@ -43,9 +43,9 @@ watch(
 // #region fullscreen
 const fullscreenHTML: Ref<null | HTMLElement> = ref(null)
 const { isFullscreen: isFullscreenWeb, toggle } = useFullscreen(fullscreenHTML)
-const isFullscreen = isElectron() ? ref(false) : isFullscreenWeb
+const isFullscreen = !is.web ? ref(false) : isFullscreenWeb
 const toggleFullscreen = async () => {
-  if (isElectron()) {
+  if (!is.web) {
     isFullscreen.value = !isFullscreen.value
     window.api.toggleFullScreen()
   } else {
@@ -90,7 +90,7 @@ const toggleFullscreen = async () => {
               </template>
             </n-button>
             <!-- dev tag -->
-            <n-tag v-if="dev">{{ t('dev-tag') }}</n-tag>
+            <n-tag v-if="is.dev">{{ t('dev-tag') }}</n-tag>
             <!-- navigation title -->
             {{
               {

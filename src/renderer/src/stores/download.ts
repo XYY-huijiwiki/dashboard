@@ -3,7 +3,8 @@ import { computed } from 'vue'
 import type { Ref } from 'vue'
 import { v4 as uuidv4 } from 'uuid'
 import { useLocalStorage } from '@vueuse/core'
-import isElectron from 'is-electron'
+
+import { is } from '@renderer/utils'
 
 interface downloadRecord {
   uuid: string
@@ -83,7 +84,7 @@ export const useDownloadStore = defineStore('download', () => {
 
   // Listeners (electron only)
 
-  if (isElectron()) {
+  if (!is.web) {
     // Listen for download started from the main process
     window.api.onDownloadStarted((args) => {
       const { uuid, downloadId } = args

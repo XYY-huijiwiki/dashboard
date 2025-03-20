@@ -1,6 +1,5 @@
 import { createRouter, createWebHashHistory, type RouteRecordRaw } from 'vue-router'
 import { useSettingsStore } from '@renderer/stores/settings'
-import isElectron from 'is-electron'
 
 const views = import.meta.glob('@renderer/views/**/*.vue')
 
@@ -44,7 +43,7 @@ const router = createRouter({
 
 router.beforeEach((to) => {
   const store = useSettingsStore()
-  if (!store.settings.ghToken && to.name !== 'init' && isElectron()) {
+  if (!store.settings.ghToken && to.name !== 'init') {
     return '/init'
   }
   return true

@@ -8,10 +8,11 @@ import type { MenuOption } from 'naive-ui'
 import { useRoute, RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { Icon } from '@iconify/vue'
-import isElectron from 'is-electron'
-import DownloadIcon from './DownloadIcon.vue'
-import { useDownloadStore } from '@renderer/stores/download'
 import { storeToRefs } from 'pinia'
+
+import DownloadIcon from '@renderer/components/DownloadIcon.vue'
+import { useDownloadStore } from '@renderer/stores/download'
+import { is } from '@renderer/utils'
 
 const { t } = useI18n()
 const route = useRoute()
@@ -40,7 +41,7 @@ const options: Ref<MenuOption[]> = computed(() => [
   {
     label: renderLabel(t('side-menu.label-download-manager'), 'download-manager'),
     key: 'download-manager',
-    disabled: route.name === 'init' || !isElectron(),
+    disabled: route.name === 'init' || is.web,
     icon: () => h(DownloadIcon, { downloading: activeDownloads.value.length > 0 })
   },
   {
