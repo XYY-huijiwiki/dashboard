@@ -42,7 +42,6 @@
       <model-viewer
         v-else-if="fileRecord?.content_type?.startsWith('model')"
         autoplay
-        auto-rotate
         :src="genRawFileUrl(fileRecord)"
         camera-controls
         touch-action="pan-y"

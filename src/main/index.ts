@@ -7,8 +7,24 @@ import debug from 'electron-debug'
 import icon from '../../resources/icon.png?asset'
 import registerIPC from './api.js'
 
+// register debug environment for dev
 debug()
+
 let mainWindow: BrowserWindow
+
+// single instance lock
+const isSingleInstance = app.requestSingleInstanceLock()
+if (!isSingleInstance) {
+  app.quit()
+} else {
+  app.on('second-instance', () => {
+    // Someone tried to run a second instance, we should focus our window.
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) mainWindow.restore()
+      mainWindow.focus()
+    }
+  })
+}
 
 function createWindow(): void {
   // Create the browser window.
