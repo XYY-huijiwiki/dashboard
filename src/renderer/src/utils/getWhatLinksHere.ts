@@ -31,6 +31,8 @@ function parseHTML(html: string) {
 }
 
 async function getWhatLinksHere(pageName: string): Promise<string[]> {
+  console.log('getWhatLinksHere triggered:', pageName)
+
   const url = new URL('https://xyy.huijiwiki.com/index.php')
   url.searchParams.set('title', `Special:Whatlinkshere/${pageName}`)
   url.searchParams.set('limit', '5000')
@@ -40,10 +42,23 @@ async function getWhatLinksHere(pageName: string): Promise<string[]> {
   let nextPageLink: string | null = url.toString()
 
   while (nextPageLink) {
-    const html = await ky.get(nextPageLink).text()
+    const html = await ky
+      .get(nextPageLink, {
+        hooks: {
+          afterResponse: [
+            // treat 404 (not found) as empty response
+            (_request, _options, response) => {
+              if (response.status === 404) {
+                return new Response('', { status: 200 })
+              }
+              return response
+            }
+          ]
+        }
+      })
+      .text()
     const { nextPageLink: newNextPageLink, links: newLinks } = parseHTML(html)
     links.push(...newLinks)
-    // nextPageLink = newNextPageLink
     if (newNextPageLink) {
       const url = new URL(newNextPageLink)
       url.searchParams.set('t', Date.now().toString()) // avoid cache

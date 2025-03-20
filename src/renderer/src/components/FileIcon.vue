@@ -21,8 +21,6 @@ const iconPack = import.meta.glob('../assets/icons/*.ico', {
   eager: true
 })
 
-console.log('iconPack', iconPack)
-
 const src = computed(() => {
   const iconName = getIconName(fileType)
   return iconPack[`../assets/icons/${iconName}.ico`]
