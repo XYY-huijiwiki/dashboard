@@ -4,7 +4,7 @@
       <n-list-item
         v-for="download in downloads"
         :key="download.uuid"
-        :style="{ 'view-transition-name': download.uuid }"
+        :style="{ 'view-transition-name': `dl-item-${download.uuid}` }"
       >
         <n-thing content-indented>
           <template #avatar>

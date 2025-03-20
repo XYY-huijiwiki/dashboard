@@ -3,7 +3,6 @@ import { computed } from 'vue'
 import type { Ref } from 'vue'
 import { v4 as uuidv4 } from 'uuid'
 import { useLocalStorage } from '@vueuse/core'
-import { genRawFileUrl } from '@renderer/utils/genUrl'
 import isElectron from 'is-electron'
 
 interface downloadRecord {
@@ -30,6 +29,7 @@ export const useDownloadStore = defineStore('download', () => {
 
   // Actions
   async function startDownload(fileRecord: FileRecord) {
+    const { genRawFileUrl } = await import('../utils/genUrl')
     const url = genRawFileUrl(fileRecord)
     const uuid = uuidv4()
 
@@ -76,7 +76,7 @@ export const useDownloadStore = defineStore('download', () => {
 
   // Getters
   const activeDownloads = computed(() =>
-    downloads.value.filter((d) => ['downloading'].includes(d.status))
+    downloads.value.filter((d) => ['pending', 'downloading'].includes(d.status))
   )
 
   const completedDownloads = computed(() => downloads.value.filter((d) => d.status === 'completed'))

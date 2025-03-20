@@ -159,7 +159,7 @@
     "btn-pause": "Anhalten",
     "btn-resume": "Fortsetzen",
     "btn-cancel": "Abbrechen",
-    "msg-downloading-info": "{speed}/s - {downloadedSize} von {totalSize}, {eta} Sekunden verbleibend",
+    "msg-downloading-info": "{speed}/s - {downloadedSize} von {totalSize}, {eta} Sek. verbleibend",
     "label-pending": "Ausstehend",
     "label-downloading": "Herunterladen",
     "label-completed": "Abgeschlossen",
