@@ -13,20 +13,29 @@ import {
 } from '@vicons/fluent'
 import { useRouter } from 'vue-router'
 
+import NavigationIcon from './components/NavigationIcon.vue'
 import { is } from '@renderer/utils'
 
 const router = useRouter()
 const { t } = useI18n()
 
 // naive-ui register
-window.$dialog = useDialog()
-window.$message = useMessage()
-window.$modal = useModal()
-window.$loadingBar = useLoadingBar()
-window.$notification = useNotification()
+if (!is.web) {
+  window.$dialog = useDialog()
+  window.$message = useMessage()
+  window.$modal = useModal()
+  window.$loadingBar = useLoadingBar()
+  window.$notification = useNotification()
+}
 
 // set title
 useTitle(computed(() => t('home.title')))
+
+// collapsable side bar
+const collapsed = ref(false)
+const toggleCollapsed = () => {
+  collapsed.value = !collapsed.value
+}
 
 // reactive navigation controls display
 const canBack = ref(false)
@@ -57,8 +66,15 @@ const toggleFullscreen = async () => {
 
 <template>
   <n-layout ref="fullscreenHTML" has-sider>
-    <n-layout-sider bordered :width="240" :native-scrollbar="false">
-      <side-menu />
+    <n-layout-sider
+      bordered
+      :native-scrollbar="false"
+      :collapsed="collapsed"
+      collapse-mode="width"
+      :collapsed-width="64"
+    >
+      <navigation-icon :collapsed="collapsed" @click="toggleCollapsed" />
+      <side-menu :collapsed="collapsed" />
     </n-layout-sider>
     <n-layout-content>
       <n-card content-class="shrink-0 h-0" class="h-screen !rounded-none !border-none">

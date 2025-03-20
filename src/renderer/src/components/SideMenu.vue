@@ -1,5 +1,11 @@
 <template>
-  <n-menu v-model:value="$route.name" :options="options"></n-menu>
+  <n-menu
+    v-model:value="$route.name"
+    :options="options"
+    :collapsed="props.collapsed"
+    :collapsed-width="64"
+    :collapsed-icon-size="20"
+  ></n-menu>
 </template>
 
 <script setup lang="ts">
@@ -17,6 +23,9 @@ import { is } from '@renderer/utils'
 const { t } = useI18n()
 const route = useRoute()
 const { activeDownloads } = storeToRefs(useDownloadStore())
+const props = defineProps<{
+  collapsed: boolean
+}>()
 
 function renderIcon(icon: string) {
   return () => h(Icon, { icon: `fluent:${icon}-24-regular` })

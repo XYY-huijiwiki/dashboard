@@ -19,6 +19,6 @@ const i18n = createI18n({
   }
 })
 
-createApp(App).use(i18n).use(router).use(createPinia()).mount('#app')
+createApp(App).use(i18n).use(router).use(createPinia()).mount('#wiki-body')
 
 export { i18n }
