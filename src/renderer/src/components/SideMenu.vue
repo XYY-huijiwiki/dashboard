@@ -3,7 +3,7 @@
     v-model:value="$route.name"
     :options="options"
     :collapsed="props.collapsed"
-    :collapsed-width="64"
+    :collapsed-width="62"
     :collapsed-icon-size="20"
   ></n-menu>
 </template>

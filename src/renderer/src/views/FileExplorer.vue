@@ -89,6 +89,7 @@ import { useSettingsStore } from '@renderer/stores/settings'
 import { useExplorerStateStore } from '@renderer/stores/explorerState'
 import fetchFilesInUse from '@renderer/utils/fetchFilesInUse'
 import { useDownloadStore } from '@renderer/stores/download'
+import { is } from '@renderer/utils'
 
 const { t } = useI18n()
 const { startDownload } = useDownloadStore()
@@ -100,9 +101,15 @@ dayjs.extend(localizedFormat).locale(dayjsLocales.value)
 
 const fileDownload = debounce(fileDownloadUndebounced, 300)
 async function fileDownloadUndebounced() {
-  router.push({ name: 'download-manager' })
-  for (const item of checkedItems.value) {
-    startDownload(item)
+  if (is.web) {
+    const a = document.createElement('a')
+    a.href = genRawFileUrl(checkedItems.value[0])
+    a.click()
+  } else {
+    router.push({ name: 'download-manager' })
+    for (const item of checkedItems.value) {
+      startDownload(item)
+    }
   }
 }
 

@@ -85,3 +85,23 @@ jobs:
             dist/*.deb
             dist/*.rpm
             dist/*.tar.gz
+
+      - name: build-web
+        if: matrix.os == 'ubuntu-latest'
+        run: npm run build:web
+
+      - name: Setup Pages
+        if: matrix.os == 'ubuntu-latest'
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        if: matrix.os == 'ubuntu-latest'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # Upload dist folder
+          path: './out/renderer'
+
+      - name: Deploy to GitHub Pages
+        if: matrix.os == 'ubuntu-latest'
+        id: deployment
+        uses: actions/deploy-pages@v4

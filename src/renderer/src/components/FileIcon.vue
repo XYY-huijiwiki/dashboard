@@ -10,6 +10,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import { is } from '@renderer/utils'
 
 const { fileType } = defineProps<{
   fileType?: string | null
@@ -23,7 +24,12 @@ const iconPack = import.meta.glob('../assets/icons/*.ico', {
 
 const src = computed(() => {
   const iconName = getIconName(fileType)
-  return iconPack[`../assets/icons/${iconName}.ico`]
+  let result = iconPack[`../assets/icons/${iconName}.ico`]
+  if (is.dev && is.web) {
+    const newOrigin = new URL(import.meta.url).origin
+    result = new URL(result, newOrigin).href
+  }
+  return result
 })
 
 function getIconName(type: string | undefined | null): string {

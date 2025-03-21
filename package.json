@@ -4,7 +4,7 @@
   "description": "A convenient file manager for accessing and managing files stored on GitHub, (almost) seamlessly integrated with XYY Wiki.",
   "main": "./out/main/index.js",
   "author": "Karsten Zhou",
-  "homepage": "https://github.com/XYY-huijiwiki/gh-drive",
+  "homepage": "https://github.com/XYY-huijiwiki/r-drive",
   "type": "module",
   "engines": {
     "node": ">=20"
@@ -22,7 +22,8 @@
     "build:unpack": "npm run build && electron-builder --dir",
     "build:win": "npm run build && electron-builder --win",
     "build:mac": "npm run build && electron-builder --mac",
-    "build:linux": "npm run build && electron-builder --linux"
+    "build:linux": "npm run build && electron-builder --linux",
+    "build:web": "npm run typecheck && electron-vite build --mode web"
   },
   "dependencies": {
     "@coleqiu/vue-drag-select": "^2.0.6-beta.1",

@@ -8,7 +8,7 @@
     ]"
   >
     <n-button
-      class="!h-[42px] !px-[15px]"
+      class="!h-[42px]"
       quaternary
       @mousedown="handleStart"
       @mouseup="handleEnd"

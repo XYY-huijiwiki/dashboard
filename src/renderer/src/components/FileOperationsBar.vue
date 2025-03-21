@@ -65,7 +65,7 @@
           <!-- download -->
           <tooltipped-icon-button
             :text="t('github-files.btn-download')"
-            :disabled="checkedRowKeys.length === 0"
+            :disabled="is.web ? checkedRowKeys.length !== 1 : checkedRowKeys.length === 0"
             @click="emit('file-download')"
           >
             <arrow-download24-regular />

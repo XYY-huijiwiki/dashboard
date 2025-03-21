@@ -1,5 +1,5 @@
 import { resolve } from 'path'
-import { defineConfig, externalizeDepsPlugin } from 'electron-vite'
+import { defineConfig, externalizeDepsPlugin, defineViteConfig } from 'electron-vite'
 import vue from '@vitejs/plugin-vue'
 import { NaiveUiResolver } from 'unplugin-vue-components/resolvers'
 import Components from 'unplugin-vue-components/vite'
@@ -28,26 +28,32 @@ export default defineConfig({
     },
     plugins: [externalizeDepsPlugin()]
   },
-  renderer: {
-    resolve: {
-      alias: {
-        '@renderer': resolve('src/renderer/src')
-      }
-    },
-    plugins: [
-      vue({
-        template: {
-          compilerOptions: {
-            isCustomElement: (tag) => ['model-viewer'].includes(tag)
-          }
+  renderer: defineViteConfig(({ mode }) => {
+    return {
+      base: mode === 'web' ? '//xyy-huijiwiki.github.io/r-drive/' : undefined,
+      server: {
+        cors: true
+      },
+      resolve: {
+        alias: {
+          '@renderer': resolve('src/renderer/src')
         }
-      }),
-      Components({
-        resolvers: [NaiveUiResolver()]
-      }),
-      tailwindcss(),
-      nodePolyfills(),
-      vueDevTools()
-    ]
-  }
+      },
+      plugins: [
+        vue({
+          template: {
+            compilerOptions: {
+              isCustomElement: (tag) => ['model-viewer'].includes(tag)
+            }
+          }
+        }),
+        Components({
+          resolvers: [NaiveUiResolver()]
+        }),
+        tailwindcss(),
+        nodePolyfills(),
+        vueDevTools()
+      ]
+    }
+  })
 })

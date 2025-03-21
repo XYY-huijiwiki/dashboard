@@ -13,20 +13,18 @@ import {
 } from '@vicons/fluent'
 import { useRouter } from 'vue-router'
 
-import NavigationIcon from './components/NavigationIcon.vue'
+import NavigationBtn from './components/NavigationBtn.vue'
 import { is } from '@renderer/utils'
 
 const router = useRouter()
 const { t } = useI18n()
 
 // naive-ui register
-if (!is.web) {
-  window.$dialog = useDialog()
-  window.$message = useMessage()
-  window.$modal = useModal()
-  window.$loadingBar = useLoadingBar()
-  window.$notification = useNotification()
-}
+window.$dialog = useDialog()
+window.$message = useMessage()
+window.$modal = useModal()
+window.$loadingBar = useLoadingBar()
+window.$notification = useNotification()
 
 // set title
 useTitle(computed(() => t('home.title')))
@@ -71,13 +69,17 @@ const toggleFullscreen = async () => {
       :native-scrollbar="false"
       :collapsed="collapsed"
       collapse-mode="width"
-      :collapsed-width="64"
+      :collapsed-width="62"
     >
-      <navigation-icon :collapsed="collapsed" @click="toggleCollapsed" />
+      <navigation-btn :collapsed="collapsed" @click="toggleCollapsed" />
       <side-menu :collapsed="collapsed" />
     </n-layout-sider>
     <n-layout-content>
-      <n-card content-class="shrink-0 h-0" class="h-screen !rounded-none !border-none">
+      <n-card
+        content-class="shrink-0 h-0"
+        class="!rounded-none !border-none"
+        :class="[is.web ? 'h-[70vh]' : 'h-screen']"
+      >
         <!-- 卡片左上角：返回 | 前进 | 刷新  | 标题 -->
         <template #header>
           <n-space id="title-bar" align="center" :wrap="false" :wrap-item="false">
