@@ -1,6 +1,6 @@
 <template>
   <n-menu
-    v-model:value="$route.name"
+    :value="$route.name === 'file-preview' ? 'file-explorer' : $route.name"
     :options="options"
     :collapsed="props.collapsed"
     :collapsed-width="62"

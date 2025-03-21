@@ -16,6 +16,11 @@ const routes: Array<RouteRecordRaw> = [
     component: views['/src/views/FileExplorer.vue']
   },
   {
+    path: '/file-preview/:filename',
+    name: 'file-preview',
+    component: views['/src/views/FilePreview.vue']
+  },
+  {
     path: '/download-manager',
     name: 'download-manager',
     component: views['/src/views/DownloadManager.vue']
@@ -31,14 +36,7 @@ const routes: Array<RouteRecordRaw> = [
 
 const router = createRouter({
   history: createWebHashHistory(),
-  routes,
-  scrollBehavior() {
-    return {
-      el: '#app',
-      top: 100,
-      behavior: 'smooth'
-    }
-  }
+  routes
 })
 
 router.beforeEach((to) => {

@@ -113,6 +113,7 @@ const toggleFullscreen = async () => {
             {{
               {
                 'file-explorer': t('file-explorer.title'),
+                'file-preview': t('file-preview.title'),
                 'recycle-bin': t('recycle-bin.title'),
                 'download-manager': t('download-manager.title'),
                 settings: t('settings.title'),

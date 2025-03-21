@@ -174,5 +174,9 @@
   },
   "file-explorer": {
     "title": "文件浏览器"
+  },
+  "file-preview": {
+    "title": "文件预览",
+    "title-file-not-found": "文件未找到"
   }
 }

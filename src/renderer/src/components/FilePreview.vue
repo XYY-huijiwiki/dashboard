@@ -1,8 +1,8 @@
 <template>
   <n-card
-    closable
     class="w-full h-full"
     content-style="height: 0; display: flex; flex-direction: column;"
+    :closable="props.closable"
     @close="fileRecord = undefined"
   >
     <template #header>
@@ -79,6 +79,9 @@ import { genThumbUrl, genRawFileUrl } from '@renderer/utils/genUrl'
 
 const { t } = useI18n()
 const fileRecord = defineModel<FileRecord>()
+const props = defineProps<{
+  closable?: boolean
+}>()
 </script>
 
 <style scoped></style>
