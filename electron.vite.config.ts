@@ -31,6 +31,9 @@ export default defineConfig({
   renderer: defineViteConfig(({ mode }) => {
     return {
       base: mode === 'web' ? '//xyy-huijiwiki.github.io/r-drive/' : undefined,
+      build: {
+        manifest: true
+      },
       server: {
         cors: true
       },
