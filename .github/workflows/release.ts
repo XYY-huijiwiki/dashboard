@@ -7,8 +7,8 @@ interface PackageJson {
 
 // Configure Git once
 $.verbose = false
-await $`git config --local user.name "Versioning Bot"`
-await $`git config --local user.email "bot@example.com"`
+await $`git config --global user.name "Versioning Bot"`
+await $`git config --global user.email "bot@example.com"`
 
 // #region Main execution
 try {
@@ -62,6 +62,7 @@ try {
 
 async function doRelease(version) {
   await $`git tag v${version}`
+  await $`git push origin v${version}`
   await $`echo "version=v${version}" >> $GITHUB_OUTPUT`
   console.log(`Successfully tagged v${version}`)
   process.exit(0)
@@ -83,6 +84,8 @@ async function doBumpAndRelease(version) {
   await $`git add .`
   await $`git commit -m "chore: auto-bump version to v${version}"`
   await $`git tag v${version}`
+  await $`git push origin main`
+  await $`git push origin v${version}`
   await $`echo "version=v${version}" >> $GITHUB_OUTPUT`
   console.log(`Successfully bumped to v${version}`)
   process.exit(0)
