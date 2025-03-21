@@ -1,3 +1,17 @@
+## [0.2.5](https://github.com/XYY-huijiwiki/r-drive/compare/v0.2.4...v0.2.5) (2025-03-21)
+
+### Bug Fixes
+
+- **types:** resolve TypeScript type error ([1be2c11](https://github.com/XYY-huijiwiki/r-drive/commit/1be2c11ca23e80c4ada62ca0ed8fef2bef8fede3))
+- **web:** set web version loader properly ([831b88d](https://github.com/XYY-huijiwiki/r-drive/commit/831b88db85584172ee87cfc4f211c06579b85519))
+
+### Features
+
+- add navigation button to collapse sidebar ([791330a](https://github.com/XYY-huijiwiki/r-drive/commit/791330a7c20efe9df163ffc23bd3b74a0ad983ac))
+- add standalone file preview page ([06049dd](https://github.com/XYY-huijiwiki/r-drive/commit/06049ddd709fba55ac975c3b5570e0c40584f21c))
+- **auth:** add GitHub login support for web and Electron ([8b93f62](https://github.com/XYY-huijiwiki/r-drive/commit/8b93f62c7def0b8c1d491c96115997a95238ff8e))
+- web environment is fully supported ([e16e1dc](https://github.com/XYY-huijiwiki/r-drive/commit/e16e1dcbd3a8ef511c572002a22cf19adc232cb5))
+
 ## [0.2.4](https://github.com/XYY-huijiwiki/r-drive/compare/v0.2.3...v0.2.4) (2025-03-20)
 
 ### Bug Fixes
