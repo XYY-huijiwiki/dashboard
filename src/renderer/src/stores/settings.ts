@@ -14,6 +14,7 @@ interface Settings {
   ghThumbRelease: 'thumb'
   fileListPageSize: number
   databaseUrl: string
+  sidebarCollapsed: boolean
 }
 
 export const useSettingsStore = defineStore('settings', () => {
@@ -28,7 +29,8 @@ export const useSettingsStore = defineStore('settings', () => {
     ghFileRelease: 'eOsizdoz',
     ghThumbRelease: 'thumb',
     fileListPageSize: 50,
-    databaseUrl: `https://xyy-file-db.24218079.xyz/`
+    databaseUrl: `https://xyy-file-db.24218079.xyz/`,
+    sidebarCollapsed: false
   }
   // init settings from localStorage or use default settings
   const settings: Ref<Settings> = useLocalStorage('settings', defaultSettings, {

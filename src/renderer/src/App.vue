@@ -12,10 +12,13 @@ import {
   FullScreenMinimize24Regular
 } from '@vicons/fluent'
 import { useRouter } from 'vue-router'
+import { storeToRefs } from 'pinia'
 
+import { useSettingsStore } from '@renderer/stores/settings'
 import NavigationBtn from './components/NavigationBtn.vue'
 import { is } from '@renderer/utils'
 
+const { settings } = storeToRefs(useSettingsStore())
 const router = useRouter()
 const { t } = useI18n()
 
@@ -28,12 +31,6 @@ window.$notification = useNotification()
 
 // set title
 useTitle(computed(() => t('home.title')))
-
-// collapsable side bar
-const collapsed = ref(false)
-const toggleCollapsed = () => {
-  collapsed.value = !collapsed.value
-}
 
 // reactive navigation controls display
 const canBack = ref(false)
@@ -67,12 +64,15 @@ const toggleFullscreen = async () => {
     <n-layout-sider
       bordered
       :native-scrollbar="false"
-      :collapsed="collapsed"
+      :collapsed="settings.sidebarCollapsed"
       collapse-mode="width"
       :collapsed-width="62"
     >
-      <navigation-btn :collapsed="collapsed" @click="toggleCollapsed" />
-      <side-menu :collapsed="collapsed" />
+      <navigation-btn
+        :collapsed="settings.sidebarCollapsed"
+        @click="settings.sidebarCollapsed = !settings.sidebarCollapsed"
+      />
+      <side-menu :collapsed="settings.sidebarCollapsed" />
     </n-layout-sider>
     <n-layout-content>
       <n-card
