@@ -1,3 +1,18 @@
+## [0.2.6](https://github.com/XYY-huijiwiki/r-drive/compare/v0.2.5...v0.2.6) (2025-03-21)
+
+### Bug Fixes
+
+- **web:** CSS can not be loaded & CORS issues ([e3f41f7](https://github.com/XYY-huijiwiki/r-drive/commit/e3f41f76168a8c7fc41aa4b998e889f4c98c3b79))
+
+### Features
+
+- **model-viewer:** implement lazy loading ([e595e50](https://github.com/XYY-huijiwiki/r-drive/commit/e595e50a5ad5498fa66a54450fab129b7dee68c6))
+- **ui:** remember sidebar collapsing status ([e6a6a64](https://github.com/XYY-huijiwiki/r-drive/commit/e6a6a64d1786cb40bf7678462bc24d53db6581fb))
+
+### Reverts
+
+- Revert "ci: prevent failed GitHub Actions from modifying remote repository" ([9357502](https://github.com/XYY-huijiwiki/r-drive/commit/935750266c6b7567e3705b858eb3ad4edd70b605))
+
 ## [0.2.5](https://github.com/XYY-huijiwiki/r-drive/compare/v0.2.4...v0.2.5) (2025-03-21)
 
 ### Bug Fixes
