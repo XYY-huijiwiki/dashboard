@@ -160,9 +160,14 @@ const columns: Ref<DataTableColumns<FileRecord>> = ref([
         warnings.length === 0
           ? h(NTag, { type: 'success', size: 'small' }, () => t('github-files.status-normal'))
           : warnings.map((warning) =>
-              h(NTag, { type: 'error', size: 'small' }, () =>
-                t(`github-files.status-${warning.replace(' ', '-')}`)
-              )
+              h(NTag, { type: 'error', size: 'small' }, () => {
+                const i18nMapper = {
+                  'no licence': t('github-files.status-no-licence'),
+                  'no source': t('github-files.status-no-source'),
+                  unused: t('github-files.status-unused')
+                }
+                return i18nMapper[warning]
+              })
             )
       ])
       // equivalent to HTML

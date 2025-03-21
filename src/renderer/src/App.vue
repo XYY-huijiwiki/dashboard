@@ -108,7 +108,7 @@ const toggleFullscreen = async () => {
               </template>
             </n-button>
             <!-- dev tag -->
-            <n-tag v-if="is.dev">{{ t('dev-tag') }}</n-tag>
+            <n-tag v-if="is.dev">{{ t('general.dev-tag') }}</n-tag>
             <!-- navigation title -->
             {{
               {
@@ -119,8 +119,8 @@ const toggleFullscreen = async () => {
                 settings: t('settings.title'),
                 init: t('init.title'),
                 error: t('error.title'),
-                undefined: t('undefined.title')
-              }[$route.name || 'undefined']
+                loading: t('general.loading')
+              }[$route.name || 'loading']
             }}
           </n-space>
         </template>

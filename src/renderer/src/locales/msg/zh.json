@@ -1,6 +1,6 @@
 {
-  "dev-tag": "开发模式",
   "general": {
+    "dev-tag": "开发模式",
     "loading": "加载中",
     "info": "信息",
     "error": "错误",
@@ -32,10 +32,6 @@
   "error": {
     "title": "错误"
   },
-  "download-manage": {
-    "msg-downloading": "正在下载 {0}（{1}%）",
-    "msg-downloaded": "已下载 {0}"
-  },
   "github-files": {
     "status-normal": "正常",
     "status-unused": "未使用",
@@ -62,8 +58,6 @@
     "msg-delete-success": "删除成功",
     "msg-delete-failed": "删除失败",
     "btn-download": "下载",
-    "msg-download-failed": "下载失败",
-    "msg-download-failed-desc": "你要下载的文件（{0}）不可用。",
     "btn-rename": "重命名",
     "title-rename": "重命名文件",
     "msg-rename-placeholder": "输入新名称",
@@ -134,17 +128,15 @@
     "copy-code": "复制代码",
     "msg-file-name-too-long": "文件名太长！"
   },
-  "help-docs": {},
-  "undefined": {
-    "title": "加载中……"
-  },
   "init": {
     "title": "初始化",
     "welcome-title": "欢迎使用 RDrive",
     "msg-login-desc": "请登录以继续",
     "btn-login": "登录",
     "msg-login-success": "登录成功",
-    "msg-login-failed": "登录失败"
+    "msg-login-failed": "登录失败",
+    "permission-denied-title": "无权访问",
+    "permission-denied-content": "你没有权限访问{0}。"
   },
   "side-menu": {
     "label-file-explorer": "文件浏览器",

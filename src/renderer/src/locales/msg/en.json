@@ -1,6 +1,6 @@
 {
-  "dev-tag": "Dev",
   "general": {
+    "dev-tag": "Dev",
     "loading": "Loading",
     "info": "Info",
     "error": "Error",
@@ -32,10 +32,6 @@
   "error": {
     "title": "Error"
   },
-  "download-manage": {
-    "msg-downloading": "Downloading {0} ({1}%)",
-    "msg-downloaded": "Downloaded {0}"
-  },
   "github-files": {
     "status-normal": "Normal",
     "status-unused": "Not Used",
@@ -62,8 +58,6 @@
     "msg-delete-success": "Delete successful",
     "msg-delete-failed": "Delete failed",
     "btn-download": "Download",
-    "msg-download-failed": "Download failed",
-    "msg-download-failed-desc": "The file you are trying to download ({0}) is not available.",
     "btn-rename": "Rename",
     "title-rename": "Rename File",
     "msg-rename-placeholder": "Enter new name",
@@ -134,16 +128,15 @@
     "copy-code": "Copy code",
     "msg-file-name-too-long": "File name is too long!"
   },
-  "undefined": {
-    "title": "Loading..."
-  },
   "init": {
     "title": "Initialisation",
     "welcome-title": "Welcome to RDrive",
     "msg-login-desc": "Please log in to continue",
     "btn-login": "Log In",
     "msg-login-success": "Login successful",
-    "msg-login-failed": "Login failed"
+    "msg-login-failed": "Login failed",
+    "permission-denied-title": "Permission Denied",
+    "permission-denied-content": "You don't have permission to access {0}."
   },
   "side-menu": {
     "label-file-explorer": "File Explorer",

@@ -1,6 +1,6 @@
 {
-  "dev-tag": "Dev",
   "general": {
+    "dev-tag": "Dev",
     "loading": "Laden",
     "info": "Info",
     "error": "Fehler",
@@ -32,10 +32,6 @@
   "error": {
     "title": "Fehler"
   },
-  "download-manage": {
-    "msg-downloading": "Lade {0} herunter ({1}%)",
-    "msg-downloaded": "Heruntergeladen {0}"
-  },
   "github-files": {
     "status-normal": "Normal",
     "status-unused": "Verwaist",
@@ -62,8 +58,6 @@
     "msg-delete-success": "Löschen erfolgreich",
     "msg-delete-failed": "Löschen fehlgeschlagen",
     "btn-download": "Herunterladen",
-    "msg-download-failed": "Herunterladen fehlgeschlagen",
-    "msg-download-failed-desc": "Die Datei, die Sie herunterladen möchten ({0}), ist nicht verfügbar.",
     "btn-rename": "Umbenennen",
     "title-rename": "Datei umbenennen",
     "msg-rename-placeholder": "Neuen Namen eingeben",
@@ -134,16 +128,15 @@
     "copy-code": "Code kopieren",
     "msg-file-name-too-long": "Dateiname ist zu lang!"
   },
-  "undefined": {
-    "title": "Laden..."
-  },
   "init": {
     "title": "Initialisierung",
     "welcome-title": "Willkommen bei RDrive",
     "msg-login-desc": "Bitte melden Sie sich an, um fortzufahren",
     "btn-login": "Anmelden",
     "msg-login-success": "Anmeldung erfolgreich",
-    "msg-login-failed": "Anmeldung fehlgeschlagen"
+    "msg-login-failed": "Anmeldung fehlgeschlagen",
+    "permission-denied-title": "Zugriff verweigert",
+    "permission-denied-content": "Sie haben keine Berechtigung, auf {0} zuzugreifen."
   },
   "side-menu": {
     "label-file-explorer": "Datei-Explorer",

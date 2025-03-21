@@ -1,18 +1,25 @@
 <template>
   <n-dropdown :options="dropdownOptions" placement="bottom-start" trigger="click" size="small">
-    <n-button quaternary block strong size="small">
-      <template #icon>
-        <n-badge :show="explorerState.filters.type.length !== 0" dot>
-          <n-icon v-if="explorerState.sorterKey === 'type'">
-            <arrow-sort-up16-regular v-if="explorerState.sorterOrder === 'ascend'" />
-            <arrow-sort-down16-regular v-else />
-          </n-icon>
-          <n-icon v-else>
-            <document16-regular />
-          </n-icon>
-        </n-badge>
+    <n-tooltip>
+      <template #default>
+        {{ t('github-files.table-header.label-type') }}
       </template>
-    </n-button>
+      <template #trigger>
+        <n-button quaternary block strong size="small">
+          <template #icon>
+            <n-badge :show="explorerState.filters.type.length !== 0" dot>
+              <n-icon v-if="explorerState.sorterKey === 'type'">
+                <arrow-sort-up16-regular v-if="explorerState.sorterOrder === 'ascend'" />
+                <arrow-sort-down16-regular v-else />
+              </n-icon>
+              <n-icon v-else>
+                <document16-regular />
+              </n-icon>
+            </n-badge>
+          </template>
+        </n-button>
+      </template>
+    </n-tooltip>
   </n-dropdown>
 </template>
 
@@ -111,9 +118,15 @@ const dropdownOptions = ref([
 ])
 
 function genFilterChild(filterText: FilterType) {
+  const i18nMapper = {
+    image: t(`github-files.table-header.btn-filter-by-image`),
+    audio: t(`github-files.table-header.btn-filter-by-audio`),
+    video: t(`github-files.table-header.btn-filter-by-video`),
+    text: t(`github-files.table-header.btn-filter-by-text`),
+    other: t(`github-files.table-header.btn-filter-by-other`)
+  }
   return {
-    label: () =>
-      h('span', { class: 'mr-4' }, t(`github-files.table-header.btn-filter-by-${filterText}`)),
+    label: () => h('span', { class: 'mr-4' }, i18nMapper[filterText]),
     key: filterText,
     props: {
       // if the filterText is in the array, remove it, otherwise add it

@@ -86,18 +86,23 @@ onMounted(async () => {
           })
         ).json()
         console.log(res)
+        // bad credentials
         if (res.status === '401') {
-          // bad credentials
           settings.value.ghToken = ''
-        } else if (res.permissions?.admin) {
+        }
+        // success
+        else if (res.permissions?.admin) {
           loading.value = false
           router.push({ name: 'file-explorer' })
           return
-        } else {
+        }
+        // permission denied
+        else {
+          settings.value.ghToken = ''
           window.$dialog.warning({
             autoFocus: false,
-            title: t('miui-themes.step1-permission-denied-title'),
-            content: t('miui-themes.step1-permission-denied-content')
+            title: t('init.permission-denied-title'),
+            content: t('init.permission-denied-content', settings.value.ghRepo)
           })
         }
 
