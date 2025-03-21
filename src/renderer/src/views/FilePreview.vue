@@ -18,7 +18,7 @@ import { errNotify } from '@renderer/utils'
 const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
-const fileRecord: Ref<FileRecord | null> = ref(null)
+const fileRecord: Ref<FileRecord | undefined> = ref(undefined)
 
 onMounted(async () => {
   const fileName = (route.params.filename as string).replace(/ /g, '_')

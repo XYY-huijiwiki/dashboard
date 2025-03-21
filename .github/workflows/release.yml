@@ -1,4 +1,4 @@
-name: Versioning
+name: Versioning, Build & Release
 
 on:
   push:
@@ -34,8 +34,8 @@ jobs:
     outputs:
       version: ${{ steps.ts_versioning.outputs.version }}
 
-  release:
-    name: Build & Release
+  electron-release:
+    name: Build & Release Electron App
     permissions:
       contents: write
     needs: versioning
@@ -86,22 +86,41 @@ jobs:
             dist/*.rpm
             dist/*.tar.gz
 
+  web-build:
+    name: Build & Deploy Web App
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    needs: versioning
+    if: ${{ needs.versioning.outputs.version }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.versioning.outputs.version }}
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: package.json
+
+      - name: Install Dependencies
+        run: npm install
+
       - name: build-web
-        if: matrix.os == 'ubuntu-latest'
         run: npm run build:web
 
       - name: Setup Pages
-        if: matrix.os == 'ubuntu-latest'
         uses: actions/configure-pages@v4
 
       - name: Upload artifact
-        if: matrix.os == 'ubuntu-latest'
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload dist folder
           path: './out/renderer'
 
       - name: Deploy to GitHub Pages
-        if: matrix.os == 'ubuntu-latest'
         id: deployment
         uses: actions/deploy-pages@v4

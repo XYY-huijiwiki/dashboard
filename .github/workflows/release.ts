@@ -2,8 +2,20 @@ import { $ } from 'zx'
 import { readdirSync, readFileSync, writeFileSync } from 'fs'
 
 // Typecheck and Lint
-await $`npm run typecheck`
-await $`npm run lint`
+try {
+  await $`npm run typecheck`
+} catch (error) {
+  console.error('Typecheck failed:')
+  console.error(error instanceof Error ? error.message : error)
+  process.exit(1)
+}
+try {
+  await $`npm run lint`
+} catch (error) {
+  console.error('Lint failed:')
+  console.error(error instanceof Error ? error.message : error)
+  process.exit(1)
+}
 
 interface PackageJson {
   version: string
