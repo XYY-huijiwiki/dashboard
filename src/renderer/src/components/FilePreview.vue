@@ -72,16 +72,29 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { Document48Regular } from '@vicons/fluent'
-import '@google/model-viewer'
 
 import fileIcon from './FileIcon.vue'
 import { genThumbUrl, genRawFileUrl } from '@renderer/utils/genUrl'
+import { nextTick, watch } from 'vue'
 
 const { t } = useI18n()
 const fileRecord = defineModel<FileRecord>()
 const props = defineProps<{
   closable?: boolean
 }>()
+
+// Dynamic import
+const unwatch = watch(
+  fileRecord,
+  async (file) => {
+    if (file?.content_type?.startsWith('model')) {
+      import('@google/model-viewer')
+      await nextTick() // prevent unwatch() being called before init
+      unwatch()
+    }
+  },
+  { immediate: true }
+)
 </script>
 
 <style scoped></style>
