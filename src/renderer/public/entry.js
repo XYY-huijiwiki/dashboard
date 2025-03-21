@@ -7,7 +7,7 @@
   import(moduleUrl)
   // 导入css
   let cssUrls = data['index.html']['css']
-  cssUrls.foreach((url) => {
+  cssUrls.forEach((url) => {
     let link = document.createElement('link')
     link.rel = 'stylesheet'
     link.href = 'https://xyy-huijiwiki.github.io/r-drive/' + url
