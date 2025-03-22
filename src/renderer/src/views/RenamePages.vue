@@ -13,7 +13,7 @@
         :placeholder="t(`rename-pages.label-reason`)"
         :disabled="loading"
       />
-      <n-button type="error" :loading="loading" @click="rename">
+      <n-button type="primary" :loading="loading" @click="rename">
         {{ t(`rename-pages.btn-rename`) }}
       </n-button>
     </n-input-group>
@@ -25,7 +25,7 @@ import { ref, h, computed, type Ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { onBeforeRouteLeave } from 'vue-router'
 import type { DataTableColumn, SelectOption } from 'naive-ui'
-import { NA, NFlex, NTag, NTooltip } from 'naive-ui'
+import { NA, NFlex, NTag } from 'naive-ui'
 import { read, utils } from 'xlsx'
 
 import { renamePage } from '@renderer/utils/mwApi'
@@ -61,6 +61,7 @@ async function rename() {
   loading.value = true
 
   for (const row of data.value) {
+    if (row.status !== 'to-do') continue
     const renameResult = await renamePage({
       from: row.titleFrom,
       to: row.titleTo,
@@ -111,6 +112,8 @@ const columns: Ref<DataTableColumn<RenameState>[]> = computed(() => [
   {
     key: 'title-from',
     ellipsis: { tooltip: true },
+    resizable: true,
+    minWidth: 240,
     title: () => t(`rename-pages.label-table-title-from`),
     render: (rowData) => {
       return h(
@@ -123,6 +126,8 @@ const columns: Ref<DataTableColumn<RenameState>[]> = computed(() => [
   {
     key: 'title-to',
     ellipsis: { tooltip: true },
+    resizable: true,
+    minWidth: 240,
     title: () => t(`rename-pages.label-table-title-to`),
     render: (rowData) => {
       return h(
@@ -135,8 +140,10 @@ const columns: Ref<DataTableColumn<RenameState>[]> = computed(() => [
   {
     key: 'status',
     title: () => t(`rename-pages.label-table-status`),
+    resizable: true,
+    minWidth: 240,
     render: (rowData) => {
-      // <n-tooltip>
+      // <n-flex>
       //   <template #trigger>
       //     <n-tag>...</n-tag>
       //   </template>
@@ -144,38 +151,33 @@ const columns: Ref<DataTableColumn<RenameState>[]> = computed(() => [
       //     <span>...</span>
       //   </template>
       // </n-flex>
-      return h(
-        NTooltip,
-        { show: rowData.errorDetail ? true : false },
-        {
-          trigger: () =>
-            h(
-              NTag,
-              {
-                type:
-                  rowData.status === 'to-do'
-                    ? 'info'
-                    : rowData.status === 'doing'
-                      ? 'warning'
-                      : rowData.status === 'done'
-                        ? 'success'
-                        : 'error',
-                bordered: false,
-                class: [rowData.errorDetail && 'cursor-help']
-              },
-              () => {
-                const mapper = {
-                  'to-do': t('rename-pages.label-status-to-do'),
-                  doing: t('rename-pages.label-status-doing'),
-                  done: t('rename-pages.label-status-done'),
-                  error: t('general.error')
-                }
-                return mapper[rowData.status]
-              }
-            ),
-          default: () => h('span', rowData.errorDetail)
-        }
-      )
+      return h(NFlex, () => [
+        h(
+          NTag,
+          {
+            type:
+              rowData.status === 'to-do'
+                ? 'info'
+                : rowData.status === 'doing'
+                  ? 'warning'
+                  : rowData.status === 'done'
+                    ? 'success'
+                    : 'error',
+            bordered: false,
+            class: [rowData.errorDetail && 'cursor-help']
+          },
+          () => {
+            const mapper = {
+              'to-do': t('rename-pages.label-status-to-do'),
+              doing: t('rename-pages.label-status-doing'),
+              done: t('rename-pages.label-status-done'),
+              error: t('general.error')
+            }
+            return mapper[rowData.status]
+          }
+        ),
+        h('span', rowData.errorDetail)
+      ])
     }
   }
 ])

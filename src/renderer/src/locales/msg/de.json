@@ -250,7 +250,7 @@
     "label-table-status": "Status",
     "label-table-title-from": "Umbenennen von",
     "label-table-title-to": "Umbenennen in",
-    "title": "Seiten umbenennen",
+    "title": "Seiten Umbenennen",
     "errors": {
       "missingtitle": "Die zu verschiebende Seite existiert nicht.",
       "nofrom": "Das from-Parameter muss gesetzt werden.",

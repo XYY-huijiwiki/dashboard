@@ -128,6 +128,8 @@ const columns: DataTableColumn<DeleteUndeleteState>[] = [
   {
     key: 'title',
     title: () => t(`delete-and-undelete.label-table-title`),
+    resizable: true,
+    minWidth: 240,
     render: (rowData) => {
       return h(
         NA,
@@ -139,6 +141,8 @@ const columns: DataTableColumn<DeleteUndeleteState>[] = [
   {
     key: 'status',
     title: () => t(`delete-and-undelete.label-table-status`),
+    resizable: true,
+    minWidth: 240,
     render: (rowData) => {
       return h(
         NTag,
