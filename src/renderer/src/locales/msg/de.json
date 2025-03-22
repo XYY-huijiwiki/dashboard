@@ -143,7 +143,8 @@
     "label-recycle-bin": "Papierkorb",
     "label-download-manager": "Download-Manager",
     "label-settings": "Einstellungen",
-    "label-episodes-data": "Folgen-Daten"
+    "label-episodes-data": "Folgen-Daten",
+    "label-miui-themes": "MIUI Themes Collector"
   },
   "download-manager": {
     "title": "Download-Manager",
@@ -196,5 +197,28 @@
     "msg-page-edit-failed": "Bearbeiten der Seite {0} fehlgeschlagen",
     "msg-page-renamed": "Seite {0} wurde in {1} umbenannt",
     "msg-page-rename-failed": "Umbenennen der Seite {0} fehlgeschlagen"
+  },
+  "miui-themes": {
+    "title": "MIUI Themes Collector",
+    "description": "Ein Tool zum Sammeln von MIUI-Themendateien, Bildern und anderen Ressourcen.",
+    "label-login": "Anmelden",
+    "label-fill-in": "Eingeben",
+    "label-preview": "überprüfen",
+    "label-submit": "Einreichen",
+    "btn-prev-step": "Vorheriger Schritt",
+    "btn-next-step": "Nächster Schritt",
+    "step1-btn-login": "Anmelden",
+    "step1-login-desc": "Melden Sie sich bei Ihrem GitHub-Konto an und ERTEILEN SIE DER ORGANISATION XYY-huijiwiki ZUGRIFF",
+    "step1-permission-denied-title": "Zugriff verweigert",
+    "step1-permission-denied-content": "Sie haben keine Berechtigung, auf die Organisation XYY-huijiwiki zuzugreifen.",
+    "step2-label-theme-link": "Themenlink",
+    "step2-btn-get-download-link": "Download-Link abrufen",
+    "step2-label-download-link": "Download-Link",
+    "step2-label-release-date": "Veröffentlichungsdatum",
+    "step2-label-date-screenshot": "Datum Screenshot",
+    "step2-btn-upload-date-screenshot": "Datum Screenshot hochladen",
+    "step2-selected-file": "Ausgewählte Datei: {0}",
+    "step2-no-file-selected": "Keine Datei ausgewählt",
+    "step2-label-trivia": "Trivia"
   }
 }

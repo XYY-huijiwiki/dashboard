@@ -78,7 +78,7 @@ const toggleFullscreen = async () => {
       <n-card
         content-class="shrink-0 h-0"
         class="!rounded-none !border-none"
-        :class="[is.web ? 'h-[70vh]' : 'h-screen']"
+        :class="[is.web ? 'h-[80vh]' : 'h-screen']"
       >
         <!-- 卡片左上角：返回 | 前进 | 刷新  | 标题 -->
         <template #header>
@@ -116,6 +116,7 @@ const toggleFullscreen = async () => {
                 'file-preview': t('file-preview.title'),
                 'recycle-bin': t('recycle-bin.title'),
                 'download-manager': t('download-manager.title'),
+                'miui-themes': t('miui-themes.title'),
                 'episodes-data': t('episodes-data.title'),
                 settings: t('settings.title'),
                 init: t('init.title'),

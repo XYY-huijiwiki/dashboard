@@ -55,6 +55,14 @@ const routes: Array<RouteRecordRaw> = [
     component: views['/src/views/EpisodesData.vue']
   },
   {
+    path: '/miui-themes',
+    name: 'miui-themes',
+    meta: {
+      webOnly: true
+    },
+    component: views['/src/views/MiuiThemes.vue']
+  },
+  {
     path: '/settings',
     name: 'settings',
     meta: {},

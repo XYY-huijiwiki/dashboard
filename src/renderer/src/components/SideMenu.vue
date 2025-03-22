@@ -38,8 +38,6 @@ function getDisabledState(routeName: string): boolean {
   return !canClientAccess(routerLocation)
 }
 
-console.log(router.resolve({ name: 'episodes-data' }))
-
 const options: Ref<MenuOption[]> = computed(() => [
   {
     label: renderLabel(t('side-menu.label-file-explorer'), 'file-explorer'),
@@ -64,6 +62,12 @@ const options: Ref<MenuOption[]> = computed(() => [
     key: 'episodes-data',
     disabled: getDisabledState('episodes-data'),
     icon: renderIcon('database')
+  },
+  {
+    label: renderLabel(t('side-menu.label-miui-themes'), 'miui-themes'),
+    key: 'miui-themes',
+    disabled: getDisabledState('miui-themes'),
+    icon: () => h(Icon, { icon: `simple-icons:xiaomi` })
   },
   {
     label: renderLabel(t('side-menu.label-settings'), 'settings'),

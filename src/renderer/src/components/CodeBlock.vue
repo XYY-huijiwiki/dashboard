@@ -158,6 +158,8 @@ useCopyCode()
 
 /* customise shiki */
 .shiki {
+  border: unset; /* preflight for web */
+  margin-bottom: unset !important; /* preflight for web */
   position: relative;
   z-index: 1;
   margin: 0;
@@ -166,6 +168,10 @@ useCopyCode()
   overflow-x: auto;
 }
 .shiki > code {
+  background-color: unset; /* preflight for web */
+  font-size: unset; /* preflight for web */
+  line-height: unset; /* preflight for web */
+  text-wrap-mode: nowrap; /* preflight for web */
   display: block;
   padding: 0 24px;
   width: fit-content;

@@ -37,8 +37,11 @@
     "dayjs": "^1.11.13",
     "electron-debug": "^4.1.0",
     "electron-dl-manager": "^3.2.1",
+    "file64": "^1.0.4",
     "filesize": "^10.1.6",
     "is-electron": "^2.2.2",
+    "jssha": "^3.3.1",
+    "jszip": "^3.10.1",
     "knex": "^3.1.0",
     "ky": "^1.7.5",
     "lodash-es": "^4.17.21",
@@ -51,7 +54,8 @@
     "vue-i18n": "^11.1.2",
     "vue-router": "^4.5.0",
     "wikity": "^1.3.6",
-    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz",
+    "xml-js": "^1.6.11"
   },
   "devDependencies": {
     "@electron-toolkit/eslint-config": "^2.0.0",
