@@ -64,6 +64,12 @@ const options: Ref<MenuOption[]> = computed(() => [
     icon: renderIcon('database')
   },
   {
+    label: renderLabel(t('side-menu.label-delete-and-undelete'), 'delete-and-undelete'),
+    key: 'delete-and-undelete',
+    disabled: getDisabledState('delete-and-undelete'),
+    icon: renderIcon('broom')
+  },
+  {
     label: renderLabel(t('side-menu.label-miui-themes'), 'miui-themes'),
     key: 'miui-themes',
     disabled: getDisabledState('miui-themes'),

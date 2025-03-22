@@ -117,6 +117,7 @@ const toggleFullscreen = async () => {
                 'recycle-bin': t('recycle-bin.title'),
                 'download-manager': t('download-manager.title'),
                 'miui-themes': t('miui-themes.title'),
+                'delete-and-undelete': t('delete-and-undelete.title'),
                 'episodes-data': t('episodes-data.title'),
                 settings: t('settings.title'),
                 init: t('init.title'),

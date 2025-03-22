@@ -144,7 +144,8 @@
     "label-download-manager": "Download-Manager",
     "label-settings": "Einstellungen",
     "label-episodes-data": "Folgen-Daten",
-    "label-miui-themes": "MIUI Themes Collector"
+    "label-miui-themes": "MIUI Themes Collector",
+    "label-delete-and-undelete": "Löschen und Wiederherstellen"
   },
   "download-manager": {
     "title": "Download-Manager",
@@ -200,17 +201,11 @@
   },
   "miui-themes": {
     "title": "MIUI Themes Collector",
-    "description": "Ein Tool zum Sammeln von MIUI-Themendateien, Bildern und anderen Ressourcen.",
-    "label-login": "Anmelden",
     "label-fill-in": "Eingeben",
     "label-preview": "überprüfen",
     "label-submit": "Einreichen",
     "btn-prev-step": "Vorheriger Schritt",
     "btn-next-step": "Nächster Schritt",
-    "step1-btn-login": "Anmelden",
-    "step1-login-desc": "Melden Sie sich bei Ihrem GitHub-Konto an und ERTEILEN SIE DER ORGANISATION XYY-huijiwiki ZUGRIFF",
-    "step1-permission-denied-title": "Zugriff verweigert",
-    "step1-permission-denied-content": "Sie haben keine Berechtigung, auf die Organisation XYY-huijiwiki zuzugreifen.",
     "step2-label-theme-link": "Themenlink",
     "step2-btn-get-download-link": "Download-Link abrufen",
     "step2-label-download-link": "Download-Link",
@@ -220,5 +215,37 @@
     "step2-selected-file": "Ausgewählte Datei: {0}",
     "step2-no-file-selected": "Keine Datei ausgewählt",
     "step2-label-trivia": "Trivia"
+  },
+  "delete-and-undelete": {
+    "title": "Löschen und Wiederherstellen",
+    "label-select-pages-by-txt": "Textdokument (.txt)",
+    "label-select-pages-by-xlsx": "Microsoft Excel-Arbeitsblatt (.xlsx)",
+    "label-select-pages-by-category": "Kategorie",
+    "delete": {
+      "title": "Löschen",
+      "btn-search": "Suchen",
+      "label-table-title": "Titel",
+      "label-table-status": "Status",
+      "label-status-to-do": "Warten auf Löschung",
+      "label-status-doing": "Löschen",
+      "label-status-done": "Gelöscht",
+      "label-status-error": "Fehler",
+      "text-reason": "Löschgrund",
+      "btn-delete": "Löschen",
+      "error-no-delete-reason": "Bitte geben Sie einen Löschgrund an"
+    },
+    "undelete": {
+      "title": "Wiederherstellen",
+      "btn-search": "Suchen",
+      "label-table-title": "Titel",
+      "label-table-status": "Status",
+      "label-status-to-do": "Warten auf Wiederherstellung",
+      "label-status-doing": "Wiederherstellen",
+      "label-status-done": "Wiederhergestellt",
+      "label-status-error": "Fehler",
+      "text-reason": "Wiederherstellungsgrund",
+      "btn-undelete": "Wiederherstellen",
+      "error-no-undelete-reason": "Bitte geben Sie einen Wiederherstellungsgrund an"
+    }
   }
 }

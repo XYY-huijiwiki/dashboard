@@ -55,6 +55,14 @@ const routes: Array<RouteRecordRaw> = [
     component: views['/src/views/EpisodesData.vue']
   },
   {
+    path: '/delete-and-undelete',
+    name: 'delete-and-undelete',
+    meta: {
+      webOnly: true
+    },
+    component: views['/src/views/DeleteAndUndelete.vue']
+  },
+  {
     path: '/miui-themes',
     name: 'miui-themes',
     meta: {
