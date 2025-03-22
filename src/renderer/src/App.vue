@@ -116,6 +116,7 @@ const toggleFullscreen = async () => {
                 'file-preview': t('file-preview.title'),
                 'recycle-bin': t('recycle-bin.title'),
                 'download-manager': t('download-manager.title'),
+                'episodes-data': t('episodes-data.title'),
                 settings: t('settings.title'),
                 init: t('init.title'),
                 error: t('error.title'),

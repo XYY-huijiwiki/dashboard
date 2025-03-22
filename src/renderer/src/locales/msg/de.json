@@ -142,7 +142,8 @@
     "label-file-explorer": "Datei-Explorer",
     "label-recycle-bin": "Papierkorb",
     "label-download-manager": "Download-Manager",
-    "label-settings": "Einstellungen"
+    "label-settings": "Einstellungen",
+    "label-episodes-data": "Folgen-Daten"
   },
   "download-manager": {
     "title": "Download-Manager",
@@ -170,5 +171,30 @@
   "file-preview": {
     "title": "Dateivorschau",
     "title-file-not-found": "Datei nicht gefunden"
+  },
+  "episodes-data": {
+    "title": "Folgen-Daten",
+    "label-data-export": "Datenexport",
+    "btn-export": "Exportieren",
+    "msg-export-success": "Export erfolgreich",
+    "msg-export-failed": "Export fehlgeschlagen",
+    "backup-tip": "Halten Sie immer eine Sicherungskopie der exportierten Daten bereit - man weiß ja nie, wann der Computer plötzlich eine eigene Meinung hat!",
+    "label-data-import": "Datenimport",
+    "label-file-name": "Dateiname",
+    "label-episodes": "Folgen",
+    "label-edit-summary": "Änderungszusammenfassung",
+    "label-select-file": "Datei auswählen",
+    "btn-import": "Importieren",
+    "msg-no-file-selected": "Keine Datei ausgewählt",
+    "msg-empty-summary": "Keine Änderungszusammenfassung angegeben",
+    "msg-import-failed": "{0} Import fehlgeschlagen"
+  },
+  "mediawiki": {
+    "msg-page-deleted": "Seite {0} wurde gelöscht",
+    "msg-page-delete-failed": "Löschen der Seite {0} fehlgeschlagen",
+    "msg-page-edited": "Seite {0} wurde bearbeitet",
+    "msg-page-edit-failed": "Bearbeiten der Seite {0} fehlgeschlagen",
+    "msg-page-renamed": "Seite {0} wurde in {1} umbenannt",
+    "msg-page-rename-failed": "Umbenennen der Seite {0} fehlgeschlagen"
   }
 }

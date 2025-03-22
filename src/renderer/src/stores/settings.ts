@@ -15,6 +15,7 @@ interface Settings {
   fileListPageSize: number
   databaseUrl: string
   sidebarCollapsed: boolean
+  episodesDataExportType: 'json' | 'xlsx'
 }
 
 export const useSettingsStore = defineStore('settings', () => {
@@ -30,7 +31,8 @@ export const useSettingsStore = defineStore('settings', () => {
     ghThumbRelease: 'thumb',
     fileListPageSize: 50,
     databaseUrl: `https://xyy-file-db.24218079.xyz/`,
-    sidebarCollapsed: false
+    sidebarCollapsed: false,
+    episodesDataExportType: 'xlsx'
   }
   // init settings from localStorage or use default settings
   const settings: Ref<Settings> = useLocalStorage('settings', defaultSettings, {

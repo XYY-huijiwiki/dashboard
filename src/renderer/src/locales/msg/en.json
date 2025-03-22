@@ -142,7 +142,8 @@
     "label-file-explorer": "File Explorer",
     "label-recycle-bin": "Recycle Bin",
     "label-download-manager": "Download Manager",
-    "label-settings": "Settings"
+    "label-settings": "Settings",
+    "label-episodes-data": "Episodes Data"
   },
   "download-manager": {
     "title": "Download Manager",
@@ -170,5 +171,30 @@
   "file-preview": {
     "title": "File Preview",
     "title-file-not-found": "File Not Found"
+  },
+  "episodes-data": {
+    "title": "Episodes Data",
+    "label-data-export": "Data Export",
+    "btn-export": "Export",
+    "msg-export-success": "Export successful",
+    "msg-export-failed": "Export failed",
+    "backup-tip": "Always keep a backup of the exported data - better safe than sorry, as they say!",
+    "label-data-import": "Data Import",
+    "label-file-name": "File name",
+    "label-episodes": "Episodes",
+    "label-edit-summary": "Edit Summary",
+    "label-select-file": "Select File",
+    "btn-import": "Import",
+    "msg-no-file-selected": "No file selected",
+    "msg-empty-summary": "No edit summary provided",
+    "msg-import-failed": "{0} import failed"
+  },
+  "mediawiki": {
+    "msg-page-deleted": "Page {0} has been deleted",
+    "msg-page-delete-failed": "Page {0} deletion failed",
+    "msg-page-edited": "Page {0} has been edited",
+    "msg-page-edit-failed": "Page {0} edit failed",
+    "msg-page-renamed": "Page {0} has been renamed to {1}",
+    "msg-page-rename-failed": "Page {0} rename failed"
   }
 }

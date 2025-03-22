@@ -142,7 +142,8 @@
     "label-file-explorer": "文件浏览器",
     "label-recycle-bin": "回收站",
     "label-download-manager": "下载管理器",
-    "label-settings": "设置"
+    "label-settings": "设置",
+    "label-episodes-data": "剧集数据"
   },
   "download-manager": {
     "title": "下载管理器",
@@ -170,5 +171,30 @@
   "file-preview": {
     "title": "文件预览",
     "title-file-not-found": "文件未找到"
+  },
+  "episodes-data": {
+    "title": "剧集数据",
+    "label-data-export": "数据导出",
+    "btn-export": "导出",
+    "msg-export-success": "导出成功",
+    "msg-export-failed": "导出失败",
+    "backup-tip": "务必备份导出的数据——老话说得好，有备无患！",
+    "label-data-import": "数据导入",
+    "label-file-name": "文件名",
+    "label-episodes": "剧集",
+    "label-edit-summary": "编辑摘要",
+    "label-select-file": "选择文件",
+    "btn-import": "导入",
+    "msg-no-file-selected": "未选择文件",
+    "msg-empty-summary": "未提供编辑摘要",
+    "msg-import-failed": "{0} 导入失败"
+  },
+  "mediawiki": {
+    "msg-page-deleted": "页面 {0} 已删除",
+    "msg-page-delete-failed": "页面 {0} 删除失败",
+    "msg-page-edited": "页面 {0} 已编辑",
+    "msg-page-edit-failed": "页面 {0} 编辑失败",
+    "msg-page-renamed": "页面 {0} 已重命名为 {1}",
+    "msg-page-rename-failed": "页面 {0} 重命名失败"
   }
 }
