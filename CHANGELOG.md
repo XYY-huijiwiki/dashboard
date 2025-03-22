@@ -1,3 +1,12 @@
+## [0.2.7](https://github.com/XYY-huijiwiki/r-drive/compare/v0.2.6...v0.2.7) (2025-03-22)
+
+### Features
+
+- **delete-and-undelete:** migrate <delete-and-undelete /> from [mini-dashboard](https://github.com/XYY-huijiwiki/mini-dashboard) ([66c568c](https://github.com/XYY-huijiwiki/r-drive/commit/66c568c21136c3d51ee43453f6903565cff2dc7c))
+- **episodes-data:** migrate `<episodes-data />` from [mini-dashboard](https://github.com/XYY-huijiwiki/mini-dashboard) ([e8eb9d4](https://github.com/XYY-huijiwiki/r-drive/commit/e8eb9d44f1ae8337a886e2b11c19715f301a21bd))
+- **miui-themes:** migrate <miui-themes /> from [mini-dashboard](https://github.com/XYY-huijiwiki/mini-dashboard) ([8aedf05](https://github.com/XYY-huijiwiki/r-drive/commit/8aedf0591effefaae663368ba97b47b906371dd3))
+- **rename-pages:** migrate <rename-pages /> from [mini-dashboard](https://github.com/XYY-huijiwiki/mini-dashboard) ([762b8a6](https://github.com/XYY-huijiwiki/r-drive/commit/762b8a601a89d70221d98af876a4fd382065044c))
+
 ## [0.2.6](https://github.com/XYY-huijiwiki/r-drive/compare/v0.2.5...v0.2.6) (2025-03-21)
 
 ### Bug Fixes
