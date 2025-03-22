@@ -1,58 +1,48 @@
 <template>
-  <n-tabs v-model:value="tab" type="line" animated @before-leave="() => !loading">
-    <!-- delete -->
-    <n-tab-pane name="delete" :tab="t('delete-and-undelete.delete.title')">
-      <n-flex vertical>
-        <n-input-group>
-          <n-select v-model:value="selectPagesValue" :options="selectPagesOptions" />
-          <n-button
-            :disabled="loading"
-            type="info"
-            @click="debounce(search[selectPagesValue], 200)()"
-          >
-            {{ t(`delete-and-undelete.delete.btn-search`) }}
-          </n-button>
-        </n-input-group>
-        <n-data-table :columns="columns" :data="data" :max-height="240" size="small" />
-        <n-input-group>
-          <n-input
-            v-model:value="summary"
-            :placeholder="t(`delete-and-undelete.delete.text-reason`)"
-            :disabled="loading"
-          />
-          <n-button type="error" :loading="loading" @click="debounce(destroy, 200)()">
-            {{ t(`delete-and-undelete.delete.btn-delete`) }}
-          </n-button>
-        </n-input-group>
-      </n-flex>
-    </n-tab-pane>
-    <!-- undelete -->
-    <n-tab-pane name="undelete" :tab="t('delete-and-undelete.undelete.title')">
-      <n-flex vertical>
-        <n-input-group>
-          <n-select v-model:value="selectPagesValue" :options="selectPagesOptions" />
-          <n-button
-            :disabled="loading"
-            type="info"
-            @click="debounce(search[selectPagesValue], 200)()"
-          >
-            {{ t(`delete-and-undelete.undelete.btn-search`) }}
-          </n-button>
-        </n-input-group>
-        <n-data-table :columns="columns" :data="data" :max-height="240" size="small" />
-        <n-input-group>
-          <n-input
-            v-model:value="summary"
-            :placeholder="t(`delete-and-undelete.undelete.text-reason`)"
-            :disabled="loading"
-          />
-          <n-button type="success" :loading="loading" @click="debounce(rescue, 200)()">
-            {{ t(`delete-and-undelete.undelete.btn-undelete`) }}
-          </n-button>
-        </n-input-group>
-      </n-flex>
-    </n-tab-pane>
-  </n-tabs>
+  <n-flex vertical class="h-full">
+    <n-tabs v-model:value="tab" type="line" animated @before-leave="() => !loading">
+      <n-tab name="delete">
+        {{ t('delete-and-undelete.delete.title') }}
+      </n-tab>
+      <n-tab name="undelete">
+        {{ t('delete-and-undelete.undelete.title') }}
+      </n-tab>
+    </n-tabs>
+    <n-flex vertical class="flex-1">
+      <n-input-group>
+        <n-select v-model:value="selectPagesValue" :options="selectPagesOptions" />
+        <n-button :disabled="loading" type="info" @click="search[selectPagesValue]">
+          {{ t(`delete-and-undelete.delete.btn-search`) }}
+        </n-button>
+      </n-input-group>
+      <n-data-table
+        ref="dataTable"
+        :columns="columns"
+        :data="data"
+        size="small"
+        class="h-0 flex-1"
+        :max-height="maxHeight - 46"
+      />
+      <n-input-group>
+        <n-input
+          v-model:value="summary"
+          :placeholder="
+            tab === 'delete'
+              ? t(`delete-and-undelete.delete.text-reason`)
+              : t(`delete-and-undelete.undelete.text-reason`)
+          "
+          :disabled="loading"
+        />
+        <n-button type="error" :loading="loading" @click="tab === 'delete' ? destroy() : rescue()">
+          {{
+            tab === 'delete'
+              ? t(`delete-and-undelete.delete.btn-delete`)
+              : t(`delete-and-undelete.undelete.btn-undelete`)
+          }}
+        </n-button>
+      </n-input-group>
+    </n-flex>
+  </n-flex>
 </template>
 
 <script setup lang="ts">
@@ -61,12 +51,12 @@ import { useI18n } from 'vue-i18n'
 import { onBeforeRouteLeave } from 'vue-router'
 import type { DataTableColumn, SelectOption } from 'naive-ui'
 import { NA, NTag } from 'naive-ui'
-import { debounce } from 'lodash-es'
+import { useElementSize } from '@vueuse/core'
 
 import { deletePage, undeletePage } from '@renderer/utils/mwApi'
 import { sleep } from '@renderer/utils'
 
-// router guard to prevent leaving page when deleting
+// router guard to prevent leaving page when deleting or undeleting
 onBeforeRouteLeave(() => {
   if (loading.value) {
     window.$dialog.error({
@@ -85,6 +75,8 @@ onBeforeRouteLeave(() => {
 const { t } = useI18n()
 const summary: Ref<string | undefined> = ref()
 const loading = ref(false)
+const dataTable: Ref<HTMLElement | null> = ref(null)
+const { height: maxHeight } = useElementSize(dataTable)
 const tab: Ref<'delete' | 'undelete'> = ref('delete')
 
 async function destroy(): Promise<void> {
