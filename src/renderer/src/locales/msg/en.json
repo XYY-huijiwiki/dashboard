@@ -10,7 +10,8 @@
     "btn-cancel": "Cancel",
     "btn-confirm": "Confirm",
     "text-leave-warning-title": "Attention",
-    "text-leave-warning-content": "We are still working on it. Please do not leave this page."
+    "text-leave-warning-content": "We are still working on it. Please do not leave this page.",
+    "unknown-error": "Unkown Error"
   },
   "settings": {
     "title": "Settings",
@@ -138,15 +139,7 @@
     "permission-denied-title": "Permission Denied",
     "permission-denied-content": "You don't have permission to access {0}."
   },
-  "side-menu": {
-    "label-file-explorer": "File Explorer",
-    "label-recycle-bin": "Recycle Bin",
-    "label-download-manager": "Download Manager",
-    "label-settings": "Settings",
-    "label-episodes-data": "Episodes Data",
-    "label-miui-themes": "MIUI Themes Collector",
-    "label-delete-and-undelete": "Delete and Undelete"
-  },
+  "side-menu": {},
   "download-manager": {
     "title": "Download Manager",
     "btn-show-in-folder": "Show in folder",
@@ -221,11 +214,11 @@
     "label-select-pages-by-txt": "Text Document (.txt)",
     "label-select-pages-by-xlsx": "Microsoft Excel Worksheet (.xlsx)",
     "label-select-pages-by-category": "Category",
+    "btn-search": "Search",
+    "label-table-title": "Title",
+    "label-table-status": "Status",
     "delete": {
       "title": "Delete",
-      "btn-search": "Search",
-      "label-table-title": "Title",
-      "label-table-status": "Status",
       "label-status-to-do": "To delete",
       "label-status-doing": "Deleting",
       "label-status-done": "Deleted",
@@ -236,9 +229,6 @@
     },
     "undelete": {
       "title": "Undelete",
-      "btn-search": "Search",
-      "label-table-title": "Title",
-      "label-table-status": "Status",
       "label-status-to-do": "To Restore",
       "label-status-doing": "Restoring",
       "label-status-done": "Restored",
@@ -246,6 +236,39 @@
       "text-reason": "Restore reason",
       "btn-undelete": "Restore",
       "error-no-undelete-reason": "Please fill in the restore reason"
+    }
+  },
+  "rename-pages": {
+    "title": "Rename Pages",
+    "btn-search": "Search",
+    "label-reason": "Rename reason",
+    "label-table-title-from": "Rename From",
+    "label-table-title-to": "Rename To",
+    "label-table-status": "Status",
+    "label-status-to-do": "To Rename",
+    "label-status-doing": "Renaming",
+    "label-status-done": "Renamed",
+    "label-status-error": "Error: {0}",
+    "label-select-pages-by-xlsx": "Microsoft Excel Worksheet (.xlsx)",
+    "btn-rename": "Rename",
+    "errors": {
+      "missingtitle": "The page to be moved doesn't exist.",
+      "nofrom": "The from parameter must be set.",
+      "noto": "The to parameter must be set.",
+      "notoken": "The token parameter must be set.",
+      "cantmove-anon": "Anonymous users can't move pages.",
+      "cantmove": "You don't have permission to move this page.",
+      "cantmovefile": "You don't have permission to move this file.",
+      "selfmove": "Can't move a page to itself.",
+      "immobilenamespace": "You tried to move pages from or to a namespace that is protected from moving.",
+      "articleexists": "The destination article already exists.",
+      "redirectexists": "The destination is a redirect, but is not a single-revision redirect to the source article.",
+      "protectedpage": "You don't have permission to perform this move.",
+      "protectedtitle": "The destination article has been protected from creation.",
+      "nonfilenamespace": "Cannot move file to non-file namespace.",
+      "filetypemismatch": "The new file extension does not match its type.",
+      "mustbeposted": "The move module requires a POST request.",
+      "other": "Other errors"
     }
   }
 }

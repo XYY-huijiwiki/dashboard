@@ -1,7 +1,26 @@
-import { i18n } from '@renderer/main'
 import { is } from '@renderer/utils'
 
-const { t } = i18n.global
+/**
+ * Possible errors that can occur during the rename operation.
+ * @see {@link https://www.mediawiki.org/wiki/Special:MyLanguage/API:Move}
+ */
+type RenameErrorType =
+  | 'nofrom' // The from parameter must be set.
+  | 'noto' // The to parameter must be set.
+  | 'notoken' // The token parameter must be set.
+  | 'cantmove-anon' // Anonymous users can't move pages.
+  | 'cantmove' // You don't have permission to move this page.
+  | 'cantmovefile' // You don't have permission to move this file.
+  | 'selfmove' // Can't move a page to itself.
+  | 'immobilenamespace' // You tried to move pages from or to a namespace that is protected from moving.
+  | 'articleexists' // The destination article already exists.
+  | 'redirectexists' // The destination is a redirect, but is not a single-revision redirect to the source article.
+  | 'protectedpage' // You don't have permission to perform this move.
+  | 'protectedtitle' // The destination article has been protected from creation.
+  | 'nonfilenamespace' // Cannot move file to non-file namespace.
+  | 'filetypemismatch' // The new file extension does not match its type.
+  | 'mustbeposted' // The move module requires a POST request.
+  | string // Other errors
 
 /**
  * Parameters for the move operation.
@@ -70,7 +89,7 @@ async function renamePage(renameParams: RenameParams): Promise<
     }
   | {
       ok: false
-      body: string
+      body: RenameErrorType
     }
 > {
   return new Promise((resolve) => {
@@ -82,23 +101,11 @@ async function renamePage(renameParams: RenameParams): Promise<
       })
       .done((data) => {
         const { move: renameResponse } = data as RenameResponse
-        window.$message.success(
-          t('mediawiki.msg-page-renamed', [renameResponse.from, renameResponse.to])
-        )
-        if (is.dev) {
-          console.log(data)
-        }
+        if (is.dev) console.log(data)
         resolve({ ok: true, body: renameResponse })
       })
       .fail((data: string) => {
-        window.$notification.error({
-          title: t('general.error'),
-          content: t('mediawiki.msg-page-rename-failed', [data]),
-          meta: new Date().toLocaleString()
-        })
-        if (is.dev) {
-          console.log(data)
-        }
+        if (is.dev) console.log(data)
         resolve({ ok: false, body: data })
       })
       .always(() => {

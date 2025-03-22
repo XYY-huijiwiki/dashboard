@@ -10,7 +10,8 @@
     "btn-cancel": "Abbrechen",
     "btn-confirm": "Bestätigen",
     "text-leave-warning-title": "Achtung",
-    "text-leave-warning-content": "Wir arbeiten noch daran. Bitte verlassen Sie diese Seite nicht."
+    "text-leave-warning-content": "Wir arbeiten noch daran. Bitte verlassen Sie diese Seite nicht.",
+    "unknown-error": "Unbekannter Fehler"
   },
   "settings": {
     "title": "Einstellungen",
@@ -138,15 +139,7 @@
     "permission-denied-title": "Zugriff verweigert",
     "permission-denied-content": "Sie haben keine Berechtigung, auf {0} zuzugreifen."
   },
-  "side-menu": {
-    "label-file-explorer": "Datei-Explorer",
-    "label-recycle-bin": "Papierkorb",
-    "label-download-manager": "Download-Manager",
-    "label-settings": "Einstellungen",
-    "label-episodes-data": "Folgen-Daten",
-    "label-miui-themes": "MIUI Themes Collector",
-    "label-delete-and-undelete": "Löschen und Wiederherstellen"
-  },
+  "side-menu": {},
   "download-manager": {
     "title": "Download-Manager",
     "btn-show-in-folder": "Im Ordner anzeigen",
@@ -221,11 +214,11 @@
     "label-select-pages-by-txt": "Textdokument (.txt)",
     "label-select-pages-by-xlsx": "Microsoft Excel-Arbeitsblatt (.xlsx)",
     "label-select-pages-by-category": "Kategorie",
+    "btn-search": "Suchen",
+    "label-table-title": "Titel",
+    "label-table-status": "Status",
     "delete": {
       "title": "Löschen",
-      "btn-search": "Suchen",
-      "label-table-title": "Titel",
-      "label-table-status": "Status",
       "label-status-to-do": "Warten auf Löschung",
       "label-status-doing": "Löschen",
       "label-status-done": "Gelöscht",
@@ -236,9 +229,6 @@
     },
     "undelete": {
       "title": "Wiederherstellen",
-      "btn-search": "Suchen",
-      "label-table-title": "Titel",
-      "label-table-status": "Status",
       "label-status-to-do": "Warten auf Wiederherstellung",
       "label-status-doing": "Wiederherstellen",
       "label-status-done": "Wiederhergestellt",
@@ -246,6 +236,38 @@
       "text-reason": "Wiederherstellungsgrund",
       "btn-undelete": "Wiederherstellen",
       "error-no-undelete-reason": "Bitte geben Sie einen Wiederherstellungsgrund an"
+    }
+  },
+  "rename-pages": {
+    "btn-rename": "Umbenennen",
+    "btn-search": "Suchen",
+    "label-reason": "Umbenennungsgrund",
+    "label-select-pages-by-xlsx": "Microsoft Excel-Arbeitsblatt (.xlsx)",
+    "label-status-doing": "Umbenennen",
+    "label-status-done": "Umbenannt",
+    "label-status-error": "Fehler: {0}",
+    "label-status-to-do": "Warten auf Umbenennung",
+    "label-table-status": "Status",
+    "label-table-title-from": "Umbenennen von",
+    "label-table-title-to": "Umbenennen in",
+    "title": "Seiten umbenennen",
+    "errors": {
+      "missingtitle": "Die zu verschiebende Seite existiert nicht.",
+      "nofrom": "Das from-Parameter muss gesetzt werden.",
+      "noto": "Das to-Parameter muss gesetzt werden.",
+      "notoken": "Das token-Parameter muss gesetzt werden.",
+      "cantmove-anon": "Anonyme Benutzer können Seiten nicht verschieben.",
+      "cantmove": "Du hast keine Berechtigung, um diese Seite zu verschieben.",
+      "cantmovefile": "Du hast keine Berechtigung, um Diese Datei verschieben.",
+      "selfmove": "Kann eine Seite nicht auf sich selbst verschieben.",
+      "immobilenamespace": "Du hast versucht, Seiten von oder in einen Namensraum zu verschieben, der vor dem Verschieben geschützt ist.",
+      "articleexists": "Der Zielartikel existiert bereits.",
+      "redirectexists": "Das Ziel ist eine Weiterleitung, aber keine Einzelrevision-Weiterleitung zum Quellartikel.",
+      "protectedpage": "Du hast keine Berechtigung, um diese Seite zu verschieben.",
+      "protectedtitle": "Der Zielartikel wurde vor der Erstellung geschützt.",
+      "nonfilenamespace": "Dateien können nicht aus dem File-Namensraum heraus verschoben werden.",
+      "filetypemismatch": "Die neue Dateierweiterung ist nicht mit der alten identisch.",
+      "mustbeposted": "Das Verschieben-Modul erfordert eine POST-Anfrage."
     }
   }
 }

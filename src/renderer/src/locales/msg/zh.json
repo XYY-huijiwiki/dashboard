@@ -10,7 +10,8 @@
     "btn-cancel": "取消",
     "btn-confirm": "确认",
     "text-leave-warning-title": "注意",
-    "text-leave-warning-content": "我们仍在处理。请不要离开本页面。"
+    "text-leave-warning-content": "我们仍在处理。请不要离开本页面。",
+    "unknown-error": "未知错误"
   },
   "settings": {
     "title": "设置",
@@ -138,15 +139,7 @@
     "permission-denied-title": "无权访问",
     "permission-denied-content": "你没有权限访问{0}。"
   },
-  "side-menu": {
-    "label-file-explorer": "文件浏览器",
-    "label-recycle-bin": "回收站",
-    "label-download-manager": "下载管理器",
-    "label-settings": "设置",
-    "label-episodes-data": "剧集数据",
-    "label-miui-themes": "MIUI主题收集器",
-    "label-delete-and-undelete": "删除和还原"
-  },
+  "side-menu": {},
   "download-manager": {
     "title": "下载管理器",
     "btn-show-in-folder": "在文件夹中显示",
@@ -221,11 +214,11 @@
     "label-select-pages-by-txt": "文本文档 (.txt)",
     "label-select-pages-by-xlsx": "Microsoft Excel 工作表 (.xlsx)",
     "label-select-pages-by-category": "分类",
+    "btn-search": "搜索",
+    "label-table-title": "标题",
+    "label-table-status": "状态",
     "delete": {
       "title": "删除",
-      "btn-search": "搜索",
-      "label-table-title": "标题",
-      "label-table-status": "状态",
       "label-status-to-do": "等待中",
       "label-status-doing": "删除中",
       "label-status-done": "已删除",
@@ -236,9 +229,6 @@
     },
     "undelete": {
       "title": "还原",
-      "btn-search": "搜索",
-      "label-table-title": "标题",
-      "label-table-status": "状态",
       "label-status-to-do": "等待中",
       "label-status-doing": "还原中",
       "label-status-done": "已还原",
@@ -246,6 +236,39 @@
       "text-reason": "还原原因",
       "btn-undelete": "还原",
       "error-no-undelete-reason": "请填写还原原因"
+    }
+  },
+  "rename-pages": {
+    "btn-rename": "重命名",
+    "btn-search": "搜索",
+    "label-reason": "重命名原因",
+    "label-select-pages-by-xlsx": "Microsoft Excel 工作表 (.xlsx)",
+    "label-status-doing": "正在重命名",
+    "label-status-done": "重命名完成",
+    "label-status-error": "错误：{0}",
+    "label-status-to-do": "等待中",
+    "label-table-status": "状态",
+    "label-table-title-from": "重命名自",
+    "label-table-title-to": "重命名为",
+    "title": "重命名页面",
+    "errors": {
+      "missingtitle": "要移动的页面不存在。",
+      "nofrom": "必须设置from参数。",
+      "noto": "必须设置to参数。",
+      "notoken": "必须设置token参数。",
+      "cantmove-anon": "匿名用户无法移动页面。",
+      "cantmove": "您没有权限移动此页面。",
+      "cantmovefile": "您没有权限移动此文件。",
+      "selfmove": "无法将页面移动到自身。",
+      "immobilenamespace": "原页面或目标页面的命名空间被保护，无法移动。",
+      "articleexists": "目标页面已存在。",
+      "redirectexists": "目标页面是重定向，且并非直接重定向到源页面。",
+      "protectedpage": "您没有权限执行此移动操作。",
+      "protectedtitle": "目标页面已被保护，无法创建。",
+      "nonfilenamespace": "无法将文件移动到非文件命名空间。",
+      "filetypemismatch": "新文件扩展名与其类型不匹配。",
+      "mustbeposted": "移动模块需要POST请求。",
+      "other": "其他错误"
     }
   }
 }

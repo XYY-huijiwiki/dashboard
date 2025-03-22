@@ -12,17 +12,10 @@
       <n-input-group>
         <n-select v-model:value="selectPagesValue" :options="selectPagesOptions" />
         <n-button :disabled="loading" type="info" @click="search[selectPagesValue]">
-          {{ t(`delete-and-undelete.delete.btn-search`) }}
+          {{ t(`delete-and-undelete.btn-search`) }}
         </n-button>
       </n-input-group>
-      <n-data-table
-        ref="dataTable"
-        :columns="columns"
-        :data="data"
-        size="small"
-        class="h-0 flex-1"
-        :max-height="maxHeight - 46"
-      />
+      <n-data-table :columns="columns" :data="data" size="small" class="flex-1" flex-height />
       <n-input-group>
         <n-input
           v-model:value="summary"
@@ -51,7 +44,6 @@ import { useI18n } from 'vue-i18n'
 import { onBeforeRouteLeave } from 'vue-router'
 import type { DataTableColumn, SelectOption } from 'naive-ui'
 import { NA, NTag } from 'naive-ui'
-import { useElementSize } from '@vueuse/core'
 
 import { deletePage, undeletePage } from '@renderer/utils/mwApi'
 import { sleep } from '@renderer/utils'
@@ -75,8 +67,6 @@ onBeforeRouteLeave(() => {
 const { t } = useI18n()
 const summary: Ref<string | undefined> = ref()
 const loading = ref(false)
-const dataTable: Ref<HTMLElement | null> = ref(null)
-const { height: maxHeight } = useElementSize(dataTable)
 const tab: Ref<'delete' | 'undelete'> = ref('delete')
 
 async function destroy(): Promise<void> {
@@ -137,10 +127,7 @@ async function rescue(): Promise<void> {
 const columns: DataTableColumn<DeleteUndeleteState>[] = [
   {
     key: 'title',
-    title: () =>
-      tab.value === 'delete'
-        ? t(`delete-and-undelete.delete.label-table-title`)
-        : t(`delete-and-undelete.undelete.label-table-title`),
+    title: () => t(`delete-and-undelete.label-table-title`),
     render: (rowData) => {
       return h(
         NA,
@@ -151,10 +138,7 @@ const columns: DataTableColumn<DeleteUndeleteState>[] = [
   },
   {
     key: 'status',
-    title: () =>
-      tab.value === 'delete'
-        ? t(`delete-and-undelete.delete.label-table-status`)
-        : t(`delete-and-undelete.undelete.label-table-status`),
+    title: () => t(`delete-and-undelete.label-table-status`),
     render: (rowData) => {
       return h(
         NTag,

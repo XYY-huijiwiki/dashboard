@@ -40,43 +40,49 @@ function getDisabledState(routeName: string): boolean {
 
 const options: Ref<MenuOption[]> = computed(() => [
   {
-    label: renderLabel(t('side-menu.label-file-explorer'), 'file-explorer'),
+    label: renderLabel(t('file-explorer.title'), 'file-explorer'),
     key: 'file-explorer',
     disabled: getDisabledState('file-explorer'),
     icon: renderIcon('folder')
   },
   {
-    label: renderLabel(t('side-menu.label-recycle-bin'), 'recycle-bin'),
+    label: renderLabel(t('recycle-bin.title'), 'recycle-bin'),
     key: 'recycle-bin',
     disabled: true,
     icon: renderIcon('bin-recycle-full')
   },
   {
-    label: renderLabel(t('side-menu.label-download-manager'), 'download-manager'),
+    label: renderLabel(t('download-manager.title'), 'download-manager'),
     key: 'download-manager',
     disabled: getDisabledState('download-manager'),
     icon: () => h(DownloadIcon, { downloading: activeDownloads.value.length > 0 })
   },
   {
-    label: renderLabel(t('side-menu.label-episodes-data'), 'episodes-data'),
+    label: renderLabel(t('episodes-data.title'), 'episodes-data'),
     key: 'episodes-data',
     disabled: getDisabledState('episodes-data'),
     icon: renderIcon('database')
   },
   {
-    label: renderLabel(t('side-menu.label-delete-and-undelete'), 'delete-and-undelete'),
+    label: renderLabel(t('rename-pages.title'), 'rename-pages'),
+    key: 'rename-pages',
+    disabled: getDisabledState('rename-pages'),
+    icon: renderIcon('text-direction-horizontal-ltr')
+  },
+  {
+    label: renderLabel(t('delete-and-undelete.title'), 'delete-and-undelete'),
     key: 'delete-and-undelete',
     disabled: getDisabledState('delete-and-undelete'),
     icon: renderIcon('broom')
   },
   {
-    label: renderLabel(t('side-menu.label-miui-themes'), 'miui-themes'),
+    label: renderLabel(t('miui-themes.title'), 'miui-themes'),
     key: 'miui-themes',
     disabled: getDisabledState('miui-themes'),
     icon: () => h(Icon, { icon: `simple-icons:xiaomi` })
   },
   {
-    label: renderLabel(t('side-menu.label-settings'), 'settings'),
+    label: renderLabel(t('settings.title'), 'settings'),
     key: 'settings',
     disabled: getDisabledState('settings'),
     icon: renderIcon('settings')

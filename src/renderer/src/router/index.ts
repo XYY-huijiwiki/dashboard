@@ -47,6 +47,14 @@ const routes: Array<RouteRecordRaw> = [
     component: views['/src/views/DownloadManager.vue']
   },
   {
+    path: '/rename-pages',
+    name: 'rename-pages',
+    meta: {
+      webOnly: true
+    },
+    component: views['/src/views/RenamePages.vue']
+  },
+  {
     path: '/episodes-data',
     name: 'episodes-data',
     meta: {

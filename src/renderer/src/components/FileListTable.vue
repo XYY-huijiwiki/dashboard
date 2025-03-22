@@ -1,13 +1,12 @@
 <template>
   <n-data-table
-    ref="dataTable"
     v-model:checked-row-keys="checkedRowKeys"
     class="h-full w-full"
     :columns="columns"
     :data="data"
     virtual-scroll
     remote
-    :max-height="explorerState.viewMode === 'details' ? maxHeight - 54 : maxHeight - 46"
+    flex-height
     :loading="loading"
     :size="explorerState.viewMode === 'details' ? undefined : 'small'"
     :row-key="(row: FileRecord) => row.file_name"
@@ -40,7 +39,6 @@ import dayjs from 'dayjs'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
 import { filesize as filesizeNoLocale } from 'filesize'
 import { storeToRefs } from 'pinia'
-import { useElementSize } from '@vueuse/core'
 
 import { useExplorerStateStore } from '@renderer/stores/explorerState'
 import { useLocalesStore, dayjsLocales } from '@renderer/stores/locales'
@@ -59,9 +57,6 @@ const { langCode } = storeToRefs(useLocalesStore())
 const filesize = (size: number): string => filesizeNoLocale(size, { locale: langCode.value })
 dayjs.extend(localizedFormat).locale(dayjsLocales.value)
 const { t } = useI18n()
-
-const dataTable = ref()
-const { height: maxHeight } = useElementSize(dataTable)
 
 const { data, filesInUse } = defineProps<{
   filesInUse: string[]
