@@ -55,7 +55,7 @@ function getIconName(type: string | undefined | null): string {
   )
     return 'powerpoint'
   if (type === 'application/pdf') return 'doc'
-  if (type === 'application/zip') return 'zip'
+  if (['application/zip', 'application/x-zip-compressed'].includes(type || '')) return 'zip'
   if (type?.startsWith('model')) return 'model'
   if (type?.startsWith('image')) return 'image'
   if (type?.startsWith('audio')) return 'audio'

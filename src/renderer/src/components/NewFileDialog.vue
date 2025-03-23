@@ -40,28 +40,43 @@ import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import dayjs from 'dayjs'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
+import ky from 'ky'
+import { useFileDialog } from '@vueuse/core'
 
 import { useSettingsStore } from '@renderer/stores/settings'
 import { dayjsLocales } from '@renderer/stores/locales'
 import db from '@renderer/utils/queryDB'
 import licenceOptions from '@renderer/utils/licenceOptions'
 import genWikitextDom from '@renderer/utils/genWikitextDom'
-import { fileNameLengthLimitFromOrg } from '@renderer/utils/fileName'
+import { fileNameLengthLimitFromOrg, fileNameOrgToBase62 } from '@renderer/utils/fileName'
+import { is } from '@renderer/utils'
 
 dayjs.extend(localizedFormat).locale(dayjsLocales.value)
 
 const { t } = useI18n()
-
 const { settings } = storeToRefs(useSettingsStore())
-
 const loading = ref(false)
 const fileName = ref('')
 const fileLicense: Ref<null | string> = ref(null)
 const fileSource: Ref<null | string> = ref(null)
 const selectedFile = ref<Awaited<ReturnType<typeof window.api.openFileDialog>> | null>(null)
+const selectedFileWeb: Ref<null | File> = ref(null)
 const canUpload = computed(
-  () => !!selectedFile.value && !!fileName.value && !!fileLicense.value && !!fileSource.value
+  () =>
+    // Electron Only
+    (!is.web &&
+      !!selectedFile.value &&
+      !!fileName.value &&
+      !!fileLicense.value &&
+      !!fileSource.value) ||
+    // Web Only
+    (is.web &&
+      !!selectedFileWeb.value &&
+      !!fileName.value &&
+      !!fileLicense.value &&
+      !!fileSource.value)
 )
+const fileDialog = useFileDialog()
 
 const emit = defineEmits(['close', 'done', 'loading-start', 'loading-end'])
 watch(loading, (v) => {
@@ -70,15 +85,31 @@ watch(loading, (v) => {
 })
 
 async function handleSelectFile(): Promise<void> {
-  const file = await window.api.openFileDialog()
-  if (!file) return
-  selectedFile.value = file
-  fileName.value = file.name
+  // Web Only
+  if (is.web) {
+    await fileDialog.open({
+      multiple: false
+    })
+    fileDialog.onChange(() => {
+      if (fileDialog.files.value === null) return
+      selectedFileWeb.value = fileDialog.files.value[0]
+      fileName.value = fileDialog.files.value[0].name
+    })
+  }
+  // Electron Only
+  else {
+    const file = await window.api.openFileDialog()
+    if (!file) return
+    selectedFile.value = file
+    fileName.value = file.name
+  }
 }
 
 async function confirmNewFile(): Promise<void> {
-  // if no file selected, do nothing
-  if (!selectedFile.value) return
+  // if no file selected, do nothing (Electron only)
+  if (!is.web && !selectedFile.value) return
+  // if no file selected, do nothing (Web only)
+  if (is.web && !selectedFileWeb.value) return
   // if no file name, do nothing
   if (!fileName.value) return
   // if file name is too long
@@ -95,16 +126,35 @@ async function confirmNewFile(): Promise<void> {
   const fileNameToBeUsed = fileName.value.trim().replaceAll(' ', '_')
 
   try {
-    // step 1: upload to github
-    const ghRes = await window.api.uploadToGitHub({
-      owner: settings.value.ghOwner,
-      repo: settings.value.ghRepo,
-      releaseId: `${settings.value.rootReleaseId}`,
-      ghToken: settings.value.ghToken,
-      filePath: selectedFile.value.path,
-      fileName: fileNameToBeUsed
-    })
-
+    let ghRes: GhAssetUploadResponse
+    // step 1: upload to github (Web only)
+    if (is.web) {
+      const corsProxy = `https://cors-proxy.24218079.xyz/`
+      const url = new URL(
+        `${corsProxy}https://uploads.github.com/repos/${settings.value.ghOwner}/${settings.value.ghRepo}/releases/${settings.value.rootReleaseId}/assets`
+      )
+      url.searchParams.set('name', fileNameOrgToBase62(fileName.value))
+      ghRes = await ky
+        .post(url, {
+          headers: {
+            'Content-Type': selectedFileWeb.value?.type,
+            Authorization: `token ${settings.value.ghToken}`
+          },
+          body: selectedFileWeb.value
+        })
+        .json()
+    }
+    // step 1: upload to github (Electron only)
+    else {
+      ghRes = await window.api.uploadToGitHub({
+        owner: settings.value.ghOwner,
+        repo: settings.value.ghRepo,
+        releaseId: `${settings.value.rootReleaseId}`,
+        ghToken: settings.value.ghToken,
+        filePath: selectedFile.value?.path as string,
+        fileName: fileNameToBeUsed
+      })
+    }
     console.log('ghRes', ghRes)
 
     // step 2: update database

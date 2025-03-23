@@ -4,7 +4,7 @@
       <n-scrollbar x-scrollable class="flex-1 w-0 shrink-0 pb-2">
         <n-flex :wrap="false" size="small">
           <!-- new -->
-          <n-button quaternary :disabled="is.web" @click="emit('new-file')">
+          <n-button quaternary @click="emit('new-file')">
             <template #icon>
               <n-icon :size="24">
                 <add-circle24-regular />
