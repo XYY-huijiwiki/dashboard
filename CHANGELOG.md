@@ -1,3 +1,14 @@
+## [0.2.8](https://github.com/XYY-huijiwiki/dashboard/compare/v0.2.7...v0.2.8) (2025-03-23)
+
+### Bug Fixes
+
+- **ui:** apply minor UI style fix ([5ef546b](https://github.com/XYY-huijiwiki/dashboard/commit/5ef546b47e16d39ff452a0bc4762527acf208848))
+
+### Features
+
+- **find-and-replace:** migrate `<find-and-replace />` from [mini-dashboard](https://github.com/XYY-huijiwiki/mini-dashboard) ([383f091](https://github.com/XYY-huijiwiki/dashboard/commit/383f091d23d754b0fee6168f6ca31702232870ea))
+- **web:** add file upload support for web version ([2f4a08a](https://github.com/XYY-huijiwiki/dashboard/commit/2f4a08ad65626d84fe22788abd509c00bfc01d8e))
+
 ## [0.2.7](https://github.com/XYY-huijiwiki/r-drive/compare/v0.2.6...v0.2.7) (2025-03-22)
 
 ### Features

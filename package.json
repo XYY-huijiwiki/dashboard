@@ -1,6 +1,6 @@
 {
   "name": "xyy-huijiwiki-dashboard",
-  "version": "0.2.7",
+  "version": "0.2.8",
   "description": "A convenient file manager for accessing and managing files stored on GitHub, (almost) seamlessly integrated with XYY Wiki.",
   "main": "./out/main/index.js",
   "author": "Karsten Zhou",
