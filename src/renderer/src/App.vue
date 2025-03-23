@@ -78,7 +78,7 @@ const toggleFullscreen = async () => {
       <n-card
         content-class="shrink-0 h-0"
         class="!rounded-none !border-none"
-        :class="[is.web ? 'h-[80vh]' : 'h-screen']"
+        :class="[is.web && !isFullscreen ? 'h-[80vh]' : 'h-screen']"
       >
         <!-- 卡片左上角：返回 | 前进 | 刷新  | 标题 -->
         <template #header>

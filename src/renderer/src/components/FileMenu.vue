@@ -75,7 +75,7 @@ const options: ComputedRef<DropdownOption[]> = computed(() => [
   {
     label: t('github-files.btn-delete'),
     icon: () => genIcon(Delete20Regular),
-    disabled: is.web || props.data.length === 0,
+    disabled: props.data.length === 0,
     key: 'delete'
   },
   {
@@ -87,7 +87,7 @@ const options: ComputedRef<DropdownOption[]> = computed(() => [
   {
     label: t('github-files.btn-rename'),
     icon: () => genIcon(Rename20Regular),
-    disabled: is.web || props.data.length !== 1,
+    disabled: props.data.length !== 1,
     key: 'rename'
   },
   {

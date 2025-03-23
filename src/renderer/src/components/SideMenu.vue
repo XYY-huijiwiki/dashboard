@@ -19,6 +19,7 @@ import { storeToRefs } from 'pinia'
 import DownloadIcon from '@renderer/components/DownloadIcon.vue'
 import { useDownloadStore } from '@renderer/stores/download'
 import { canClientAccess } from '@renderer/router'
+import { is } from '@renderer/utils'
 
 const { t } = useI18n()
 const router = useRouter()
@@ -31,7 +32,12 @@ function renderIcon(icon: string) {
   return () => h(Icon, { icon: `fluent:${icon}-24-regular` })
 }
 function renderLabel(text: string, link: string) {
-  return () => h(RouterLink, { to: { name: link } }, { default: () => text })
+  return () =>
+    h(
+      RouterLink,
+      { to: { name: link }, class: is.web && 'text-nowrap' /* to solve web css conflict */ },
+      { default: () => text }
+    )
 }
 function getDisabledState(routeName: string): boolean {
   const routerLocation = router.resolve({ name: routeName })

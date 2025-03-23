@@ -40,7 +40,7 @@
           <!-- rename -->
           <tooltipped-icon-button
             :text="t('github-files.btn-rename')"
-            :disabled="is.web || checkedRowKeys.length !== 1"
+            :disabled="checkedRowKeys.length !== 1"
             @click="emit('file-rename')"
           >
             <rename24-regular />
@@ -48,7 +48,7 @@
           <!-- delete -->
           <tooltipped-icon-button
             :text="t('github-files.btn-delete')"
-            :disabled="is.web || checkedRowKeys.length === 0"
+            :disabled="checkedRowKeys.length === 0"
             @click="emit('file-delete')"
           >
             <delete24-regular />
