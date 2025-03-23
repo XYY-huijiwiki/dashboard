@@ -1,10 +1,10 @@
 {
-  "name": "r-drive",
+  "name": "xyy-huijiwiki-dashboard",
   "version": "0.2.7",
   "description": "A convenient file manager for accessing and managing files stored on GitHub, (almost) seamlessly integrated with XYY Wiki.",
   "main": "./out/main/index.js",
   "author": "Karsten Zhou",
-  "homepage": "https://github.com/XYY-huijiwiki/r-drive",
+  "homepage": "https://github.com/XYY-huijiwiki/dashboard",
   "type": "module",
   "engines": {
     "node": ">=20"

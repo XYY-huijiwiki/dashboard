@@ -77,7 +77,7 @@ function toggleDevtools(): void {
     <!-- source code -->
     <n-form-item :label="t('settings.label-source-code')">
       <n-space>
-        <n-button tag="a" href="//github.com/XYY-huijiwiki/r-drive" target="_blank">
+        <n-button tag="a" href="//github.com/XYY-huijiwiki/dashboard" target="_blank">
           {{ t('settings.btn-github') }}
         </n-button>
       </n-space>

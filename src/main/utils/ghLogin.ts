@@ -11,7 +11,7 @@ async function ghLogin(): Promise<string> {
 
     authWindow.removeMenu()
 
-    const serverlessURL = 'https://r-drive.24218079.xyz/'
+    const serverlessURL = 'https://dashboard-login.24218079.xyz/'
     const url = new URL(serverlessURL + 'login')
     url.searchParams.set('redirect_uri', 'http://localhost/')
     url.searchParams.set('scope', 'public_repo')

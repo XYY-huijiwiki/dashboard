@@ -1,56 +1,34 @@
-# RDrive (XYY Wiki Edition)
+# XYY Huijiwiki Dashboard
 
-A convenient file manager for accessing and managing files stored on GitHub, (almost) seamlessly integrated with XYY Wiki. With this, you can effortlessly browse, upload, download, rename, and delete files – and more! Because who doesn’t love more? 😏
+> A sleek and modern dashboard for XYY Huijiwiki 🚀
 
-[![Download Latest Release](https://img.shields.io/github/v/release/XYY-huijiwiki/r-drive?label=Download&style=for-the-badge)](https://github.com/XYY-huijiwiki/r-drive/releases/latest)
+The **[XYY Huijiwiki Dashboard](https://xyy.huijiwiki.com/wiki/Project:控制中心)** is designed to provide a user-friendly, efficient way to manage XYY Huijiwiki. With advanced file management, cartoon episode data handling, and large-scale wiki operations, this dashboard makes your life easier! Built with the latest web technologies, it combines functionality with a modern aesthetic.
 
-## Features 🎯
+[![Download Latest Release](https://img.shields.io/github/v/release/XYY-huijiwiki/dashboard?label=Download&style=for-the-badge)](https://github.com/XYY-huijiwiki/dashboard/releases/latest)
 
-- ✅ **List files** – Search and sort like a pro.
-- ✅ **Upload files** – Just a few clicks, but don’t forget to provide the file source and licence! (See [licence details in XYY Wiki](https://xyy.huijiwiki.com/wiki/MediaWiki:Licenses))
-- ✅ **Download files** – Supports multiple downloads at once. No one likes downloading files one by one. 😤
-- ✅ **Basic file operations** – Rename, delete, and feel powerful. 💪
+## ✨ Features
 
-## Notes 📌
+- **Advanced File Management** 📂  
+  Many valuable files cannot be uploaded to XYY Huijiwiki due to size restrictions or other limitations. Now, they are stored in GitHub! This dashboard acts as a bridge between Huijiwiki and GitHub, allowing you to upload, download, rename, and manage those files seamlessly.
 
-### GitHub Login Required 🔑
+- **Cartoon Episode Data Management** 🎬  
+  Easily manage cartoon episode data with a clean, intuitive interface. Export data as a Microsoft Excel file, edit efficiently, and import it back into Huijiwiki without breaking a sweat.
 
-> [!Note]
-> You must log in to GitHub to use this app. Also, all files will be **read-only** unless you have admin permissions in the `XYY-huijiwiki` GitHub organisation.
+- **Bulk Wiki Operations** 🔧  
+  Handling a large amount of wiki operations? No worries! The dashboard includes powerful tools for renaming, find-and-replace actions, deletion, undeletion, and more. Wiki management at scale, made simple.
 
-### Network Connection 🌍
+- **More Features Coming Soon!** 🚀  
+  We're continuously improving and adding new functionalities. Stay tuned!
 
-> [!Note]
-> This app requires an internet connection to access GitHub and Cloudflare. If you’re in mainland China, you might have trouble connecting.
-
-## How It Works ⚙️
-
-All files are stored as assets in GitHub releases, while file metadata is kept in a Cloudflare D1 database. With the file name, XYY Wiki can display files directly. For extra details like file source and licence, the database has your back.
-
-## Development 🛠️
-
-### Requirements
-
-- Node.js **>= 20**
-
-### Install Dependencies
-
-```bash
-npm install
-```
-
-### Start Development
-
-```bash
-npm run dev
-```
-
-## To-Do List 📝
+## 📝 To-Do List
 
 - [ ] Support for multiple file uploads
-- [ ] Implement transactional operations
-- [ ] Draggable file uploads
-- [ ] Web browser support
-- [ ] Remove `any` from `src/renderer/src/components/file-list-grid.vue` once `@coleqiu/vue-drag-select` gets update
-- [ ] recycle bin
-- [ ] Auto update
+- [ ] Implement transactional operations (because nobody likes accidental data loss!)
+- [ ] Draggable file uploads for an even smoother experience
+- [ ] Remove `any` from `src/renderer/src/components/file-list-grid.vue` once `@coleqiu/vue-drag-select` fixes [this issue](https://github.com/credred/vue-drag-select/issues/41)
+- [ ] File management: introduce a recycle bin (because mistakes happen!)
+- [ ] Automatic updates (so you always have the latest and greatest version)
+
+---
+
+Give it a spin and let us know what you think! Contributions and feedback are always welcome. 😃

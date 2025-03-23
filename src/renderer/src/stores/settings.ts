@@ -35,9 +35,13 @@ export const useSettingsStore = defineStore('settings', () => {
     episodesDataExportType: 'xlsx'
   }
   // init settings from localStorage or use default settings
-  const settings: Ref<Settings> = useLocalStorage('settings', defaultSettings, {
-    mergeDefaults: true
-  })
+  const settings: Ref<Settings> = useLocalStorage(
+    '[Ov23liXwSttWUEILSEqe] settings',
+    defaultSettings,
+    {
+      mergeDefaults: true
+    }
+  )
 
   // function of reset settings
   function resetSettings(): void {

@@ -1,4 +1,4 @@
-productName: RDrive
+productName: XYY Huijiwiki Dashboard
 directories:
   buildResources: build
 files:
@@ -11,7 +11,7 @@ files:
 asarUnpack:
   - resources/**
 win:
-  executableName: RDrive
+  executableName: XYY Huijiwiki Dashboard
 nsis:
   artifactName: ${name}-${version}-setup.${ext}
   shortcutName: ${productName}

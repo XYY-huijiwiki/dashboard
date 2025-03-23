@@ -28,7 +28,7 @@
     "btn-toggle": "Umschalten"
   },
   "home": {
-    "title": "RDrive (XYY-Wiki-Edition)"
+    "title": "XYY Huijiwiki Dashboard"
   },
   "error": {
     "title": "Fehler"
@@ -131,7 +131,7 @@
   },
   "init": {
     "title": "Initialisierung",
-    "welcome-title": "Willkommen bei RDrive",
+    "welcome-title": "Willkommen bei XYY Huijiwiki Dashboard",
     "msg-login-desc": "Bitte melden Sie sich an, um fortzufahren",
     "btn-login": "Anmelden",
     "msg-login-success": "Anmeldung erfolgreich",

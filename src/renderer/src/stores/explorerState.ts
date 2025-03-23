@@ -24,8 +24,12 @@ export const useExplorerStateStore = defineStore('explorerState', () => {
     }
   }
   // init store from localStorage or use default
-  const explorerState: Ref<explorerState> = useLocalStorage('explorerState', defaultExplorerState, {
-    mergeDefaults: true
-  })
+  const explorerState: Ref<explorerState> = useLocalStorage(
+    '[Ov23liXwSttWUEILSEqe] explorerState',
+    defaultExplorerState,
+    {
+      mergeDefaults: true
+    }
+  )
   return { explorerState }
 })

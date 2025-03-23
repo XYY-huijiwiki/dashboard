@@ -33,7 +33,7 @@ const loading = ref(false)
 async function login(): Promise<void> {
   // #region web login
   if (is.web) {
-    const serverlessURL = 'https://r-drive.24218079.xyz/'
+    const serverlessURL = 'https://dashboard-login.24218079.xyz/'
     const url = new URL(serverlessURL + 'login')
     url.searchParams.set('redirect_uri', location.href)
     url.searchParams.set('scope', 'public_repo')

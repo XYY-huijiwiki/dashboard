@@ -26,7 +26,7 @@ interface downloadRecord {
 
 export const useDownloadStore = defineStore('download', () => {
   // State
-  const downloads: Ref<downloadRecord[]> = useLocalStorage('downloads', [])
+  const downloads: Ref<downloadRecord[]> = useLocalStorage('[Ov23liXwSttWUEILSEqe] downloads', [])
 
   // Actions
   async function startDownload(fileRecord: FileRecord) {

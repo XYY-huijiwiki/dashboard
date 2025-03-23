@@ -28,7 +28,7 @@
     "btn-toggle": "切换"
   },
   "home": {
-    "title": "RDrive (羊羊百科版)"
+    "title": "羊羊百科控制中心"
   },
   "error": {
     "title": "错误"
@@ -131,7 +131,7 @@
   },
   "init": {
     "title": "初始化",
-    "welcome-title": "欢迎使用 RDrive",
+    "welcome-title": "欢迎使用羊羊百科控制中心",
     "msg-login-desc": "请登录以继续",
     "btn-login": "登录",
     "msg-login-success": "登录成功",

@@ -30,7 +30,7 @@ export default defineConfig({
   },
   renderer: defineViteConfig(({ mode }) => {
     return {
-      base: mode === 'web' ? '//xyy-huijiwiki.github.io/r-drive/' : undefined,
+      base: mode === 'web' ? '//xyy-huijiwiki.github.io/dashboard/' : undefined,
       build: {
         manifest: true
       },
