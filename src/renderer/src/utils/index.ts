@@ -16,12 +16,12 @@ const is = {
   linux: isElectron() && window.electron.process.platform === 'linux'
 }
 
-function errNotify(title: string, e: Error) {
+function errNotify(title: string, error: unknown) {
   dayjs.extend(localizedFormat).locale(dayjsLocales.value)
-  console.dir(e)
+  console.dir(error)
   window.$notification.error({
     title: title,
-    content: `${e}`,
+    content: error instanceof Error ? error.message : String(error),
     meta: dayjs().format('lll')
   })
 }

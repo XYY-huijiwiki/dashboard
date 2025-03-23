@@ -248,7 +248,6 @@
     "label-status-to-do": "To Rename",
     "label-status-doing": "Renaming",
     "label-status-done": "Renamed",
-    "label-status-error": "Error: {0}",
     "label-select-pages-by-xlsx": "Microsoft Excel Worksheet (.xlsx)",
     "btn-rename": "Rename",
     "errors": {
@@ -267,8 +266,26 @@
       "protectedtitle": "The destination article has been protected from creation.",
       "nonfilenamespace": "Cannot move file to non-file namespace.",
       "filetypemismatch": "The new file extension does not match its type.",
-      "mustbeposted": "The move module requires a POST request.",
-      "other": "Other errors"
+      "mustbeposted": "The move module requires a POST request."
     }
+  },
+  "find-and-replace": {
+    "title": "Find & Replace",
+    "btn-which-pages-need-editing": "Which Pages Need Editing",
+    "btn-specify-find-and-replace-terms": "Specify Find & Replace Terms",
+    "placeholder-edit-summary": "Edit Summary",
+    "btn-save-changes": "Save Changes",
+    "title-which-pages-need-editing": "Which Pages Need Editing",
+    "btn-search": "Search",
+    "title-specify-find-and-replace-terms": "Specify Find & Replace Terms",
+    "placeholder-find": "Find",
+    "placeholder-replace": "Replace",
+    "label-select-pages-by-txt": "Text Document (.txt)",
+    "label-select-pages-by-xlsx": "Microsoft Excel Worksheet (.xlsx)",
+    "label-select-pages-by-category": "Category",
+    "msg-no-change": "No change made",
+    "msg-page-not-found": "Page not found",
+    "msg-no-page-needs-editing": "No page needs editing",
+    "label-use-regular-expression": "Use Regular Expression"
   }
 }

@@ -70,6 +70,12 @@ const options: Ref<MenuOption[]> = computed(() => [
     icon: renderIcon('text-direction-horizontal-ltr')
   },
   {
+    label: renderLabel(t('find-and-replace.title'), 'find-and-replace'),
+    key: 'find-and-replace',
+    disabled: getDisabledState('find-and-replace'),
+    icon: renderIcon('slide-search')
+  },
+  {
     label: renderLabel(t('delete-and-undelete.title'), 'delete-and-undelete'),
     key: 'delete-and-undelete',
     disabled: getDisabledState('delete-and-undelete'),

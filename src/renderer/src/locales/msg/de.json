@@ -245,7 +245,6 @@
     "label-select-pages-by-xlsx": "Microsoft Excel-Arbeitsblatt (.xlsx)",
     "label-status-doing": "Umbenennen",
     "label-status-done": "Umbenannt",
-    "label-status-error": "Fehler: {0}",
     "label-status-to-do": "Warten auf Umbenennung",
     "label-table-status": "Status",
     "label-table-title-from": "Umbenennen von",
@@ -269,5 +268,24 @@
       "filetypemismatch": "Die neue Dateierweiterung ist nicht mit der alten identisch.",
       "mustbeposted": "Das Verschieben-Modul erfordert eine POST-Anfrage."
     }
+  },
+  "find-and-replace": {
+    "title": "Suchen und Ersetzen",
+    "btn-which-pages-need-editing": "Welche Seiten benötigen Bearbeitung",
+    "btn-specify-find-and-replace-terms": "Such- und Ersetzungsbegriffe angeben",
+    "placeholder-edit-summary": "Änderungszusammenfassung",
+    "btn-save-changes": "Änderungen speichern",
+    "title-which-pages-need-editing": "Welche Seiten benötigen Bearbeitung",
+    "btn-search": "Suchen",
+    "title-specify-find-and-replace-terms": "Such- und Ersetzungsbegriffe angeben",
+    "placeholder-find": "Suchen",
+    "placeholder-replace": "Ersetzen",
+    "label-select-pages-by-txt": "Textdokument (.txt)",
+    "label-select-pages-by-xlsx": "Microsoft Excel-Arbeitsblatt (.xlsx)",
+    "label-select-pages-by-category": "Kategorie",
+    "msg-no-change": "Keine Änderungen vorgenommen",
+    "msg-page-not-found": "Seite nicht gefunden",
+    "msg-no-page-needs-editing": "Keine Seite benötigt Bearbeitung",
+    "label-use-regular-expression": "Regulären Ausdruck verwenden"
   }
 }

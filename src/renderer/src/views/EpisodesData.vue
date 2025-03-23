@@ -123,10 +123,7 @@ async function getDataFile(title: string | null) {
     // 导出成功提示
     window.$message.success(t('episodes-data.msg-export-success'))
   } catch (err) {
-    errNotify(
-      t('episodes-data.msg-export-failed'),
-      err instanceof Error ? err : new Error(`${err}`)
-    )
+    errNotify(t('episodes-data.msg-export-failed'), err)
   } finally {
     btnLoading.value = false
   }
@@ -242,12 +239,9 @@ async function importData() {
         text,
         summary: '【批量更新剧集信息】' + summary.value
       })
-      console.log(res)
+      if (!res.ok) errNotify(t('general.error'), res.body)
     } catch (error) {
-      errNotify(
-        t('episodes-data.msg-import-failed', [_id]),
-        error instanceof Error ? error : new Error(`${error}`)
-      )
+      errNotify(t('episodes-data.msg-import-failed', [_id]), error)
       continue
     }
     count.value++

@@ -55,6 +55,14 @@ const routes: Array<RouteRecordRaw> = [
     component: views['/src/views/RenamePages.vue']
   },
   {
+    path: '/find-and-replace',
+    name: 'find-and-replace',
+    meta: {
+      webOnly: true
+    },
+    component: views['/src/views/FindAndReplace.vue']
+  },
+  {
     path: '/episodes-data',
     name: 'episodes-data',
     meta: {

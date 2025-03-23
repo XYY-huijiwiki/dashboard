@@ -274,7 +274,7 @@ async function clickNext() {
 
     currentStep.value++
   } catch (error) {
-    errNotify(t('general.error'), error instanceof Error ? error : new Error('未知错误'))
+    errNotify(t('general.error'), error)
   } finally {
     loading.value = false
   }
@@ -308,25 +308,25 @@ async function submitInfo() {
       }
     }
 
-    if (
-      await editPage({
-        title: `Data:${themeJson.主题名称}.json`,
-        text: JSON.stringify(themeJson)
-      })
-    ) {
+    const editResponse1 = await editPage({
+      title: `Data:${themeJson.主题名称}.json`,
+      text: JSON.stringify(themeJson)
+    })
+    if (editResponse1.ok) {
       success()
     } else {
+      console.log(editResponse1)
       err()
     }
 
-    if (
-      await editPage({
-        title: `${themeJson.主题名称}`,
-        text: `{{小米主题}}`
-      })
-    ) {
+    const editResponse2 = await editPage({
+      title: `${themeJson.主题名称}`,
+      text: `{{小米主题}}`
+    })
+    if (editResponse2.ok) {
       success()
     } else {
+      console.log(editResponse2)
       err()
     }
 
