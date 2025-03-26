@@ -8,7 +8,7 @@
         <n-flex justify="space-between">
           <n-flex>
             <n-flex v-if="explorerState.filters.type.length">
-              <n-text>{{ t('github-files.table-header.label-filtered-type') }}</n-text>
+              <n-text>{{ t('file-explorer.label-filtered-type') }}</n-text>
               <n-tag
                 v-for="type in explorerState.filters.type"
                 :key="type"
@@ -17,11 +17,19 @@
                 round
                 @close="removeFilterType(type)"
               >
-                {{ type }}
+                {{
+                  {
+                    image: t('github-files.table-header.btn-filter-by-image'),
+                    video: t('github-files.table-header.btn-filter-by-video'),
+                    audio: t('github-files.table-header.btn-filter-by-audio'),
+                    text: t('github-files.table-header.btn-filter-by-text'),
+                    other: t('github-files.table-header.btn-filter-by-other')
+                  }[type]
+                }}
               </n-tag>
             </n-flex>
             <n-flex v-if="explorerState.filters.status.length">
-              <n-text>{{ t('github-files.table-header.label-filtered-status') }}</n-text>
+              <n-text>{{ t('file-explorer.label-filtered-status') }}</n-text>
               <n-tag
                 v-for="status in explorerState.filters.status"
                 :key="status"
@@ -30,12 +38,20 @@
                 round
                 @close="removeFilterStatus(status)"
               >
-                {{ status }}
+                <!-- {{ status }} -->
+                {{
+                  {
+                    unused: t('github-files.status-unused'),
+                    wanted: t('github-files.status-wanted'),
+                    'no source': t('github-files.status-no-source'),
+                    'no licence': t('github-files.status-no-licence')
+                  }[status]
+                }}
               </n-tag>
             </n-flex>
           </n-flex>
           <n-button size="tiny" round icon-placement="right" @click="clearFilters()">
-            clear-filters
+            {{ t('file-explorer.btn-clear-filters') }}
             <template #icon>
               <icon icon="fluent:filter-dismiss-16-regular" width="16" />
             </template>

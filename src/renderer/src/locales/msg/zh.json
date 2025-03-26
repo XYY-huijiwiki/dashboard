@@ -67,9 +67,6 @@
     "title-edit": "编辑文件来源和文件许可",
     "msg-edit-success": "编辑成功",
     "msg-edit-failed": "编辑失败",
-    "btn-cut": "剪切",
-    "btn-copy": "复制",
-    "btn-paste": "粘贴",
     "btn-select-file": "选择文件",
     "msg-number-files-selected": "已选择{0}个文件",
     "btn-view-in-XYY-wiki": "在羊羊百科中查看",
@@ -85,8 +82,6 @@
     "code-snippet-link": "链接：",
     "code-snippet-gallery": "图库：",
     "table-header": {
-      "label-filtered-type": "已筛选的类型：",
-      "label-filtered-status": "已筛选的状态：",
       "btn-filter-by": "筛选",
       "btn-filter-by-image": "图片",
       "btn-filter-by-audio": "音频",
@@ -141,7 +136,6 @@
     "permission-denied-title": "无权访问",
     "permission-denied-content": "你没有权限访问{0}。"
   },
-  "side-menu": {},
   "download-manager": {
     "title": "下载管理器",
     "btn-show-in-folder": "在文件夹中显示",
@@ -163,7 +157,10 @@
     "title": "回收站"
   },
   "file-explorer": {
-    "title": "文件浏览器"
+    "title": "文件浏览器",
+    "label-filtered-type": "已筛选的类型：",
+    "label-filtered-status": "已筛选的状态：",
+    "btn-clear-filters": "清除筛选"
   },
   "file-preview": {
     "title": "文件预览",
