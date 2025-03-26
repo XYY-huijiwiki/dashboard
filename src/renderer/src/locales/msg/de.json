@@ -67,9 +67,6 @@
     "title-edit": "Dateiquelle und Dateilizenz bearbeiten",
     "msg-edit-success": "Bearbeitung erfolgreich",
     "msg-edit-failed": "Bearbeitung fehlgeschlagen",
-    "btn-cut": "Ausschneiden",
-    "btn-copy": "Kopieren",
-    "btn-paste": "Einfügen",
     "btn-select-file": "Datei auswählen",
     "msg-number-files-selected": "{0} Dateien ausgewählt",
     "btn-view-in-XYY-wiki": "In XYY-Wiki anzeigen",
@@ -85,8 +82,6 @@
     "code-snippet-link": "Link: ",
     "code-snippet-gallery": "Galerie: ",
     "table-header": {
-      "label-filtered-type": "Gefilterter Typ: ",
-      "label-filtered-status": "Gefilterter Status: ",
       "btn-filter-by": "Filtern nach",
       "btn-filter-by-image": "Bild",
       "btn-filter-by-audio": "Audio",
@@ -141,7 +136,6 @@
     "permission-denied-title": "Zugriff verweigert",
     "permission-denied-content": "Sie haben keine Berechtigung, auf {0} zuzugreifen."
   },
-  "side-menu": {},
   "download-manager": {
     "title": "Download-Manager",
     "btn-show-in-folder": "Im Ordner anzeigen",
@@ -163,7 +157,10 @@
     "title": "Papierkorb"
   },
   "file-explorer": {
-    "title": "Datei-Explorer"
+    "title": "Datei-Explorer",
+    "label-filtered-type": "Gefilterter Typ: ",
+    "label-filtered-status": "Gefilterter Status: ",
+    "btn-clear-filters": "Filter zurücksetzen"
   },
   "file-preview": {
     "title": "Dateivorschau",
