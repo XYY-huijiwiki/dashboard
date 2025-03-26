@@ -1,5 +1,5 @@
 <template>
-  <n-card class="h-full" closable content-class="h-0  " @close="emit('close')">
+  <n-card class="h-full" :closable="!uncontrolled" content-class="h-0  " @close="emit('close')">
     <!-- for non single selected situtation -->
     <template v-if="fileDetails.length !== 1" #header>
       <n-ellipsis>
@@ -36,7 +36,7 @@
         <!-- file details / desc -->
         <n-divider>
           {{ t('github-files.label-file-desc') }}
-          <n-tooltip trigger="hover">
+          <n-tooltip v-if="!uncontrolled" trigger="hover">
             <template #trigger>
               <n-button quaternary circle @click="emit('edit-file')">
                 <template #icon>
@@ -123,6 +123,7 @@ const filesize = (size: number): string => filesizeNoLocale(size, { locale: lang
 const { t } = useI18n()
 const { fileDetails } = defineProps<{
   fileDetails: FileRecord[]
+  uncontrolled?: boolean
 }>()
 const emit = defineEmits(['close', 'edit-file'])
 

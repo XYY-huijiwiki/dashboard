@@ -2,7 +2,24 @@
   <n-spin v-if="!fileRecord" class="h-full w-full">
     <div class="h-full w-full"></div>
   </n-spin>
-  <file-preview v-else v-model="fileRecord" :closable="false" />
+  <n-split
+    v-else
+    :default-size="0.7"
+    direction="horizontal"
+    :min="0.6"
+    :max="0.8"
+    pane1-class="pr-1"
+    pane2-class="pl-1"
+    :resize-trigger-size="3"
+    class="h-full w-full"
+  >
+    <template #1>
+      <file-preview v-model="fileRecord" :closable="false" />
+    </template>
+    <template #2>
+      <file-details :file-details="[fileRecord]" :uncontrolled="true" />
+    </template>
+  </n-split>
 </template>
 
 <script setup lang="ts">
@@ -13,6 +30,7 @@ import { useI18n } from 'vue-i18n'
 
 import db from '@renderer/utils/queryDB'
 import FilePreview from '@renderer/components/FilePreview.vue'
+import FileDetails from '@renderer/components/FileDetails.vue'
 import { errNotify } from '@renderer/utils'
 
 const { t } = useI18n()

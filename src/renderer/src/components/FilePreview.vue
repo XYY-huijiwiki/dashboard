@@ -46,6 +46,13 @@
         style="width: 100%; height: 100%"
         :poster="genThumbUrl(fileRecord)"
       ></model-viewer>
+      <!-- flash swf -->
+      <embed
+        v-else-if="fileRecord?.content_type?.startsWith('application/x-shockwave-flash')"
+        :src="genRawFileUrl(fileRecord)"
+        class="w-full h-0 flex-1 object-contain bg-black"
+        type="application/x-shockwave-flash"
+      />
       <!-- no preview -->
       <n-result
         v-else
@@ -70,10 +77,10 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { Document48Regular } from '@vicons/fluent'
+import { nextTick, watch } from 'vue'
 
 import fileIcon from './FileIcon.vue'
 import { genThumbUrl, genRawFileUrl } from '@renderer/utils/genUrl'
-import { nextTick, watch } from 'vue'
 
 const { t } = useI18n()
 const fileRecord = defineModel<FileRecord>()
@@ -85,8 +92,17 @@ const props = defineProps<{
 const unwatch = watch(
   fileRecord,
   async (file) => {
+    // for models
     if (file?.content_type?.startsWith('model')) {
       import('@google/model-viewer')
+      await nextTick() // prevent unwatch() being called before init
+      unwatch()
+    }
+    // for flash swf
+    else if (file?.content_type?.startsWith('application/x-shockwave-flash')) {
+      const scriptElement = document.createElement('script')
+      scriptElement.src = 'https://unpkg.com/@ruffle-rs/ruffle'
+      document.body.appendChild(scriptElement)
       await nextTick() // prevent unwatch() being called before init
       unwatch()
     }
