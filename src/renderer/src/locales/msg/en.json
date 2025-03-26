@@ -126,8 +126,10 @@
       "btn-details": "Details",
       "btn-tiles": "Tiles"
     },
-    "copy-code": "Copy code",
-    "msg-file-name-too-long": "File name is too long!"
+    "btn-copy-code": "Copy code",
+    "msg-file-name-too-long": "Oops, the file name’s too long!",
+    "msg-file-size-warning": "Uploading such a large file might fail in your browser. Consider downloading the app for a smoother experience.",
+    "btn-download-latest-release": "Download Latest Release"
   },
   "init": {
     "title": "Initialisation",
@@ -251,22 +253,22 @@
     "label-select-pages-by-xlsx": "Microsoft Excel Worksheet (.xlsx)",
     "btn-rename": "Rename",
     "errors": {
-      "missingtitle": "The page to be moved doesn't exist.",
-      "nofrom": "The from parameter must be set.",
-      "noto": "The to parameter must be set.",
-      "notoken": "The token parameter must be set.",
+      "missingtitle": "The page you're trying to move doesn't exist.",
+      "nofrom": "Please set the 'from' parameter.",
+      "noto": "Please set the 'to' parameter.",
+      "notoken": "The token parameter is required.",
       "cantmove-anon": "Anonymous users can't move pages.",
       "cantmove": "You don't have permission to move this page.",
       "cantmovefile": "You don't have permission to move this file.",
-      "selfmove": "Can't move a page to itself.",
-      "immobilenamespace": "You tried to move pages from or to a namespace that is protected from moving.",
+      "selfmove": "You can't move a page to itself.",
+      "immobilenamespace": "You're trying to move pages from or to a namespace that can't be moved.",
       "articleexists": "The destination article already exists.",
-      "redirectexists": "The destination is a redirect, but is not a single-revision redirect to the source article.",
-      "protectedpage": "You don't have permission to perform this move.",
-      "protectedtitle": "The destination article has been protected from creation.",
-      "nonfilenamespace": "Cannot move file to non-file namespace.",
-      "filetypemismatch": "The new file extension does not match its type.",
-      "mustbeposted": "The move module requires a POST request."
+      "redirectexists": "The destination is a redirect, but not a single-revision redirect to the source article.",
+      "protectedpage": "You don't have permission to move this page.",
+      "protectedtitle": "The destination article is protected from creation.",
+      "nonfilenamespace": "You can't move a file to a non-file namespace.",
+      "filetypemismatch": "The file extension doesn't match its type.",
+      "mustbeposted": "The move action requires a POST request."
     }
   },
   "find-and-replace": {

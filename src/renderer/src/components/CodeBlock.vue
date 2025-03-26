@@ -1,7 +1,7 @@
 <template>
   <div :class="`language-${lang}`">
     <button
-      :title="t('github-files.copy-code')"
+      :title="t('github-files.btn-copy-code')"
       class="copy"
       @click="copyToClipboard(code)"
     ></button>

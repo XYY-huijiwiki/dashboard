@@ -126,8 +126,10 @@
       "btn-details": "详细信息",
       "btn-tiles": "平铺"
     },
-    "copy-code": "复制代码",
-    "msg-file-name-too-long": "文件名太长！"
+    "btn-copy-code": "复制代码",
+    "msg-file-name-too-long": "哎呀，文件名太长了！",
+    "msg-file-size-warning": "在浏览器中上传如此大的文件很可能会失败。考虑下载应用程序以获得更流畅的体验。",
+    "btn-download-latest-release": "下载最新版本"
   },
   "init": {
     "title": "初始化",
@@ -252,21 +254,21 @@
     "title": "重命名页面",
     "errors": {
       "missingtitle": "要移动的页面不存在。",
-      "nofrom": "必须设置from参数。",
-      "noto": "必须设置to参数。",
-      "notoken": "必须设置token参数。",
-      "cantmove-anon": "匿名用户无法移动页面。",
+      "nofrom": "请提供来源页面（from）。",
+      "noto": "请提供目标页面（to）。",
+      "notoken": "请提供验证令牌（token）。",
+      "cantmove-anon": "登录后才能移动页面。",
       "cantmove": "您没有权限移动此页面。",
       "cantmovefile": "您没有权限移动此文件。",
-      "selfmove": "无法将页面移动到自身。",
-      "immobilenamespace": "原页面或目标页面的命名空间被保护，无法移动。",
-      "articleexists": "目标页面已存在。",
-      "redirectexists": "目标页面是重定向，且并非直接重定向到源页面。",
-      "protectedpage": "您没有权限执行此移动操作。",
-      "protectedtitle": "目标页面已被保护，无法创建。",
-      "nonfilenamespace": "无法将文件移动到非文件命名空间。",
-      "filetypemismatch": "新文件扩展名与其类型不匹配。",
-      "mustbeposted": "移动模块需要POST请求。"
+      "selfmove": "目标页面不能与原页面相同。",
+      "immobilenamespace": "原页面或目标页面的命名空间受限，无法移动。",
+      "articleexists": "目标页面已存在，无法覆盖。",
+      "redirectexists": "目标页面是重定向，但未直接指向源页面。",
+      "protectedpage": "您没有权限执行此操作。",
+      "protectedtitle": "目标页面已受保护，无法创建。",
+      "nonfilenamespace": "文件只能移动到文件命名空间。",
+      "filetypemismatch": "新文件扩展名与文件类型不匹配。",
+      "mustbeposted": "请使用POST请求来移动页面。"
     }
   },
   "find-and-replace": {

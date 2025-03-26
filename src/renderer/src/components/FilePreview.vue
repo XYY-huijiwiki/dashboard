@@ -20,8 +20,7 @@
         :poster="genThumbUrl(fileRecord)"
         preload="metadata"
         :src="genRawFileUrl(fileRecord)"
-      >
-      </video>
+      ></video>
       <!-- image -->
       <img
         v-else-if="fileRecord?.content_type?.startsWith('image')"
@@ -36,8 +35,7 @@
         class="w-full"
         preload="metadata"
         :src="genRawFileUrl(fileRecord)"
-      >
-      </audio>
+      ></audio>
       <!-- model -->
       <model-viewer
         v-else-if="fileRecord?.content_type?.startsWith('model')"

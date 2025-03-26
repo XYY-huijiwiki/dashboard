@@ -4,11 +4,23 @@
       <n-alert v-if="fileName.match(/\s/)" type="warning">
         {{ t('github-files.msg-space-replacement-warning') }}
       </n-alert>
+      <n-alert
+        v-if="is.web && selectedFileWeb && selectedFileWeb.size > 20 * 1024 * 1024"
+        type="warning"
+      >
+        {{ t('github-files.msg-file-size-warning') }}
+        <a target="_blank" href="https://github.com/XYY-huijiwiki/dashboard/releases/latest">
+          <img
+            :src="`https://img.shields.io/github/v/release/XYY-huijiwiki/dashboard?label=${t('github-files.btn-download-latest-release')}&style=for-the-badge`"
+            :alt="t('github-files.btn-download-latest-release')"
+          />
+        </a>
+      </n-alert>
       <n-input-group>
         <n-button @click="handleSelectFile">
           {{ t('github-files.btn-select-file') }}
         </n-button>
-        <n-input v-model:value="fileName" :disabled="!selectedFile" />
+        <n-input v-model:value="fileName" :disabled="!selectedFile && !selectedFileWeb"></n-input>
       </n-input-group>
       <n-select
         v-model:value="fileLicense"

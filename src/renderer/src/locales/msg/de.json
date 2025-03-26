@@ -126,8 +126,10 @@
       "btn-details": "Details",
       "btn-tiles": "Kacheln"
     },
-    "copy-code": "Code kopieren",
-    "msg-file-name-too-long": "Dateiname ist zu lang!"
+    "btn-copy-code": "Code kopieren",
+    "msg-file-name-too-long": "Ups, der Dateiname ist zu lang!",
+    "msg-file-size-warning": "Das Hochladen einer so großen Datei könnte in Ihrem Browser fehlschlagen. Ziehen Sie in Betracht, die App herunterzuladen, um eine reibungslosere Erfahrung zu machen.",
+    "btn-download-latest-release": "Neueste Version herunterladen"
   },
   "init": {
     "title": "Initialisierung",
@@ -251,21 +253,21 @@
     "label-table-title-to": "Umbenennen in",
     "title": "Seiten Umbenennen",
     "errors": {
-      "missingtitle": "Die zu verschiebende Seite existiert nicht.",
-      "nofrom": "Das from-Parameter muss gesetzt werden.",
-      "noto": "Das to-Parameter muss gesetzt werden.",
-      "notoken": "Das token-Parameter muss gesetzt werden.",
-      "cantmove-anon": "Anonyme Benutzer können Seiten nicht verschieben.",
-      "cantmove": "Du hast keine Berechtigung, um diese Seite zu verschieben.",
-      "cantmovefile": "Du hast keine Berechtigung, um Diese Datei verschieben.",
-      "selfmove": "Kann eine Seite nicht auf sich selbst verschieben.",
-      "immobilenamespace": "Du hast versucht, Seiten von oder in einen Namensraum zu verschieben, der vor dem Verschieben geschützt ist.",
+      "missingtitle": "Die Seite, die du verschieben möchtest, gibt es nicht.",
+      "nofrom": "Das 'von'-Parameter muss gesetzt werden.",
+      "noto": "Das 'nach'-Parameter muss gesetzt werden.",
+      "notoken": "Das 'Token'-Parameter muss gesetzt werden.",
+      "cantmove-anon": "Anonyme Benutzer können keine Seiten verschieben.",
+      "cantmove": "Du hast nicht die nötigen Berechtigungen, um diese Seite zu verschieben.",
+      "cantmovefile": "Du hast nicht die nötigen Berechtigungen, um diese Datei zu verschieben.",
+      "selfmove": "Du kannst eine Seite nicht auf sich selbst verschieben.",
+      "immobilenamespace": "Du versuchst, Seiten in einen geschützten Namensraum zu verschieben.",
       "articleexists": "Der Zielartikel existiert bereits.",
       "redirectexists": "Das Ziel ist eine Weiterleitung, aber keine Einzelrevision-Weiterleitung zum Quellartikel.",
-      "protectedpage": "Du hast keine Berechtigung, um diese Seite zu verschieben.",
-      "protectedtitle": "Der Zielartikel wurde vor der Erstellung geschützt.",
-      "nonfilenamespace": "Dateien können nicht aus dem File-Namensraum heraus verschoben werden.",
-      "filetypemismatch": "Die neue Dateierweiterung ist nicht mit der alten identisch.",
+      "protectedpage": "Du hast nicht die nötigen Berechtigungen, um diese Seite zu verschieben.",
+      "protectedtitle": "Der Zielartikel ist vor Änderungen geschützt.",
+      "nonfilenamespace": "Dateien können nicht aus dem File-Namensraum verschoben werden.",
+      "filetypemismatch": "Die neue Dateierweiterung stimmt nicht mit der alten überein.",
       "mustbeposted": "Das Verschieben-Modul erfordert eine POST-Anfrage."
     }
   },
