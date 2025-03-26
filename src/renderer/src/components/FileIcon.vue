@@ -4,7 +4,7 @@
     :alt="fileType || 'file'"
     :width="size || 24"
     :height="size || 24"
-    class="inline-block align-text-bottom"
+    :class="[is.web ? `!inline-block` : `inline-block`, `align-text-bottom`]"
   />
 </template>
 
