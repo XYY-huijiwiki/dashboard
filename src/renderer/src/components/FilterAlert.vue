@@ -38,7 +38,6 @@
                 round
                 @close="removeFilterStatus(status)"
               >
-                <!-- {{ status }} -->
                 {{
                   {
                     unused: t('github-files.status-unused'),
