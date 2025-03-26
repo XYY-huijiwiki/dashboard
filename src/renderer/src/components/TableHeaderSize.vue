@@ -4,13 +4,17 @@
       <n-ellipsis>
         {{ t('github-files.table-header.label-size') }}
       </n-ellipsis>
-      <n-icon v-if="explorerState.sorterKey === 'size'" :size="12" class="ml-1">
-        <arrow-sort-up16-regular v-if="explorerState.sorterOrder === 'ascend'" />
-        <arrow-sort-down16-regular v-else />
-      </n-icon>
-      <n-icon :size="12" class="ml-1">
-        <chevron-down12-regular />
-      </n-icon>
+      <icon
+        v-if="explorerState.sorterKey === 'size'"
+        :icon="
+          explorerState.sorterOrder === 'ascend'
+            ? 'fluent:arrow-sort-up-16-regular'
+            : 'fluent:arrow-sort-down-16-regular'
+        "
+        :width="12"
+        class="ml-1"
+      />
+      <icon icon="fluent:chevron-down-12-regular" :width="12" class="ml-1" />
     </n-button>
   </n-dropdown>
 </template>
@@ -18,14 +22,8 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
-import {
-  ChevronDown12Regular,
-  ArrowSortDown16Regular,
-  ArrowSortUp16Regular,
-  Checkmark24Regular
-} from '@vicons/fluent'
+import { Icon } from '@iconify/vue'
 import { ref, h } from 'vue'
-import { NIcon } from 'naive-ui'
 
 import { useExplorerStateStore } from '@renderer/stores/explorerState'
 
@@ -37,19 +35,15 @@ const dropdownOptions = ref([
     label: () => h('span', { class: 'mr-4' }, t('github-files.table-header.btn-size-asc')),
     key: 'ascend',
     icon: () =>
-      h(
-        NIcon,
-        {
-          size: 20,
-          class: {
-            invisible: !(
-              explorerState.value.sorterKey === 'size' &&
-              explorerState.value.sorterOrder === 'ascend'
-            )
-          }
-        },
-        { default: () => h(Checkmark24Regular) }
-      ),
+      h(Icon, {
+        icon: `fluent:checkmark-20-regular`,
+        width: 20,
+        class: {
+          invisible: !(
+            explorerState.value.sorterKey === 'size' && explorerState.value.sorterOrder === 'ascend'
+          )
+        }
+      }),
     props: {
       onClick: () => {
         explorerState.value.sorterKey = 'size'
@@ -61,19 +55,16 @@ const dropdownOptions = ref([
     label: () => h('span', { class: 'mr-4' }, t('github-files.table-header.btn-size-desc')),
     key: 'descend',
     icon: () =>
-      h(
-        NIcon,
-        {
-          size: 20,
-          class: {
-            invisible: !(
-              explorerState.value.sorterKey === 'size' &&
-              explorerState.value.sorterOrder === 'descend'
-            )
-          }
-        },
-        { default: () => h(Checkmark24Regular) }
-      ),
+      h(Icon, {
+        icon: `fluent:checkmark-20-regular`,
+        width: 20,
+        class: {
+          invisible: !(
+            explorerState.value.sorterKey === 'size' &&
+            explorerState.value.sorterOrder === 'descend'
+          )
+        }
+      }),
     props: {
       onClick: () => {
         explorerState.value.sorterKey = 'size'

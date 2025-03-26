@@ -37,24 +37,20 @@
           <n-button size="tiny" round icon-placement="right" @click="clearFilters()">
             clear-filters
             <template #icon>
-              <n-icon>
-                <filter-dismiss16-regular />
-              </n-icon>
+              <icon icon="fluent:filter-dismiss-16-regular" width="16" />
             </template>
           </n-button>
         </n-flex>
       </template>
       <template #icon>
-        <n-icon>
-          <filter24-regular />
-        </n-icon>
+        <icon icon="fluent:filter-24-regular" width="24" />
       </template>
     </n-alert>
   </n-spin>
 </template>
 
 <script setup lang="ts">
-import { Filter24Regular, FilterDismiss16Regular } from '@vicons/fluent'
+import { Icon } from '@iconify/vue'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
 

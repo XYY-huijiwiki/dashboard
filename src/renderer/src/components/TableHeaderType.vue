@@ -8,13 +8,15 @@
         <n-button quaternary block strong size="small">
           <template #icon>
             <n-badge :show="explorerState.filters.type.length !== 0" dot>
-              <n-icon v-if="explorerState.sorterKey === 'type'">
-                <arrow-sort-up16-regular v-if="explorerState.sorterOrder === 'ascend'" />
-                <arrow-sort-down16-regular v-else />
-              </n-icon>
-              <n-icon v-else>
-                <document16-regular />
-              </n-icon>
+              <icon
+                v-if="explorerState.sorterKey === 'type'"
+                :icon="
+                  explorerState.sorterOrder === 'ascend'
+                    ? 'fluent:arrow-sort-up-16-regular'
+                    : 'fluent:arrow-sort-down-16-regular'
+                "
+              />
+              <icon v-else icon="fluent:document-16-regular" />
             </n-badge>
           </template>
         </n-button>
@@ -26,17 +28,11 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
-import {
-  ArrowSortDown16Regular,
-  ArrowSortUp16Regular,
-  Checkmark24Regular,
-  Document16Regular
-} from '@vicons/fluent'
+import { Icon } from '@iconify/vue'
 import { ref, h } from 'vue'
-import { NBadge, NIcon } from 'naive-ui'
+import { xor } from 'lodash-es'
 
 import { useExplorerStateStore } from '@renderer/stores/explorerState'
-import { xor } from 'lodash-es'
 
 const { explorerState } = storeToRefs(useExplorerStateStore())
 const { t } = useI18n()
@@ -46,19 +42,15 @@ const dropdownOptions = ref([
     label: () => h('span', { class: 'mr-4' }, t('github-files.table-header.btn-type-asc')),
     key: 'ascend',
     icon: () =>
-      h(
-        NIcon,
-        {
-          size: 20,
-          class: {
-            invisible: !(
-              explorerState.value.sorterKey === 'type' &&
-              explorerState.value.sorterOrder === 'ascend'
-            )
-          }
-        },
-        { default: () => h(Checkmark24Regular) }
-      ),
+      h(Icon, {
+        icon: 'fluent:checkmark-20-regular',
+        width: 20,
+        class: {
+          invisible: !(
+            explorerState.value.sorterKey === 'type' && explorerState.value.sorterOrder === 'ascend'
+          )
+        }
+      }),
     props: {
       onClick: () => {
         explorerState.value.sorterKey = 'type'
@@ -70,19 +62,16 @@ const dropdownOptions = ref([
     label: () => h('span', { class: 'mr-4' }, t('github-files.table-header.btn-type-desc')),
     key: 'descend',
     icon: () =>
-      h(
-        NIcon,
-        {
-          size: 20,
-          class: {
-            invisible: !(
-              explorerState.value.sorterKey === 'type' &&
-              explorerState.value.sorterOrder === 'descend'
-            )
-          }
-        },
-        { default: () => h(Checkmark24Regular) }
-      ),
+      h(Icon, {
+        icon: 'fluent:checkmark-20-regular',
+        width: 20,
+        class: {
+          invisible: !(
+            explorerState.value.sorterKey === 'type' &&
+            explorerState.value.sorterOrder === 'descend'
+          )
+        }
+      }),
     props: {
       onClick: () => {
         explorerState.value.sorterKey = 'type'
@@ -97,16 +86,13 @@ const dropdownOptions = ref([
     label: () => h('span', { class: 'mr-4' }, t('github-files.table-header.btn-filter-by')),
     key: 'filter',
     icon: () =>
-      h(
-        NIcon,
-        {
-          size: 20,
-          class: {
-            invisible: !explorerState.value.filters.type.length
-          }
-        },
-        { default: () => h(Checkmark24Regular) }
-      ),
+      h(Icon, {
+        icon: 'fluent:checkmark-20-regular',
+        width: 20,
+        class: {
+          invisible: !explorerState.value.filters.type.length
+        }
+      }),
     children: [
       genFilterChild('image'),
       genFilterChild('audio'),
@@ -134,16 +120,13 @@ function genFilterChild(filterText: FilterType) {
         (explorerState.value.filters.type = xor(explorerState.value.filters.type, [filterText]))
     },
     icon: () =>
-      h(
-        NIcon,
-        {
-          size: 20,
-          class: {
-            invisible: !explorerState.value.filters.type.includes(filterText)
-          }
-        },
-        { default: () => h(Checkmark24Regular) }
-      )
+      h(Icon, {
+        icon: 'fluent:checkmark-20-regular',
+        width: 20,
+        class: {
+          invisible: !explorerState.value.filters.type.includes(filterText)
+        }
+      })
   }
 }
 </script>

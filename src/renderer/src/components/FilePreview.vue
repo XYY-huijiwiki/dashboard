@@ -60,9 +60,7 @@
         :description="t('github-files.msg-no-preview')"
       >
         <template #icon>
-          <n-icon :size="80">
-            <Document48Regular />
-          </n-icon>
+          <icon icon="fluent:document-unknown-24-regular" width="80" />
         </template>
         <template #footer>
           <n-button tag="a" :href="fileRecord && genRawFileUrl(fileRecord)">
@@ -76,7 +74,7 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { Document48Regular } from '@vicons/fluent'
+import { Icon } from '@iconify/vue'
 import { nextTick, watch } from 'vue'
 
 import fileIcon from './FileIcon.vue'

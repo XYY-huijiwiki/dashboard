@@ -6,9 +6,7 @@
           {{ t('github-files.table-header.label-status') }}
         </n-ellipsis>
       </n-badge>
-      <n-icon :size="12" class="ml-1">
-        <chevron-down12-regular />
-      </n-icon>
+      <icon icon="fluent:chevron-down-12-regular" width="12" class="ml-1" />
     </n-button>
   </n-dropdown>
 </template>
@@ -16,9 +14,9 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
-import { Checkmark24Regular, ChevronDown12Regular } from '@vicons/fluent'
+import { Icon } from '@iconify/vue'
 import { ref, h } from 'vue'
-import { NBadge, NIcon } from 'naive-ui'
+import { NBadge } from 'naive-ui'
 
 import { useExplorerStateStore } from '@renderer/stores/explorerState'
 import { xor } from 'lodash-es'
@@ -31,16 +29,13 @@ const dropdownOptions = ref([
     label: () => h('span', { class: 'mr-4' }, t('github-files.table-header.btn-filter-by')),
     key: 'filter',
     icon: () =>
-      h(
-        NIcon,
-        {
-          size: 20,
-          class: {
-            invisible: !explorerState.value.filters.status.length
-          }
-        },
-        { default: () => h(Checkmark24Regular) }
-      ),
+      h(Icon, {
+        icon: `fluent:filter-24-regular`,
+        width: 20,
+        class: {
+          invisible: !explorerState.value.filters.status.length
+        }
+      }),
     children: [
       { ...genFilterChild('unused'), disabled: true },
       { ...genFilterChild('wanted'), disabled: true },
@@ -61,16 +56,13 @@ function genFilterChild(filterText: FilterStatus) {
         (explorerState.value.filters.status = xor(explorerState.value.filters.status, [filterText]))
     },
     icon: () =>
-      h(
-        NIcon,
-        {
-          size: 20,
-          class: {
-            invisible: !explorerState.value.filters.status.includes(filterText)
-          }
-        },
-        { default: () => h(Checkmark24Regular) }
-      )
+      h(Icon, {
+        icon: `fluent:checkmark-20-regular`,
+        width: 20,
+        class: {
+          invisible: !explorerState.value.filters.status.includes(filterText)
+        }
+      })
   }
 }
 </script>

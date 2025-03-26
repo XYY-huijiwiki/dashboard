@@ -40,7 +40,7 @@
             <template #trigger>
               <n-button quaternary circle @click="emit('edit-file')">
                 <template #icon>
-                  <n-icon><edit16-regular /></n-icon>
+                  <icon icon="fluent:edit-16-regular" />
                 </template>
               </n-button>
             </template>
@@ -112,7 +112,7 @@ import { useI18n } from 'vue-i18n'
 import { filesize as filesizeNoLocale } from 'filesize'
 import { storeToRefs } from 'pinia'
 import { computedAsync } from '@vueuse/core'
-import { Edit16Regular } from '@vicons/fluent'
+import { Icon } from '@iconify/vue'
 
 import { useLocalesStore } from '@renderer/stores/locales'
 import { genThumbUrl } from '@renderer/utils/genUrl'

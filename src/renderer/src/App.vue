@@ -4,13 +4,7 @@ import { computed, ref, watch } from 'vue'
 import type { Ref } from 'vue'
 import { useDialog, useMessage, useModal, useLoadingBar, useNotification } from 'naive-ui'
 import { useTitle, useFullscreen } from '@vueuse/core'
-import {
-  ArrowLeft24Regular,
-  ArrowRight24Regular,
-  ArrowClockwise24Regular,
-  FullScreenMaximize24Regular,
-  FullScreenMinimize24Regular
-} from '@vicons/fluent'
+import { Icon } from '@iconify/vue'
 import { useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 
@@ -87,7 +81,7 @@ const toggleFullscreen = async () => {
             <n-button quaternary circle :disabled="!canBack" @click="router.back()">
               <template #icon>
                 <n-icon :size="24">
-                  <arrow-left24-regular />
+                  <icon icon="fluent:arrow-left-24-regular" />
                 </n-icon>
               </template>
             </n-button>
@@ -95,7 +89,7 @@ const toggleFullscreen = async () => {
             <n-button v-show="canForward" quaternary circle @click="router.forward()">
               <template #icon>
                 <n-icon :size="24">
-                  <arrow-right24-regular />
+                  <icon icon="fluent:arrow-right-24-regular" />
                 </n-icon>
               </template>
             </n-button>
@@ -103,7 +97,7 @@ const toggleFullscreen = async () => {
             <n-button quaternary circle @click="router.go(0)">
               <template #icon>
                 <n-icon :size="24">
-                  <arrow-clockwise24-regular />
+                  <icon icon="fluent:arrow-clockwise-24-regular" />
                 </n-icon>
               </template>
             </n-button>
@@ -140,8 +134,14 @@ const toggleFullscreen = async () => {
           >
             <template #icon>
               <n-icon :size="24">
-                <full-screen-minimize24-regular v-if="isFullscreen" class="hvr-icon" />
-                <full-screen-maximize24-regular v-else class="hvr-icon" />
+                <!-- <full-screen-minimize24-regular v-if="isFullscreen" class="hvr-icon" />
+                <full-screen-maximize24-regular v-else class="hvr-icon" /> -->
+                <icon
+                  v-if="isFullscreen"
+                  icon="fluent:full-screen-minimize-24-regular"
+                  class="hvr-icon"
+                />
+                <icon v-else icon="fluent:full-screen-maximize-24-regular" class="hvr-icon" />
               </n-icon>
             </template>
           </n-button>

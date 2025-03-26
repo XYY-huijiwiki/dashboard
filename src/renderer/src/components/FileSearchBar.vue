@@ -11,9 +11,7 @@
       >
         <template #prefix>
           <!-- show search icon only if searched text is empty -->
-          <n-icon v-if="!searchedText" :size="20">
-            <search20-regular />
-          </n-icon>
+          <icon v-if="!searchedText" icon="fluent:search-20-regular" :width="20" />
           <!-- show cancel icon only if searched text is not empty -->
           <n-button
             v-else
@@ -25,7 +23,7 @@
           >
             <template #icon>
               <n-icon :size="20">
-                <arrow-left20-regular v-if="searchText" />
+                <icon v-if="searchText" icon="fluent:arrow-left-20-regular" />
               </n-icon>
             </template>
           </n-button>
@@ -41,7 +39,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { Search20Regular, ArrowLeft20Regular } from '@vicons/fluent'
+import { Icon } from '@iconify/vue'
 
 const { t } = useI18n()
 const emit = defineEmits(['search'])

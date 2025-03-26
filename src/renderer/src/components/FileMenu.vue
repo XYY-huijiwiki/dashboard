@@ -17,18 +17,11 @@
 
 <script setup lang="ts">
 import { computed, h } from 'vue'
-import type { ComputedRef, Component, VNode } from 'vue'
-import { NDropdown, NIcon } from 'naive-ui'
+import type { ComputedRef, VNode } from 'vue'
+import { NDropdown } from 'naive-ui'
 import type { DropdownOption } from 'naive-ui'
 import { useI18n } from 'vue-i18n'
-import {
-  FullScreenMaximize20Regular,
-  Link20Regular,
-  Delete20Regular,
-  ArrowDownload20Regular,
-  Rename20Regular,
-  PanelRightExpand20Regular
-} from '@vicons/fluent'
+import { Icon } from '@iconify/vue'
 
 import { is } from '@renderer/utils'
 
@@ -52,21 +45,21 @@ const emit = defineEmits([
   'details'
 ])
 
-function genIcon(rawIcon: Component): VNode {
-  return h(NIcon, { size: 20 }, () => h(rawIcon))
+function genIcon(iconName: string): VNode {
+  return h(Icon, { icon: `fluent:${iconName}-20-regular`, width: 20 })
 }
 
 // options
 const options: ComputedRef<DropdownOption[]> = computed(() => [
   {
     label: t('github-files.btn-preview'),
-    icon: () => genIcon(FullScreenMaximize20Regular),
+    icon: () => genIcon('full-screen-maximize'),
     key: 'preview',
     disabled: props.data.length > 1
   },
   {
     label: t('github-files.btn-link-copy'),
-    icon: () => genIcon(Link20Regular),
+    icon: () => genIcon('link'),
     key: 'link-copy'
   },
   {
@@ -74,19 +67,19 @@ const options: ComputedRef<DropdownOption[]> = computed(() => [
   },
   {
     label: t('github-files.btn-delete'),
-    icon: () => genIcon(Delete20Regular),
+    icon: () => genIcon('delete'),
     disabled: props.data.length === 0,
     key: 'delete'
   },
   {
     label: t('github-files.btn-download'),
-    icon: () => genIcon(ArrowDownload20Regular),
+    icon: () => genIcon('arrow-download'),
     disabled: is.web ? props.data.length !== 1 : props.data.length === 0,
     key: 'download'
   },
   {
     label: t('github-files.btn-rename'),
-    icon: () => genIcon(Rename20Regular),
+    icon: () => genIcon('rename'),
     disabled: props.data.length !== 1,
     key: 'rename'
   },
@@ -95,7 +88,7 @@ const options: ComputedRef<DropdownOption[]> = computed(() => [
   },
   {
     label: t('github-files.btn-details'),
-    icon: () => genIcon(PanelRightExpand20Regular),
+    icon: () => genIcon('panel-right-expand'),
     key: 'details',
     disabled: props.data.length > 1
   }

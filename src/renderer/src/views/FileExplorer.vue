@@ -196,6 +196,8 @@ async function queryData(type: 'more' | 'refresh' = 'refresh'): Promise<void> {
       query.orderBy('content_type', order)
     } else if (explorerState.value.sorterKey === 'updated_at') {
       query.orderBy('updated_at', order)
+    } else if (explorerState.value.sorterKey === 'uploader') {
+      query.orderBy('uploader', order)
     }
 
     // search
