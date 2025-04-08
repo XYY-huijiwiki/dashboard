@@ -36,8 +36,8 @@ const vnode = computedAsync(async () => {
   const html = await codeToHtml(code, {
     lang: lang,
     themes: {
-      light: 'github-light',
-      dark: 'github-dark',
+      light: 'light-plus',
+      dark: 'dark-plus',
     },
   })
   // convert html string to vnode
@@ -155,6 +155,7 @@ useCopyCode()
 /* dark and light toggle transition */
 .shiki,
 .shiki span {
+  background-color: transparent !important;
   transition:
     color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
     background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
