@@ -1,3 +1,14 @@
+## [0.2.9](https://github.com/XYY-huijiwiki/dashboard/compare/v0.2.8...v0.2.9) (2025-04-08)
+
+### Bug Fixes
+
+- **ui:** apply minor UI style fix ([a3ca631](https://github.com/XYY-huijiwiki/dashboard/commit/a3ca6317a7ed47c39a388bdc8f56346e7e8a2f40))
+
+### Features
+
+- add in-app warning for large file upload failure in browser, ([52763d6](https://github.com/XYY-huijiwiki/dashboard/commit/52763d61458aea816e97eddc890ef9eb92ee8a36))
+- add support for .swf file preview ([b999788](https://github.com/XYY-huijiwiki/dashboard/commit/b999788c0b274257eae3f379a0aabe5fe1a1c456))
+
 ## [0.2.8](https://github.com/XYY-huijiwiki/dashboard/compare/v0.2.7...v0.2.8) (2025-03-23)
 
 ### Bug Fixes
