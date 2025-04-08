@@ -6,7 +6,7 @@ async function ghLogin(): Promise<string> {
     const authWindow = new BrowserWindow({
       width: 480,
       height: 640,
-      webPreferences: { sandbox: false, devTools: is.dev ? true : false }
+      webPreferences: { sandbox: false, devTools: is.dev ? true : false },
     })
 
     authWindow.removeMenu()
@@ -19,17 +19,20 @@ async function ghLogin(): Promise<string> {
     authWindow.loadURL(url.toString())
 
     const filter = { urls: ['http://localhost/*'] }
-    session.defaultSession.webRequest.onBeforeRequest(filter, async (details, callback) => {
-      const url = new URL(details.url)
-      if (url.searchParams.has('access_token')) {
-        const code = url.searchParams.get('access_token')
-        callback({ cancel: true })
-        authWindow.close()
-        resolve(code || '')
-      } else {
-        callback({ cancel: false })
-      }
-    })
+    session.defaultSession.webRequest.onBeforeRequest(
+      filter,
+      async (details, callback) => {
+        const url = new URL(details.url)
+        if (url.searchParams.has('access_token')) {
+          const code = url.searchParams.get('access_token')
+          callback({ cancel: true })
+          authWindow.close()
+          resolve(code || '')
+        } else {
+          callback({ cancel: false })
+        }
+      },
+    )
 
     authWindow.on('closed', () => {
       reject(new Error('Window was closed by user'))

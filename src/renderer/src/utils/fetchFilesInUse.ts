@@ -34,8 +34,8 @@ async function fetchFilesInUse(): Promise<string[]> {
       qplimit: 'max',
       ...(continueParams && {
         qpoffset: continueParams.qpoffset?.toString(),
-        continue: continueParams.continue
-      })
+        continue: continueParams.continue,
+      }),
     }
 
     const response = (await ky
@@ -45,14 +45,14 @@ async function fetchFilesInUse(): Promise<string[]> {
     const processedItems = response.query.querypage.results.map((item) =>
       decodeURIComponent(item.title)
         .replace(/ /g, '_')
-        .replace(/^文件:/, '')
+        .replace(/^文件:/, ''),
     )
 
     filesInUse.push(...processedItems)
     continueParams = response.continue
       ? {
           qpoffset: response.continue.qpoffset,
-          continue: response.continue.continue
+          continue: response.continue.continue,
         }
       : undefined
   } while (continueParams)

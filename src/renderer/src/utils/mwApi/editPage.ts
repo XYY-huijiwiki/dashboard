@@ -110,28 +110,31 @@ async function editPage(editParams: {
     }
 > {
   // check if the user is bot when bot is not specified
-  if (editParams.bot === undefined && mw.config.get('wgUserGroups')?.includes('bot')) {
+  if (
+    editParams.bot === undefined &&
+    mw.config.get('wgUserGroups')?.includes('bot')
+  ) {
     editParams.bot = true
   }
   return new Promise((resolve) => {
     new mw.Api()
       .postWithToken('csrf', {
         action: 'edit',
-        ...editParams
+        ...editParams,
       })
       .done((data) => {
         const { edit: editResponse } = data as EditResponse
         if (is.dev) console.log(data)
         resolve({
           ok: true,
-          body: editResponse
+          body: editResponse,
         })
       })
       .fail((data) => {
         if (is.dev) console.log(data)
         resolve({
           ok: false,
-          body: data
+          body: data,
         })
       })
   })

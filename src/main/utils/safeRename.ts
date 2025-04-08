@@ -1,17 +1,24 @@
 import * as fs from 'fs/promises'
 import * as path from 'path'
 
-async function safeRename(oldFilePath: string, newFileName: string): Promise<string> {
+async function safeRename(
+  oldFilePath: string,
+  newFileName: string,
+): Promise<string> {
   const targetDir = path.dirname(oldFilePath)
   const parsedNew = path.parse(newFileName)
 
   // Check if old file and target directory are on the same filesystem
-  const [oldStats, dirStats] = await Promise.all([fs.stat(oldFilePath), fs.stat(targetDir)])
+  const [oldStats, dirStats] = await Promise.all([
+    fs.stat(oldFilePath),
+    fs.stat(targetDir),
+  ])
   const sameDevice = oldStats.dev === dirStats.dev
 
   let n = 0
   while (true) {
-    const candidateName = n === 0 ? parsedNew.base : `${parsedNew.name} (${n})${parsedNew.ext}`
+    const candidateName =
+      n === 0 ? parsedNew.base : `${parsedNew.name} (${n})${parsedNew.ext}`
     const candidatePath = path.join(targetDir, candidateName)
 
     try {

@@ -18,16 +18,21 @@ interface DeleteResponse {
  * @param {string} editParams.reason - The reason for deleting the page.
  * @returns {Promise<boolean>} A promise that resolves to true if the page was successfully deleted, false otherwise.
  */
-async function deletePage(editParams: { title: string; reason: string }): Promise<boolean> {
+async function deletePage(editParams: {
+  title: string
+  reason: string
+}): Promise<boolean> {
   return new Promise((resolve) => {
     new mw.Api()
       .postWithToken('csrf', {
         action: 'delete',
-        ...editParams
+        ...editParams,
       })
       .done((data) => {
         const { delete: deleteResponse } = data as DeleteResponse
-        window.$message.success(t('mediawiki.msg-page-deleted', [deleteResponse.title]))
+        window.$message.success(
+          t('mediawiki.msg-page-deleted', [deleteResponse.title]),
+        )
         console.log(data)
         resolve(true)
       })
@@ -35,7 +40,7 @@ async function deletePage(editParams: { title: string; reason: string }): Promis
         window.$notification.error({
           title: t('general.error'),
           content: t('mediawiki.msg-page-delete-failed', [data]),
-          meta: new Date().toLocaleString()
+          meta: new Date().toLocaleString(),
         })
         console.log(data)
         resolve(false)

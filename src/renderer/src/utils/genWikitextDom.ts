@@ -12,7 +12,10 @@ function genWikitextDom(wikitext: string): VNode {
     link.setAttribute('target', '_blank')
   })
 
-  return h('article', { innerHTML: articleEle.innerHTML, class: 'markdown-body' })
+  return h('article', {
+    innerHTML: articleEle.innerHTML,
+    class: 'markdown-body',
+  })
 }
 
 export default genWikitextDom

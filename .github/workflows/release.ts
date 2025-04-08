@@ -13,19 +13,31 @@ await $`git config --global user.email "bot@example.com"`
 // #region Main execution
 try {
   // Read package.json
-  const packageJson = JSON.parse(readFileSync('package.json', 'utf-8')) as PackageJson
+  const packageJson = JSON.parse(
+    readFileSync('package.json', 'utf-8'),
+  ) as PackageJson
   const currentVersion = packageJson.version
 
   // Get Git information
-  const latestTag = (await $`git describe --tags --abbrev=0 --match "v*"`).stdout.trim()
+  const latestTag = (
+    await $`git describe --tags --abbrev=0 --match "v*"`
+  ).stdout.trim()
   const latestVersion = latestTag.replace(/^v/, '')
 
   // Parse versions
-  const [currentMajor, currentMinor, currentPatch] = currentVersion.split('.').map(Number)
-  const [latestMajor, latestMinor, latestPatch] = latestVersion.split('.').map(Number)
+  const [currentMajor, currentMinor, currentPatch] = currentVersion
+    .split('.')
+    .map(Number)
+  const [latestMajor, latestMinor, latestPatch] = latestVersion
+    .split('.')
+    .map(Number)
 
   // Detect manual version bump
-  if (currentMajor > latestMajor || currentMinor > latestMinor || currentPatch > latestPatch) {
+  if (
+    currentMajor > latestMajor ||
+    currentMinor > latestMinor ||
+    currentPatch > latestPatch
+  ) {
     console.log(`Manual version bump detected, releasing ${currentVersion}`)
     await doRelease(`${currentVersion}`)
   }
@@ -35,19 +47,26 @@ try {
     await $`git log -1 --pretty=format:"%s" ${latestTag}..HEAD`
   ).stdout.trim()
   // consider `something!:...`, `something(something else)!:...`, `BREAKING CHANGE`
-  const isBreakingChange = /(?:!: |\(.+\)!: |BREAKING CHANGE:)/.test(latestCommitInfo)
+  const isBreakingChange = /(?:!: |\(.+\)!: |BREAKING CHANGE:)/.test(
+    latestCommitInfo,
+  )
   if (isBreakingChange) {
     console.log(`Breaking changes detected, bumping minor version`)
     await doBumpAndRelease(`${latestMajor}.${latestMinor + 1}.0`)
   }
 
   // Auto-increment patch after 5 commits
-  const commitCount = parseInt((await $`git rev-list --count ${latestTag}..HEAD`).stdout.trim(), 10)
+  const commitCount = parseInt(
+    (await $`git rev-list --count ${latestTag}..HEAD`).stdout.trim(),
+    10,
+  )
   if (commitCount >= 5) {
     console.log(`5 commits since last tag, bumping patch version`)
     await doBumpAndRelease(`${latestMajor}.${latestMinor}.${latestPatch + 1}`)
   } else {
-    console.log(`Only ${commitCount}/5 commits since last tag. No version bump needed.`)
+    console.log(
+      `Only ${commitCount}/5 commits since last tag. No version bump needed.`,
+    )
   }
 } catch (error) {
   console.error('Versioning failed:')
@@ -70,7 +89,9 @@ async function doRelease(version) {
 
 async function doBumpAndRelease(version) {
   // Update package.json
-  const packageJson = JSON.parse(readFileSync('package.json', 'utf-8')) as PackageJson
+  const packageJson = JSON.parse(
+    readFileSync('package.json', 'utf-8'),
+  ) as PackageJson
   packageJson.version = version
   writeFileSync('package.json', JSON.stringify(packageJson))
   await $`npm install` // Update lockfile

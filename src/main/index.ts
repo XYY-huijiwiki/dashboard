@@ -35,8 +35,8 @@ function createWindow(): void {
     icon,
     webPreferences: {
       preload: fileURLToPath(new URL('../preload/index.mjs', import.meta.url)),
-      sandbox: false
-    }
+      sandbox: false,
+    },
   })
 
   mainWindow.removeMenu()

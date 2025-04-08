@@ -13,7 +13,7 @@ const is = {
   web: !isElectron(),
   win: isElectron() && window.electron.process.platform === 'win32',
   mac: isElectron() && window.electron.process.platform === 'darwin',
-  linux: isElectron() && window.electron.process.platform === 'linux'
+  linux: isElectron() && window.electron.process.platform === 'linux',
 }
 
 function errNotify(title: string, error: unknown) {
@@ -22,7 +22,7 @@ function errNotify(title: string, error: unknown) {
   window.$notification.error({
     title: title,
     content: error instanceof Error ? error.message : String(error),
-    meta: dayjs().format('lll')
+    meta: dayjs().format('lll'),
   })
 }
 

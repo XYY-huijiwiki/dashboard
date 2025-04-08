@@ -1,6 +1,17 @@
 <template>
-  <n-dropdown :options="dropdownOptions" placement="bottom-start" trigger="click" size="small">
-    <n-button quaternary block strong size="small" class="!justify-start !-ml-2">
+  <n-dropdown
+    :options="dropdownOptions"
+    placement="bottom-start"
+    trigger="click"
+    size="small"
+  >
+    <n-button
+      quaternary
+      block
+      strong
+      size="small"
+      class="!justify-start !-ml-2"
+    >
       <n-badge :show="explorerState.filters.status.length !== 0" dot>
         <n-ellipsis>
           {{ t('github-files.table-header.label-status') }}
@@ -26,43 +37,55 @@ const { t } = useI18n()
 
 const dropdownOptions = ref([
   {
-    label: () => h('span', { class: 'mr-4' }, t('github-files.table-header.btn-filter-by')),
+    label: () =>
+      h(
+        'span',
+        { class: 'mr-4' },
+        t('github-files.table-header.btn-filter-by'),
+      ),
     key: 'filter',
     icon: () =>
       h(Icon, {
         icon: `fluent:filter-24-regular`,
         width: 20,
         class: {
-          invisible: !explorerState.value.filters.status.length
-        }
+          invisible: !explorerState.value.filters.status.length,
+        },
       }),
     children: [
       { ...genFilterChild('unused'), disabled: true },
       { ...genFilterChild('wanted'), disabled: true },
       genFilterChild('no source'),
-      genFilterChild('no licence')
-    ]
-  }
+      genFilterChild('no licence'),
+    ],
+  },
 ])
 
 function genFilterChild(filterText: FilterStatus) {
   return {
     label: () =>
-      h('span', { class: 'mr-4' }, t(`github-files.status-${filterText.replace(' ', '-')}`)),
+      h(
+        'span',
+        { class: 'mr-4' },
+        t(`github-files.status-${filterText.replace(' ', '-')}`),
+      ),
     key: filterText,
     props: {
       // if the filterText is in the array, remove it, otherwise add it
       onclick: () =>
-        (explorerState.value.filters.status = xor(explorerState.value.filters.status, [filterText]))
+        (explorerState.value.filters.status = xor(
+          explorerState.value.filters.status,
+          [filterText],
+        )),
     },
     icon: () =>
       h(Icon, {
         icon: `fluent:checkmark-20-regular`,
         width: 20,
         class: {
-          invisible: !explorerState.value.filters.status.includes(filterText)
-        }
-      })
+          invisible: !explorerState.value.filters.status.includes(filterText),
+        },
+      }),
   }
 }
 </script>

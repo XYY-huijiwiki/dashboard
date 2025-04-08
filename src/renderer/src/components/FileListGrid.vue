@@ -2,14 +2,27 @@
   <n-spin :show="loading" class="h-full" content-class="h-full">
     <n-card class="h-full" content-class="shrink-0 h-0">
       <n-infinite-scroll :distance="270" @load="emit('load-more')">
-        <drag-select v-model="checkedRowKeys as any" class="h-full" @click="showDropdown = false">
-          <drag-select-option v-for="item in data" :key="item.file_name" :value="item.file_name">
+        <drag-select
+          v-model="checkedRowKeys as any"
+          class="h-full"
+          @click="showDropdown = false"
+        >
+          <drag-select-option
+            v-for="item in data"
+            :key="item.file_name"
+            :value="item.file_name"
+          >
             <n-el
               tag="div"
               class="tile"
               @contextmenu="(e: MouseEvent) => handleContextMenu(item, e)"
             >
-              <img v-if="genThumbUrl(item)" class="thumb" :src="genThumbUrl(item)" alt="thumb" />
+              <img
+                v-if="genThumbUrl(item)"
+                class="thumb"
+                :src="genThumbUrl(item)"
+                alt="thumb"
+              />
               <div v-else class="thumb">
                 <file-icon :file-type="item.content_type" :size="48" />
               </div>
@@ -37,7 +50,9 @@
                   (e: MouseEvent) => {
                     e.stopPropagation()
                     checkedRowKeys.includes(item.file_name)
-                      ? (checkedRowKeys = checkedRowKeys.filter((i) => i !== item.file_name))
+                      ? (checkedRowKeys = checkedRowKeys.filter(
+                          (i) => i !== item.file_name,
+                        ))
                       : (checkedRowKeys = [...checkedRowKeys, item.file_name])
                   }
                 "
@@ -53,7 +68,7 @@
     :data="checkedItems"
     :position="{
       x: dropdownX,
-      y: dropdownY
+      y: dropdownY,
     }"
     @preview="emit('file-preview')"
     @link-copy="emit('link-copy')"
@@ -83,7 +98,7 @@ const emit = defineEmits([
   'file-delete',
   'file-rename',
   'new-file',
-  'load-more'
+  'load-more',
 ])
 
 const { data, checkedItems } = defineProps<{
@@ -91,15 +106,21 @@ const { data, checkedItems } = defineProps<{
   checkedItems: FileRecord[]
   loading: boolean
 }>()
-const checkedRowKeys = defineModel<ReturnType<DataTableCreateRowKey>[]>('checkedRowKeys', {
-  required: true
-})
+const checkedRowKeys = defineModel<ReturnType<DataTableCreateRowKey>[]>(
+  'checkedRowKeys',
+  {
+    required: true,
+  },
+)
 
 // select and context menu
 const showDropdown = ref(false)
 const dropdownX = ref(0)
 const dropdownY = ref(0)
-async function handleContextMenu(item: FileRecord, e: MouseEvent): Promise<void> {
+async function handleContextMenu(
+  item: FileRecord,
+  e: MouseEvent,
+): Promise<void> {
   e.preventDefault()
   // if this row is unchecked, cancel other checked rows and check this row
   if (!checkedRowKeys.value.includes(item.file_name)) {

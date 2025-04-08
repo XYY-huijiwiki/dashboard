@@ -62,14 +62,16 @@ type CustomApi = {
     uuid,
     url,
     filename,
-    directory
+    directory,
   }: {
     uuid: string
     url: string
     filename: string
     directory?: string
   }) => Promise<void>
-  onDownloadStarted: (callback: (args: { uuid: string; downloadId: string }) => void) => void
+  onDownloadStarted: (
+    callback: (args: { uuid: string; downloadId: string }) => void,
+  ) => void
   onDownloadProgress: (
     callback: (args: {
       uuid: string
@@ -78,13 +80,19 @@ type CustomApi = {
       totalBytes: number
       downloadRateBytesPerSecond: number
       estimatedTimeRemainingSeconds: number
-    }) => void
+    }) => void,
   ) => void
   onDownloadCompleted: (
-    callback: (args: { uuid: string; filePath: string; filename: string }) => void
+    callback: (args: {
+      uuid: string
+      filePath: string
+      filename: string
+    }) => void,
   ) => void
   onDownloadCancelled: (callback: (args: { uuid: string }) => void) => void
-  onDownloadError: (callback: (args: { uuid: string; err: string }) => void) => void
+  onDownloadError: (
+    callback: (args: { uuid: string; err: string }) => void,
+  ) => void
 
   cancelDownload: (downloadId: string) => Promise<void>
   pauseDownload: (downloadId: string) => Promise<void>

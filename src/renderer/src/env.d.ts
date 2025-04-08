@@ -1,6 +1,12 @@
 /// <reference types="vite/client" />
 
-import type { MessageApi, DialogApi, LoadingBarApi, NotificationApi, ModalApi } from 'naive-ui'
+import type {
+  MessageApi,
+  DialogApi,
+  LoadingBarApi,
+  NotificationApi,
+  ModalApi,
+} from 'naive-ui'
 
 declare global {
   type ViewMode = 'details' | 'list' | 'tiles'
@@ -74,7 +80,7 @@ declare global {
         rows_read: number
         rows_written: number
       }
-    }
+    },
   ]
 
   type FileRecord = {

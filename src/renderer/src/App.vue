@@ -2,7 +2,13 @@
 import { useI18n } from 'vue-i18n'
 import { computed, ref, watch } from 'vue'
 import type { Ref } from 'vue'
-import { useDialog, useMessage, useModal, useLoadingBar, useNotification } from 'naive-ui'
+import {
+  useDialog,
+  useMessage,
+  useModal,
+  useLoadingBar,
+  useNotification,
+} from 'naive-ui'
 import { useTitle, useFullscreen } from '@vueuse/core'
 import { Icon } from '@iconify/vue'
 import { useRouter } from 'vue-router'
@@ -35,7 +41,7 @@ watch(
     canBack.value = router.options.history.state.back !== null
     canForward.value = router.options.history.state.forward !== null
   },
-  { immediate: true }
+  { immediate: true },
 )
 
 // #region fullscreen
@@ -76,9 +82,19 @@ const toggleFullscreen = async () => {
       >
         <!-- 卡片左上角：返回 | 前进 | 刷新  | 标题 -->
         <template #header>
-          <n-space id="title-bar" align="center" :wrap="false" :wrap-item="false">
+          <n-space
+            id="title-bar"
+            align="center"
+            :wrap="false"
+            :wrap-item="false"
+          >
             <!-- back btn -->
-            <n-button quaternary circle :disabled="!canBack" @click="router.back()">
+            <n-button
+              quaternary
+              circle
+              :disabled="!canBack"
+              @click="router.back()"
+            >
               <template #icon>
                 <n-icon :size="24">
                   <icon icon="fluent:arrow-left-24-regular" />
@@ -86,7 +102,12 @@ const toggleFullscreen = async () => {
               </template>
             </n-button>
             <!-- forward btn -->
-            <n-button v-show="canForward" quaternary circle @click="router.forward()">
+            <n-button
+              v-show="canForward"
+              quaternary
+              circle
+              @click="router.forward()"
+            >
               <template #icon>
                 <n-icon :size="24">
                   <icon icon="fluent:arrow-right-24-regular" />
@@ -118,7 +139,7 @@ const toggleFullscreen = async () => {
                 settings: t('settings.title'),
                 init: t('init.title'),
                 error: t('error.title'),
-                loading: t('general.loading')
+                loading: t('general.loading'),
               }[$route.name || 'loading']
             }}
           </n-space>
@@ -141,7 +162,11 @@ const toggleFullscreen = async () => {
                   icon="fluent:full-screen-minimize-24-regular"
                   class="hvr-icon"
                 />
-                <icon v-else icon="fluent:full-screen-maximize-24-regular" class="hvr-icon" />
+                <icon
+                  v-else
+                  icon="fluent:full-screen-maximize-24-regular"
+                  class="hvr-icon"
+                />
               </n-icon>
             </template>
           </n-button>

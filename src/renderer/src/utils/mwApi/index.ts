@@ -13,5 +13,13 @@ import type { ArvResponse, ProcessedArvData } from '@renderer/utils/mwApi/types'
  **/
 const url = `${location.origin}/w/api.php`
 
-export { url, editPage, getPage, renamePage, uploadFile, deletePage, undeletePage }
+export {
+  url,
+  editPage,
+  getPage,
+  renamePage,
+  uploadFile,
+  deletePage,
+  undeletePage,
+}
 export type { ArvResponse, ProcessedArvData }

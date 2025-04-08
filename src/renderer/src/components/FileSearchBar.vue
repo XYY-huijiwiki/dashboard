@@ -11,7 +11,11 @@
       >
         <template #prefix>
           <!-- show search icon only if searched text is empty -->
-          <icon v-if="!searchedText" icon="fluent:search-20-regular" :width="20" />
+          <icon
+            v-if="!searchedText"
+            icon="fluent:search-20-regular"
+            :width="20"
+          />
           <!-- show cancel icon only if searched text is not empty -->
           <n-button
             v-else

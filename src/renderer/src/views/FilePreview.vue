@@ -40,15 +40,22 @@ const fileRecord: Ref<FileRecord | undefined> = ref(undefined)
 
 onMounted(async () => {
   const fileName = (route.params.filename as string).replace(/ /g, '_')
-  const queryStr = db('files').where('file_name', fileName).where('is_deleted', null).toString()
+  const queryStr = db('files')
+    .where('file_name', fileName)
+    .where('is_deleted', null)
+    .toString()
   console.log(queryStr)
-  const queryUrl = new URL('https://xyy-huijiwiki-gh-files-db.karsten-zhou-773.workers.dev/')
+  const queryUrl = new URL(
+    'https://xyy-huijiwiki-gh-files-db.karsten-zhou-773.workers.dev/',
+  )
   queryUrl.searchParams.set('query', queryStr)
-  const result = (await fetch(queryUrl.toString()).then((res) => res.json()))[0].results as
-    | [FileRecord]
-    | []
+  const result = (await fetch(queryUrl.toString()).then((res) => res.json()))[0]
+    .results as [FileRecord] | []
   if (result.length !== 1) {
-    errNotify(t('file-preview.title-file-not-found'), new Error(`${fileName} not found.`))
+    errNotify(
+      t('file-preview.title-file-not-found'),
+      new Error(`${fileName} not found.`),
+    )
     router.push({ name: 'error' })
     return
   }

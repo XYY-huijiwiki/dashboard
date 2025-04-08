@@ -20,11 +20,11 @@ async function uploadFile(file: File, text?: string): Promise<boolean> {
           file: file,
           filename: file.name,
           ignorewarnings: true,
-          text: text
+          text: text,
         },
         {
-          contentType: 'multipart/form-data'
-        }
+          contentType: 'multipart/form-data',
+        },
       )
       .done((data) => {
         window.$message.success('上传成功')

@@ -20,16 +20,16 @@ export const useExplorerStateStore = defineStore('explorerState', () => {
     viewMode: 'list',
     filters: {
       type: [],
-      status: []
-    }
+      status: [],
+    },
   }
   // init store from localStorage or use default
   const explorerState: Ref<explorerState> = useLocalStorage(
     '[Ov23liXwSttWUEILSEqe] explorerState',
     defaultExplorerState,
     {
-      mergeDefaults: true
-    }
+      mergeDefaults: true,
+    },
   )
   return { explorerState }
 })

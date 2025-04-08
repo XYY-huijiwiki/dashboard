@@ -1,7 +1,12 @@
 <template>
   <n-flex vertical class="h-full">
     <n-flex :warp="false" justify="end">
-      <n-button type="info" :disabled="loading" size="small" @click="showPageListModel = true">
+      <n-button
+        type="info"
+        :disabled="loading"
+        size="small"
+        @click="showPageListModel = true"
+      >
         {{ t('find-and-replace.btn-which-pages-need-editing') }}
       </n-button>
       <n-button
@@ -32,10 +37,16 @@
             </template>
           </n-button>
           <n-input-group-label size="small">
-            {{ toEditList[currentPageIndex] || t('find-and-replace.msg-no-page-needs-editing') }}
+            {{
+              toEditList[currentPageIndex] ||
+              t('find-and-replace.msg-no-page-needs-editing')
+            }}
           </n-input-group-label>
           <n-button
-            :disabled="toEditList.length === 0 || currentPageIndex === toEditList.length - 1"
+            :disabled="
+              toEditList.length === 0 ||
+              currentPageIndex === toEditList.length - 1
+            "
             size="small"
             @click="currentPageIndex++"
           >
@@ -78,7 +89,10 @@
     <template #default>
       <n-flex class="my-8" vertical>
         <n-input-group>
-          <n-select v-model:value="selectPagesValue" :options="selectPagesOptions" />
+          <n-select
+            v-model:value="selectPagesValue"
+            :options="selectPagesOptions"
+          />
           <n-button type="info" @click="search[selectPagesValue]">
             {{ t(`find-and-replace.btn-search`) }}
           </n-button>
@@ -112,7 +126,7 @@
                 isCheck: true,
                 useRegex: false,
                 search: '',
-                replace: ''
+                replace: '',
               }
             }
           "
@@ -157,7 +171,10 @@
       </n-flex>
     </template>
     <template #action>
-      <n-button type="primary" @click="((showFindAndReplaceModel = false), applyRegex())">
+      <n-button
+        type="primary"
+        @click="((showFindAndReplaceModel = false), applyRegex())"
+      >
         {{ t('general.btn-ok') }}
       </n-button>
     </template>
@@ -193,7 +210,7 @@ async function saveChanges() {
       title: 'summary-empty',
       content: 'summary-empty',
       positiveText: t('general.btn-confirm'),
-      autoFocus: false
+      autoFocus: false,
     })
     return
   }
@@ -205,22 +222,28 @@ async function saveChanges() {
     const response = await editPage({
       title: toEditList.value[currentPageIndex.value],
       text: newCode,
-      summary: summary.value
+      summary: summary.value,
     })
     if (!response.ok)
       errNotify(
-        t('mediawiki.msg-page-edit-failed', [toEditList.value[currentPageIndex.value]]),
-        response.body
+        t('mediawiki.msg-page-edit-failed', [
+          toEditList.value[currentPageIndex.value],
+        ]),
+        response.body,
       )
     else
       window.$message.success(
-        t('mediawiki.msg-page-edited', [toEditList.value[currentPageIndex.value]])
+        t('mediawiki.msg-page-edited', [
+          toEditList.value[currentPageIndex.value],
+        ]),
       )
   } catch (e) {
     errNotify(t('general.error'), e)
   } finally {
     // remove page from list
-    toEditList.value = xor(toEditList.value, [toEditList.value[currentPageIndex.value]])
+    toEditList.value = xor(toEditList.value, [
+      toEditList.value[currentPageIndex.value],
+    ])
     // adjust current page num
     if (currentPageIndex.value > toEditList.value.length - 1) {
       currentPageIndex.value = toEditList.value.length - 1
@@ -240,25 +263,25 @@ watch(
       errorMsg.value = t('find-and-replace.msg-no-page-needs-editing')
     }
   },
-  { immediate: true }
+  { immediate: true },
 )
 const currentPageIndex: Ref<number> = ref(0)
 const selectPagesValue: Ref<'xlsx' | 'txt'> = ref('txt')
 const selectPagesOptions: Ref<SelectOption[]> = ref([
   {
     label: t('find-and-replace.label-select-pages-by-txt'),
-    value: 'txt'
+    value: 'txt',
   },
   {
     label: t('find-and-replace.label-select-pages-by-xlsx'),
     value: 'xlsx',
-    disabled: true
+    disabled: true,
   },
   {
     label: t('find-and-replace.label-select-pages-by-category'),
     value: 'category',
-    disabled: true
-  }
+    disabled: true,
+  },
 ])
 const search = {
   txt: () => {
@@ -282,7 +305,7 @@ const search = {
       toEditList.value = list
     }
     input.click()
-  }
+  },
 }
 // #endregion
 
@@ -302,7 +325,7 @@ function applyRegex() {
     const newCode = getNewCode(orgCode.value)
     editorInstance.setModel({
       original: createMonacoModel(orgCode.value, 'wikitext'),
-      modified: createMonacoModel(newCode, 'wikitext')
+      modified: createMonacoModel(newCode, 'wikitext'),
     })
     if (newCode === orgCode.value) {
       window.$message.info(t('find-and-replace.msg-no-change'))
@@ -318,7 +341,11 @@ function applyRegex() {
 const monacoEditorEle: Ref<HTMLElement | null> = ref(null)
 let editorInstance: editor.IStandaloneDiffEditor
 let setMonacoTheme: (theme: string) => void
-let createMonacoModel: (value: string, language?: string, uri?: Uri) => editor.ITextModel
+let createMonacoModel: (
+  value: string,
+  language?: string,
+  uri?: Uri,
+) => editor.ITextModel
 let resolveWaitMonaco: () => void
 const waitMonaco = new Promise<void>((resolve) => {
   resolveWaitMonaco = resolve
@@ -328,7 +355,18 @@ onMounted(async () => {
 
   // #region get language code for monaco
   function getLangCode(input: string): string {
-    const supported = new Set(['en', 'de', 'es', 'fr', 'it', 'ja', 'ko', 'ru', 'zh-cn', 'zh-tw'])
+    const supported = new Set([
+      'en',
+      'de',
+      'es',
+      'fr',
+      'it',
+      'ja',
+      'ko',
+      'ru',
+      'zh-cn',
+      'zh-tw',
+    ])
 
     try {
       let locale: Intl.Locale
@@ -375,15 +413,15 @@ onMounted(async () => {
 
   const highlighter = await createHighlighter({
     themes: ['dark-plus', 'light-plus'],
-    langs: ['wikitext', 'json', 'html', 'javascript', 'css', 'lua']
+    langs: ['wikitext', 'json', 'html', 'javascript', 'css', 'lua'],
   })
 
   loader.config({
     'vs/nls': {
       availableLanguages: {
-        '*': getLangCode(langCode.value)
-      }
-    }
+        '*': getLangCode(langCode.value),
+      },
+    },
   })
 
   const monacoInstance = await loader.init()
@@ -392,7 +430,7 @@ onMounted(async () => {
 
   // Initialize diff editor
   const {
-    editor: { setTheme, createDiffEditor, createModel }
+    editor: { setTheme, createDiffEditor, createModel },
   } = monacoInstance
   editorInstance = createDiffEditor(monacoEditorEle.value, {
     theme: isDark.value ? 'dark-plus' : 'light-plus',
@@ -406,11 +444,11 @@ onMounted(async () => {
      */
     useInlineViewWhenSpaceIsLimited: false,
     unicodeHighlight: {
-      ambiguousCharacters: false // avoid highlight Chinese punctuation
+      ambiguousCharacters: false, // avoid highlight Chinese punctuation
     },
     hideUnchangedRegions: {
-      enabled: true
-    }
+      enabled: true,
+    },
   })
   setMonacoTheme = setTheme
   createMonacoModel = createModel
@@ -448,7 +486,7 @@ watch(
       }
       editorInstance.setModel({
         original: createMonacoModel(orgCode.value, 'wikitext'),
-        modified: createMonacoModel(newCode, 'wikitext')
+        modified: createMonacoModel(newCode, 'wikitext'),
       })
       errorMsg.value = ''
     } catch (error) {
@@ -457,7 +495,7 @@ watch(
     } finally {
       loading.value = false
     }
-  }
+  },
 )
 function getNewCode(orgCode: string): string {
   let newCode = orgCode
@@ -470,7 +508,7 @@ function getNewCode(orgCode: string): string {
         newCode = newCode.replace(
           new RegExp(element.search, 'g'),
           // JSON.parse to process special characters like \n
-          JSON.parse('"' + element.replace.replace(/"/g, '\\"') + '"')
+          JSON.parse('"' + element.replace.replace(/"/g, '\\"') + '"'),
         )
       } else {
         // escape regex

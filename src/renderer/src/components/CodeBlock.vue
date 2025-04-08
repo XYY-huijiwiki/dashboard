@@ -22,13 +22,13 @@ const { t } = useI18n()
 const { code, lang } = defineProps({
   code: {
     type: String,
-    required: true
+    required: true,
   },
   lang: {
     type: String,
     required: false,
-    default: 'text'
-  }
+    default: 'text',
+  },
 })
 
 const vnode = computedAsync(async () => {
@@ -37,8 +37,8 @@ const vnode = computedAsync(async () => {
     lang: lang,
     themes: {
       light: 'github-light',
-      dark: 'github-dark'
-    }
+      dark: 'github-dark',
+    },
   })
   // convert html string to vnode
   const wrapped = h('div', { innerHTML: html })
@@ -61,13 +61,17 @@ function useCopyCode() {
         return
       }
 
-      const isShell = /language-(shellscript|shell|bash|sh|zsh)/.test(parent.className)
+      const isShell = /language-(shellscript|shell|bash|sh|zsh)/.test(
+        parent.className,
+      )
 
       const ignoredNodes = ['.vp-copy-ignore', '.diff.remove']
 
       // Clone the node and remove the ignored nodes
       const clone = sibling.cloneNode(true) as HTMLElement
-      clone.querySelectorAll(ignoredNodes.join(',')).forEach((node) => node.remove())
+      clone
+        .querySelectorAll(ignoredNodes.join(','))
+        .forEach((node) => node.remove())
 
       let text = clone.textContent || ''
 
@@ -107,7 +111,9 @@ async function copyToClipboard(text: string) {
     element.style.fontSize = '12pt' // Prevent zooming on iOS
 
     const selection = document.getSelection()
-    const originalRange = selection ? selection.rangeCount > 0 && selection.getRangeAt(0) : null
+    const originalRange = selection
+      ? selection.rangeCount > 0 && selection.getRangeAt(0)
+      : null
 
     document.body.appendChild(element)
     element.select()

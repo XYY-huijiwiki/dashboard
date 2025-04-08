@@ -44,7 +44,9 @@
       ></view-model-async>
       <!-- flash swf -->
       <embed
-        v-else-if="fileRecord?.content_type?.startsWith('application/x-shockwave-flash')"
+        v-else-if="
+          fileRecord?.content_type?.startsWith('application/x-shockwave-flash')
+        "
         :src="genRawFileUrl(fileRecord)"
         class="w-full h-0 flex-1 object-contain bg-black"
         type="application/x-shockwave-flash"

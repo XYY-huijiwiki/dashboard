@@ -60,7 +60,12 @@ async function confirmDelete(): Promise<void> {
       const fileExt = fileRecord.file_name.split('.').pop()
       const uuidName = uuid + '.' + fileExt
       const ghRes = await ghUpdateAsset(fileRecord.id, uuidName)
-      console.log('Renaming result for file', fileRecord.file_name, ':', ghRes.name)
+      console.log(
+        'Renaming result for file',
+        fileRecord.file_name,
+        ':',
+        ghRes.name,
+      )
       console.log(`===ghRes===`)
       console.log(ghRes)
 
@@ -72,14 +77,19 @@ async function confirmDelete(): Promise<void> {
           deleted_at: ghRes.updated_at,
           file_name_before_deleted: fileRecord.file_name,
           file_name: uuidName,
-          file_name_base62: uuidName
+          file_name_base62: uuidName,
         })
         .toString()
 
       // Step 3: rename thumbnail (if exists)
       if (fileRecord.thumb_id) {
         const gh_res_thumb = await ghUpdateAsset(fileRecord.thumb_id, uuidName)
-        console.log('Renaming result for thumbnail', fileRecord.thumb_id, ':', gh_res_thumb.name)
+        console.log(
+          'Renaming result for thumbnail',
+          fileRecord.thumb_id,
+          ':',
+          gh_res_thumb.name,
+        )
         console.log(`===gh_res_thumb===`)
         console.log(gh_res_thumb)
       }
@@ -99,7 +109,7 @@ async function confirmDelete(): Promise<void> {
     window.$notification.error({
       title: t('github-files.msg-delete-failed'),
       content: `${error}`,
-      meta: dayjs().format('lll')
+      meta: dayjs().format('lll'),
     })
   } finally {
     loading.value = false

@@ -15,7 +15,7 @@ function registerIPC(): void {
 
   ipcMain.handle('open-file-dialog', async () => {
     const { canceled, filePaths } = await dialog.showOpenDialog({
-      properties: ['openFile']
+      properties: ['openFile'],
     })
 
     if (canceled) return null
@@ -26,7 +26,7 @@ function registerIPC(): void {
       name: path.basename(filePath),
       path: filePath,
       size: stats.size,
-      type: mime.lookup(filePath) || 'application/octet-stream'
+      type: mime.lookup(filePath) || 'application/octet-stream',
     }
   })
 
@@ -44,17 +44,19 @@ function registerIPC(): void {
         method: 'POST',
         headers: {
           Authorization: `bearer ${ghToken}`,
-          'Content-Type': mime.lookup(filePath) || 'application/octet-stream'
+          'Content-Type': mime.lookup(filePath) || 'application/octet-stream',
         },
-        body: readStream
+        body: readStream,
       })
 
       if (!response.ok) {
-        throw new Error(`Upload failed: ${response.status} ${response.statusText}`)
+        throw new Error(
+          `Upload failed: ${response.status} ${response.statusText}`,
+        )
       }
 
       return response.json()
-    }
+    },
   )
 
   // #endregion
@@ -77,8 +79,8 @@ function registerIPC(): void {
         uuid,
         url,
         filename,
-        directory
-      }: { uuid: string; url: string; filename: string; directory?: string }
+        directory,
+      }: { uuid: string; url: string; filename: string; directory?: string },
     ) => {
       const win = BrowserWindow.fromWebContents(event.sender)
       if (!win) throw new Error('No BrowserWindow found')
@@ -95,14 +97,14 @@ function registerIPC(): void {
           onDownloadStarted: async ({ id }) => {
             event.sender.send('download-started', {
               uuid: uuid,
-              downloadId: id
+              downloadId: id,
             })
           },
           onDownloadProgress: async ({
             item,
             percentCompleted,
             downloadRateBytesPerSecond,
-            estimatedTimeRemainingSeconds
+            estimatedTimeRemainingSeconds,
           }) => {
             event.sender.send('download-progress', {
               uuid: uuid,
@@ -110,32 +112,35 @@ function registerIPC(): void {
               bytesReceived: item.getReceivedBytes(),
               totalBytes: item.getTotalBytes(),
               downloadRateBytesPerSecond,
-              estimatedTimeRemainingSeconds
+              estimatedTimeRemainingSeconds,
             })
           },
           onDownloadCompleted: async ({ item }) => {
-            const filePath = await safeRename(item.getSavePath(), targetFilename)
+            const filePath = await safeRename(
+              item.getSavePath(),
+              targetFilename,
+            )
             const filename = path.basename(filePath)
             event.sender.send('download-completed', {
               uuid: uuid,
               filePath,
-              filename
+              filename,
             })
           },
           onDownloadCancelled: async () => {
             event.sender.send('download-cancelled', {
-              uuid: uuid
+              uuid: uuid,
             })
           },
           onError: (err) => {
             event.sender.send('download-error', {
               uuid: uuid,
-              err
+              err,
             })
-          }
-        }
+          },
+        },
       })
-    }
+    },
   )
 
   ipcMain.handle('cancel-download', async (_event, id: string) => {

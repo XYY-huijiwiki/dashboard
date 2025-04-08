@@ -1,6 +1,17 @@
 <template>
-  <n-dropdown :options="dropdownOptions" placement="bottom-start" trigger="click" size="small">
-    <n-button quaternary block strong size="small" class="!justify-start !-ml-2">
+  <n-dropdown
+    :options="dropdownOptions"
+    placement="bottom-start"
+    trigger="click"
+    size="small"
+  >
+    <n-button
+      quaternary
+      block
+      strong
+      size="small"
+      class="!justify-start !-ml-2"
+    >
       <n-ellipsis>
         {{ t('github-files.table-header.label-uploader') }}
       </n-ellipsis>
@@ -32,7 +43,12 @@ const { t } = useI18n()
 
 const dropdownOptions = ref([
   {
-    label: () => h('span', { class: 'mr-4' }, t('github-files.table-header.btn-uploader-asc')),
+    label: () =>
+      h(
+        'span',
+        { class: 'mr-4' },
+        t('github-files.table-header.btn-uploader-asc'),
+      ),
     key: 'ascend',
     icon: () =>
       h(Icon, {
@@ -42,18 +58,23 @@ const dropdownOptions = ref([
           invisible: !(
             explorerState.value.sorterKey === 'uploader' &&
             explorerState.value.sorterOrder === 'ascend'
-          )
-        }
+          ),
+        },
       }),
     props: {
       onClick: () => {
         explorerState.value.sorterKey = 'uploader'
         explorerState.value.sorterOrder = 'ascend'
-      }
-    }
+      },
+    },
   },
   {
-    label: () => h('span', { class: 'mr-4' }, t('github-files.table-header.btn-uploader-desc')),
+    label: () =>
+      h(
+        'span',
+        { class: 'mr-4' },
+        t('github-files.table-header.btn-uploader-desc'),
+      ),
     key: 'descend',
     icon: () =>
       h(Icon, {
@@ -63,16 +84,16 @@ const dropdownOptions = ref([
           invisible: !(
             explorerState.value.sorterKey === 'uploader' &&
             explorerState.value.sorterOrder === 'descend'
-          )
-        }
+          ),
+        },
       }),
     props: {
       onClick: () => {
         explorerState.value.sorterKey = 'uploader'
         explorerState.value.sorterOrder = 'descend'
-      }
-    }
-  }
+      },
+    },
+  },
 ])
 </script>
 

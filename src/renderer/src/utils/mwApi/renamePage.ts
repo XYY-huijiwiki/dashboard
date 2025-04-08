@@ -97,7 +97,7 @@ async function renamePage(renameParams: RenameParams): Promise<
     new mw.Api()
       .postWithToken('csrf', {
         action: 'move',
-        ...renameParams
+        ...renameParams,
       })
       .done((data) => {
         const { move: renameResponse } = data as RenameResponse

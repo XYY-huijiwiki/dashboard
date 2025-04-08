@@ -17,17 +17,21 @@ const api: typeof window.api = {
     ipcRenderer.on('download-completed', (_event, args) => callback(args)),
   onDownloadCancelled: (callback) =>
     ipcRenderer.on('download-cancelled', (_event, args) => callback(args)),
-  onDownloadError: (callback) => ipcRenderer.on('download-error', (_event, args) => callback(args)),
-  cancelDownload: (downloadId) => ipcRenderer.invoke('cancel-download', downloadId),
-  pauseDownload: (downloadId) => ipcRenderer.invoke('pause-download', downloadId),
-  resumeDownload: (downloadId) => ipcRenderer.invoke('resume-download', downloadId),
+  onDownloadError: (callback) =>
+    ipcRenderer.on('download-error', (_event, args) => callback(args)),
+  cancelDownload: (downloadId) =>
+    ipcRenderer.invoke('cancel-download', downloadId),
+  pauseDownload: (downloadId) =>
+    ipcRenderer.invoke('pause-download', downloadId),
+  resumeDownload: (downloadId) =>
+    ipcRenderer.invoke('resume-download', downloadId),
   // window
   toggleFullScreen: () => ipcRenderer.invoke('toggle-fullscreen'),
   toggleDevTools: () => ipcRenderer.invoke('toggle-devtools'),
   // file operations
   showInFolder: (filePath) => ipcRenderer.invoke('show-in-folder', filePath),
   openFile: (filePath) => ipcRenderer.invoke('open-file', filePath),
-  isFileExists: (filePath) => ipcRenderer.invoke('is-file-exists', filePath)
+  isFileExists: (filePath) => ipcRenderer.invoke('is-file-exists', filePath),
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to

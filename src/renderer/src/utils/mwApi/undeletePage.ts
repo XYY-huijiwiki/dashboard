@@ -43,14 +43,16 @@ interface UndeleteResponse {
 }
 
 async function undeletePage(
-  undeleteParams: UndeleteParams
-): Promise<{ ok: true; body: UndeleteResponse['undelete'] } | { ok: false; body: string }> {
+  undeleteParams: UndeleteParams,
+): Promise<
+  { ok: true; body: UndeleteResponse['undelete'] } | { ok: false; body: string }
+> {
   return new Promise((resolve) => {
     if (is.dev) console.groupCollapsed('undeletePage')
     new mw.Api()
       .postWithToken('csrf', {
         action: 'undelete',
-        ...undeleteParams
+        ...undeleteParams,
       })
       .done((data) => {
         const { undelete: undeleteResponse } = data as UndeleteResponse

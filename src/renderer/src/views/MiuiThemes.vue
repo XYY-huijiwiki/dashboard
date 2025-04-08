@@ -9,19 +9,35 @@
       <!-- Step 1 -->
       <n-flex v-if="currentStep === 1" vertical>
         <n-form>
-          <n-form-item :label="t('miui-themes.step2-label-theme-link')" show-require-mark>
+          <n-form-item
+            :label="t('miui-themes.step2-label-theme-link')"
+            show-require-mark
+          >
             <n-input-group>
               <n-input v-model:value="themeInput.link" :disabled="loading" />
-              <n-button :disabled="loading || !themeInput.link" @click="getDownloadLink">
+              <n-button
+                :disabled="loading || !themeInput.link"
+                @click="getDownloadLink"
+              >
                 {{ t('miui-themes.step2-btn-get-download-link') }}
               </n-button>
             </n-input-group>
           </n-form-item>
-          <n-form-item :label="t('miui-themes.step2-label-download-link')" show-require-mark>
-            <n-input v-model:value="themeInput.downloadLink" :disabled="loading" />
+          <n-form-item
+            :label="t('miui-themes.step2-label-download-link')"
+            show-require-mark
+          >
+            <n-input
+              v-model:value="themeInput.downloadLink"
+              :disabled="loading"
+            />
           </n-form-item>
           <n-form-item :label="t('miui-themes.step2-label-release-date')">
-            <n-date-picker v-model:value="themeInput.date" type="date" :disabled="loading" />
+            <n-date-picker
+              v-model:value="themeInput.date"
+              type="date"
+              :disabled="loading"
+            />
           </n-form-item>
           <n-form-item :label="t('miui-themes.step2-label-date-screenshot')">
             <n-flex :align="`center`">
@@ -31,7 +47,9 @@
               <div>
                 {{
                   themeInput.dateImg
-                    ? t('miui-themes.step2-selected-file', [themeInput.dateImg.name])
+                    ? t('miui-themes.step2-selected-file', [
+                        themeInput.dateImg.name,
+                      ])
                     : t('miui-themes.step2-no-file-selected')
                 }}
               </div>
@@ -55,12 +73,15 @@
       <!-- Step 2 -->
       <n-flex v-if="currentStep === 2 && result !== null" vertical>
         <n-flex>
-          <code-block :code="JSON.stringify(result.themeJson, null, 2)" lang="json"></code-block>
+          <code-block
+            :code="JSON.stringify(result.themeJson, null, 2)"
+            lang="json"
+          ></code-block>
           <n-flex
             v-for="img in [
               result.files.dateImg,
               result.files.squareImg,
-              ...(result?.files.previews || [])
+              ...(result?.files.previews || []),
             ].filter(Boolean)"
             :key="img?.name"
             vertical
@@ -145,7 +166,7 @@ watch(currentStep, () => {
 
     window.scrollTo({
       top: offsetPosition,
-      behavior: 'smooth'
+      behavior: 'smooth',
     })
   }
 })
@@ -163,18 +184,22 @@ const themeInput: Ref<ThemeInput> = ref({
   link: undefined,
   date: undefined,
   dateImg: undefined,
-  trivia: undefined
+  trivia: undefined,
 })
 const { open: openFile, onChange: onChangeFile } = useFileDialog({
-  accept: 'image/*'
+  accept: 'image/*',
 })
 onChangeFile((files) => {
   if (files?.length !== 1) return
   themeInput.value.dateImg = files[0]
 })
 function getDownloadLink() {
-  const packId = new URL(cleanURL(themeInput.value.link || '')).searchParams.get('packId')
-  window.open(`https://thm.market.xiaomi.com/thm/download/v2/${packId}?miuiUIVersion=100`)
+  const packId = new URL(
+    cleanURL(themeInput.value.link || ''),
+  ).searchParams.get('packId')
+  window.open(
+    `https://thm.market.xiaomi.com/thm/download/v2/${packId}?miuiUIVersion=100`,
+  )
 }
 
 async function clickNext() {
@@ -191,14 +216,16 @@ async function clickNext() {
         throw new Error('主题链接格式错误')
       }
       const res = (await (
-        await ky.get(`${corsProxy}https://zhuti.xiaomi.com/thm/share/picture/${packID}`)
+        await ky.get(
+          `${corsProxy}https://zhuti.xiaomi.com/thm/share/picture/${packID}`,
+        )
       ).json()) as {
         downloadUrl: string
         name: string
       }
       return {
         title: res.name,
-        squareImgLink: res.downloadUrl
+        squareImgLink: res.downloadUrl,
       }
     }
     const corsProxy = 'https://cors-proxy.24218079.xyz/'
@@ -210,7 +237,7 @@ async function clickNext() {
     const 主题名称 = title
     const squareImg = new File(
       [await (await fetch(corsProxy + squareImgLink)).blob()],
-      `小米主题 ${title}.png`
+      `小米主题 ${title}.png`,
     )
     const 你知道咩 = themeInput.value.trivia || ''
 
@@ -224,7 +251,9 @@ async function clickNext() {
       ? dayjs(themeInput.value.date).format('YYYY-MM-DD')
       : dayjs(xmlFile.date).utc().format('YYYY-MM-DD')
     const description_xml = await xmlFile.async('string')
-    const description_json = JSON.parse(xml2json(description_xml, { compact: true }))
+    const description_json = JSON.parse(
+      xml2json(description_xml, { compact: true }),
+    )
     const 主题作者 = description_json.theme.designer._cdata.trim()
     const 主题介绍 = description_json.theme.description._cdata
       .trim()
@@ -239,8 +268,10 @@ async function clickNext() {
     const previews = await Promise.all(
       imgs_list.map(async (img) => {
         const blob = await zipObj.file(`preview/${img}`)?.async('blob')
-        return blob ? new File([blob], `小米主题 ${主题名称} ${img}`) : undefined
-      })
+        return blob
+          ? new File([blob], `小米主题 ${主题名称} ${img}`)
+          : undefined
+      }),
     ).then((files) => files.filter((file) => file !== undefined))
 
     // Process date image
@@ -249,7 +280,10 @@ async function clickNext() {
       if (!themeInput.value.dateImg) {
         throw new Error('手动输入日期时，需要提供日期截图')
       }
-      dateImg = new File([themeInput.value.dateImg], `小米主题 ${主题名称} 发布日期截图.jpg`)
+      dateImg = new File(
+        [themeInput.value.dateImg],
+        `小米主题 ${主题名称} 发布日期截图.jpg`,
+      )
     }
 
     // Result
@@ -262,14 +296,14 @@ async function clickNext() {
         主题链接,
         主题介绍,
         主题预览,
-        你知道咩
+        你知道咩,
       },
       files: {
         mtz,
         dateImg,
         squareImg,
-        previews
-      }
+        previews,
+      },
     }
 
     currentStep.value++
@@ -296,7 +330,7 @@ async function submitInfo() {
     const files = [
       result.value!.files.dateImg,
       result.value!.files.squareImg,
-      ...result.value!.files.previews
+      ...result.value!.files.previews,
     ].filter(Boolean)
     const progressChunk = 100 / (files.length + 4)
     for (let index = 0; index < files.length; index++) {
@@ -310,7 +344,7 @@ async function submitInfo() {
 
     const editResponse1 = await editPage({
       title: `Data:${themeJson.主题名称}.json`,
-      text: JSON.stringify(themeJson)
+      text: JSON.stringify(themeJson),
     })
     if (editResponse1.ok) {
       success()
@@ -321,7 +355,7 @@ async function submitInfo() {
 
     const editResponse2 = await editPage({
       title: `${themeJson.主题名称}`,
-      text: `{{小米主题}}`
+      text: `{{小米主题}}`,
     })
     if (editResponse2.ok) {
       success()
@@ -342,17 +376,20 @@ async function submitInfo() {
     success()
 
     const octokit = new Octokit({ auth: token })
-    const octokitRes = await octokit.request('PUT /repos/{owner}/{repo}/contents/{path}', {
-      owner,
-      repo,
-      path,
-      sha,
-      message,
-      content,
-      headers: {
-        'X-GitHub-Api-Version': '2022-11-28'
-      }
-    })
+    const octokitRes = await octokit.request(
+      'PUT /repos/{owner}/{repo}/contents/{path}',
+      {
+        owner,
+        repo,
+        path,
+        sha,
+        message,
+        content,
+        headers: {
+          'X-GitHub-Api-Version': '2022-11-28',
+        },
+      },
+    )
     if (octokitRes.status === 201) {
       success()
     } else {
@@ -364,7 +401,7 @@ async function submitInfo() {
   } catch (error) {
     window.$notification.error({
       title: t('general.error'),
-      content: `${error}`
+      content: `${error}`,
     })
     submitStatus.value = 'error'
     loading.value = false

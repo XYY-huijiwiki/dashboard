@@ -37,12 +37,12 @@ const animations: Ref<string[]> = ref([])
 defineProps({
   modelUrl: {
     type: String,
-    required: true
+    required: true,
   },
   posterUrl: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 })
 
 // watch modelViewer load
@@ -54,7 +54,7 @@ watch(
       animation.value = modelViewer.value?.availableAnimations[0] || ''
     })
   },
-  { once: true }
+  { once: true },
 )
 </script>
 

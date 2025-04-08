@@ -6,7 +6,9 @@
         <github />
       </template>
       <template #extra>
-        <n-button :loading="loading" @click="login">{{ t('init.btn-login') }}</n-button>
+        <n-button :loading="loading" @click="login">{{
+          t('init.btn-login')
+        }}</n-button>
       </template>
     </n-empty>
   </n-flex>
@@ -65,7 +67,9 @@ onMounted(async () => {
   if (is.web) {
     try {
       // check if `access_token` is returned from GitHub
-      const accessToken = new URLSearchParams(location.search).get('access_token')
+      const accessToken = new URLSearchParams(location.search).get(
+        'access_token',
+      )
       if (accessToken) {
         settings.value.ghToken = accessToken
         location.href = (() => {
@@ -81,8 +85,8 @@ onMounted(async () => {
           await fetch('https://api.github.com/repos/XYY-huijiwiki/files', {
             headers: {
               Authorization: `bearer ${settings.value.ghToken}`,
-              'X-GitHub-Api-Version': '2022-11-28'
-            }
+              'X-GitHub-Api-Version': '2022-11-28',
+            },
           })
         ).json()
         console.log(res)
@@ -102,7 +106,7 @@ onMounted(async () => {
           window.$dialog.warning({
             autoFocus: false,
             title: t('init.permission-denied-title'),
-            content: t('init.permission-denied-content', settings.value.ghRepo)
+            content: t('init.permission-denied-content', settings.value.ghRepo),
           })
         }
 

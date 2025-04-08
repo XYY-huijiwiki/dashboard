@@ -19,7 +19,7 @@ const { fileType } = defineProps<{
 
 const iconPack = import.meta.glob('../assets/icons/*.ico', {
   as: 'url',
-  eager: true
+  eager: true,
 })
 
 const src = computed(() => {
@@ -36,26 +36,27 @@ function getIconName(type: string | undefined | null): string {
   if (
     [
       'application/msword', // .doc
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document' // .docx
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx
     ].includes(type || '')
   )
     return 'word'
   if (
     [
       'application/vnd.ms-excel', // .xls
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' // .xlsx
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // .xlsx
     ].includes(type || '')
   )
     return 'excel'
   if (
     [
       'application/vnd.ms-powerpoint', // .ppt
-      'application/vnd.openxmlformats-officedocument.presentationml.presentation' // .pptx
+      'application/vnd.openxmlformats-officedocument.presentationml.presentation', // .pptx
     ].includes(type || '')
   )
     return 'powerpoint'
   if (type === 'application/pdf') return 'doc'
-  if (['application/zip', 'application/x-zip-compressed'].includes(type || '')) return 'zip'
+  if (['application/zip', 'application/x-zip-compressed'].includes(type || ''))
+    return 'zip'
   if (type?.startsWith('model')) return 'model'
   if (type?.startsWith('image')) return 'image'
   if (type?.startsWith('audio')) return 'audio'

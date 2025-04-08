@@ -13,7 +13,7 @@
         class="!w-36"
         :options="[
           { label: '.json', value: 'json' },
-          { label: '.xlsx', value: 'xlsx' }
+          { label: '.xlsx', value: 'xlsx' },
         ]"
       />
       <n-button :loading="btnLoading" @click="getDataFile(value)">
@@ -37,7 +37,9 @@
     </n-grid>
 
     <n-progress
-      :percentage="dataInfo.length === 0 ? 0 : Math.floor((count / dataInfo.length) * 100)"
+      :percentage="
+        dataInfo.length === 0 ? 0 : Math.floor((count / dataInfo.length) * 100)
+      "
       :show-indicator="true"
       indicator-placement="inside"
       :status="importing ? 'info' : 'success'"
@@ -45,7 +47,10 @@
     />
 
     <n-input-group>
-      <n-input v-model:value="summary" :placeholder="t('episodes-data.label-edit-summary')" />
+      <n-input
+        v-model:value="summary"
+        :placeholder="t('episodes-data.label-edit-summary')"
+      />
       <n-upload
         abstract
         :accept="`.` + settings.episodesDataExportType"
@@ -79,7 +84,10 @@ import { isArray } from 'lodash-es'
 
 import { errNotify, is, sleep } from '@renderer/utils'
 import { downloadJson, downloadXlsx } from '@renderer/utils/EpisodesData'
-import type { EpisodesRecord, EpisodesResponse } from '@renderer/utils/EpisodesData'
+import type {
+  EpisodesRecord,
+  EpisodesResponse,
+} from '@renderer/utils/EpisodesData'
 import cartoonList from '@renderer/assets/cartoon-list.json'
 import { useSettingsStore } from '@renderer/stores/settings'
 import { editPage } from '@renderer/utils/mwApi'
@@ -140,7 +148,7 @@ onBeforeRouteLeave(() => {
       content: t('general.text-leave-warning-content'),
       positiveText: t('general.btn-confirm'),
       autoFocus: false,
-      transformOrigin: 'center'
+      transformOrigin: 'center',
     })
     return false
   } else {
@@ -152,7 +160,7 @@ const fileList: Ref<UploadFileInfo[]> = ref([])
 const importing = ref(false)
 const dataInfo = ref({
   name: t('episodes-data.msg-no-file-selected'),
-  length: 0
+  length: 0,
 })
 const cartoonData: Ref<EpisodesRecord[]> = ref([])
 const summary = ref('')
@@ -194,7 +202,7 @@ const refreshData = async (list: UploadFileInfo[]) => {
 
   dataInfo.value = {
     name: list[0].name,
-    length: data.length
+    length: data.length,
   }
 
   cartoonData.value = data
@@ -223,7 +231,8 @@ async function importData() {
     Object.keys(newDataItem).forEach((key) => {
       const value = newDataItem[key]
       try {
-        if (isArray(JSON.parse(`${value}`))) newDataItem[key] = JSON.parse(`${value}`)
+        if (isArray(JSON.parse(`${value}`)))
+          newDataItem[key] = JSON.parse(`${value}`)
       } catch (error) {
         // do nothing
       }
@@ -237,7 +246,7 @@ async function importData() {
       const res = await editPage({
         title: _id,
         text,
-        summary: '【批量更新剧集信息】' + summary.value
+        summary: '【批量更新剧集信息】' + summary.value,
       })
       if (!res.ok) errNotify(t('general.error'), res.body)
     } catch (error) {

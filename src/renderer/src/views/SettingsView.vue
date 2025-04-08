@@ -3,7 +3,11 @@ import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 
 import { useSettingsStore } from '@renderer/stores/settings'
-import { useLocalesStore, supportedLangs, userLang } from '@renderer/stores/locales'
+import {
+  useLocalesStore,
+  supportedLangs,
+  userLang,
+} from '@renderer/stores/locales'
 import { is } from '@renderer/utils'
 
 const { langCode } = storeToRefs(useLocalesStore())
@@ -24,7 +28,7 @@ function clearData(): void {
     onPositiveClick: () => {
       resetSettings()
       window.$message.success(t('settings.text-restore-done'))
-    }
+    },
   })
 }
 
@@ -45,7 +49,9 @@ function toggleDevtools(): void {
           <n-radio key="auto" value="auto">
             {{
               t('settings.text-auto-language', [
-                new Intl.DisplayNames([langCode], { type: 'language' }).of(userLang)
+                new Intl.DisplayNames([langCode], { type: 'language' }).of(
+                  userLang,
+                ),
               ])
             }}
           </n-radio>
@@ -77,7 +83,11 @@ function toggleDevtools(): void {
     <!-- source code -->
     <n-form-item :label="t('settings.label-source-code')">
       <n-space>
-        <n-button tag="a" href="//github.com/XYY-huijiwiki/dashboard" target="_blank">
+        <n-button
+          tag="a"
+          href="//github.com/XYY-huijiwiki/dashboard"
+          target="_blank"
+        >
           {{ t('settings.btn-github') }}
         </n-button>
       </n-space>

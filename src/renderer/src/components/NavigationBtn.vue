@@ -4,7 +4,7 @@
       'mt-[10px]',
       'transition-all',
       props.collapsed ? 'ml-[8px]' : 'ml-[18px]',
-      props.collapsed ? 'mr-[8px]' : 'mr-[18px]'
+      props.collapsed ? 'mr-[8px]' : 'mr-[18px]',
     ]"
   >
     <n-button

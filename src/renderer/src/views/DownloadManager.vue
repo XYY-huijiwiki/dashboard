@@ -24,7 +24,11 @@
           </template>
           <template #header-extra>
             <n-button
-              v-if="['completed', 'error', 'cancelled', 'deleted'].includes(download.status)"
+              v-if="
+                ['completed', 'error', 'cancelled', 'deleted'].includes(
+                  download.status,
+                )
+              "
               quaternary
               size="tiny"
               :title="t('download-manager.btn-remove-from-list')"
@@ -36,7 +40,11 @@
             </n-button>
           </template>
           <template #footer>
-            <n-text v-if="download.status === 'error'" class="text-xs" type="error">
+            <n-text
+              v-if="download.status === 'error'"
+              class="text-xs"
+              type="error"
+            >
               {{ download.error }}
             </n-text>
             <n-progress
@@ -58,18 +66,21 @@
                       error: t('download-manager.label-error'),
                       cancelled: t('download-manager.label-cancelled'),
                       deleted: t('download-manager.label-deleted'),
-                      paused: t('download-manager.label-paused')
+                      paused: t('download-manager.label-paused'),
                     }[download.status]
                   }}
                 </n-text>
                 <n-divider v-if="download.status === 'downloading'" vertical />
-                <n-text v-if="download.status === 'downloading'" class="text-xs">
+                <n-text
+                  v-if="download.status === 'downloading'"
+                  class="text-xs"
+                >
                   {{
                     t('download-manager.msg-downloading-info', {
                       downloadedSize: filesize(download.transferredBytes),
                       totalSize: filesize(download.totalBytes),
                       speed: filesize(download.downloadRateBytesPerSecond),
-                      eta: Math.ceil(download.estimatedTimeRemainingSeconds)
+                      eta: Math.ceil(download.estimatedTimeRemainingSeconds),
                     })
                   }}
                 </n-text>
@@ -85,21 +96,30 @@
                 <n-button
                   v-if="download.status === 'downloading'"
                   size="tiny"
-                  @click="(pauseDownload(download.downloadId), (download.status = 'paused'))"
+                  @click="
+                    (pauseDownload(download.downloadId),
+                    (download.status = 'paused'))
+                  "
                 >
                   {{ t('download-manager.btn-pause') }}
                 </n-button>
                 <n-button
                   v-if="download.status === 'paused'"
                   size="tiny"
-                  @click="(resumeDownload(download.downloadId), (download.status = 'downloading'))"
+                  @click="
+                    (resumeDownload(download.downloadId),
+                    (download.status = 'downloading'))
+                  "
                 >
                   {{ t('download-manager.btn-resume') }}
                 </n-button>
                 <n-button
                   v-if="['downloading', 'paused'].includes(download.status)"
                   size="tiny"
-                  @click="(cancelDownload(download.downloadId), (download.status = 'cancelled'))"
+                  @click="
+                    (cancelDownload(download.downloadId),
+                    (download.status = 'cancelled'))
+                  "
                 >
                   {{ t('download-manager.btn-cancel') }}
                 </n-button>
@@ -128,12 +148,15 @@ import { onMounted } from 'vue'
 
 const { t } = useI18n()
 const { langCode } = storeToRefs(useLocalesStore())
-const filesize = (size: number): string => filesizeNoLocale(size, { locale: langCode.value })
+const filesize = (size: number): string =>
+  filesizeNoLocale(size, { locale: langCode.value })
 const { pauseDownload, resumeDownload, cancelDownload } = useDownloadStore()
 const { downloads } = storeToRefs(useDownloadStore())
 
 function removeDownload(uuid: string) {
-  document.startViewTransition(() => remove(downloads.value, (download) => download.uuid === uuid))
+  document.startViewTransition(() =>
+    remove(downloads.value, (download) => download.uuid === uuid),
+  )
 }
 
 function getOrigin(url: string) {
@@ -158,7 +181,7 @@ const progressStatusMapper = {
   error: 'error',
   cancelled: 'warning',
   deleted: 'error',
-  paused: 'warning'
+  paused: 'warning',
 }
 
 onMounted(async () => {

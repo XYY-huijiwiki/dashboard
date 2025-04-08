@@ -2,7 +2,7 @@ import {
   createRouter,
   createWebHashHistory,
   type RouteRecordRaw,
-  type RouteLocation
+  type RouteLocation,
 } from 'vue-router'
 import { useSettingsStore } from '@renderer/stores/settings'
 import { storeToRefs } from 'pinia'
@@ -13,102 +13,102 @@ const views = import.meta.glob('@renderer/views/**/*.vue')
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/:pathMatch(.*)*',
-    redirect: { name: 'error' }
+    redirect: { name: 'error' },
   },
   { path: '/', redirect: { name: 'file-explorer' } },
   {
     path: '/file-explorer',
     name: 'file-explorer',
     meta: {
-      ghAuthRequired: true
+      ghAuthRequired: true,
     },
-    component: views['/src/views/FileExplorer.vue']
+    component: views['/src/views/FileExplorer.vue'],
   },
   {
     path: '/recycle-bin',
     name: 'recycle-bin',
     meta: {
-      ghAuthRequired: true
+      ghAuthRequired: true,
     },
-    component: views['/src/views/RecycleBin.vue']
+    component: views['/src/views/RecycleBin.vue'],
   },
   {
     path: '/file-preview/:filename',
     name: 'file-preview',
     meta: {},
-    component: views['/src/views/FilePreview.vue']
+    component: views['/src/views/FilePreview.vue'],
   },
   {
     path: '/download-manager',
     name: 'download-manager',
     meta: {
-      electronOnly: true
+      electronOnly: true,
     },
-    component: views['/src/views/DownloadManager.vue']
+    component: views['/src/views/DownloadManager.vue'],
   },
   {
     path: '/rename-pages',
     name: 'rename-pages',
     meta: {
-      webOnly: true
+      webOnly: true,
     },
-    component: views['/src/views/RenamePages.vue']
+    component: views['/src/views/RenamePages.vue'],
   },
   {
     path: '/find-and-replace',
     name: 'find-and-replace',
     meta: {
-      webOnly: true
+      webOnly: true,
     },
-    component: views['/src/views/FindAndReplace.vue']
+    component: views['/src/views/FindAndReplace.vue'],
   },
   {
     path: '/episodes-data',
     name: 'episodes-data',
     meta: {
-      webOnly: true
+      webOnly: true,
     },
-    component: views['/src/views/EpisodesData.vue']
+    component: views['/src/views/EpisodesData.vue'],
   },
   {
     path: '/delete-and-undelete',
     name: 'delete-and-undelete',
     meta: {
-      webOnly: true
+      webOnly: true,
     },
-    component: views['/src/views/DeleteAndUndelete.vue']
+    component: views['/src/views/DeleteAndUndelete.vue'],
   },
   {
     path: '/miui-themes',
     name: 'miui-themes',
     meta: {
-      webOnly: true
+      webOnly: true,
     },
-    component: views['/src/views/MiuiThemes.vue']
+    component: views['/src/views/MiuiThemes.vue'],
   },
   {
     path: '/settings',
     name: 'settings',
     meta: {},
-    component: views['/src/views/SettingsView.vue']
+    component: views['/src/views/SettingsView.vue'],
   },
   {
     path: '/init',
     name: 'init',
     meta: {},
-    component: views['/src/views/InitView.vue']
+    component: views['/src/views/InitView.vue'],
   },
   {
     path: '/error',
     meta: {},
     name: 'error',
-    component: views['/src/views/ErrorView.vue']
-  }
+    component: views['/src/views/ErrorView.vue'],
+  },
 ]
 
 const router = createRouter({
   history: createWebHashHistory(),
-  routes
+  routes,
 })
 
 /**

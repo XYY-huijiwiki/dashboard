@@ -9,14 +9,16 @@ import App from './AppOuter.vue'
 import { userLang, langPacks } from '@renderer/stores/locales'
 
 // ===== i18n =====
-const language = JSON.parse(localStorage.getItem('settings') || `{"language":"auto"}`).language
+const language = JSON.parse(
+  localStorage.getItem('settings') || `{"language":"auto"}`,
+).language
 const locale = language === 'auto' ? userLang : language
 const i18n = createI18n({
   legacy: false,
   locale,
   messages: {
-    [locale]: await langPacks[locale]()
-  }
+    [locale]: await langPacks[locale](),
+  },
 })
 
 createApp(App).use(i18n).use(router).use(createPinia()).mount('#bodyContent')

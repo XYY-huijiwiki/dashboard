@@ -42,7 +42,7 @@ const emit = defineEmits([
   'delete',
   'download',
   'rename',
-  'details'
+  'details',
 ])
 
 function genIcon(iconName: string): VNode {
@@ -55,43 +55,43 @@ const options: ComputedRef<DropdownOption[]> = computed(() => [
     label: t('github-files.btn-preview'),
     icon: () => genIcon('full-screen-maximize'),
     key: 'preview',
-    disabled: props.data.length > 1
+    disabled: props.data.length > 1,
   },
   {
     label: t('github-files.btn-link-copy'),
     icon: () => genIcon('link'),
-    key: 'link-copy'
+    key: 'link-copy',
   },
   {
-    type: 'divider'
+    type: 'divider',
   },
   {
     label: t('github-files.btn-delete'),
     icon: () => genIcon('delete'),
     disabled: props.data.length === 0,
-    key: 'delete'
+    key: 'delete',
   },
   {
     label: t('github-files.btn-download'),
     icon: () => genIcon('arrow-download'),
     disabled: is.web ? props.data.length !== 1 : props.data.length === 0,
-    key: 'download'
+    key: 'download',
   },
   {
     label: t('github-files.btn-rename'),
     icon: () => genIcon('rename'),
     disabled: props.data.length !== 1,
-    key: 'rename'
+    key: 'rename',
   },
   {
-    type: 'divider'
+    type: 'divider',
   },
   {
     label: t('github-files.btn-details'),
     icon: () => genIcon('panel-right-expand'),
     key: 'details',
-    disabled: props.data.length > 1
-  }
+    disabled: props.data.length > 1,
+  },
 ])
 </script>
 

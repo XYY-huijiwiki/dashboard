@@ -20,7 +20,12 @@
       <n-button :disabled="loading" @click="$emit('close')">
         {{ t('general.btn-cancel') }}
       </n-button>
-      <n-button :loading="loading" type="primary" :disabled="!newName" @click="confirmRename">
+      <n-button
+        :loading="loading"
+        type="primary"
+        :disabled="!newName"
+        @click="confirmRename"
+      >
         {{ t('general.btn-confirm') }}
       </n-button>
     </n-flex>
@@ -39,7 +44,10 @@ import db from '@renderer/utils/queryDB'
 import { ghUpdateAsset } from '@renderer/utils/octokit'
 import { useSettingsStore } from '@renderer/stores/settings'
 import { dayjsLocales } from '@renderer/stores/locales'
-import { fileNameLengthLimitFromOrg, fileNameOrgToBase62 } from '@renderer/utils/fileName'
+import {
+  fileNameLengthLimitFromOrg,
+  fileNameOrgToBase62,
+} from '@renderer/utils/fileName'
 
 dayjs.extend(localizedFormat).locale(dayjsLocales.value)
 const { t } = useI18n()
@@ -87,7 +95,7 @@ async function confirmRename(): Promise<void> {
       .update({
         file_name: newName.value.trim().replaceAll(' ', '_') + fileExt,
         file_name_base62: ghRes.name,
-        updated_at: ghRes.updated_at
+        updated_at: ghRes.updated_at,
       })
       .toString()
 
@@ -105,7 +113,7 @@ async function confirmRename(): Promise<void> {
     window.$notification.error({
       title: t('github-files.msg-rename-failed'),
       content: `${error}`,
-      meta: dayjs().format('lll')
+      meta: dayjs().format('lll'),
     })
   } finally {
     loading.value = false

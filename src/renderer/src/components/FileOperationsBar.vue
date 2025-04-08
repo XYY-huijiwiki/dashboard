@@ -41,14 +41,20 @@
           <!-- download -->
           <tooltipped-icon-button
             :text="t('github-files.btn-download')"
-            :disabled="is.web ? checkedRowKeys.length !== 1 : checkedRowKeys.length === 0"
+            :disabled="
+              is.web ? checkedRowKeys.length !== 1 : checkedRowKeys.length === 0
+            "
             @click="emit('file-download')"
           >
             <icon icon="fluent:arrow-download-24-regular" />
           </tooltipped-icon-button>
           <n-divider class="relative top-2" vertical />
           <!-- sort -->
-          <n-dropdown trigger="click" :options="sortOptions" @select="sortHandler">
+          <n-dropdown
+            trigger="click"
+            :options="sortOptions"
+            @select="sortHandler"
+          >
             <n-button quaternary>
               {{ t('github-files.sort.btn-sort') }}
               <template #icon>
@@ -86,7 +92,11 @@
 
       <n-flex :wrap="false" class="pb-2" size="small">
         <!-- preview -->
-        <n-button quaternary :disabled="checkedRowKeys.length !== 1" @click="emit('file-preview')">
+        <n-button
+          quaternary
+          :disabled="checkedRowKeys.length !== 1"
+          @click="emit('file-preview')"
+        >
           {{ t('github-files.btn-preview') }}
           <template #icon>
             <n-icon :size="24">
@@ -128,10 +138,10 @@ const { explorerState } = storeToRefs(useExplorerStateStore())
 
 const { t } = useI18n()
 const checkedRowKeys = defineModel<(string | number)[]>('checkedRowKeys', {
-  required: true
+  required: true,
 })
 const showDetailsPane = defineModel<boolean>('showDetailsPane', {
-  required: true
+  required: true,
 })
 
 const emit = defineEmits([
@@ -140,7 +150,7 @@ const emit = defineEmits([
   'file-download',
   'file-delete',
   'file-rename',
-  'new-file'
+  'new-file',
 ])
 
 /*
@@ -156,8 +166,8 @@ const sortOptions = ref([
       h(Icon, {
         icon: `fluent:checkmark-20-regular`,
         width: 20,
-        class: { invisible: explorerState.value.sorterKey !== 'type' }
-      })
+        class: { invisible: explorerState.value.sorterKey !== 'type' },
+      }),
   },
   {
     label: t('github-files.sort.btn-name'),
@@ -166,8 +176,8 @@ const sortOptions = ref([
       h(Icon, {
         icon: `fluent:checkmark-20-regular`,
         width: 20,
-        class: { invisible: explorerState.value.sorterKey !== 'name' }
-      })
+        class: { invisible: explorerState.value.sorterKey !== 'name' },
+      }),
   },
   {
     label: t('github-files.sort.btn-date-modified'),
@@ -176,8 +186,8 @@ const sortOptions = ref([
       h(Icon, {
         icon: `fluent:checkmark-20-regular`,
         width: 20,
-        class: { invisible: explorerState.value.sorterKey !== 'updated_at' }
-      })
+        class: { invisible: explorerState.value.sorterKey !== 'updated_at' },
+      }),
   },
   {
     label: t('github-files.sort.btn-uploader'),
@@ -186,8 +196,8 @@ const sortOptions = ref([
       h(Icon, {
         icon: `fluent:checkmark-20-regular`,
         width: 20,
-        class: { invisible: explorerState.value.sorterKey !== 'uploader' }
-      })
+        class: { invisible: explorerState.value.sorterKey !== 'uploader' },
+      }),
   },
   {
     label: t('github-files.sort.btn-size'),
@@ -196,12 +206,12 @@ const sortOptions = ref([
       h(Icon, {
         icon: `fluent:checkmark-20-regular`,
         width: 20,
-        class: { invisible: explorerState.value.sorterKey !== 'size' }
-      })
+        class: { invisible: explorerState.value.sorterKey !== 'size' },
+      }),
   },
   {
     type: 'divider',
-    key: 'divider'
+    key: 'divider',
   },
   {
     label: t('github-files.sort.btn-asc'),
@@ -210,8 +220,8 @@ const sortOptions = ref([
       h(Icon, {
         icon: `fluent:checkmark-20-regular`,
         width: 20,
-        class: { invisible: explorerState.value.sorterOrder !== 'ascend' }
-      })
+        class: { invisible: explorerState.value.sorterOrder !== 'ascend' },
+      }),
   },
   {
     label: t('github-files.sort.btn-desc'),
@@ -220,9 +230,9 @@ const sortOptions = ref([
       h(Icon, {
         icon: `fluent:checkmark-20-regular`,
         width: 20,
-        class: { invisible: explorerState.value.sorterOrder !== 'descend' }
-      })
-  }
+        class: { invisible: explorerState.value.sorterOrder !== 'descend' },
+      }),
+  },
 ])
 function sortHandler(key: SorterKey | SorterOrder): void {
   if (['ascend', 'descend'].includes(key)) {
@@ -243,52 +253,52 @@ const viewOptions = ref([
       h(
         NIcon,
         { size: 20, class: 'mr-1 align-sub' },
-        { default: () => h(Icon, { icon: 'fluent:apps-list-24-regular' }) }
+        { default: () => h(Icon, { icon: 'fluent:apps-list-24-regular' }) },
       ),
-      h('span', undefined, t('github-files.view.btn-details'))
+      h('span', undefined, t('github-files.view.btn-details')),
     ],
     key: 'details',
     icon: () =>
       h(Icon, {
         icon: `fluent:checkmark-20-regular`,
         width: 20,
-        class: { invisible: explorerState.value.viewMode !== 'details' }
-      })
+        class: { invisible: explorerState.value.viewMode !== 'details' },
+      }),
   },
   {
     label: () => [
       h(
         NIcon,
         { size: 20, class: 'mr-1 align-sub' },
-        { default: () => h(Icon, { icon: 'fluent:list-24-regular' }) }
+        { default: () => h(Icon, { icon: 'fluent:list-24-regular' }) },
       ),
-      h('span', undefined, t('github-files.view.btn-list'))
+      h('span', undefined, t('github-files.view.btn-list')),
     ],
     key: 'list',
     icon: () =>
       h(Icon, {
         icon: `fluent:checkmark-20-regular`,
         width: 20,
-        class: { invisible: explorerState.value.viewMode !== 'list' }
-      })
+        class: { invisible: explorerState.value.viewMode !== 'list' },
+      }),
   },
   {
     label: () => [
       h(
         NIcon,
         { size: 20, class: 'mr-1 align-sub' },
-        { default: () => h(Icon, { icon: 'fluent:grid-24-regular' }) }
+        { default: () => h(Icon, { icon: 'fluent:grid-24-regular' }) },
       ),
-      h('span', undefined, t('github-files.view.btn-tiles'))
+      h('span', undefined, t('github-files.view.btn-tiles')),
     ],
     key: 'tiles',
     icon: () =>
       h(Icon, {
         icon: `fluent:checkmark-20-regular`,
         width: 20,
-        class: { invisible: explorerState.value.viewMode !== 'tiles' }
-      })
-  }
+        class: { invisible: explorerState.value.viewMode !== 'tiles' },
+      }),
+  },
 ])
 </script>
 

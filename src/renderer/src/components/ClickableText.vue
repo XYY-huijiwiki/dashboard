@@ -15,11 +15,11 @@ const emit = defineEmits(['click'])
 const { text, center } = defineProps({
   text: {
     type: String,
-    required: true
+    required: true,
   },
   center: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 })
 </script>

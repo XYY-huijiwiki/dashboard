@@ -5,11 +5,16 @@
         {{ t('github-files.msg-space-replacement-warning') }}
       </n-alert>
       <n-alert
-        v-if="is.web && selectedFileWeb && selectedFileWeb.size > 20 * 1024 * 1024"
+        v-if="
+          is.web && selectedFileWeb && selectedFileWeb.size > 20 * 1024 * 1024
+        "
         type="warning"
       >
         {{ t('github-files.msg-file-size-warning') }}
-        <a target="_blank" href="https://github.com/XYY-huijiwiki/dashboard/releases/latest">
+        <a
+          target="_blank"
+          href="https://github.com/XYY-huijiwiki/dashboard/releases/latest"
+        >
           <img
             :src="`https://img.shields.io/github/v/release/XYY-huijiwiki/dashboard?label=${t('github-files.btn-download-latest-release')}&style=for-the-badge`"
             :alt="t('github-files.btn-download-latest-release')"
@@ -20,7 +25,10 @@
         <n-button @click="handleSelectFile">
           {{ t('github-files.btn-select-file') }}
         </n-button>
-        <n-input v-model:value="fileName" :disabled="!selectedFile && !selectedFileWeb"></n-input>
+        <n-input
+          v-model:value="fileName"
+          :disabled="!selectedFile && !selectedFileWeb"
+        ></n-input>
       </n-input-group>
       <n-select
         v-model:value="fileLicense"
@@ -39,7 +47,12 @@
       <n-button :disabled="loading" @click="$emit('close')">
         {{ t('general.btn-cancel') }}
       </n-button>
-      <n-button :loading="loading" type="primary" :disabled="!canUpload" @click="confirmNewFile()">
+      <n-button
+        :loading="loading"
+        type="primary"
+        :disabled="!canUpload"
+        @click="confirmNewFile()"
+      >
         {{ t('general.btn-confirm') }}
       </n-button>
     </n-flex>
@@ -60,7 +73,10 @@ import { dayjsLocales } from '@renderer/stores/locales'
 import db from '@renderer/utils/queryDB'
 import licenceOptions from '@renderer/utils/licenceOptions'
 import genWikitextDom from '@renderer/utils/genWikitextDom'
-import { fileNameLengthLimitFromOrg, fileNameOrgToBase62 } from '@renderer/utils/fileName'
+import {
+  fileNameLengthLimitFromOrg,
+  fileNameOrgToBase62,
+} from '@renderer/utils/fileName'
 import { is } from '@renderer/utils'
 
 dayjs.extend(localizedFormat).locale(dayjsLocales.value)
@@ -71,7 +87,9 @@ const loading = ref(false)
 const fileName = ref('')
 const fileLicense: Ref<null | string> = ref(null)
 const fileSource: Ref<null | string> = ref(null)
-const selectedFile = ref<Awaited<ReturnType<typeof window.api.openFileDialog>> | null>(null)
+const selectedFile = ref<Awaited<
+  ReturnType<typeof window.api.openFileDialog>
+> | null>(null)
 const selectedFileWeb: Ref<null | File> = ref(null)
 const canUpload = computed(
   () =>
@@ -86,7 +104,7 @@ const canUpload = computed(
       !!selectedFileWeb.value &&
       !!fileName.value &&
       !!fileLicense.value &&
-      !!fileSource.value)
+      !!fileSource.value),
 )
 const fileDialog = useFileDialog()
 
@@ -100,7 +118,7 @@ async function handleSelectFile(): Promise<void> {
   // Web Only
   if (is.web) {
     await fileDialog.open({
-      multiple: false
+      multiple: false,
     })
     fileDialog.onChange(() => {
       if (fileDialog.files.value === null) return
@@ -143,16 +161,16 @@ async function confirmNewFile(): Promise<void> {
     if (is.web) {
       const corsProxy = `https://cors-proxy.24218079.xyz/`
       const url = new URL(
-        `${corsProxy}https://uploads.github.com/repos/${settings.value.ghOwner}/${settings.value.ghRepo}/releases/${settings.value.rootReleaseId}/assets`
+        `${corsProxy}https://uploads.github.com/repos/${settings.value.ghOwner}/${settings.value.ghRepo}/releases/${settings.value.rootReleaseId}/assets`,
       )
       url.searchParams.set('name', fileNameOrgToBase62(fileName.value))
       ghRes = await ky
         .post(url, {
           headers: {
             'Content-Type': selectedFileWeb.value?.type,
-            Authorization: `token ${settings.value.ghToken}`
+            Authorization: `token ${settings.value.ghToken}`,
           },
-          body: selectedFileWeb.value
+          body: selectedFileWeb.value,
         })
         .json()
     }
@@ -164,7 +182,7 @@ async function confirmNewFile(): Promise<void> {
         releaseId: `${settings.value.rootReleaseId}`,
         ghToken: settings.value.ghToken,
         filePath: selectedFile.value?.path as string,
-        fileName: fileNameToBeUsed
+        fileName: fileNameToBeUsed,
       })
     }
     console.log('ghRes', ghRes)
@@ -182,7 +200,7 @@ async function confirmNewFile(): Promise<void> {
         updated_at: ghRes.updated_at,
         wikitext,
         licence: fileLicense.value,
-        source: fileSource.value
+        source: fileSource.value,
       })
       .toString()
     const url = new URL(settings.value.databaseUrl)
@@ -198,7 +216,7 @@ async function confirmNewFile(): Promise<void> {
     window.$notification.error({
       title: t('github-files.msg-upload-failed'),
       content: `${error}`,
-      meta: dayjs().format('lll')
+      meta: dayjs().format('lll'),
     })
   } finally {
     loading.value = false

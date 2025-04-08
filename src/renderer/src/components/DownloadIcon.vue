@@ -4,7 +4,11 @@
       <icon icon="fluent:arrow-download-16-regular" width="16" />
     </div>
     <div class="absolute inset-0 flex justify-center items-center">
-      <icon icon="fluent:circle-hint-24-regular" class="animate-spin" width="24" />
+      <icon
+        icon="fluent:circle-hint-24-regular"
+        class="animate-spin"
+        width="24"
+      />
     </div>
   </div>
   <icon v-else icon="fluent:arrow-download-24-regular" />

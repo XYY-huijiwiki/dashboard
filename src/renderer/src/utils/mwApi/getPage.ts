@@ -26,7 +26,7 @@ async function getPage(title: string): Promise<{
     rvprop: 'content',
     format: 'json',
     rvlimit: '1',
-    titles: title
+    titles: title,
   })
   const response = await fetch(`${url}?${params.toString()}`)
   if (!response.ok) {
@@ -45,7 +45,7 @@ async function getPage(title: string): Promise<{
       contentModel: page[pageId].revisions[0].contentmodel,
       contentFormat: page[pageId].revisions[0].contentformat,
       title: page[pageId].title,
-      namespace: page[pageId].ns
+      namespace: page[pageId].ns,
     }
   }
 }

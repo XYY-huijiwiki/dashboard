@@ -11,13 +11,13 @@ import { useI18n } from 'vue-i18n'
 const langPacks = Object.fromEntries(
   Object.entries(
     import.meta.glob('@renderer/locales/msg/*.json', {
-      import: 'default'
-    })
+      import: 'default',
+    }),
   ).map(([path, langPack]) => {
     // Extract the language code from the file path.
     const langCode = path.split('/').reverse()[0].replace('.json', '')
     return [langCode, langPack]
-  })
+  }),
 ) as {
   [k: string]: () => Promise<typeof import('@renderer/locales/msg/en.json')>
 }
@@ -61,11 +61,13 @@ const useLocalesStore = defineStore('locales', () => {
       // get lang pack
       if (langCode.value === 'de') {
         const locale = (await import('naive-ui/es/locales/common/deDE')).default
-        const dateLocale = (await import('naive-ui/es/locales/date/deDE')).default
+        const dateLocale = (await import('naive-ui/es/locales/date/deDE'))
+          .default
         return { locale, dateLocale }
       } else if (langCode.value === 'zh') {
         const locale = (await import('naive-ui/es/locales/common/zhCN')).default
-        const dateLocale = (await import('naive-ui/es/locales/date/zhCN')).default
+        const dateLocale = (await import('naive-ui/es/locales/date/zhCN'))
+          .default
         return { locale, dateLocale }
       } else {
         return { locale: null, dateLocale: null }
@@ -74,8 +76,8 @@ const useLocalesStore = defineStore('locales', () => {
     // default value
     {
       locale: null,
-      dateLocale: null
-    }
+      dateLocale: null,
+    },
   )
 
   // when langCode changed, update vue-i18n

@@ -18,7 +18,7 @@
     :data="checkedItems"
     :position="{
       x: dropdownX,
-      y: dropdownY
+      y: dropdownY,
     }"
     @preview="emit('file-preview')"
     @link-copy="emit('link-copy')"
@@ -54,7 +54,8 @@ import TableHeaderSize from '@renderer/components/TableHeaderSize.vue'
 const { explorerState } = storeToRefs(useExplorerStateStore())
 
 const { langCode } = storeToRefs(useLocalesStore())
-const filesize = (size: number): string => filesizeNoLocale(size, { locale: langCode.value })
+const filesize = (size: number): string =>
+  filesizeNoLocale(size, { locale: langCode.value })
 dayjs.extend(localizedFormat).locale(dayjsLocales.value)
 const { t } = useI18n()
 
@@ -74,12 +75,15 @@ const emit = defineEmits([
   'file-rename',
   'load-more',
   'new-file',
-  'update:filters'
+  'update:filters',
 ])
 
-const checkedRowKeys = defineModel<ReturnType<DataTableCreateRowKey>[]>('checkedRowKeys', {
-  required: true
-})
+const checkedRowKeys = defineModel<ReturnType<DataTableCreateRowKey>[]>(
+  'checkedRowKeys',
+  {
+    required: true,
+  },
+)
 
 /*
  *
@@ -89,13 +93,14 @@ const checkedRowKeys = defineModel<ReturnType<DataTableCreateRowKey>[]>('checked
 const columns: Ref<DataTableColumns<FileRecord>> = ref([
   {
     type: 'selection',
-    fixed: 'left'
+    fixed: 'left',
   },
   {
     title: () => h(TableHeaderType),
     key: 'type',
     width: '4em',
-    render: (row) => h(FileIcon, { class: 'ml-1', fileType: row.content_type, size: 28 })
+    render: (row) =>
+      h(FileIcon, { class: 'ml-1', fileType: row.content_type, size: 28 }),
   },
   {
     title: () => h(TableHeaderName),
@@ -110,8 +115,8 @@ const columns: Ref<DataTableColumns<FileRecord>> = ref([
           checkedRowKeys.value = [row.file_name]
           emit('file-preview')
         },
-        text: row.file_name
-      })
+        text: row.file_name,
+      }),
   },
   {
     title: () => h(TableHeaderUpdatedAt),
@@ -119,7 +124,7 @@ const columns: Ref<DataTableColumns<FileRecord>> = ref([
     minWidth: 100,
     width: '10em',
     resizable: true,
-    render: (row) => h(NText, () => dayjs(row.updated_at).format('ll'))
+    render: (row) => h(NText, () => dayjs(row.updated_at).format('ll')),
   },
   {
     title: () => h(TableHeaderUploader),
@@ -130,9 +135,9 @@ const columns: Ref<DataTableColumns<FileRecord>> = ref([
     render: (row): VNode => {
       return h(ClickableText, {
         onClick: () => window.open(`https://github.com/${row.uploader}`),
-        text: row.uploader
+        text: row.uploader,
       })
-    }
+    },
   },
   {
     title: () => h(TableHeaderSize),
@@ -140,7 +145,7 @@ const columns: Ref<DataTableColumns<FileRecord>> = ref([
     width: '10em',
     minWidth: 100,
     resizable: true,
-    render: (row) => h(NText, () => filesize(row.file_size))
+    render: (row) => h(NText, () => filesize(row.file_size)),
   },
   {
     title: () => h(TableHeaderStatus),
@@ -153,25 +158,27 @@ const columns: Ref<DataTableColumns<FileRecord>> = ref([
       if (!filesInUse.includes(row.file_name)) warnings.push('unused')
       return h(NSpace, () => [
         warnings.length === 0
-          ? h(NTag, { type: 'success', size: 'small' }, () => t('github-files.status-normal'))
+          ? h(NTag, { type: 'success', size: 'small' }, () =>
+              t('github-files.status-normal'),
+            )
           : warnings.map((warning) =>
               h(NTag, { type: 'error', size: 'small' }, () => {
                 const i18nMapper = {
                   'no licence': t('github-files.status-no-licence'),
                   'no source': t('github-files.status-no-source'),
-                  unused: t('github-files.status-unused')
+                  unused: t('github-files.status-unused'),
                 }
                 return i18nMapper[warning]
-              })
-            )
+              }),
+            ),
       ])
       // equivalent to HTML
       // <n-space>
       //    <n-tag v-if="row.warnings.length === 0" type="success" size="small">Normal</n-tag>
       //    <n-tag v-else v-for="warning in row.warnings" type="error" size="small">{{ warning }}</n-tag>
       // </n-space>
-    }
-  }
+    },
+  },
 ])
 
 /*
@@ -183,7 +190,7 @@ const showDropdown = ref(false)
 const dropdownX = ref(0)
 const dropdownY = ref(0)
 const rowProps = (
-  row: FileRecord
+  row: FileRecord,
 ): {
   onContextmenu: (e: MouseEvent) => Promise<void>
   onclick: (e: MouseEvent) => Promise<void>
@@ -217,7 +224,9 @@ const rowProps = (
         // if checkbox (.n-checkbox-box__border) is clicked, toggle checkbox
         // if ctrl or cmd key is pressed, toggle checkbox
         if (checkedRowKeys.value.includes(row.file_name)) {
-          checkedRowKeys.value = checkedRowKeys.value.filter((item) => item !== row.file_name)
+          checkedRowKeys.value = checkedRowKeys.value.filter(
+            (item) => item !== row.file_name,
+          )
         } else {
           checkedRowKeys.value = [...checkedRowKeys.value, row.file_name]
         }
@@ -225,7 +234,7 @@ const rowProps = (
         // else, single select this row
         checkedRowKeys.value = [row.file_name]
       }
-    }
+    },
   }
 }
 

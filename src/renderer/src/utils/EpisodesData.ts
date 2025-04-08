@@ -29,7 +29,10 @@ async function json2xlsx(json: EpisodesRecord[]) {
   return workbook
 }
 
-async function downloadJson(json: EpisodesRecord[], fileName: string): Promise<void> {
+async function downloadJson(
+  json: EpisodesRecord[],
+  fileName: string,
+): Promise<void> {
   const a = document.createElement('a')
   const blob = new Blob([JSON.stringify(json)], { type: 'application/json' })
   a.href = URL.createObjectURL(blob)
@@ -38,7 +41,10 @@ async function downloadJson(json: EpisodesRecord[], fileName: string): Promise<v
   URL.revokeObjectURL(a.href)
 }
 
-async function downloadXlsx(json: EpisodesRecord[], fileName: string): Promise<void> {
+async function downloadXlsx(
+  json: EpisodesRecord[],
+  fileName: string,
+): Promise<void> {
   const wb = await json2xlsx(json)
   writeFile(wb, `${fileName}.xlsx`, { bookType: 'xlsx' })
 }

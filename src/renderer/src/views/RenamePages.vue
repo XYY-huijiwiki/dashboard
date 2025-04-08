@@ -1,12 +1,25 @@
 <template>
   <n-flex vertical class="h-full">
     <n-input-group>
-      <n-select v-model:value="selectPagesValue" :options="selectPagesOptions" />
-      <n-button :disabled="loading" type="info" @click="search[selectPagesValue]">
+      <n-select
+        v-model:value="selectPagesValue"
+        :options="selectPagesOptions"
+      />
+      <n-button
+        :disabled="loading"
+        type="info"
+        @click="search[selectPagesValue]"
+      >
         {{ t(`rename-pages.btn-search`) }}
       </n-button>
     </n-input-group>
-    <n-data-table :columns="columns" :data="data" size="small" class="flex-1" flex-height />
+    <n-data-table
+      :columns="columns"
+      :data="data"
+      size="small"
+      class="flex-1"
+      flex-height
+    />
     <n-input-group>
       <n-input
         v-model:value="summary"
@@ -40,7 +53,7 @@ onBeforeRouteLeave(() => {
       content: t('general.text-leave-warning-content'),
       positiveText: t('general.btn-confirm'),
       autoFocus: false,
-      transformOrigin: 'center'
+      transformOrigin: 'center',
     })
     return false
   } else {
@@ -54,7 +67,9 @@ const loading = ref(false)
 
 async function rename() {
   if (!summary.value) {
-    window.$message.error(t('delete-and-undelete.delete.error-no-delete-reason'))
+    window.$message.error(
+      t('delete-and-undelete.delete.error-no-delete-reason'),
+    )
     return
   }
 
@@ -66,7 +81,7 @@ async function rename() {
       from: row.titleFrom,
       to: row.titleTo,
       reason: summary.value,
-      noredirect: true
+      noredirect: true,
     })
     if (renameResult.ok) {
       row.status = 'done'
@@ -87,7 +102,7 @@ async function rename() {
         protectedtitle: t('rename-pages.errors.protectedtitle'),
         nonfilenamespace: t('rename-pages.errors.nonfilenamespace'),
         filetypemismatch: t('rename-pages.errors.filetypemismatch'),
-        mustbeposted: t('rename-pages.errors.mustbeposted')
+        mustbeposted: t('rename-pages.errors.mustbeposted'),
       }
       const error = renameResult.body
       const errorDetail = errorTypeMapper[error] || error
@@ -118,10 +133,13 @@ const columns: Ref<DataTableColumn<RenameState>[]> = computed(() => [
     render: (rowData) => {
       return h(
         NA,
-        { href: location.origin + '/wiki/' + rowData.titleFrom, target: '_blank' },
-        () => rowData.titleFrom
+        {
+          href: location.origin + '/wiki/' + rowData.titleFrom,
+          target: '_blank',
+        },
+        () => rowData.titleFrom,
       )
-    }
+    },
   },
   {
     key: 'title-to',
@@ -132,10 +150,13 @@ const columns: Ref<DataTableColumn<RenameState>[]> = computed(() => [
     render: (rowData) => {
       return h(
         NA,
-        { href: location.origin + '/wiki/' + rowData.titleTo, target: '_blank' },
-        () => rowData.titleTo
+        {
+          href: location.origin + '/wiki/' + rowData.titleTo,
+          target: '_blank',
+        },
+        () => rowData.titleTo,
       )
-    }
+    },
   },
   {
     key: 'status',
@@ -164,22 +185,22 @@ const columns: Ref<DataTableColumn<RenameState>[]> = computed(() => [
                     ? 'success'
                     : 'error',
             bordered: false,
-            class: [rowData.errorDetail && 'cursor-help']
+            class: [rowData.errorDetail && 'cursor-help'],
           },
           () => {
             const mapper = {
               'to-do': t('rename-pages.label-status-to-do'),
               doing: t('rename-pages.label-status-doing'),
               done: t('rename-pages.label-status-done'),
-              error: t('general.error')
+              error: t('general.error'),
             }
             return mapper[rowData.status]
-          }
+          },
         ),
-        h('span', rowData.errorDetail)
+        h('span', rowData.errorDetail),
       ])
-    }
-  }
+    },
+  },
 ])
 // #endregion
 
@@ -188,8 +209,8 @@ const selectPagesValue: Ref<'xlsx'> = ref('xlsx')
 const selectPagesOptions: Ref<SelectOption[]> = ref([
   {
     label: t('rename-pages.label-select-pages-by-xlsx'),
-    value: 'xlsx'
-  }
+    value: 'xlsx',
+  },
 ])
 const search = {
   xlsx: () => {
@@ -216,17 +237,18 @@ const search = {
       const worksheet = workbook.Sheets[sheetName]
       const json = utils.sheet_to_json(worksheet, { header: 1 })
       const renameData: RenameState[] = json.map((row) => {
-        if (!isArray(row) || row.length !== 2) throw new Error('Invalid data format')
+        if (!isArray(row) || row.length !== 2)
+          throw new Error('Invalid data format')
         return {
           titleFrom: `${row[0]}`,
           titleTo: `${row[1]}`,
-          status: 'to-do'
+          status: 'to-do',
         }
       })
       data.value = renameData
     }
     input.click()
-  }
+  },
 }
 // #endregion
 </script>

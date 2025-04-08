@@ -1,5 +1,9 @@
 import { resolve } from 'path'
-import { defineConfig, externalizeDepsPlugin, defineViteConfig } from 'electron-vite'
+import {
+  defineConfig,
+  externalizeDepsPlugin,
+  defineViteConfig,
+} from 'electron-vite'
 import vue from '@vitejs/plugin-vue'
 import { NaiveUiResolver } from 'unplugin-vue-components/resolvers'
 import Components from 'unplugin-vue-components/vite'
@@ -12,51 +16,51 @@ export default defineConfig({
     build: {
       rollupOptions: {
         output: {
-          format: 'es'
-        }
-      }
+          format: 'es',
+        },
+      },
     },
-    plugins: [externalizeDepsPlugin()]
+    plugins: [externalizeDepsPlugin()],
   },
   preload: {
     build: {
       rollupOptions: {
         output: {
-          format: 'es'
-        }
-      }
+          format: 'es',
+        },
+      },
     },
-    plugins: [externalizeDepsPlugin()]
+    plugins: [externalizeDepsPlugin()],
   },
   renderer: defineViteConfig(({ mode }) => {
     return {
       base: mode === 'web' ? '//xyy-huijiwiki.github.io/dashboard/' : undefined,
       build: {
-        manifest: true
+        manifest: true,
       },
       server: {
-        cors: true
+        cors: true,
       },
       resolve: {
         alias: {
-          '@renderer': resolve('src/renderer/src')
-        }
+          '@renderer': resolve('src/renderer/src'),
+        },
       },
       plugins: [
         vue({
           template: {
             compilerOptions: {
-              isCustomElement: (tag) => ['model-viewer'].includes(tag)
-            }
-          }
+              isCustomElement: (tag) => ['model-viewer'].includes(tag),
+            },
+          },
         }),
         Components({
-          resolvers: [NaiveUiResolver()]
+          resolvers: [NaiveUiResolver()],
         }),
         tailwindcss(),
         nodePolyfills(),
-        vueDevTools()
-      ]
+        vueDevTools(),
+      ],
     }
-  })
+  }),
 })

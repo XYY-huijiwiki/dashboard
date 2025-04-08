@@ -2,7 +2,10 @@
   <n-flex vertical>
     <n-form class="my-8">
       <n-form-item :label="t('github-files.label-file-licence')">
-        <n-select v-model:value="newLicence" :options="licenceOptions"></n-select>
+        <n-select
+          v-model:value="newLicence"
+          :options="licenceOptions"
+        ></n-select>
       </n-form-item>
       <n-form-item :label="t('github-files.label-file-source')">
         <n-flex vertical class="w-full">
@@ -16,7 +19,12 @@
       <n-button :disabled="loading" @click="$emit('close')">
         {{ t('general.btn-cancel') }}
       </n-button>
-      <n-button :loading="loading" type="primary" :disabled="!isOK" @click="confirmEdit">
+      <n-button
+        :loading="loading"
+        type="primary"
+        :disabled="!isOK"
+        @click="confirmEdit"
+      >
         {{ t('general.btn-confirm') }}
       </n-button>
     </n-flex>
@@ -51,7 +59,8 @@ const isOK = computed(
   () =>
     newLicence.value !== '' && // licence is input
     newSource.value !== '' && // source is input
-    (newLicence.value !== fileRecord.licence || newSource.value !== fileRecord.source) // changed
+    (newLicence.value !== fileRecord.licence ||
+      newSource.value !== fileRecord.source), // changed
 )
 
 const emit = defineEmits(['close', 'done', 'loading-start', 'loading-end'])
@@ -73,7 +82,7 @@ async function confirmEdit(): Promise<void> {
       .update({
         licence: newLicence.value,
         source: newSource.value,
-        updated_at: dayjs().format('YYYY-MM-DD HH:mm:ss')
+        updated_at: dayjs().format('YYYY-MM-DD HH:mm:ss'),
       })
       .toString()
 
@@ -91,7 +100,7 @@ async function confirmEdit(): Promise<void> {
     window.$notification.error({
       title: t('github-files.msg-edit-failed'),
       content: `${error}`,
-      meta: dayjs().format('lll')
+      meta: dayjs().format('lll'),
     })
   } finally {
     loading.value = false

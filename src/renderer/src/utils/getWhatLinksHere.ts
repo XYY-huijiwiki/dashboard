@@ -52,9 +52,9 @@ async function getWhatLinksHere(pageName: string): Promise<string[]> {
                 return new Response('', { status: 200 })
               }
               return response
-            }
-          ]
-        }
+            },
+          ],
+        },
       })
       .text()
     const { nextPageLink: newNextPageLink, links: newLinks } = parseHTML(html)

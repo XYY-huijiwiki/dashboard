@@ -1,5 +1,10 @@
 <template>
-  <n-card class="h-full" :closable="!uncontrolled" content-class="h-0  " @close="emit('close')">
+  <n-card
+    class="h-full"
+    :closable="!uncontrolled"
+    content-class="h-0  "
+    @close="emit('close')"
+  >
     <!-- for non single selected situtation -->
     <template v-if="fileDetails.length !== 1" #header>
       <n-ellipsis>
@@ -15,9 +20,15 @@
       </n-ellipsis>
     </template>
     <!-- file thumb -->
-    <template v-if="fileDetails.length === 1 && genThumbUrl(fileDetails[0])" #cover>
+    <template
+      v-if="fileDetails.length === 1 && genThumbUrl(fileDetails[0])"
+      #cover
+    >
       <div class="bg-black">
-        <img class="object-contain aspect-video" :src="genThumbUrl(fileDetails[0])" />
+        <img
+          class="object-contain aspect-video"
+          :src="genThumbUrl(fileDetails[0])"
+        />
       </div>
     </template>
     <!-- file details -->
@@ -73,7 +84,11 @@
         <div v-else class="markdown-body !bg-transparent">
           <ul>
             <li v-for="item in fileUsageData" :key="item">
-              <a :href="`https://xyy.huijiwiki.com/wiki/${item}`" target="_blank">{{ item }}</a>
+              <a
+                :href="`https://xyy.huijiwiki.com/wiki/${item}`"
+                target="_blank"
+                >{{ item }}</a
+              >
             </li>
           </ul>
         </div>
@@ -81,11 +96,17 @@
         <n-divider>{{ t('github-files.label-code-snippet') }}</n-divider>
         <p>{{ t('github-files.code-snippet-image') }}</p>
         <suspense>
-          <code-block :code="`[[文件:GitHub:${fileDetails[0].file_name}]]`" lang="wikitext" />
+          <code-block
+            :code="`[[文件:GitHub:${fileDetails[0].file_name}]]`"
+            lang="wikitext"
+          />
         </suspense>
         <p>{{ t('github-files.code-snippet-link') }}</p>
         <suspense>
-          <code-block :code="`[[:文件:GitHub:${fileDetails[0].file_name}]]`" lang="wikitext" />
+          <code-block
+            :code="`[[:文件:GitHub:${fileDetails[0].file_name}]]`"
+            lang="wikitext"
+          />
         </suspense>
         <p>{{ t('github-files.code-snippet-gallery') }}</p>
         <suspense>
@@ -119,7 +140,8 @@ import { genThumbUrl } from '@renderer/utils/genUrl'
 import getWhatLinksHere from '@renderer/utils/getWhatLinksHere'
 
 const { langCode } = storeToRefs(useLocalesStore())
-const filesize = (size: number): string => filesizeNoLocale(size, { locale: langCode.value })
+const filesize = (size: number): string =>
+  filesizeNoLocale(size, { locale: langCode.value })
 const { t } = useI18n()
 const { fileDetails } = defineProps<{
   fileDetails: FileRecord[]
@@ -129,7 +151,7 @@ const emit = defineEmits(['close', 'edit-file'])
 
 function viewInXYYWiki(): void {
   window.open(
-    `https://xyy.huijiwiki.com/wiki/Project:迷你控制中心#/github-file/${fileDetails[0].file_name}`
+    `https://xyy.huijiwiki.com/wiki/Project:迷你控制中心#/github-file/${fileDetails[0].file_name}`,
   )
 }
 
@@ -137,9 +159,10 @@ const fileUsageLoading = ref(false)
 const fileUsageData: Ref<string[]> = computedAsync(
   async () => {
     if (fileDetails.length !== 1) return []
-    else return await getWhatLinksHere(`File:GitHub:${fileDetails[0].file_name}`)
+    else
+      return await getWhatLinksHere(`File:GitHub:${fileDetails[0].file_name}`)
   },
   [], // initial state
-  fileUsageLoading // loading state
+  fileUsageLoading, // loading state
 )
 </script>

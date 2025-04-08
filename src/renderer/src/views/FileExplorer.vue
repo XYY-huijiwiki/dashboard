@@ -1,6 +1,10 @@
 <template>
   <n-flex vertical class="h-full">
-    <file-search-bar v-model:search-text="searchText" :loading="loading" @search="handleSearch" />
+    <file-search-bar
+      v-model:search-text="searchText"
+      :loading="loading"
+      @search="handleSearch"
+    />
     <file-operations-bar
       v-model:checked-row-keys="checkedRowKeys"
       v-model:show-details-pane="showDetailsPane"
@@ -26,7 +30,10 @@
         <file-preview v-if="preview" v-model="preview" :closable="true" />
         <template v-else>
           <file-list-table
-            v-if="explorerState.viewMode === 'details' || explorerState.viewMode === 'list'"
+            v-if="
+              explorerState.viewMode === 'details' ||
+              explorerState.viewMode === 'list'
+            "
             v-model:checked-row-keys="checkedRowKeys"
             :checked-items="checkedItems"
             :data="data"
@@ -114,7 +121,9 @@ async function fileDownloadUndebounced() {
 }
 
 function linkCopy(): void {
-  navigator.clipboard.writeText(checkedItems.value.map((item) => genRawFileUrl(item)).join('\n'))
+  navigator.clipboard.writeText(
+    checkedItems.value.map((item) => genRawFileUrl(item)).join('\n'),
+  )
   window.$message.success(t('github-files.msg-link-copied'))
 }
 
@@ -136,7 +145,9 @@ const checkedItems: Ref<FileRecord[]> = computed(() => {
   if (checkedRowKeys.value.length === 0) {
     return []
   } else {
-    return data.value.filter((item) => checkedRowKeys.value.includes(item.file_name))
+    return data.value.filter((item) =>
+      checkedRowKeys.value.includes(item.file_name),
+    )
   }
 })
 const showDetailsPane = ref(false)
@@ -156,14 +167,17 @@ onMounted(async () => {
 
   try {
     console.time('init fetching')
-    await Promise.all([(filesInUse.value = await fetchFilesInUse()), queryData()])
+    await Promise.all([
+      (filesInUse.value = await fetchFilesInUse()),
+      queryData(),
+    ])
     console.timeEnd('init fetching')
   } catch (error) {
     console.dir(error)
     window.$notification.error({
       title: t('github-files.msg-rename-failed'),
       content: `${error}`,
-      meta: dayjs().format('lll')
+      meta: dayjs().format('lll'),
     })
   } finally {
     loading.value = false
@@ -182,7 +196,9 @@ async function queryData(type: 'more' | 'refresh' = 'refresh'): Promise<void> {
   loading.value = true
 
   try {
-    const query = db('files').limit(settings.value.fileListPageSize).whereNull('is_deleted')
+    const query = db('files')
+      .limit(settings.value.fileListPageSize)
+      .whereNull('is_deleted')
 
     if (type === 'more') query.offset(data.value.length)
 
@@ -202,7 +218,10 @@ async function queryData(type: 'more' | 'refresh' = 'refresh'): Promise<void> {
 
     // search
     if (searchText.value) {
-      query.andWhereLike('file_name', `%${searchText.value.trim().replaceAll(' ', '_')}%`)
+      query.andWhereLike(
+        'file_name',
+        `%${searchText.value.trim().replaceAll(' ', '_')}%`,
+      )
     }
 
     // filter file type
@@ -241,7 +260,9 @@ async function queryData(type: 'more' | 'refresh' = 'refresh'): Promise<void> {
       const url = new URL(settings.value.databaseUrl)
       const queryStr = query.clone().count().toString()
       url.searchParams.set('query', queryStr)
-      return ((await ky.get(url.href).json()) as DbResponse)[0]['results'][0][`count(*)`]
+      return ((await ky.get(url.href).json()) as DbResponse)[0]['results'][0][
+        `count(*)`
+      ]
     }
 
     // get data from database
@@ -258,7 +279,10 @@ async function queryData(type: 'more' | 'refresh' = 'refresh'): Promise<void> {
       data.value.push(...itemsTemp)
     } else {
       // refresh
-      const [totalItemCountTemp, itemsTemp] = await Promise.all([getTotalItemCount(), getItems()])
+      const [totalItemCountTemp, itemsTemp] = await Promise.all([
+        getTotalItemCount(),
+        getItems(),
+      ])
       totalItemCount.value = totalItemCountTemp
       data.value = itemsTemp
     }
@@ -267,7 +291,7 @@ async function queryData(type: 'more' | 'refresh' = 'refresh'): Promise<void> {
     window.$notification.error({
       title: t('general.error'),
       content: `${error}`,
-      meta: dayjs().format('lll')
+      meta: dayjs().format('lll'),
     })
   } finally {
     loading.value = false
@@ -280,14 +304,15 @@ watch(
     explorerState.value.sorterKey,
     explorerState.value.sorterOrder,
     explorerState.value.filters.type,
-    explorerState.value.filters.status
+    explorerState.value.filters.status,
   ],
-  () => queryData()
+  () => queryData(),
 )
 
 // new file
 async function newFile(): Promise<void> {
-  const NewFileDialog = (await import('@renderer/components/NewFileDialog.vue')).default
+  const NewFileDialog = (await import('@renderer/components/NewFileDialog.vue'))
+    .default
   const modalInstance = window.$modal.create({
     autoFocus: false,
     title: t('github-files.title-new'),
@@ -307,18 +332,22 @@ async function newFile(): Promise<void> {
           modalInstance.closable = true
           modalInstance.closeOnEsc = true
           modalInstance.maskClosable = true
-        }
-      })
+        },
+      }),
   })
 }
 
 // delete files
 async function deleteFiles(): Promise<void> {
   const isPlural = checkedItems.value.length > 1
-  const DeleteFileDialog = (await import('@renderer/components/DeleteFileDialog.vue')).default
+  const DeleteFileDialog = (
+    await import('@renderer/components/DeleteFileDialog.vue')
+  ).default
   const modalInstance = window.$modal.create({
     autoFocus: false,
-    title: isPlural ? t(`github-files.title-files-delete`) : t(`github-files.title-file-delete`),
+    title: isPlural
+      ? t(`github-files.title-files-delete`)
+      : t(`github-files.title-file-delete`),
     preset: 'dialog',
     showIcon: false,
     style: 'width: 480px; max-width: 100%',
@@ -336,14 +365,16 @@ async function deleteFiles(): Promise<void> {
           modalInstance.closeOnEsc = true
           modalInstance.maskClosable = true
         },
-        fileRecords: checkedItems.value
-      })
+        fileRecords: checkedItems.value,
+      }),
   })
 }
 
 // rename file
 async function renameFile(): Promise<void> {
-  const RenameFileDialog = (await import('@renderer/components/RenameFileDialog.vue')).default
+  const RenameFileDialog = (
+    await import('@renderer/components/RenameFileDialog.vue')
+  ).default
   const modalInstance = window.$modal.create({
     autoFocus: false,
     title: t('github-files.title-rename'),
@@ -364,14 +395,16 @@ async function renameFile(): Promise<void> {
           modalInstance.closeOnEsc = true
           modalInstance.maskClosable = true
         },
-        fileRecord: checkedItems.value[0]
-      })
+        fileRecord: checkedItems.value[0],
+      }),
   })
 }
 
 // edit file (source and licence)
 async function editFile(): Promise<void> {
-  const EditFileDialog = (await import('@renderer/components/EditFileDialog.vue')).default
+  const EditFileDialog = (
+    await import('@renderer/components/EditFileDialog.vue')
+  ).default
   const modalInstance = window.$modal.create({
     autoFocus: false,
     title: t('github-files.title-edit'),
@@ -392,8 +425,8 @@ async function editFile(): Promise<void> {
           modalInstance.closeOnEsc = true
           modalInstance.maskClosable = true
         },
-        fileRecord: checkedItems.value[0]
-      })
+        fileRecord: checkedItems.value[0],
+      }),
   })
 }
 </script>

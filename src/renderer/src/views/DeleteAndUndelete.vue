@@ -1,6 +1,11 @@
 <template>
   <n-flex vertical class="h-full">
-    <n-tabs v-model:value="tab" type="line" animated @before-leave="() => !loading">
+    <n-tabs
+      v-model:value="tab"
+      type="line"
+      animated
+      @before-leave="() => !loading"
+    >
       <n-tab name="delete">
         {{ t('delete-and-undelete.delete.title') }}
       </n-tab>
@@ -10,12 +15,25 @@
     </n-tabs>
     <n-flex vertical class="flex-1">
       <n-input-group>
-        <n-select v-model:value="selectPagesValue" :options="selectPagesOptions" />
-        <n-button :disabled="loading" type="info" @click="search[selectPagesValue]">
+        <n-select
+          v-model:value="selectPagesValue"
+          :options="selectPagesOptions"
+        />
+        <n-button
+          :disabled="loading"
+          type="info"
+          @click="search[selectPagesValue]"
+        >
           {{ t(`delete-and-undelete.btn-search`) }}
         </n-button>
       </n-input-group>
-      <n-data-table :columns="columns" :data="data" size="small" class="flex-1" flex-height />
+      <n-data-table
+        :columns="columns"
+        :data="data"
+        size="small"
+        class="flex-1"
+        flex-height
+      />
       <n-input-group>
         <n-input
           v-model:value="summary"
@@ -26,7 +44,11 @@
           "
           :disabled="loading"
         />
-        <n-button type="error" :loading="loading" @click="tab === 'delete' ? destroy() : rescue()">
+        <n-button
+          type="error"
+          :loading="loading"
+          @click="tab === 'delete' ? destroy() : rescue()"
+        >
           {{
             tab === 'delete'
               ? t(`delete-and-undelete.delete.btn-delete`)
@@ -56,7 +78,7 @@ onBeforeRouteLeave(() => {
       content: t('general.text-leave-warning-content'),
       positiveText: t('general.btn-confirm'),
       autoFocus: false,
-      transformOrigin: 'center'
+      transformOrigin: 'center',
     })
     return false
   } else {
@@ -71,7 +93,9 @@ const tab: Ref<'delete' | 'undelete'> = ref('delete')
 
 async function destroy(): Promise<void> {
   if (!summary.value) {
-    window.$message.error(t('delete-and-undelete.delete.error-no-delete-reason'))
+    window.$message.error(
+      t('delete-and-undelete.delete.error-no-delete-reason'),
+    )
     return
   }
 
@@ -83,7 +107,7 @@ async function destroy(): Promise<void> {
     element.status = 'doing'
     const deletionOK = await deletePage({
       title: element.title,
-      reason: summary.value
+      reason: summary.value,
     })
     if (deletionOK) {
       element.status = 'done'
@@ -98,7 +122,9 @@ async function destroy(): Promise<void> {
 
 async function rescue(): Promise<void> {
   if (!summary.value) {
-    window.$message.error(t('delete-and-undelete.undelete.error-no-undelete-reason'))
+    window.$message.error(
+      t('delete-and-undelete.undelete.error-no-undelete-reason'),
+    )
     return
   }
 
@@ -110,7 +136,7 @@ async function rescue(): Promise<void> {
     element.status = 'doing'
     const undeletion = await undeletePage({
       title: element.title,
-      reason: summary.value
+      reason: summary.value,
     })
     if (undeletion.ok) {
       element.status = 'done'
@@ -134,9 +160,9 @@ const columns: DataTableColumn<DeleteUndeleteState>[] = [
       return h(
         NA,
         { href: location.origin + '/wiki/' + rowData.title, target: '_blank' },
-        () => rowData.title
+        () => rowData.title,
       )
-    }
+    },
   },
   {
     key: 'status',
@@ -155,7 +181,7 @@ const columns: DataTableColumn<DeleteUndeleteState>[] = [
                 : rowData.status === 'done'
                   ? 'success'
                   : 'error',
-          bordered: false
+          bordered: false,
         },
         () => {
           const mapper = {
@@ -163,20 +189,20 @@ const columns: DataTableColumn<DeleteUndeleteState>[] = [
               'to-do': t('delete-and-undelete.delete.label-status-to-do'),
               doing: t('delete-and-undelete.delete.label-status-doing'),
               done: t('delete-and-undelete.delete.label-status-done'),
-              error: t('delete-and-undelete.delete.label-status-error')
+              error: t('delete-and-undelete.delete.label-status-error'),
             },
             undelete: {
               'to-do': t('delete-and-undelete.undelete.label-status-to-do'),
               doing: t('delete-and-undelete.undelete.label-status-doing'),
               done: t('delete-and-undelete.undelete.label-status-done'),
-              error: t('delete-and-undelete.undelete.label-status-error')
-            }
+              error: t('delete-and-undelete.undelete.label-status-error'),
+            },
           }
           return mapper[tab.value][rowData.status]
-        }
+        },
       )
-    }
-  }
+    },
+  },
 ]
 type DeleteUndeleteState = {
   title: string
@@ -194,18 +220,18 @@ const selectPagesValue: Ref<'xlsx' | 'txt'> = ref('txt')
 const selectPagesOptions: Ref<SelectOption[]> = ref([
   {
     label: t('delete-and-undelete.label-select-pages-by-txt'),
-    value: 'txt'
+    value: 'txt',
   },
   {
     label: t('delete-and-undelete.label-select-pages-by-xlsx'),
     value: 'xlsx',
-    disabled: true
+    disabled: true,
   },
   {
     label: t('delete-and-undelete.label-select-pages-by-category'),
     value: 'category',
-    disabled: true
-  }
+    disabled: true,
+  },
 ])
 const search = {
   txt: () => {
@@ -229,12 +255,12 @@ const search = {
       data.value = list.map((item) => {
         return {
           title: item,
-          status: 'to-do'
+          status: 'to-do',
         }
       })
     }
     input.click()
-  }
+  },
 }
 // #endregion
 </script>

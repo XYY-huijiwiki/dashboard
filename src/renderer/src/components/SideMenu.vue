@@ -35,8 +35,11 @@ function renderLabel(text: string, link: string) {
   return () =>
     h(
       RouterLink,
-      { to: { name: link }, class: is.web && 'text-nowrap' /* to solve web css conflict */ },
-      { default: () => text }
+      {
+        to: { name: link },
+        class: is.web && 'text-nowrap' /* to solve web css conflict */,
+      },
+      { default: () => text },
     )
 }
 function getDisabledState(routeName: string): boolean {
@@ -49,56 +52,57 @@ const options: Ref<MenuOption[]> = computed(() => [
     label: renderLabel(t('file-explorer.title'), 'file-explorer'),
     key: 'file-explorer',
     disabled: getDisabledState('file-explorer'),
-    icon: renderIcon('folder')
+    icon: renderIcon('folder'),
   },
   {
     label: renderLabel(t('recycle-bin.title'), 'recycle-bin'),
     key: 'recycle-bin',
     disabled: true,
-    icon: renderIcon('bin-recycle-full')
+    icon: renderIcon('bin-recycle-full'),
   },
   {
     label: renderLabel(t('download-manager.title'), 'download-manager'),
     key: 'download-manager',
     disabled: getDisabledState('download-manager'),
-    icon: () => h(DownloadIcon, { downloading: activeDownloads.value.length > 0 })
+    icon: () =>
+      h(DownloadIcon, { downloading: activeDownloads.value.length > 0 }),
   },
   {
     label: renderLabel(t('episodes-data.title'), 'episodes-data'),
     key: 'episodes-data',
     disabled: getDisabledState('episodes-data'),
-    icon: renderIcon('database')
+    icon: renderIcon('database'),
   },
   {
     label: renderLabel(t('rename-pages.title'), 'rename-pages'),
     key: 'rename-pages',
     disabled: getDisabledState('rename-pages'),
-    icon: renderIcon('text-direction-horizontal-ltr')
+    icon: renderIcon('text-direction-horizontal-ltr'),
   },
   {
     label: renderLabel(t('find-and-replace.title'), 'find-and-replace'),
     key: 'find-and-replace',
     disabled: getDisabledState('find-and-replace'),
-    icon: renderIcon('slide-search')
+    icon: renderIcon('slide-search'),
   },
   {
     label: renderLabel(t('delete-and-undelete.title'), 'delete-and-undelete'),
     key: 'delete-and-undelete',
     disabled: getDisabledState('delete-and-undelete'),
-    icon: renderIcon('broom')
+    icon: renderIcon('broom'),
   },
   {
     label: renderLabel(t('miui-themes.title'), 'miui-themes'),
     key: 'miui-themes',
     disabled: getDisabledState('miui-themes'),
-    icon: () => h(Icon, { icon: `simple-icons:xiaomi` })
+    icon: () => h(Icon, { icon: `simple-icons:xiaomi` }),
   },
   {
     label: renderLabel(t('settings.title'), 'settings'),
     key: 'settings',
     disabled: getDisabledState('settings'),
-    icon: renderIcon('settings')
-  }
+    icon: renderIcon('settings'),
+  },
 ])
 </script>
 

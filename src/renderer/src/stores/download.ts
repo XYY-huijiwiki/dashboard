@@ -11,7 +11,14 @@ interface downloadRecord {
   downloadId: string | null
   url: string
   mimeType: string
-  status: 'pending' | 'downloading' | 'completed' | 'error' | 'cancelled' | 'deleted' | 'paused'
+  status:
+    | 'pending'
+    | 'downloading'
+    | 'completed'
+    | 'error'
+    | 'cancelled'
+    | 'deleted'
+    | 'paused'
   progress: number
   transferredBytes: number
   totalBytes: number
@@ -26,7 +33,10 @@ interface downloadRecord {
 
 export const useDownloadStore = defineStore('download', () => {
   // State
-  const downloads: Ref<downloadRecord[]> = useLocalStorage('[Ov23liXwSttWUEILSEqe] downloads', [])
+  const downloads: Ref<downloadRecord[]> = useLocalStorage(
+    '[Ov23liXwSttWUEILSEqe] downloads',
+    [],
+  )
 
   // Actions
   async function startDownload(fileRecord: FileRecord) {
@@ -38,7 +48,7 @@ export const useDownloadStore = defineStore('download', () => {
       uuid: uuid,
       url: url,
       filename: fileRecord.file_name,
-      directory: undefined
+      directory: undefined,
     })
 
     const initialData: downloadRecord = {
@@ -56,7 +66,7 @@ export const useDownloadStore = defineStore('download', () => {
       filename: fileRecord.file_name,
       error: null,
       startedAt: new Date(),
-      completedAt: null
+      completedAt: null,
     }
 
     // Add the new download to the beginning of the list
@@ -77,10 +87,14 @@ export const useDownloadStore = defineStore('download', () => {
 
   // Getters
   const activeDownloads = computed(() =>
-    downloads.value.filter((d) => ['pending', 'downloading'].includes(d.status))
+    downloads.value.filter((d) =>
+      ['pending', 'downloading'].includes(d.status),
+    ),
   )
 
-  const completedDownloads = computed(() => downloads.value.filter((d) => d.status === 'completed'))
+  const completedDownloads = computed(() =>
+    downloads.value.filter((d) => d.status === 'completed'),
+  )
 
   // Listeners (electron only)
 
@@ -103,7 +117,7 @@ export const useDownloadStore = defineStore('download', () => {
         bytesReceived,
         totalBytes,
         downloadRateBytesPerSecond,
-        estimatedTimeRemainingSeconds
+        estimatedTimeRemainingSeconds,
       } = args
       const download = downloads.value.find((d) => d.uuid === uuid)
       if (download) {
@@ -154,6 +168,6 @@ export const useDownloadStore = defineStore('download', () => {
     pauseDownload,
     resumeDownload,
     activeDownloads,
-    completedDownloads
+    completedDownloads,
   }
 })
