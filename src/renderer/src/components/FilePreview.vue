@@ -37,15 +37,11 @@
         :src="genRawFileUrl(fileRecord)"
       ></audio>
       <!-- model -->
-      <model-viewer
+      <view-model-async
         v-else-if="fileRecord?.content_type?.startsWith('model')"
-        autoplay
-        :src="genRawFileUrl(fileRecord)"
-        camera-controls
-        touch-action="pan-y"
-        style="width: 100%; height: 100%"
-        :poster="genThumbUrl(fileRecord)"
-      ></model-viewer>
+        :model-url="genRawFileUrl(fileRecord)"
+        :poster-url="genThumbUrl(fileRecord)"
+      ></view-model-async>
       <!-- flash swf -->
       <embed
         v-else-if="fileRecord?.content_type?.startsWith('application/x-shockwave-flash')"
@@ -75,7 +71,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { Icon } from '@iconify/vue'
-import { nextTick, watch } from 'vue'
+import { defineAsyncComponent } from 'vue'
 
 import fileIcon from './FileIcon.vue'
 import { genThumbUrl, genRawFileUrl } from '@renderer/utils/genUrl'
@@ -86,27 +82,7 @@ const props = defineProps<{
   closable?: boolean
 }>()
 
-// Dynamic import
-const unwatch = watch(
-  fileRecord,
-  async (file) => {
-    // for models
-    if (file?.content_type?.startsWith('model')) {
-      import('@google/model-viewer')
-      await nextTick() // prevent unwatch() being called before init
-      unwatch()
-    }
-    // for flash swf
-    else if (file?.content_type?.startsWith('application/x-shockwave-flash')) {
-      const scriptElement = document.createElement('script')
-      scriptElement.src = 'https://unpkg.com/@ruffle-rs/ruffle'
-      document.body.appendChild(scriptElement)
-      await nextTick() // prevent unwatch() being called before init
-      unwatch()
-    }
-  },
-  { immediate: true }
-)
+const ViewModelAsync = defineAsyncComponent(() => import('./ViewModel.vue'))
 </script>
 
 <style scoped></style>
