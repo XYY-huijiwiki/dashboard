@@ -4,7 +4,11 @@
       <n-scrollbar x-scrollable class="flex-1 w-0 shrink-0 pb-2">
         <n-flex :wrap="false" size="small">
           <!-- new -->
-          <n-button quaternary @click="emit('new-file')">
+          <n-button
+            quaternary
+            :disabled="preset === 'recycle-bin'"
+            @click="emit('new-file')"
+          >
             <template #icon>
               <n-icon :size="24">
                 <icon icon="fluent:add-circle-24-regular" />
@@ -16,7 +20,7 @@
           <!-- rename -->
           <tooltipped-icon-button
             :text="t('github-files.btn-rename')"
-            :disabled="checkedRowKeys.length !== 1"
+            :disabled="checkedRowKeys.length !== 1 || preset === 'recycle-bin'"
             @click="emit('file-rename')"
           >
             <icon icon="fluent:rename-24-regular" />
@@ -24,7 +28,7 @@
           <!-- delete -->
           <tooltipped-icon-button
             :text="t('github-files.btn-delete')"
-            :disabled="checkedRowKeys.length === 0"
+            :disabled="checkedRowKeys.length === 0 || preset === 'recycle-bin'"
             @click="emit('file-delete')"
           >
             <icon icon="fluent:delete-24-regular" />
@@ -143,6 +147,9 @@ const checkedRowKeys = defineModel<(string | number)[]>('checkedRowKeys', {
 const showDetailsPane = defineModel<boolean>('showDetailsPane', {
   required: true,
 })
+const { preset } = defineProps<{
+  preset: 'default' | 'recycle-bin'
+}>()
 
 const emit = defineEmits([
   'file-preview',

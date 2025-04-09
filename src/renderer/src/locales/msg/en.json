@@ -103,7 +103,10 @@
       "label-size": "Size",
       "btn-size-asc": "Smaller to larger",
       "btn-size-desc": "Larger to smaller",
-      "label-status": "Status"
+      "label-status": "Status",
+      "label-date-deleted": "Date Deleted",
+      "btn-date-deleted-asc": "Older to newer",
+      "btn-date-deleted-desc": "Newer to older"
     },
     "sort": {
       "btn-sort": "Sort",

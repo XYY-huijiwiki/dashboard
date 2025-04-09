@@ -15,6 +15,7 @@
   />
   <file-menu
     v-model:show="showDropdown"
+    :preset="preset"
     :data="checkedItems"
     :position="{
       x: dropdownX,
@@ -50,6 +51,9 @@ import TableHeaderUpdatedAt from '@renderer/components/TableHeaderUpdatedAt.vue'
 import TableHeaderUploader from '@renderer/components/TableHeaderUploader.vue'
 import TableHeaderType from '@renderer/components/TableHeaderType.vue'
 import TableHeaderSize from '@renderer/components/TableHeaderSize.vue'
+import TableHeaderDeletedAt from '@renderer/components/TableHeaderDeletedAt.vue'
+import TableHeaderDeletedName from '@renderer/components/TableHeaderDeletedName.vue'
+import FileMenu from '@renderer/components/FileMenu.vue'
 
 const { explorerState } = storeToRefs(useExplorerStateStore())
 
@@ -59,11 +63,12 @@ const filesize = (size: number): string =>
 dayjs.extend(localizedFormat).locale(dayjsLocales.value)
 const { t } = useI18n()
 
-const { data, filesInUse } = defineProps<{
+const { filesInUse, data, loading, checkedItems, preset } = defineProps<{
   filesInUse: string[]
   data: FileRecord[]
   loading: boolean
   checkedItems: FileRecord[]
+  preset: 'default' | 'recycle-bin'
 }>()
 
 const emit = defineEmits([
@@ -103,7 +108,10 @@ const columns: Ref<DataTableColumns<FileRecord>> = ref([
       h(FileIcon, { class: 'ml-1', fileType: row.content_type, size: 28 }),
   },
   {
-    title: () => h(TableHeaderName),
+    title:
+      preset === 'recycle-bin'
+        ? () => h(TableHeaderDeletedName)
+        : () => h(TableHeaderName),
     key: 'name',
     resizable: true,
     width: 350,
@@ -115,16 +123,26 @@ const columns: Ref<DataTableColumns<FileRecord>> = ref([
           checkedRowKeys.value = [row.file_name]
           emit('file-preview')
         },
-        text: row.file_name,
+        text: row.is_deleted
+          ? row.file_name_before_deleted || row.file_name
+          : row.file_name,
       }),
   },
   {
-    title: () => h(TableHeaderUpdatedAt),
-    key: 'updated_at',
+    title:
+      preset === 'recycle-bin'
+        ? () => h(TableHeaderDeletedAt)
+        : () => h(TableHeaderUpdatedAt),
+    key: preset === 'recycle-bin' ? 'deleted_at' : 'updated_at',
     minWidth: 100,
     width: '10em',
     resizable: true,
-    render: (row) => h(NText, () => dayjs(row.updated_at).format('ll')),
+    render: (row) =>
+      h(NText, () =>
+        dayjs(
+          row[preset === 'recycle-bin' ? 'deleted_at' : 'updated_at'],
+        ).format('ll'),
+      ),
   },
   {
     title: () => h(TableHeaderUploader),

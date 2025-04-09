@@ -30,6 +30,7 @@ const { t } = useI18n()
 const props = defineProps<{
   data: FileRecord[]
   position?: { x: number; y: number }
+  preset: 'default' | 'recycle-bin'
 }>()
 
 // show
@@ -68,7 +69,7 @@ const options: ComputedRef<DropdownOption[]> = computed(() => [
   {
     label: t('github-files.btn-delete'),
     icon: () => genIcon('delete'),
-    disabled: props.data.length === 0,
+    disabled: props.data.length === 0 || props.preset === 'recycle-bin',
     key: 'delete',
   },
   {
@@ -80,7 +81,7 @@ const options: ComputedRef<DropdownOption[]> = computed(() => [
   {
     label: t('github-files.btn-rename'),
     icon: () => genIcon('rename'),
-    disabled: props.data.length !== 1,
+    disabled: props.data.length !== 1 || props.preset === 'recycle-bin',
     key: 'rename',
   },
   {

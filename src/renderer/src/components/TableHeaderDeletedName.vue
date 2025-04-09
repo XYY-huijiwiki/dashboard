@@ -13,10 +13,10 @@
       class="!justify-start !-ml-2"
     >
       <n-ellipsis>
-        {{ t('github-files.table-header.label-uploader') }}
+        {{ t('github-files.table-header.label-name') }}
       </n-ellipsis>
       <icon
-        v-if="explorerState.sorterKey === 'uploader'"
+        v-if="explorerState.sorterKey === 'name'"
         :icon="
           explorerState.sorterOrder === 'ascend'
             ? 'fluent:arrow-sort-up-16-regular'
@@ -44,11 +44,7 @@ const { t } = useI18n()
 const dropdownOptions = ref([
   {
     label: () =>
-      h(
-        'span',
-        { class: 'mr-4' },
-        t('github-files.table-header.btn-uploader-asc'),
-      ),
+      h('span', { class: 'mr-4' }, t('github-files.table-header.btn-name-asc')),
     key: 'ascend',
     icon: () =>
       h(Icon, {
@@ -56,14 +52,14 @@ const dropdownOptions = ref([
         width: 20,
         class: {
           invisible: !(
-            explorerState.value.sorterKey === 'uploader' &&
+            explorerState.value.sorterKey === 'file_name_before_deleted' &&
             explorerState.value.sorterOrder === 'ascend'
           ),
         },
       }),
     props: {
       onClick: () => {
-        explorerState.value.sorterKey = 'uploader'
+        explorerState.value.sorterKey = 'file_name_before_deleted'
         explorerState.value.sorterOrder = 'ascend'
       },
     },
@@ -73,7 +69,7 @@ const dropdownOptions = ref([
       h(
         'span',
         { class: 'mr-4' },
-        t('github-files.table-header.btn-uploader-desc'),
+        t('github-files.table-header.btn-name-desc'),
       ),
     key: 'descend',
     icon: () =>
@@ -82,14 +78,14 @@ const dropdownOptions = ref([
         width: 20,
         class: {
           invisible: !(
-            explorerState.value.sorterKey === 'uploader' &&
+            explorerState.value.sorterKey === 'file_name_before_deleted' &&
             explorerState.value.sorterOrder === 'descend'
           ),
         },
       }),
     props: {
       onClick: () => {
-        explorerState.value.sorterKey = 'uploader'
+        explorerState.value.sorterKey = 'file_name_before_deleted'
         explorerState.value.sorterOrder = 'descend'
       },
     },

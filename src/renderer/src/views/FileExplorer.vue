@@ -8,6 +8,7 @@
     <file-operations-bar
       v-model:checked-row-keys="checkedRowKeys"
       v-model:show-details-pane="showDetailsPane"
+      preset="default"
       @file-preview="preview = checkedItems[0]"
       @link-copy="linkCopy"
       @file-download="fileDownload"
@@ -35,6 +36,7 @@
               explorerState.viewMode === 'list'
             "
             v-model:checked-row-keys="checkedRowKeys"
+            preset="default"
             :checked-items="checkedItems"
             :data="data"
             :loading="loading"
@@ -51,6 +53,7 @@
           <file-list-grid
             v-else
             v-model:checked-row-keys="checkedRowKeys"
+            preset="default"
             :data="data"
             :checked-items="checkedItems"
             :loading="loading"
@@ -214,6 +217,10 @@ async function queryData(type: 'more' | 'refresh' = 'refresh'): Promise<void> {
       query.orderBy('updated_at', order)
     } else if (explorerState.value.sorterKey === 'uploader') {
       query.orderBy('uploader', order)
+    } else if (explorerState.value.sorterKey === 'deleted_at') {
+      query.orderBy('deleted_at', order)
+    } else if (explorerState.value.sorterKey === 'file_name_before_deleted') {
+      query.orderBy('file_name_before_deleted', order)
     }
 
     // search

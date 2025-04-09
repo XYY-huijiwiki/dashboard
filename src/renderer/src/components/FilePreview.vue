@@ -8,7 +8,11 @@
     <template #header>
       <n-ellipsis>
         <file-icon :file-type="fileRecord?.content_type" />
-        {{ fileRecord?.file_name }}
+        {{
+          fileRecord?.is_deleted
+            ? fileRecord?.file_name_before_deleted
+            : fileRecord?.file_name
+        }}
       </n-ellipsis>
     </template>
     <template #default>

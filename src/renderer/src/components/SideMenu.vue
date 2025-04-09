@@ -57,7 +57,7 @@ const options: Ref<MenuOption[]> = computed(() => [
   {
     label: renderLabel(t('recycle-bin.title'), 'recycle-bin'),
     key: 'recycle-bin',
-    disabled: true,
+    disabled: getDisabledState('recycle-bin'),
     icon: renderIcon('bin-recycle-full'),
   },
   {

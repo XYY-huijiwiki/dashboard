@@ -47,7 +47,9 @@ export const useDownloadStore = defineStore('download', () => {
     window.api.downloadFile({
       uuid: uuid,
       url: url,
-      filename: fileRecord.file_name,
+      filename: fileRecord.is_deleted
+        ? fileRecord.file_name_before_deleted || fileRecord.file_name
+        : fileRecord.file_name,
       directory: undefined,
     })
 

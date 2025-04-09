@@ -103,7 +103,10 @@
       "label-size": "Größe",
       "btn-size-asc": "Kleinste oben",
       "btn-size-desc": "Größte oben",
-      "label-status": "Status"
+      "label-status": "Status",
+      "label-date-deleted": "Gelöscht am",
+      "btn-date-deleted-asc": "Älteste oben",
+      "btn-date-deleted-desc": "Neueste oben"
     },
     "sort": {
       "btn-sort": "Sortieren",

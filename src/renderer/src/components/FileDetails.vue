@@ -16,7 +16,11 @@
     <template v-else-if="fileDetails.length === 1" #header>
       <n-ellipsis>
         <file-icon :file-type="fileDetails[0].content_type" />
-        {{ fileDetails[0].file_name }}
+        {{
+          fileDetails[0].is_deleted
+            ? fileDetails[0].file_name_before_deleted
+            : fileDetails[0].file_name
+        }}
       </n-ellipsis>
     </template>
     <!-- file thumb -->
@@ -93,28 +97,30 @@
           </ul>
         </div>
         <!-- code snippet -->
-        <n-divider>{{ t('github-files.label-code-snippet') }}</n-divider>
-        <p>{{ t('github-files.code-snippet-image') }}</p>
-        <suspense>
-          <code-block
-            :code="`[[文件:GitHub:${fileDetails[0].file_name}]]`"
-            lang="wikitext"
-          />
-        </suspense>
-        <p>{{ t('github-files.code-snippet-link') }}</p>
-        <suspense>
-          <code-block
-            :code="`[[:文件:GitHub:${fileDetails[0].file_name}]]`"
-            lang="wikitext"
-          />
-        </suspense>
-        <p>{{ t('github-files.code-snippet-gallery') }}</p>
-        <suspense>
-          <code-block
-            :code="`<gallery>\nGitHub:${fileDetails[0].file_name}\n</gallery>`"
-            lang="wikitext"
-          />
-        </suspense>
+        <template v-if="!fileDetails[0].is_deleted">
+          <n-divider>{{ t('github-files.label-code-snippet') }}</n-divider>
+          <p>{{ t('github-files.code-snippet-image') }}</p>
+          <suspense>
+            <code-block
+              :code="`[[文件:GitHub:${fileDetails[0].file_name}]]`"
+              lang="wikitext"
+            />
+          </suspense>
+          <p>{{ t('github-files.code-snippet-link') }}</p>
+          <suspense>
+            <code-block
+              :code="`[[:文件:GitHub:${fileDetails[0].file_name}]]`"
+              lang="wikitext"
+            />
+          </suspense>
+          <p>{{ t('github-files.code-snippet-gallery') }}</p>
+          <suspense>
+            <code-block
+              :code="`<gallery>\nGitHub:${fileDetails[0].file_name}\n</gallery>`"
+              lang="wikitext"
+            />
+          </suspense>
+        </template>
       </n-scrollbar>
     </template>
     <!-- action btns -->

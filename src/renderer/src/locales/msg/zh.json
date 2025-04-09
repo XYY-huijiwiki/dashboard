@@ -103,7 +103,10 @@
       "btn-size-asc": "最小的在前",
       "btn-size-desc": "最大的在前",
       "label-status": "状态",
-      "label-type": "类型"
+      "label-type": "类型",
+      "label-date-deleted": "删除时间",
+      "btn-date-deleted-asc": "最旧的在前",
+      "btn-date-deleted-desc": "最新的在前"
     },
     "sort": {
       "btn-sort": "排序",

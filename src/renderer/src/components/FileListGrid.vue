@@ -28,7 +28,11 @@
               </div>
               <div class="name">
                 <ClickableText
-                  :text="item.file_name"
+                  :text="
+                    item.is_deleted
+                      ? item.file_name_before_deleted
+                      : item.file_name
+                  "
                   center
                   @click="
                     (e: MouseEvent) => {
@@ -41,7 +45,11 @@
                 </ClickableText>
               </div>
               <div class="date line-clamp-1">
-                {{ dayjs(item.updated_at).format('ll') }}
+                {{
+                  dayjs(
+                    item.is_deleted ? item.deleted_at : item.updated_at,
+                  ).format('ll')
+                }}
               </div>
               <n-checkbox
                 class="checkbox"
@@ -65,6 +73,7 @@
   </n-spin>
   <file-menu
     v-model:show="showDropdown"
+    :preset="preset"
     :data="checkedItems"
     :position="{
       x: dropdownX,
@@ -101,10 +110,11 @@ const emit = defineEmits([
   'load-more',
 ])
 
-const { data, checkedItems } = defineProps<{
+const { data, checkedItems, loading, preset } = defineProps<{
   data: FileRecord[]
   checkedItems: FileRecord[]
   loading: boolean
+  preset: 'default' | 'recycle-bin'
 }>()
 const checkedRowKeys = defineModel<ReturnType<DataTableCreateRowKey>[]>(
   'checkedRowKeys',

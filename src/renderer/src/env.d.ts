@@ -11,7 +11,14 @@ import type {
 declare global {
   type ViewMode = 'details' | 'list' | 'tiles'
   type SorterOrder = 'ascend' | 'descend'
-  type SorterKey = 'type' | 'name' | 'updated_at' | 'uploader' | 'size'
+  type SorterKey =
+    | 'type'
+    | 'name'
+    | 'updated_at'
+    | 'uploader'
+    | 'size'
+    | 'deleted_at'
+    | 'file_name_before_deleted'
   type FilterType = 'image' | 'video' | 'audio' | 'text' | 'other'
   type FilterStatus = 'unused' | 'wanted' | 'no source' | 'no licence'
 
@@ -95,7 +102,8 @@ declare global {
     licence: string
     source: string
     is_deleted?: number
-    file_name_before_delete?: string
+    deleted_at?: string
+    file_name_before_deleted?: string
     thumb_id?: number
   }
 }
