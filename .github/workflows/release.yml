@@ -119,6 +119,9 @@ jobs:
       - name: build-web
         run: npm run build:web
 
+      - name: Generate Web Entry
+        run: node genWebEntry.js
+
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
