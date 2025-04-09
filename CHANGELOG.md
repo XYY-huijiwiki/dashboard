@@ -1,3 +1,9 @@
+## [0.2.11](https://github.com/XYY-huijiwiki/dashboard/compare/v0.2.10...v0.2.11) (2025-04-09)
+
+### Features
+
+- add application icon ([38f3c98](https://github.com/XYY-huijiwiki/dashboard/commit/38f3c98aa4b5b21332219cebdc5c67646fae41e2))
+
 ## [0.2.10](https://github.com/XYY-huijiwiki/dashboard/compare/v0.2.9...v0.2.10) (2025-04-09)
 
 ### Bug Fixes
