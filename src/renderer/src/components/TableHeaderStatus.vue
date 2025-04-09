@@ -72,7 +72,7 @@ function genFilterChild(filterText: FilterStatus) {
     key: filterText,
     props: {
       // if the filterText is in the array, remove it, otherwise add it
-      onclick: () =>
+      onClick: () =>
         (explorerState.value.filters.status = xor(
           explorerState.value.filters.status,
           [filterText],

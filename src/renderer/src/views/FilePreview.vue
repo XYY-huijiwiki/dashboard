@@ -29,8 +29,6 @@ import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 
 import db from '@renderer/utils/queryDB'
-import FilePreview from '@renderer/components/FilePreview.vue'
-import FileDetails from '@renderer/components/FileDetails.vue'
 import { errNotify } from '@renderer/utils'
 
 const { t } = useI18n()

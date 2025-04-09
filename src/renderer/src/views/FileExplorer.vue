@@ -92,7 +92,6 @@ import { debounce } from 'lodash-es'
 import { useRouter } from 'vue-router'
 
 import { dayjsLocales } from '@renderer/stores/locales'
-import fileListTable from '@renderer/components/FileListTable.vue'
 import db from '@renderer/utils/queryDB'
 import { genRawFileUrl } from '@renderer/utils/genUrl'
 import { useSettingsStore } from '@renderer/stores/settings'

@@ -30,7 +30,7 @@
                 <ClickableText
                   :text="
                     item.is_deleted
-                      ? item.file_name_before_deleted
+                      ? item.file_name_before_deleted || item.file_name
                       : item.file_name
                   "
                   center

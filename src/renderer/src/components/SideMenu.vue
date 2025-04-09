@@ -1,6 +1,8 @@
 <template>
   <n-menu
-    :value="$route.name === 'file-preview' ? 'file-explorer' : $route.name"
+    :value="
+      $route.name === 'file-preview' ? 'file-explorer' : $route.name?.toString()
+    "
     :options="options"
     :collapsed="props.collapsed"
     :collapsed-width="62"

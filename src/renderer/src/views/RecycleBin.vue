@@ -12,9 +12,6 @@
       @file-preview="preview = checkedItems[0]"
       @link-copy="linkCopy"
       @file-download="fileDownload"
-      @file-delete="deleteFiles"
-      @file-rename="renameFile"
-      @new-file="newFile"
     />
     <filter-alert :loading="loading" />
     <n-split
@@ -46,9 +43,6 @@
             @file-details="showDetailsPane = true"
             @link-copy="linkCopy"
             @file-download="fileDownload"
-            @file-delete="deleteFiles"
-            @file-rename="renameFile"
-            @new-file="newFile"
           />
           <file-list-grid
             v-else
@@ -62,9 +56,6 @@
             @file-details="showDetailsPane = true"
             @link-copy="linkCopy"
             @file-download="fileDownload"
-            @file-delete="deleteFiles"
-            @file-rename="renameFile"
-            @new-file="newFile"
           />
         </template>
       </template>
@@ -92,7 +83,6 @@ import { debounce } from 'lodash-es'
 import { useRouter } from 'vue-router'
 
 import { dayjsLocales } from '@renderer/stores/locales'
-import FileListTable from '@renderer/components/FileListTable.vue'
 import db from '@renderer/utils/queryDB'
 import { genRawFileUrl } from '@renderer/utils/genUrl'
 import { useSettingsStore } from '@renderer/stores/settings'
@@ -100,10 +90,6 @@ import { useExplorerStateStore } from '@renderer/stores/explorerState'
 import fetchFilesInUse from '@renderer/utils/fetchFilesInUse'
 import { useDownloadStore } from '@renderer/stores/download'
 import { is } from '@renderer/utils'
-import FileOperationsBar from '@renderer/components/FileOperationsBar.vue'
-import FilePreview from '@renderer/components/FilePreview.vue'
-import FileDetails from '@renderer/components/FileDetails.vue'
-import FileListGrid from '@renderer/components/FileListGrid.vue'
 
 const { t } = useI18n()
 const { startDownload } = useDownloadStore()
@@ -319,97 +305,6 @@ watch(
   ],
   () => queryData(),
 )
-
-// new file
-async function newFile(): Promise<void> {
-  const NewFileDialog = (await import('@renderer/components/NewFileDialog.vue'))
-    .default
-  const modalInstance = window.$modal.create({
-    autoFocus: false,
-    title: t('github-files.title-new'),
-    preset: 'dialog',
-    showIcon: false,
-    style: 'width: 480px; max-width: 100%',
-    content: () =>
-      h(NewFileDialog, {
-        onClose: () => modalInstance.destroy(),
-        onDone: () => queryData(),
-        onLoadingStart: () => {
-          modalInstance.closable = false
-          modalInstance.closeOnEsc = false
-          modalInstance.maskClosable = false
-        },
-        onLoadingEnd: () => {
-          modalInstance.closable = true
-          modalInstance.closeOnEsc = true
-          modalInstance.maskClosable = true
-        },
-      }),
-  })
-}
-
-// delete files
-async function deleteFiles(): Promise<void> {
-  const isPlural = checkedItems.value.length > 1
-  const DeleteFileDialog = (
-    await import('@renderer/components/DeleteFileDialog.vue')
-  ).default
-  const modalInstance = window.$modal.create({
-    autoFocus: false,
-    title: isPlural
-      ? t(`github-files.title-files-delete`)
-      : t(`github-files.title-file-delete`),
-    preset: 'dialog',
-    showIcon: false,
-    style: 'width: 480px; max-width: 100%',
-    content: () =>
-      h(DeleteFileDialog, {
-        onClose: () => modalInstance.destroy(),
-        onDone: () => queryData(),
-        onLoadingStart: () => {
-          modalInstance.closable = false
-          modalInstance.closeOnEsc = false
-          modalInstance.maskClosable = false
-        },
-        onLoadingEnd: () => {
-          modalInstance.closable = true
-          modalInstance.closeOnEsc = true
-          modalInstance.maskClosable = true
-        },
-        fileRecords: checkedItems.value,
-      }),
-  })
-}
-
-// rename file
-async function renameFile(): Promise<void> {
-  const RenameFileDialog = (
-    await import('@renderer/components/RenameFileDialog.vue')
-  ).default
-  const modalInstance = window.$modal.create({
-    autoFocus: false,
-    title: t('github-files.title-rename'),
-    preset: 'dialog',
-    showIcon: false,
-    style: 'width: 480px; max-width: 100%',
-    content: () =>
-      h(RenameFileDialog, {
-        onClose: () => modalInstance.destroy(),
-        onDone: () => queryData(),
-        onLoadingStart: () => {
-          modalInstance.closable = false
-          modalInstance.closeOnEsc = false
-          modalInstance.maskClosable = false
-        },
-        onLoadingEnd: () => {
-          modalInstance.closable = true
-          modalInstance.closeOnEsc = true
-          modalInstance.maskClosable = true
-        },
-        fileRecord: checkedItems.value[0],
-      }),
-  })
-}
 
 // edit file (source and licence)
 async function editFile(): Promise<void> {

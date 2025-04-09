@@ -141,6 +141,7 @@ import { remove } from 'lodash-es'
 import { Icon } from '@iconify/vue'
 import { useI18n } from 'vue-i18n'
 import { filesize as filesizeNoLocale } from 'filesize'
+import type { ProgressStatus } from 'naive-ui'
 
 import { useLocalesStore } from '@renderer/stores/locales'
 import { useDownloadStore } from '@renderer/stores/download'
@@ -174,7 +175,7 @@ function openFile(path: string | null) {
   window.api.openFile(path)
 }
 
-const progressStatusMapper = {
+const progressStatusMapper: Record<string, ProgressStatus> = {
   pending: 'default',
   downloading: 'default',
   completed: 'success',

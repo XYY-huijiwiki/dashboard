@@ -44,8 +44,8 @@ import { storeToRefs } from 'pinia'
 import { useExplorerStateStore } from '@renderer/stores/explorerState'
 import { useLocalesStore, dayjsLocales } from '@renderer/stores/locales'
 import FileIcon from '@renderer/components/FileIcon.vue'
-import TableHeaderStatus from '@renderer/components/TableHeaderStatus.vue'
 import ClickableText from '@renderer/components/ClickableText.vue'
+import TableHeaderStatus from '@renderer/components/TableHeaderStatus.vue'
 import TableHeaderName from '@renderer/components/TableHeaderName.vue'
 import TableHeaderUpdatedAt from '@renderer/components/TableHeaderUpdatedAt.vue'
 import TableHeaderUploader from '@renderer/components/TableHeaderUploader.vue'
@@ -53,7 +53,6 @@ import TableHeaderType from '@renderer/components/TableHeaderType.vue'
 import TableHeaderSize from '@renderer/components/TableHeaderSize.vue'
 import TableHeaderDeletedAt from '@renderer/components/TableHeaderDeletedAt.vue'
 import TableHeaderDeletedName from '@renderer/components/TableHeaderDeletedName.vue'
-import FileMenu from '@renderer/components/FileMenu.vue'
 
 const { explorerState } = storeToRefs(useExplorerStateStore())
 

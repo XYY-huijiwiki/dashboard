@@ -41,7 +41,7 @@
           </n-form-item>
           <n-form-item :label="t('miui-themes.step2-label-date-screenshot')">
             <n-flex :align="`center`">
-              <n-button :disabled="loading" @click="openFile">
+              <n-button :disabled="loading" @click="openFile()">
                 {{ t('miui-themes.step2-btn-upload-date-screenshot') }}
               </n-button>
               <div>
@@ -122,7 +122,6 @@
 </template>
 
 <script setup lang="ts">
-// Third-party library imports
 import { ref, watch } from 'vue'
 import type { Ref } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -137,8 +136,8 @@ import { storeToRefs } from 'pinia'
 import { fileToBase64 } from 'file64'
 import jsSHA from 'jssha'
 import ky from 'ky'
+import type { ProgressStatus } from 'naive-ui'
 
-// Local imports
 import { getMTZFile, cleanURL } from '@renderer/utils/miui-themes'
 import type { Result } from '@renderer/utils/miui-themes'
 import { useSettingsStore } from '@renderer/stores/settings'
@@ -152,7 +151,7 @@ const currentStep = ref(1)
 const result: Ref<Result | null> = ref(null)
 const loading = ref(false)
 const submitPercentage = ref(0)
-const submitStatus = ref('default')
+const submitStatus: Ref<ProgressStatus> = ref('default')
 const createObjectURL = window.URL.createObjectURL
 const { settings } = storeToRefs(useSettingsStore())
 
