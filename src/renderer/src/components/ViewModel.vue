@@ -10,7 +10,9 @@
     :poster="posterUrl"
   >
     <!-- eslint-disable-next-line vue/no-deprecated-slot-attribute -->
-    <div slot="progress-bar"></div>
+    <div slot="progress-bar">
+      <n-spin v-if="loading"></n-spin>
+    </div>
   </model-viewer>
   <n-divider v-if="animations.length > 0" />
   <div v-if="animations.length > 0" class="w-full">
@@ -33,6 +35,7 @@ import type { ModelViewerElement } from '@google/model-viewer'
 const modelViewer: Ref<ModelViewerElement | null> = ref(null)
 const animation: Ref<string> = ref('')
 const animations: Ref<string[]> = ref([])
+const loading = ref(true)
 
 defineProps({
   modelUrl: {
@@ -52,6 +55,7 @@ watch(
     modelViewer.value?.addEventListener('load', () => {
       animations.value = modelViewer.value?.availableAnimations || []
       animation.value = modelViewer.value?.availableAnimations[0] || ''
+      loading.value = false
     })
   },
   { once: true },
