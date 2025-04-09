@@ -125,6 +125,7 @@
       "btn-tiles": "Kacheln"
     },
     "btn-copy-code": "Code kopieren",
+    "label-copied": "Kopiert",
     "msg-file-name-too-long": "Ups, der Dateiname ist zu lang!",
     "msg-file-size-warning": "Das Hochladen einer so großen Datei könnte in Ihrem Browser fehlschlagen. Ziehen Sie in Betracht, die App herunterzuladen, um eine reibungslosere Erfahrung zu machen.",
     "btn-download-latest-release": "Neueste Version herunterladen"

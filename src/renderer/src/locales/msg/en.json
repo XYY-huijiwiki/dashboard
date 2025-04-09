@@ -127,7 +127,8 @@
     "btn-copy-code": "Copy code",
     "msg-file-name-too-long": "Oops, the file name’s too long!",
     "msg-file-size-warning": "Uploading such a large file might fail in your browser. Consider downloading the app for a smoother experience.",
-    "btn-download-latest-release": "Download Latest Release"
+    "btn-download-latest-release": "Download Latest Release",
+    "label-copied": "Copied"
   },
   "init": {
     "title": "Initialisation",

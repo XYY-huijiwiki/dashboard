@@ -127,7 +127,8 @@
     "btn-copy-code": "复制代码",
     "msg-file-name-too-long": "哎呀，文件名太长了！",
     "msg-file-size-warning": "在浏览器中上传如此大的文件很可能会失败。考虑下载应用程序以获得更流畅的体验。",
-    "btn-download-latest-release": "下载最新版本"
+    "btn-download-latest-release": "下载最新版本",
+    "label-copied": "已复制"
   },
   "init": {
     "title": "初始化",

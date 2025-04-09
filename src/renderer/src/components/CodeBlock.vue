@@ -3,6 +3,7 @@
     <button
       :title="t('github-files.btn-copy-code')"
       class="copy"
+      :data-copied-text="t('github-files.label-copied')"
       @click="copyToClipboard(code)"
     ></button>
     <span class="lang">{{ lang }}</span>
@@ -261,7 +262,7 @@ div[class*='language-'] {
   color: var(--vp-code-copy-code-active-text);
   background-color: var(--vp-code-copy-code-hover-bg);
   white-space: nowrap;
-  content: var(--vp-code-copy-copied-text-content);
+  content: attr(data-copied-text);
 }
 
 /* #endregion */
@@ -292,8 +293,6 @@ div[class*='language-'] {
   /* clipboard-copy */
   --vp-icon-copied: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='rgba(128,128,128,1)' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' viewBox='0 0 24 24'%3E%3Crect width='8' height='4' x='8' y='2' rx='1' ry='1'/%3E%3Cpath d='M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2'/%3E%3Cpath d='m9 14 2 2 4-4'/%3E%3C/svg%3E");
   --vp-code-lang-color: #67676c;
-  /* TODO: i18m */
-  --vp-code-copy-copied-text-content: 'Copied';
   --vp-code-copy-code-hover-bg: #ffffff;
   --vp-code-copy-code-active-text: #67676c;
   --vp-code-copy-code-hover-border-color: #e2e2e3;
