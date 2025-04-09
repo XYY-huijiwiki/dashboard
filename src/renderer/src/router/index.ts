@@ -3,113 +3,113 @@ import {
   createWebHashHistory,
   type RouteRecordRaw,
   type RouteLocation,
-} from 'vue-router'
-import { useSettingsStore } from '@renderer/stores/settings'
-import { storeToRefs } from 'pinia'
-import { is } from '@renderer/utils'
+} from "vue-router";
+import { useSettingsStore } from "@renderer/stores/settings";
+import { storeToRefs } from "pinia";
+import { is } from "@renderer/utils";
 
-const views = import.meta.glob('@renderer/views/**/*.vue')
+const views = import.meta.glob("@renderer/views/**/*.vue");
 
 const routes: Array<RouteRecordRaw> = [
   {
-    path: '/:pathMatch(.*)*',
-    redirect: { name: 'error' },
+    path: "/:pathMatch(.*)*",
+    redirect: { name: "error" },
   },
-  { path: '/', redirect: { name: 'file-explorer' } },
+  { path: "/", redirect: { name: "file-explorer" } },
   {
-    path: '/file-explorer',
-    name: 'file-explorer',
+    path: "/file-explorer",
+    name: "file-explorer",
     meta: {
       ghAuthRequired: true,
     },
-    component: views['/src/views/FileExplorer.vue'],
+    component: views["/src/views/FileExplorer.vue"],
   },
   {
-    path: '/recycle-bin',
-    name: 'recycle-bin',
+    path: "/recycle-bin",
+    name: "recycle-bin",
     meta: {
       ghAuthRequired: true,
     },
-    component: views['/src/views/RecycleBin.vue'],
+    component: views["/src/views/RecycleBin.vue"],
   },
   {
-    path: '/file-preview/:filename',
-    name: 'file-preview',
+    path: "/file-preview/:filename",
+    name: "file-preview",
     meta: {},
-    component: views['/src/views/FilePreview.vue'],
+    component: views["/src/views/FilePreview.vue"],
   },
   {
-    path: '/download-manager',
-    name: 'download-manager',
+    path: "/download-manager",
+    name: "download-manager",
     meta: {
       electronOnly: true,
     },
-    component: views['/src/views/DownloadManager.vue'],
+    component: views["/src/views/DownloadManager.vue"],
   },
   {
-    path: '/rename-pages',
-    name: 'rename-pages',
+    path: "/rename-pages",
+    name: "rename-pages",
     meta: {
       webOnly: true,
     },
-    component: views['/src/views/RenamePages.vue'],
+    component: views["/src/views/RenamePages.vue"],
   },
   {
-    path: '/find-and-replace',
-    name: 'find-and-replace',
+    path: "/find-and-replace",
+    name: "find-and-replace",
     meta: {
       webOnly: true,
     },
-    component: views['/src/views/FindAndReplace.vue'],
+    component: views["/src/views/FindAndReplace.vue"],
   },
   {
-    path: '/episodes-data',
-    name: 'episodes-data',
+    path: "/episodes-data",
+    name: "episodes-data",
     meta: {
       webOnly: true,
     },
-    component: views['/src/views/EpisodesData.vue'],
+    component: views["/src/views/EpisodesData.vue"],
   },
   {
-    path: '/delete-and-undelete',
-    name: 'delete-and-undelete',
+    path: "/delete-and-undelete",
+    name: "delete-and-undelete",
     meta: {
       webOnly: true,
     },
-    component: views['/src/views/DeleteAndUndelete.vue'],
+    component: views["/src/views/DeleteAndUndelete.vue"],
   },
   {
-    path: '/miui-themes',
-    name: 'miui-themes',
+    path: "/miui-themes",
+    name: "miui-themes",
     meta: {
       webOnly: true,
     },
-    component: views['/src/views/MiuiThemes.vue'],
+    component: views["/src/views/MiuiThemes.vue"],
   },
   {
-    path: '/settings',
-    name: 'settings',
+    path: "/settings",
+    name: "settings",
     meta: {},
-    component: views['/src/views/SettingsView.vue'],
+    component: views["/src/views/SettingsView.vue"],
   },
   {
-    path: '/init',
-    name: 'init',
+    path: "/init",
+    name: "init",
     meta: {},
-    component: views['/src/views/InitView.vue'],
+    component: views["/src/views/InitView.vue"],
   },
   {
-    path: '/error',
+    path: "/error",
     meta: {},
-    name: 'error',
-    component: views['/src/views/ErrorView.vue'],
+    name: "error",
+    component: views["/src/views/ErrorView.vue"],
   },
-]
+];
 
 const router = createRouter({
   history: createWebHashHistory(),
   routes,
-})
+});
 
 /**
  * Determines if the client can access a specific route based on the platform (web or Electron).
@@ -120,13 +120,13 @@ const router = createRouter({
 function canClientAccess(to: RouteLocation): boolean {
   // Web only guard
   if (!is.web && to.meta.webOnly) {
-    return false
+    return false;
   }
   // Electron only guard
   if (is.web && to.meta.electronOnly) {
-    return false
+    return false;
   }
-  return true
+  return true;
 }
 
 /**
@@ -136,27 +136,27 @@ function canClientAccess(to: RouteLocation): boolean {
  * @returns {boolean} - Returns `true` if the user can access the route, otherwise `false`.
  */
 function canUserAccess(to: RouteLocation): boolean {
-  const { settings } = storeToRefs(useSettingsStore())
+  const { settings } = storeToRefs(useSettingsStore());
   // GitHub Auth guard
   if (!settings.value.ghToken && to.meta.ghAuthRequired) {
-    return false
+    return false;
   }
-  return true
+  return true;
 }
 
 router.beforeEach((to) => {
   // Always true for init and error routes
-  if (to.name === 'init' || to.name === 'error') {
-    return true
+  if (to.name === "init" || to.name === "error") {
+    return true;
   }
   if (!canClientAccess(to)) {
-    return false
+    return false;
   }
   if (!canUserAccess(to)) {
-    return { name: 'init' }
+    return { name: "init" };
   }
-  return true
-})
+  return true;
+});
 
-export default router
-export { canClientAccess, canUserAccess }
+export default router;
+export { canClientAccess, canUserAccess };

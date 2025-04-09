@@ -66,7 +66,7 @@
         </template>
         <template #footer>
           <n-button tag="a" :href="fileRecord && genRawFileUrl(fileRecord)">
-            {{ t('github-files.btn-download') }}
+            {{ t("github-files.btn-download") }}
           </n-button>
         </template>
       </n-result>
@@ -75,20 +75,20 @@
 </template>
 
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n'
-import { Icon } from '@iconify/vue'
-import { defineAsyncComponent } from 'vue'
+import { useI18n } from "vue-i18n";
+import { Icon } from "@iconify/vue";
+import { defineAsyncComponent } from "vue";
 
-import fileIcon from './FileIcon.vue'
-import { genThumbUrl, genRawFileUrl } from '@renderer/utils/genUrl'
+import fileIcon from "./FileIcon.vue";
+import { genThumbUrl, genRawFileUrl } from "@renderer/utils/genUrl";
 
-const { t } = useI18n()
-const fileRecord = defineModel<FileRecord>()
+const { t } = useI18n();
+const fileRecord = defineModel<FileRecord>();
 const props = defineProps<{
-  closable?: boolean
-}>()
+  closable?: boolean;
+}>();
 
-const ViewModelAsync = defineAsyncComponent(() => import('./ViewModel.vue'))
+const ViewModelAsync = defineAsyncComponent(() => import("./ViewModel.vue"));
 </script>
 
 <style scoped></style>

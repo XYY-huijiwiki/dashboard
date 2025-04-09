@@ -14,12 +14,12 @@
 </template>
 
 <script setup lang="ts">
-import { computedAsync } from '@vueuse/core'
-import { codeToHtml } from 'shiki'
-import { h } from 'vue'
-import { useI18n } from 'vue-i18n'
+import { computedAsync } from "@vueuse/core";
+import { codeToHtml } from "shiki";
+import { h } from "vue";
+import { useI18n } from "vue-i18n";
 
-const { t } = useI18n()
+const { t } = useI18n();
 const { code, lang } = defineProps({
   code: {
     type: String,
@@ -28,117 +28,117 @@ const { code, lang } = defineProps({
   lang: {
     type: String,
     required: false,
-    default: 'text',
+    default: "text",
   },
-})
+});
 
 const vnode = computedAsync(async () => {
   // generate html string
   const html = await codeToHtml(code, {
     lang: lang,
     themes: {
-      light: 'light-plus',
-      dark: 'dark-plus',
+      light: "light-plus",
+      dark: "dark-plus",
     },
-  })
+  });
   // convert html string to vnode
-  const wrapped = h('div', { innerHTML: html })
+  const wrapped = h("div", { innerHTML: html });
   if (!wrapped.children) {
-    return wrapped
+    return wrapped;
   }
-  return h(wrapped.children)
-})
+  return h(wrapped.children);
+});
 
 // #region copy code
 
 function useCopyCode() {
-  const timeoutIdMap: WeakMap<HTMLElement, NodeJS.Timeout> = new WeakMap()
-  window.addEventListener('click', (e) => {
-    const el = e.target as HTMLElement
+  const timeoutIdMap: WeakMap<HTMLElement, NodeJS.Timeout> = new WeakMap();
+  window.addEventListener("click", (e) => {
+    const el = e.target as HTMLElement;
     if (el.matches('div[class*="language-"] > button.copy')) {
-      const parent = el.parentElement
-      const sibling = el.nextElementSibling?.nextElementSibling
+      const parent = el.parentElement;
+      const sibling = el.nextElementSibling?.nextElementSibling;
       if (!parent || !sibling) {
-        return
+        return;
       }
 
       const isShell = /language-(shellscript|shell|bash|sh|zsh)/.test(
         parent.className,
-      )
+      );
 
-      const ignoredNodes = ['.vp-copy-ignore', '.diff.remove']
+      const ignoredNodes = [".vp-copy-ignore", ".diff.remove"];
 
       // Clone the node and remove the ignored nodes
-      const clone = sibling.cloneNode(true) as HTMLElement
+      const clone = sibling.cloneNode(true) as HTMLElement;
       clone
-        .querySelectorAll(ignoredNodes.join(','))
-        .forEach((node) => node.remove())
+        .querySelectorAll(ignoredNodes.join(","))
+        .forEach((node) => node.remove());
 
-      let text = clone.textContent || ''
+      let text = clone.textContent || "";
 
       if (isShell) {
-        text = text.replace(/^ *(\$|>) /gm, '').trim()
+        text = text.replace(/^ *(\$|>) /gm, "").trim();
       }
 
       copyToClipboard(text).then(() => {
-        el.classList.add('copied')
-        clearTimeout(timeoutIdMap.get(el))
+        el.classList.add("copied");
+        clearTimeout(timeoutIdMap.get(el));
         const timeoutId = setTimeout(() => {
-          el.classList.remove('copied')
-          el.blur()
-          timeoutIdMap.delete(el)
-        }, 2000)
-        timeoutIdMap.set(el, timeoutId)
-      })
+          el.classList.remove("copied");
+          el.blur();
+          timeoutIdMap.delete(el);
+        }, 2000);
+        timeoutIdMap.set(el, timeoutId);
+      });
     }
-  })
+  });
 }
 
 async function copyToClipboard(text: string) {
   try {
-    return navigator.clipboard.writeText(text)
+    return navigator.clipboard.writeText(text);
   } catch {
-    const element = document.createElement('textarea')
-    const previouslyFocusedElement = document.activeElement
+    const element = document.createElement("textarea");
+    const previouslyFocusedElement = document.activeElement;
 
-    element.value = text
+    element.value = text;
 
     // Prevent keyboard from showing on mobile
-    element.setAttribute('readonly', '')
+    element.setAttribute("readonly", "");
 
-    element.style.contain = 'strict'
-    element.style.position = 'absolute'
-    element.style.left = '-9999px'
-    element.style.fontSize = '12pt' // Prevent zooming on iOS
+    element.style.contain = "strict";
+    element.style.position = "absolute";
+    element.style.left = "-9999px";
+    element.style.fontSize = "12pt"; // Prevent zooming on iOS
 
-    const selection = document.getSelection()
+    const selection = document.getSelection();
     const originalRange = selection
       ? selection.rangeCount > 0 && selection.getRangeAt(0)
-      : null
+      : null;
 
-    document.body.appendChild(element)
-    element.select()
+    document.body.appendChild(element);
+    element.select();
 
     // Explicit selection workaround for iOS
-    element.selectionStart = 0
-    element.selectionEnd = text.length
+    element.selectionStart = 0;
+    element.selectionEnd = text.length;
 
-    document.execCommand('copy')
-    document.body.removeChild(element)
+    document.execCommand("copy");
+    document.body.removeChild(element);
 
     if (originalRange) {
-      selection!.removeAllRanges() // originalRange can't be truthy when selection is falsy
-      selection!.addRange(originalRange)
+      selection!.removeAllRanges(); // originalRange can't be truthy when selection is falsy
+      selection!.addRange(originalRange);
     }
 
     // Get the focus back on the previously focused element, if any
     if (previouslyFocusedElement) {
-      ;(previouslyFocusedElement as HTMLElement).focus()
+      (previouslyFocusedElement as HTMLElement).focus();
     }
   }
 }
 
-useCopyCode()
+useCopyCode();
 
 // #endregion
 </script>
@@ -185,7 +185,7 @@ useCopyCode()
   width: fit-content;
   min-width: 100%;
 }
-div[class*='language-'] {
+div[class*="language-"] {
   border-radius: 8px;
   margin: 16px 0;
   position: relative;
@@ -195,7 +195,7 @@ div[class*='language-'] {
 
 /* #region copy code */
 /* following code comes from VitePress */
-[class*='language-'] > button.copy {
+[class*="language-"] > button.copy {
   /*rtl:ignore*/
   direction: ltr;
   position: absolute;
@@ -220,27 +220,27 @@ div[class*='language-'] {
     opacity 0.25s;
 }
 
-[class*='language-']:hover > button.copy,
-[class*='language-'] > button.copy:focus {
+[class*="language-"]:hover > button.copy,
+[class*="language-"] > button.copy:focus {
   opacity: 1;
 }
 
-[class*='language-'] > button.copy:hover,
-[class*='language-'] > button.copy.copied {
+[class*="language-"] > button.copy:hover,
+[class*="language-"] > button.copy.copied {
   border-color: var(--vp-code-copy-code-hover-border-color);
   background-color: var(--vp-code-copy-code-hover-bg);
 }
 
-[class*='language-'] > button.copy.copied,
-[class*='language-'] > button.copy:hover.copied {
+[class*="language-"] > button.copy.copied,
+[class*="language-"] > button.copy:hover.copied {
   /*rtl:ignore*/
   border-radius: 0 4px 4px 0;
   background-color: var(--vp-code-copy-code-hover-bg);
   background-image: var(--vp-icon-copied);
 }
 
-[class*='language-'] > button.copy.copied::before,
-[class*='language-'] > button.copy:hover.copied::before {
+[class*="language-"] > button.copy.copied::before,
+[class*="language-"] > button.copy:hover.copied::before {
   position: relative;
   top: -1px;
   /*rtl:ignore*/
@@ -267,7 +267,7 @@ div[class*='language-'] {
 
 /* #endregion */
 
-[class*='language-'] > span.lang {
+[class*="language-"] > span.lang {
   position: absolute;
   top: 2px;
   /*rtl:ignore*/
@@ -282,8 +282,8 @@ div[class*='language-'] {
     opacity 0.4s;
 }
 
-[class*='language-']:hover > button.copy + span.lang,
-[class*='language-'] > button.copy:focus + span.lang {
+[class*="language-"]:hover > button.copy + span.lang,
+[class*="language-"] > button.copy:focus + span.lang {
   opacity: 0;
 }
 

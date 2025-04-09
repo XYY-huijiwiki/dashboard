@@ -1,65 +1,65 @@
-import ky from 'ky'
+import ky from "ky";
 
 interface QueryPageResult {
-  value: string
-  ns: number
-  title: string
+  value: string;
+  ns: number;
+  title: string;
 }
 
 interface HuijiWikiResponse {
-  batchcomplete?: string
+  batchcomplete?: string;
   continue?: {
-    qpoffset: number
-    continue: string
-  }
+    qpoffset: number;
+    continue: string;
+  };
   query: {
     querypage: {
-      name: string
-      results: QueryPageResult[]
-    }
-  }
+      name: string;
+      results: QueryPageResult[];
+    };
+  };
 }
 
 async function fetchFilesInUse(): Promise<string[]> {
-  const filesInUse: string[] = []
-  let continueParams: { qpoffset?: number; continue?: string } | undefined
+  const filesInUse: string[] = [];
+  let continueParams: { qpoffset?: number; continue?: string } | undefined;
 
   do {
     const searchParams = {
       t: Date.now().toString(), // avoid cache
-      action: 'query',
-      list: 'querypage',
-      qppage: 'Wantedfiles',
-      format: 'json',
-      qplimit: 'max',
+      action: "query",
+      list: "querypage",
+      qppage: "Wantedfiles",
+      format: "json",
+      qplimit: "max",
       ...(continueParams && {
         qpoffset: continueParams.qpoffset?.toString(),
         continue: continueParams.continue,
       }),
-    }
+    };
 
     const response = (await ky
-      .get('https://xyy.huijiwiki.com/api.php', { searchParams })
-      .json()) as HuijiWikiResponse
+      .get("https://xyy.huijiwiki.com/api.php", { searchParams })
+      .json()) as HuijiWikiResponse;
 
     const processedItems = response.query.querypage.results.map((item) =>
       decodeURIComponent(item.title)
-        .replace(/ /g, '_')
-        .replace(/^文件:/, ''),
-    )
+        .replace(/ /g, "_")
+        .replace(/^文件:/, ""),
+    );
 
-    filesInUse.push(...processedItems)
+    filesInUse.push(...processedItems);
     continueParams = response.continue
       ? {
           qpoffset: response.continue.qpoffset,
           continue: response.continue.continue,
         }
-      : undefined
-  } while (continueParams)
+      : undefined;
+  } while (continueParams);
 
   return filesInUse
-    .filter((item) => item.startsWith('GitHub:'))
-    .map((item) => item.replace(/^GitHub:/, ''))
+    .filter((item) => item.startsWith("GitHub:"))
+    .map((item) => item.replace(/^GitHub:/, ""));
 }
 
-export default fetchFilesInUse
+export default fetchFilesInUse;

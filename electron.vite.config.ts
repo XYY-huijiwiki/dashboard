@@ -1,22 +1,22 @@
-import { resolve } from 'path'
+import { resolve } from "path";
 import {
   defineConfig,
   externalizeDepsPlugin,
   defineViteConfig,
-} from 'electron-vite'
-import vue from '@vitejs/plugin-vue'
-import { NaiveUiResolver } from 'unplugin-vue-components/resolvers'
-import Components from 'unplugin-vue-components/vite'
-import tailwindcss from '@tailwindcss/vite'
-import { nodePolyfills } from 'vite-plugin-node-polyfills'
-import vueDevTools from 'vite-plugin-vue-devtools'
+} from "electron-vite";
+import vue from "@vitejs/plugin-vue";
+import { NaiveUiResolver } from "unplugin-vue-components/resolvers";
+import Components from "unplugin-vue-components/vite";
+import tailwindcss from "@tailwindcss/vite";
+import { nodePolyfills } from "vite-plugin-node-polyfills";
+import vueDevTools from "vite-plugin-vue-devtools";
 
 export default defineConfig({
   main: {
     build: {
       rollupOptions: {
         output: {
-          format: 'es',
+          format: "es",
         },
       },
     },
@@ -26,7 +26,7 @@ export default defineConfig({
     build: {
       rollupOptions: {
         output: {
-          format: 'es',
+          format: "es",
         },
       },
     },
@@ -34,7 +34,7 @@ export default defineConfig({
   },
   renderer: defineViteConfig(({ mode }) => {
     return {
-      base: mode === 'web' ? '//xyy-huijiwiki.github.io/dashboard/' : undefined,
+      base: mode === "web" ? "//xyy-huijiwiki.github.io/dashboard/" : undefined,
       build: {
         manifest: true,
       },
@@ -43,14 +43,14 @@ export default defineConfig({
       },
       resolve: {
         alias: {
-          '@renderer': resolve('src/renderer/src'),
+          "@renderer": resolve("src/renderer/src"),
         },
       },
       plugins: [
         vue({
           template: {
             compilerOptions: {
-              isCustomElement: (tag) => ['model-viewer'].includes(tag),
+              isCustomElement: (tag) => ["model-viewer"].includes(tag),
             },
           },
         }),
@@ -61,6 +61,6 @@ export default defineConfig({
         nodePolyfills(),
         vueDevTools(),
       ],
-    }
+    };
   }),
-})
+});

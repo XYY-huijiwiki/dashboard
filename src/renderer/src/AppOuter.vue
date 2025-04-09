@@ -1,15 +1,15 @@
 <script lang="ts" setup>
-import { darkTheme, useOsTheme } from 'naive-ui'
-import { useLocalesStore } from '@renderer/stores/locales'
-import { useSettingsStore } from '@renderer/stores/settings'
-import { storeToRefs } from 'pinia'
-import { computed } from 'vue'
-import App from './App.vue'
+import { darkTheme, useOsTheme } from "naive-ui";
+import { useLocalesStore } from "@renderer/stores/locales";
+import { useSettingsStore } from "@renderer/stores/settings";
+import { storeToRefs } from "pinia";
+import { computed } from "vue";
+import App from "./App.vue";
 
-const OSThemeStr = useOsTheme()
-const theme = computed(() => (OSThemeStr.value === 'dark' ? darkTheme : null))
-const { langPackNaiveUI } = storeToRefs(useLocalesStore())
-const { globalLoading } = storeToRefs(useSettingsStore())
+const OSThemeStr = useOsTheme();
+const theme = computed(() => (OSThemeStr.value === "dark" ? darkTheme : null));
+const { langPackNaiveUI } = storeToRefs(useLocalesStore());
+const { globalLoading } = storeToRefs(useSettingsStore());
 </script>
 
 <template>

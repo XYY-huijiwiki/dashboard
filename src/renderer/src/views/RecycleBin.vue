@@ -71,63 +71,63 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, watch, h } from 'vue'
-import type { Ref } from 'vue'
-import type { DataTableRowKey } from 'naive-ui'
-import { useI18n } from 'vue-i18n'
-import dayjs from 'dayjs'
-import localizedFormat from 'dayjs/plugin/localizedFormat'
-import { storeToRefs } from 'pinia'
-import ky from 'ky'
-import { debounce } from 'lodash-es'
-import { useRouter } from 'vue-router'
+import { computed, onMounted, ref, watch, h } from "vue";
+import type { Ref } from "vue";
+import type { DataTableRowKey } from "naive-ui";
+import { useI18n } from "vue-i18n";
+import dayjs from "dayjs";
+import localizedFormat from "dayjs/plugin/localizedFormat";
+import { storeToRefs } from "pinia";
+import ky from "ky";
+import { debounce } from "lodash-es";
+import { useRouter } from "vue-router";
 
-import { dayjsLocales } from '@renderer/stores/locales'
-import db from '@renderer/utils/queryDB'
-import { genRawFileUrl } from '@renderer/utils/genUrl'
-import { useSettingsStore } from '@renderer/stores/settings'
-import { useExplorerStateStore } from '@renderer/stores/explorerState'
-import fetchFilesInUse from '@renderer/utils/fetchFilesInUse'
-import { useDownloadStore } from '@renderer/stores/download'
-import { is } from '@renderer/utils'
+import { dayjsLocales } from "@renderer/stores/locales";
+import db from "@renderer/utils/queryDB";
+import { genRawFileUrl } from "@renderer/utils/genUrl";
+import { useSettingsStore } from "@renderer/stores/settings";
+import { useExplorerStateStore } from "@renderer/stores/explorerState";
+import fetchFilesInUse from "@renderer/utils/fetchFilesInUse";
+import { useDownloadStore } from "@renderer/stores/download";
+import { is } from "@renderer/utils";
 
-const { t } = useI18n()
-const { startDownload } = useDownloadStore()
-const { settings } = storeToRefs(useSettingsStore())
-const { explorerState } = storeToRefs(useExplorerStateStore())
-const router = useRouter()
+const { t } = useI18n();
+const { startDownload } = useDownloadStore();
+const { settings } = storeToRefs(useSettingsStore());
+const { explorerState } = storeToRefs(useExplorerStateStore());
+const router = useRouter();
 
-dayjs.extend(localizedFormat).locale(dayjsLocales.value)
+dayjs.extend(localizedFormat).locale(dayjsLocales.value);
 
-const fileDownload = debounce(fileDownloadUndebounced, 300)
+const fileDownload = debounce(fileDownloadUndebounced, 300);
 async function fileDownloadUndebounced() {
   if (is.web) {
-    const a = document.createElement('a')
-    a.href = genRawFileUrl(checkedItems.value[0])
-    a.click()
+    const a = document.createElement("a");
+    a.href = genRawFileUrl(checkedItems.value[0]);
+    a.click();
   } else {
-    router.push({ name: 'download-manager' })
+    router.push({ name: "download-manager" });
     for (const item of checkedItems.value) {
-      startDownload(item)
+      startDownload(item);
     }
   }
 }
 
 function linkCopy(): void {
   navigator.clipboard.writeText(
-    checkedItems.value.map((item) => genRawFileUrl(item)).join('\n'),
-  )
-  window.$message.success(t('github-files.msg-link-copied'))
+    checkedItems.value.map((item) => genRawFileUrl(item)).join("\n"),
+  );
+  window.$message.success(t("github-files.msg-link-copied"));
 }
 
 // preview
-const preview: Ref<FileRecord | undefined> = ref(undefined)
+const preview: Ref<FileRecord | undefined> = ref(undefined);
 
-const loading: Ref<boolean> = ref(true)
+const loading: Ref<boolean> = ref(true);
 
-const data: Ref<FileRecord[]> = ref([])
-const filesInUse: Ref<string[]> = ref([])
-const checkedRowKeys = ref<DataTableRowKey[]>([])
+const data: Ref<FileRecord[]> = ref([]);
+const filesInUse: Ref<string[]> = ref([]);
+const checkedRowKeys = ref<DataTableRowKey[]>([]);
 
 /*
  *
@@ -136,162 +136,165 @@ const checkedRowKeys = ref<DataTableRowKey[]>([])
  */
 const checkedItems: Ref<FileRecord[]> = computed(() => {
   if (checkedRowKeys.value.length === 0) {
-    return []
+    return [];
   } else {
     return data.value.filter((item) =>
       checkedRowKeys.value.includes(item.file_name),
-    )
+    );
   }
-})
-const showDetailsPane = ref(false)
-const detailsDrawerSizeTemp = ref(0.7)
-const detailsDrawerSize = ref(1)
+});
+const showDetailsPane = ref(false);
+const detailsDrawerSizeTemp = ref(0.7);
+const detailsDrawerSize = ref(1);
 watch(showDetailsPane, (value) => {
   if (value) {
-    detailsDrawerSize.value = detailsDrawerSizeTemp.value
+    detailsDrawerSize.value = detailsDrawerSizeTemp.value;
   } else {
-    detailsDrawerSizeTemp.value = detailsDrawerSize.value
-    detailsDrawerSize.value = 1
+    detailsDrawerSizeTemp.value = detailsDrawerSize.value;
+    detailsDrawerSize.value = 1;
   }
-})
+});
 
 onMounted(async () => {
-  loading.value = true
+  loading.value = true;
 
   try {
-    console.time('init fetching')
+    console.time("init fetching");
     await Promise.all([
       (filesInUse.value = await fetchFilesInUse()),
       queryData(),
-    ])
-    console.timeEnd('init fetching')
+    ]);
+    console.timeEnd("init fetching");
   } catch (error) {
-    console.dir(error)
+    console.dir(error);
     window.$notification.error({
-      title: t('github-files.msg-rename-failed'),
+      title: t("github-files.msg-rename-failed"),
       content: `${error}`,
-      meta: dayjs().format('lll'),
-    })
+      meta: dayjs().format("lll"),
+    });
   } finally {
-    loading.value = false
+    loading.value = false;
   }
-})
+});
 
 function handleSearch() {
-  preview.value = undefined
-  queryData()
+  preview.value = undefined;
+  queryData();
 }
-const searchText = ref('')
-const totalItemCount = ref(0)
-async function queryData(type: 'more' | 'refresh' = 'refresh'): Promise<void> {
-  if (type === 'more' && data.value.length >= totalItemCount.value) return // cancel if no more data
+const searchText = ref("");
+const totalItemCount = ref(0);
+async function queryData(type: "more" | "refresh" = "refresh"): Promise<void> {
+  if (type === "more" && data.value.length >= totalItemCount.value) return; // cancel if no more data
 
-  loading.value = true
+  loading.value = true;
 
   try {
-    const query = db('files')
+    const query = db("files")
       .limit(settings.value.fileListPageSize)
-      .whereNotNull('is_deleted')
+      .whereNotNull("is_deleted");
 
-    if (type === 'more') query.offset(data.value.length)
+    if (type === "more") query.offset(data.value.length);
 
     // sorter
-    const order = explorerState.value.sorterOrder === 'ascend' ? 'ASC' : 'DESC'
-    if (explorerState.value.sorterKey === 'name') {
-      query.orderBy('file_name', order)
-    } else if (explorerState.value.sorterKey === 'size') {
-      query.orderBy('file_size', order)
-    } else if (explorerState.value.sorterKey === 'type') {
-      query.orderBy('content_type', order)
-    } else if (explorerState.value.sorterKey === 'updated_at') {
-      query.orderBy('updated_at', order)
-    } else if (explorerState.value.sorterKey === 'uploader') {
-      query.orderBy('uploader', order)
-    } else if (explorerState.value.sorterKey === 'deleted_at') {
-      query.orderBy('deleted_at', order)
-    } else if (explorerState.value.sorterKey === 'file_name_before_deleted') {
-      query.orderBy('file_name_before_deleted', order)
+    const order = explorerState.value.sorterOrder === "ascend" ? "ASC" : "DESC";
+    if (explorerState.value.sorterKey === "name") {
+      query.orderBy("file_name", order);
+    } else if (explorerState.value.sorterKey === "size") {
+      query.orderBy("file_size", order);
+    } else if (explorerState.value.sorterKey === "type") {
+      query.orderBy("content_type", order);
+    } else if (explorerState.value.sorterKey === "updated_at") {
+      query.orderBy("updated_at", order);
+    } else if (explorerState.value.sorterKey === "uploader") {
+      query.orderBy("uploader", order);
+    } else if (explorerState.value.sorterKey === "deleted_at") {
+      query.orderBy("deleted_at", order);
+    } else if (explorerState.value.sorterKey === "file_name_before_deleted") {
+      query.orderBy("file_name_before_deleted", order);
     }
 
     // search
     if (searchText.value) {
       query.andWhereLike(
-        'file_name_before_deleted',
-        `%${searchText.value.trim().replaceAll(' ', '_')}%`,
-      )
+        "file_name_before_deleted",
+        `%${searchText.value.trim().replaceAll(" ", "_")}%`,
+      );
     }
 
     // filter file type
-    const fileType = explorerState.value.filters.type
+    const fileType = explorerState.value.filters.type;
     if (fileType && fileType.length > 0 && fileType.length !== 5) {
       query.andWhere((builder) => {
         for (let index = 0; index < fileType.length; index++) {
-          const element = fileType[index]
-          if (element === 'image') builder.orWhereLike('content_type', 'image%')
-          if (element === 'audio') builder.orWhereLike('content_type', 'audio%')
-          if (element === 'video') builder.orWhereLike('content_type', 'video%')
-          if (element === 'text') builder.orWhereLike('content_type', 'text%')
-          if (element === 'other')
+          const element = fileType[index];
+          if (element === "image")
+            builder.orWhereLike("content_type", "image%");
+          if (element === "audio")
+            builder.orWhereLike("content_type", "audio%");
+          if (element === "video")
+            builder.orWhereLike("content_type", "video%");
+          if (element === "text") builder.orWhereLike("content_type", "text%");
+          if (element === "other")
             builder.orWhereNot((innerBuilder) => {
               innerBuilder
-                .orWhereLike('content_type', 'image%')
-                .orWhereLike('content_type', 'audio%')
-                .orWhereLike('content_type', 'video%')
-                .orWhereLike('content_type', 'text%')
-            })
+                .orWhereLike("content_type", "image%")
+                .orWhereLike("content_type", "audio%")
+                .orWhereLike("content_type", "video%")
+                .orWhereLike("content_type", "text%");
+            });
         }
-      })
+      });
     }
 
     // filter file status
-    const fileStaus = explorerState.value.filters.status
-    if (fileStaus.includes('no source')) {
-      query.andWhere('source', '')
+    const fileStaus = explorerState.value.filters.status;
+    if (fileStaus.includes("no source")) {
+      query.andWhere("source", "");
     }
-    if (fileStaus.includes('no licence')) {
-      query.andWhere('licence', '')
+    if (fileStaus.includes("no licence")) {
+      query.andWhere("licence", "");
     }
 
     // get total item count
     async function getTotalItemCount(): Promise<number> {
-      const url = new URL(settings.value.databaseUrl)
-      const queryStr = query.clone().count().toString()
-      url.searchParams.set('query', queryStr)
-      return ((await ky.get(url.href).json()) as DbResponse)[0]['results'][0][
+      const url = new URL(settings.value.databaseUrl);
+      const queryStr = query.clone().count().toString();
+      url.searchParams.set("query", queryStr);
+      return ((await ky.get(url.href).json()) as DbResponse)[0]["results"][0][
         `count(*)`
-      ]
+      ];
     }
 
     // get data from database
     async function getItems(): Promise<FileRecord[]> {
-      const url = new URL(settings.value.databaseUrl)
-      const queryStr = query.clone().toString()
-      url.searchParams.set('query', queryStr)
-      return ((await ky.get(url.href).json()) as DbResponse)[0].results
+      const url = new URL(settings.value.databaseUrl);
+      const queryStr = query.clone().toString();
+      url.searchParams.set("query", queryStr);
+      return ((await ky.get(url.href).json()) as DbResponse)[0].results;
     }
 
-    if (type === 'more') {
+    if (type === "more") {
       // load more
-      const itemsTemp = await getItems()
-      data.value.push(...itemsTemp)
+      const itemsTemp = await getItems();
+      data.value.push(...itemsTemp);
     } else {
       // refresh
       const [totalItemCountTemp, itemsTemp] = await Promise.all([
         getTotalItemCount(),
         getItems(),
-      ])
-      totalItemCount.value = totalItemCountTemp
-      data.value = itemsTemp
+      ]);
+      totalItemCount.value = totalItemCountTemp;
+      data.value = itemsTemp;
     }
   } catch (error) {
-    console.dir(error)
+    console.dir(error);
     window.$notification.error({
-      title: t('general.error'),
+      title: t("general.error"),
       content: `${error}`,
-      meta: dayjs().format('lll'),
-    })
+      meta: dayjs().format("lll"),
+    });
   } finally {
-    loading.value = false
+    loading.value = false;
   }
 }
 
@@ -304,35 +307,35 @@ watch(
     explorerState.value.filters.status,
   ],
   () => queryData(),
-)
+);
 
 // edit file (source and licence)
 async function editFile(): Promise<void> {
   const EditFileDialog = (
-    await import('@renderer/components/EditFileDialog.vue')
-  ).default
+    await import("@renderer/components/EditFileDialog.vue")
+  ).default;
   const modalInstance = window.$modal.create({
     autoFocus: false,
-    title: t('github-files.title-edit'),
-    preset: 'dialog',
+    title: t("github-files.title-edit"),
+    preset: "dialog",
     showIcon: false,
-    style: 'width: 480px; max-width: 100%',
+    style: "width: 480px; max-width: 100%",
     content: () =>
       h(EditFileDialog, {
         onClose: () => modalInstance.destroy(),
         onDone: () => queryData(),
         onLoadingStart: () => {
-          modalInstance.closable = false
-          modalInstance.closeOnEsc = false
-          modalInstance.maskClosable = false
+          modalInstance.closable = false;
+          modalInstance.closeOnEsc = false;
+          modalInstance.maskClosable = false;
         },
         onLoadingEnd: () => {
-          modalInstance.closable = true
-          modalInstance.closeOnEsc = true
-          modalInstance.maskClosable = true
+          modalInstance.closable = true;
+          modalInstance.closeOnEsc = true;
+          modalInstance.maskClosable = true;
         },
         fileRecord: checkedItems.value[0],
       }),
-  })
+  });
 }
 </script>

@@ -34,40 +34,40 @@
         </template>
       </n-input>
       <n-button round secondary :disabled="props.loading" @click="doSearch">
-        {{ t('github-files.btn-search') }}
+        {{ t("github-files.btn-search") }}
       </n-button>
     </n-input-group>
   </Teleport>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useI18n } from 'vue-i18n'
-import { Icon } from '@iconify/vue'
+import { ref } from "vue";
+import { useI18n } from "vue-i18n";
+import { Icon } from "@iconify/vue";
 
-const { t } = useI18n()
-const emit = defineEmits(['search'])
-const searchBarEle = ref()
-const searchText = defineModel<string>('search-text', { required: true })
+const { t } = useI18n();
+const emit = defineEmits(["search"]);
+const searchBarEle = ref();
+const searchText = defineModel<string>("search-text", { required: true });
 const props = defineProps<{
-  loading: boolean
-}>()
-const searchedText = ref('')
+  loading: boolean;
+}>();
+const searchedText = ref("");
 
 function cancelSearch(): void {
-  searchText.value = ``
+  searchText.value = ``;
   // do search only if non empty string have been searched
-  if (searchedText.value !== '') emit('search')
+  if (searchedText.value !== "") emit("search");
   // clear searched text
-  searchedText.value = ''
+  searchedText.value = "";
   // cancel focus on search bar
-  searchBarEle.value.blur()
+  searchBarEle.value.blur();
 }
 
 function doSearch(): void {
-  if (props.loading) return
-  searchedText.value = searchText.value
-  emit('search')
+  if (props.loading) return;
+  searchedText.value = searchText.value;
+  emit("search");
 }
 </script>
 

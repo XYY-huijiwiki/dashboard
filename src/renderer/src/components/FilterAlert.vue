@@ -10,7 +10,7 @@
         <n-flex justify="space-between">
           <n-flex>
             <n-flex v-if="explorerState.filters.type.length">
-              <n-text>{{ t('file-explorer.label-filtered-type') }}</n-text>
+              <n-text>{{ t("file-explorer.label-filtered-type") }}</n-text>
               <n-tag
                 v-for="type in explorerState.filters.type"
                 :key="type"
@@ -21,17 +21,17 @@
               >
                 {{
                   {
-                    image: t('github-files.table-header.btn-filter-by-image'),
-                    video: t('github-files.table-header.btn-filter-by-video'),
-                    audio: t('github-files.table-header.btn-filter-by-audio'),
-                    text: t('github-files.table-header.btn-filter-by-text'),
-                    other: t('github-files.table-header.btn-filter-by-other'),
+                    image: t("github-files.table-header.btn-filter-by-image"),
+                    video: t("github-files.table-header.btn-filter-by-video"),
+                    audio: t("github-files.table-header.btn-filter-by-audio"),
+                    text: t("github-files.table-header.btn-filter-by-text"),
+                    other: t("github-files.table-header.btn-filter-by-other"),
                   }[type]
                 }}
               </n-tag>
             </n-flex>
             <n-flex v-if="explorerState.filters.status.length">
-              <n-text>{{ t('file-explorer.label-filtered-status') }}</n-text>
+              <n-text>{{ t("file-explorer.label-filtered-status") }}</n-text>
               <n-tag
                 v-for="status in explorerState.filters.status"
                 :key="status"
@@ -43,10 +43,10 @@
                 <!-- {{ status }} -->
                 {{
                   {
-                    unused: t('github-files.status-unused'),
-                    wanted: t('github-files.status-wanted'),
-                    'no source': t('github-files.status-no-source'),
-                    'no licence': t('github-files.status-no-licence'),
+                    unused: t("github-files.status-unused"),
+                    wanted: t("github-files.status-wanted"),
+                    "no source": t("github-files.status-no-source"),
+                    "no licence": t("github-files.status-no-licence"),
                   }[status]
                 }}
               </n-tag>
@@ -58,7 +58,7 @@
             icon-placement="right"
             @click="clearFilters()"
           >
-            {{ t('file-explorer.btn-clear-filters') }}
+            {{ t("file-explorer.btn-clear-filters") }}
             <template #icon>
               <icon icon="fluent:filter-dismiss-16-regular" width="16" />
             </template>
@@ -73,32 +73,32 @@
 </template>
 
 <script setup lang="ts">
-import { Icon } from '@iconify/vue'
-import { storeToRefs } from 'pinia'
-import { useI18n } from 'vue-i18n'
+import { Icon } from "@iconify/vue";
+import { storeToRefs } from "pinia";
+import { useI18n } from "vue-i18n";
 
-import { useExplorerStateStore } from '@renderer/stores/explorerState'
+import { useExplorerStateStore } from "@renderer/stores/explorerState";
 
-const { t } = useI18n()
-const { explorerState } = storeToRefs(useExplorerStateStore())
+const { t } = useI18n();
+const { explorerState } = storeToRefs(useExplorerStateStore());
 const { loading } = defineProps<{
-  loading: boolean
-}>()
+  loading: boolean;
+}>();
 
 function clearFilters() {
-  explorerState.value.filters.type = []
-  explorerState.value.filters.status = []
+  explorerState.value.filters.type = [];
+  explorerState.value.filters.status = [];
 }
 
 function removeFilterType(tag: FilterType) {
   explorerState.value.filters.type = explorerState.value.filters.type.filter(
     (type) => type !== tag,
-  )
+  );
 }
 
 function removeFilterStatus(tag: FilterStatus) {
   explorerState.value.filters.status =
-    explorerState.value.filters.status.filter((status) => status !== tag)
+    explorerState.value.filters.status.filter((status) => status !== tag);
 }
 </script>
 

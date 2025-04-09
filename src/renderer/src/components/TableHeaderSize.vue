@@ -13,7 +13,7 @@
       class="!justify-start !-ml-2"
     >
       <n-ellipsis>
-        {{ t('github-files.table-header.label-size') }}
+        {{ t("github-files.table-header.label-size") }}
       </n-ellipsis>
       <icon
         v-if="explorerState.sorterKey === 'size'"
@@ -31,66 +31,66 @@
 </template>
 
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n'
-import { storeToRefs } from 'pinia'
-import { Icon } from '@iconify/vue'
-import { ref, h } from 'vue'
+import { useI18n } from "vue-i18n";
+import { storeToRefs } from "pinia";
+import { Icon } from "@iconify/vue";
+import { ref, h } from "vue";
 
-import { useExplorerStateStore } from '@renderer/stores/explorerState'
+import { useExplorerStateStore } from "@renderer/stores/explorerState";
 
-const { explorerState } = storeToRefs(useExplorerStateStore())
-const { t } = useI18n()
+const { explorerState } = storeToRefs(useExplorerStateStore());
+const { t } = useI18n();
 
 const dropdownOptions = ref([
   {
     label: () =>
-      h('span', { class: 'mr-4' }, t('github-files.table-header.btn-size-asc')),
-    key: 'ascend',
+      h("span", { class: "mr-4" }, t("github-files.table-header.btn-size-asc")),
+    key: "ascend",
     icon: () =>
       h(Icon, {
         icon: `fluent:checkmark-20-regular`,
         width: 20,
         class: {
           invisible: !(
-            explorerState.value.sorterKey === 'size' &&
-            explorerState.value.sorterOrder === 'ascend'
+            explorerState.value.sorterKey === "size" &&
+            explorerState.value.sorterOrder === "ascend"
           ),
         },
       }),
     props: {
       onClick: () => {
-        explorerState.value.sorterKey = 'size'
-        explorerState.value.sorterOrder = 'ascend'
+        explorerState.value.sorterKey = "size";
+        explorerState.value.sorterOrder = "ascend";
       },
     },
   },
   {
     label: () =>
       h(
-        'span',
-        { class: 'mr-4' },
-        t('github-files.table-header.btn-size-desc'),
+        "span",
+        { class: "mr-4" },
+        t("github-files.table-header.btn-size-desc"),
       ),
-    key: 'descend',
+    key: "descend",
     icon: () =>
       h(Icon, {
         icon: `fluent:checkmark-20-regular`,
         width: 20,
         class: {
           invisible: !(
-            explorerState.value.sorterKey === 'size' &&
-            explorerState.value.sorterOrder === 'descend'
+            explorerState.value.sorterKey === "size" &&
+            explorerState.value.sorterOrder === "descend"
           ),
         },
       }),
     props: {
       onClick: () => {
-        explorerState.value.sorterKey = 'size'
-        explorerState.value.sorterOrder = 'descend'
+        explorerState.value.sorterKey = "size";
+        explorerState.value.sorterOrder = "descend";
       },
     },
   },
-])
+]);
 </script>
 
 <style scoped></style>

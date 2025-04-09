@@ -19,7 +19,7 @@
                 :disabled="loading || !themeInput.link"
                 @click="getDownloadLink"
               >
-                {{ t('miui-themes.step2-btn-get-download-link') }}
+                {{ t("miui-themes.step2-btn-get-download-link") }}
               </n-button>
             </n-input-group>
           </n-form-item>
@@ -42,15 +42,15 @@
           <n-form-item :label="t('miui-themes.step2-label-date-screenshot')">
             <n-flex :align="`center`">
               <n-button :disabled="loading" @click="openFile()">
-                {{ t('miui-themes.step2-btn-upload-date-screenshot') }}
+                {{ t("miui-themes.step2-btn-upload-date-screenshot") }}
               </n-button>
               <div>
                 {{
                   themeInput.dateImg
-                    ? t('miui-themes.step2-selected-file', [
+                    ? t("miui-themes.step2-selected-file", [
                         themeInput.dateImg.name,
                       ])
-                    : t('miui-themes.step2-no-file-selected')
+                    : t("miui-themes.step2-no-file-selected")
                 }}
               </div>
             </n-flex>
@@ -66,7 +66,7 @@
             :disabled="!themeInput.link || !themeInput.downloadLink"
             @click="clickNext"
           >
-            {{ t('miui-themes.btn-next-step') }}
+            {{ t("miui-themes.btn-next-step") }}
           </n-button>
         </n-flex>
       </n-flex>
@@ -96,10 +96,10 @@
         </n-flex>
         <n-flex justify="end">
           <n-button @click="currentStep--">
-            {{ t('miui-themes.btn-prev-step') }}
+            {{ t("miui-themes.btn-prev-step") }}
           </n-button>
           <n-button type="primary" @click="(currentStep++, submitInfo())">
-            {{ t('miui-themes.btn-next-step') }}
+            {{ t("miui-themes.btn-next-step") }}
           </n-button>
         </n-flex>
       </n-flex>
@@ -113,7 +113,7 @@
         />
         <n-flex justify="end">
           <n-button @click="currentStep--">
-            {{ t('miui-themes.btn-prev-step') }}
+            {{ t("miui-themes.btn-prev-step") }}
           </n-button>
         </n-flex>
       </n-flex>
@@ -122,173 +122,174 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
-import type { Ref } from 'vue'
-import { useI18n } from 'vue-i18n'
-import dayjs from 'dayjs'
-import dayjsUTC from 'dayjs/plugin/utc'
-import jszip from 'jszip'
-import { xml2json } from 'xml-js'
-import { useFileDialog } from '@vueuse/core'
-import { Octokit } from 'octokit'
-import { errNotify, sleep } from '@renderer/utils'
-import { storeToRefs } from 'pinia'
-import { fileToBase64 } from 'file64'
-import jsSHA from 'jssha'
-import ky from 'ky'
-import type { ProgressStatus } from 'naive-ui'
+import { ref, watch } from "vue";
+import type { Ref } from "vue";
+import { useI18n } from "vue-i18n";
+import dayjs from "dayjs";
+import dayjsUTC from "dayjs/plugin/utc";
+import jszip from "jszip";
+import { xml2json } from "xml-js";
+import { useFileDialog } from "@vueuse/core";
+import { Octokit } from "octokit";
+import { errNotify, sleep } from "@renderer/utils";
+import { storeToRefs } from "pinia";
+import { fileToBase64 } from "file64";
+import jsSHA from "jssha";
+import ky from "ky";
+import type { ProgressStatus } from "naive-ui";
 
-import { getMTZFile, cleanURL } from '@renderer/utils/miui-themes'
-import type { Result } from '@renderer/utils/miui-themes'
-import { useSettingsStore } from '@renderer/stores/settings'
-import { editPage, uploadFile } from '@renderer/utils/mwApi'
+import { getMTZFile, cleanURL } from "@renderer/utils/miui-themes";
+import type { Result } from "@renderer/utils/miui-themes";
+import { useSettingsStore } from "@renderer/stores/settings";
+import { editPage, uploadFile } from "@renderer/utils/mwApi";
 
 // configure i18n
-const { t } = useI18n()
-dayjs.extend(dayjsUTC)
+const { t } = useI18n();
+dayjs.extend(dayjsUTC);
 
-const currentStep = ref(1)
-const result: Ref<Result | null> = ref(null)
-const loading = ref(false)
-const submitPercentage = ref(0)
-const submitStatus: Ref<ProgressStatus> = ref('default')
-const createObjectURL = window.URL.createObjectURL
-const { settings } = storeToRefs(useSettingsStore())
+const currentStep = ref(1);
+const result: Ref<Result | null> = ref(null);
+const loading = ref(false);
+const submitPercentage = ref(0);
+const submitStatus: Ref<ProgressStatus> = ref("default");
+const createObjectURL = window.URL.createObjectURL;
+const { settings } = storeToRefs(useSettingsStore());
 
 watch(currentStep, () => {
   // scroll to top smoothly with offset
-  const element = document.getElementById('mini-dashboard')
+  const element = document.getElementById("mini-dashboard");
   if (element) {
-    const offset = 100
-    const elementPosition = element.getBoundingClientRect().top + window.scrollY
-    const offsetPosition = elementPosition - offset
+    const offset = 100;
+    const elementPosition =
+      element.getBoundingClientRect().top + window.scrollY;
+    const offsetPosition = elementPosition - offset;
 
     window.scrollTo({
       top: offsetPosition,
-      behavior: 'smooth',
-    })
+      behavior: "smooth",
+    });
   }
-})
+});
 
 // Step 1 logic
 type ThemeInput = {
-  downloadLink: string | undefined
-  link: string | undefined
-  date: number | undefined
-  dateImg: File | undefined
-  trivia: string | undefined
-}
+  downloadLink: string | undefined;
+  link: string | undefined;
+  date: number | undefined;
+  dateImg: File | undefined;
+  trivia: string | undefined;
+};
 const themeInput: Ref<ThemeInput> = ref({
   downloadLink: undefined,
   link: undefined,
   date: undefined,
   dateImg: undefined,
   trivia: undefined,
-})
+});
 const { open: openFile, onChange: onChangeFile } = useFileDialog({
-  accept: 'image/*',
-})
+  accept: "image/*",
+});
 onChangeFile((files) => {
-  if (files?.length !== 1) return
-  themeInput.value.dateImg = files[0]
-})
+  if (files?.length !== 1) return;
+  themeInput.value.dateImg = files[0];
+});
 function getDownloadLink() {
   const packId = new URL(
-    cleanURL(themeInput.value.link || ''),
-  ).searchParams.get('packId')
+    cleanURL(themeInput.value.link || ""),
+  ).searchParams.get("packId");
   window.open(
     `https://thm.market.xiaomi.com/thm/download/v2/${packId}?miuiUIVersion=100`,
-  )
+  );
 }
 
 async function clickNext() {
   try {
-    loading.value = true
+    loading.value = true;
 
     // Process input text
     async function getTitleAndSquareImgLink(link: string): Promise<{
-      title: string
-      squareImgLink: string
+      title: string;
+      squareImgLink: string;
     }> {
-      const packID = new URL(link).searchParams.get('packId')
+      const packID = new URL(link).searchParams.get("packId");
       if (!packID) {
-        throw new Error('主题链接格式错误')
+        throw new Error("主题链接格式错误");
       }
       const res = (await (
         await ky.get(
           `${corsProxy}https://zhuti.xiaomi.com/thm/share/picture/${packID}`,
         )
       ).json()) as {
-        downloadUrl: string
-        name: string
-      }
+        downloadUrl: string;
+        name: string;
+      };
       return {
         title: res.name,
         squareImgLink: res.downloadUrl,
-      }
+      };
     }
-    const corsProxy = 'https://cors-proxy.24218079.xyz/'
-    const link = cleanURL(themeInput.value.link || '')
-    const url = new URL(link)
-    url.searchParams.delete('miref')
-    const 主题链接 = url.href
-    const { title, squareImgLink } = await getTitleAndSquareImgLink(link)
-    const 主题名称 = title
+    const corsProxy = "https://cors-proxy.24218079.xyz/";
+    const link = cleanURL(themeInput.value.link || "");
+    const url = new URL(link);
+    url.searchParams.delete("miref");
+    const 主题链接 = url.href;
+    const { title, squareImgLink } = await getTitleAndSquareImgLink(link);
+    const 主题名称 = title;
     const squareImg = new File(
       [await (await fetch(corsProxy + squareImgLink)).blob()],
       `小米主题 ${title}.png`,
-    )
-    const 你知道咩 = themeInput.value.trivia || ''
+    );
+    const 你知道咩 = themeInput.value.trivia || "";
 
     // Process .mtz file
-    const downloadLink = cleanURL(themeInput.value.downloadLink || '')
-    const mtz = await getMTZFile(downloadLink, title)
-    const zipObj = await jszip.loadAsync(mtz)
-    const xmlFile = zipObj.file('description.xml')
-    if (!xmlFile) throw new Error('description.xml不存在')
+    const downloadLink = cleanURL(themeInput.value.downloadLink || "");
+    const mtz = await getMTZFile(downloadLink, title);
+    const zipObj = await jszip.loadAsync(mtz);
+    const xmlFile = zipObj.file("description.xml");
+    if (!xmlFile) throw new Error("description.xml不存在");
     const 发布日期 = themeInput.value.date
-      ? dayjs(themeInput.value.date).format('YYYY-MM-DD')
-      : dayjs(xmlFile.date).utc().format('YYYY-MM-DD')
-    const description_xml = await xmlFile.async('string')
+      ? dayjs(themeInput.value.date).format("YYYY-MM-DD")
+      : dayjs(xmlFile.date).utc().format("YYYY-MM-DD");
+    const description_xml = await xmlFile.async("string");
     const description_json = JSON.parse(
       xml2json(description_xml, { compact: true }),
-    )
-    const 主题作者 = description_json.theme.designer._cdata.trim()
+    );
+    const 主题作者 = description_json.theme.designer._cdata.trim();
     const 主题介绍 = description_json.theme.description._cdata
       .trim()
-      .replace(/[\r\n]{1,2}/g, '<br/>')
-    const allFiles = Object.keys(zipObj.files)
-    let imgs_list = allFiles.filter((file) => file.startsWith('preview/'))
+      .replace(/[\r\n]{1,2}/g, "<br/>");
+    const allFiles = Object.keys(zipObj.files);
+    let imgs_list = allFiles.filter((file) => file.startsWith("preview/"));
     imgs_list.forEach((element, index) => {
-      imgs_list[index] = element.slice(8)
-    })
-    imgs_list = imgs_list.filter((img) => img !== '')
-    const 主题预览 = imgs_list.sort()
+      imgs_list[index] = element.slice(8);
+    });
+    imgs_list = imgs_list.filter((img) => img !== "");
+    const 主题预览 = imgs_list.sort();
     const previews = await Promise.all(
       imgs_list.map(async (img) => {
-        const blob = await zipObj.file(`preview/${img}`)?.async('blob')
+        const blob = await zipObj.file(`preview/${img}`)?.async("blob");
         return blob
           ? new File([blob], `小米主题 ${主题名称} ${img}`)
-          : undefined
+          : undefined;
       }),
-    ).then((files) => files.filter((file) => file !== undefined))
+    ).then((files) => files.filter((file) => file !== undefined));
 
     // Process date image
-    let dateImg: File | undefined
+    let dateImg: File | undefined;
     if (themeInput.value.date) {
       if (!themeInput.value.dateImg) {
-        throw new Error('手动输入日期时，需要提供日期截图')
+        throw new Error("手动输入日期时，需要提供日期截图");
       }
       dateImg = new File(
         [themeInput.value.dateImg],
         `小米主题 ${主题名称} 发布日期截图.jpg`,
-      )
+      );
     }
 
     // Result
     result.value = {
       themeJson: {
-        _hjschema: '小米主题',
+        _hjschema: "小米主题",
         主题名称,
         发布日期,
         主题作者,
@@ -303,13 +304,13 @@ async function clickNext() {
         squareImg,
         previews,
       },
-    }
+    };
 
-    currentStep.value++
+    currentStep.value++;
   } catch (error) {
-    errNotify(t('general.error'), error)
+    errNotify(t("general.error"), error);
   } finally {
-    loading.value = false
+    loading.value = false;
   }
 }
 
@@ -317,66 +318,66 @@ async function clickNext() {
 async function submitInfo() {
   try {
     function err() {
-      submitStatus.value = 'error'
-      loading.value = false
-      throw new Error('提交失败')
+      submitStatus.value = "error";
+      loading.value = false;
+      throw new Error("提交失败");
     }
     function success() {
-      submitPercentage.value += progressChunk
+      submitPercentage.value += progressChunk;
     }
 
-    const themeJson = result.value!.themeJson
+    const themeJson = result.value!.themeJson;
     const files = [
       result.value!.files.dateImg,
       result.value!.files.squareImg,
       ...result.value!.files.previews,
-    ].filter(Boolean)
-    const progressChunk = 100 / (files.length + 4)
+    ].filter(Boolean);
+    const progressChunk = 100 / (files.length + 4);
     for (let index = 0; index < files.length; index++) {
-      const element = files[index]
+      const element = files[index];
       if (await uploadFile(element as File, `{{合理使用}}`)) {
-        success()
+        success();
       } else {
-        err()
+        err();
       }
     }
 
     const editResponse1 = await editPage({
       title: `Data:${themeJson.主题名称}.json`,
       text: JSON.stringify(themeJson),
-    })
+    });
     if (editResponse1.ok) {
-      success()
+      success();
     } else {
-      console.log(editResponse1)
-      err()
+      console.log(editResponse1);
+      err();
     }
 
     const editResponse2 = await editPage({
       title: `${themeJson.主题名称}`,
       text: `{{小米主题}}`,
-    })
+    });
     if (editResponse2.ok) {
-      success()
+      success();
     } else {
-      console.log(editResponse2)
-      err()
+      console.log(editResponse2);
+      err();
     }
 
-    const token = settings.value.ghToken
-    const owner = 'XYY-huijiwiki'
-    const repo = 'MIUI-theme'
-    const path = `mtz/${themeJson.发布日期} ${themeJson.主题名称}.mtz`
-    const message = `upload ${themeJson.发布日期} ${themeJson.主题名称}.mtz`
-    const content = (await fileToBase64(result.value!.files.mtz)).split(',')[1]
-    const shaObj = new jsSHA('SHA-1', 'B64')
-    shaObj.update(content)
-    const sha = shaObj.getHash('HEX')
-    success()
+    const token = settings.value.ghToken;
+    const owner = "XYY-huijiwiki";
+    const repo = "MIUI-theme";
+    const path = `mtz/${themeJson.发布日期} ${themeJson.主题名称}.mtz`;
+    const message = `upload ${themeJson.发布日期} ${themeJson.主题名称}.mtz`;
+    const content = (await fileToBase64(result.value!.files.mtz)).split(",")[1];
+    const shaObj = new jsSHA("SHA-1", "B64");
+    shaObj.update(content);
+    const sha = shaObj.getHash("HEX");
+    success();
 
-    const octokit = new Octokit({ auth: token })
+    const octokit = new Octokit({ auth: token });
     const octokitRes = await octokit.request(
-      'PUT /repos/{owner}/{repo}/contents/{path}',
+      "PUT /repos/{owner}/{repo}/contents/{path}",
       {
         owner,
         repo,
@@ -385,25 +386,25 @@ async function submitInfo() {
         message,
         content,
         headers: {
-          'X-GitHub-Api-Version': '2022-11-28',
+          "X-GitHub-Api-Version": "2022-11-28",
         },
       },
-    )
+    );
     if (octokitRes.status === 201) {
-      success()
+      success();
     } else {
-      err()
+      err();
     }
 
-    await sleep(500)
-    submitStatus.value = 'success'
+    await sleep(500);
+    submitStatus.value = "success";
   } catch (error) {
     window.$notification.error({
-      title: t('general.error'),
+      title: t("general.error"),
       content: `${error}`,
-    })
-    submitStatus.value = 'error'
-    loading.value = false
+    });
+    submitStatus.value = "error";
+    loading.value = false;
   }
 }
 </script>

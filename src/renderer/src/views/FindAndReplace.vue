@@ -7,7 +7,7 @@
         size="small"
         @click="showPageListModel = true"
       >
-        {{ t('find-and-replace.btn-which-pages-need-editing') }}
+        {{ t("find-and-replace.btn-which-pages-need-editing") }}
       </n-button>
       <n-button
         type="info"
@@ -15,7 +15,7 @@
         size="small"
         @click="showFindAndReplaceModel = true"
       >
-        {{ t('find-and-replace.btn-specify-find-and-replace-terms') }}
+        {{ t("find-and-replace.btn-specify-find-and-replace-terms") }}
       </n-button>
     </n-flex>
     <n-spin :show="loading" class="flex-1" content-class="h-full">
@@ -39,7 +39,7 @@
           <n-input-group-label size="small">
             {{
               toEditList[currentPageIndex] ||
-              t('find-and-replace.msg-no-page-needs-editing')
+              t("find-and-replace.msg-no-page-needs-editing")
             }}
           </n-input-group-label>
           <n-button
@@ -102,7 +102,7 @@
     </template>
     <template #action>
       <n-button type="primary" @click="showPageListModel = false">
-        {{ t('general.btn-ok') }}
+        {{ t("general.btn-ok") }}
       </n-button>
     </template>
   </n-modal>
@@ -127,7 +127,7 @@
                 useRegex: false,
                 search: '',
                 replace: '',
-              }
+              };
             }
           "
         >
@@ -156,7 +156,7 @@
                         </template>
                       </n-button>
                     </template>
-                    {{ t('find-and-replace.label-use-regular-expression') }}
+                    {{ t("find-and-replace.label-use-regular-expression") }}
                   </n-tooltip>
                 </template>
               </n-input>
@@ -175,268 +175,268 @@
         type="primary"
         @click="((showFindAndReplaceModel = false), applyRegex())"
       >
-        {{ t('general.btn-ok') }}
+        {{ t("general.btn-ok") }}
       </n-button>
     </template>
   </n-modal>
 </template>
 
 <script setup lang="ts">
-import loader from '@monaco-editor/loader'
-import { ref, type Ref, watch, onMounted } from 'vue'
-import type { editor, Uri } from 'monaco-editor'
-import { useI18n } from 'vue-i18n'
-import type { SelectOption } from 'naive-ui'
-import { shikiToMonaco } from '@shikijs/monaco'
-import { createHighlighter } from 'shiki'
-import { storeToRefs } from 'pinia'
-import { usePreferredDark } from '@vueuse/core'
-import { Icon } from '@iconify/vue'
+import loader from "@monaco-editor/loader";
+import { ref, type Ref, watch, onMounted } from "vue";
+import type { editor, Uri } from "monaco-editor";
+import { useI18n } from "vue-i18n";
+import type { SelectOption } from "naive-ui";
+import { shikiToMonaco } from "@shikijs/monaco";
+import { createHighlighter } from "shiki";
+import { storeToRefs } from "pinia";
+import { usePreferredDark } from "@vueuse/core";
+import { Icon } from "@iconify/vue";
 
-import { getPage, editPage } from '@renderer/utils/mwApi'
-import { errNotify } from '@renderer/utils'
-import { useLocalesStore } from '@renderer/stores/locales'
-import { xor } from 'lodash-es'
+import { getPage, editPage } from "@renderer/utils/mwApi";
+import { errNotify } from "@renderer/utils";
+import { useLocalesStore } from "@renderer/stores/locales";
+import { xor } from "lodash-es";
 
-const { t } = useI18n()
-const loading = ref(false)
-const { langCode } = storeToRefs(useLocalesStore())
-const summary: Ref<undefined | string> = ref()
-const errorMsg: Ref<string> = ref('')
+const { t } = useI18n();
+const loading = ref(false);
+const { langCode } = storeToRefs(useLocalesStore());
+const summary: Ref<undefined | string> = ref();
+const errorMsg: Ref<string> = ref("");
 
 async function saveChanges() {
   if (!summary.value) {
     window.$dialog.error({
-      title: 'summary-empty',
-      content: 'summary-empty',
-      positiveText: t('general.btn-confirm'),
+      title: "summary-empty",
+      content: "summary-empty",
+      positiveText: t("general.btn-confirm"),
       autoFocus: false,
-    })
-    return
+    });
+    return;
   }
 
-  loading.value = true
+  loading.value = true;
 
   try {
-    const newCode = editorInstance.getModifiedEditor().getValue()
+    const newCode = editorInstance.getModifiedEditor().getValue();
     const response = await editPage({
       title: toEditList.value[currentPageIndex.value],
       text: newCode,
       summary: summary.value,
-    })
+    });
     if (!response.ok)
       errNotify(
-        t('mediawiki.msg-page-edit-failed', [
+        t("mediawiki.msg-page-edit-failed", [
           toEditList.value[currentPageIndex.value],
         ]),
         response.body,
-      )
+      );
     else
       window.$message.success(
-        t('mediawiki.msg-page-edited', [
+        t("mediawiki.msg-page-edited", [
           toEditList.value[currentPageIndex.value],
         ]),
-      )
+      );
   } catch (e) {
-    errNotify(t('general.error'), e)
+    errNotify(t("general.error"), e);
   } finally {
     // remove page from list
     toEditList.value = xor(toEditList.value, [
       toEditList.value[currentPageIndex.value],
-    ])
+    ]);
     // adjust current page num
     if (currentPageIndex.value > toEditList.value.length - 1) {
-      currentPageIndex.value = toEditList.value.length - 1
+      currentPageIndex.value = toEditList.value.length - 1;
     }
     // stop loading
-    loading.value = false
+    loading.value = false;
   }
 }
 
 // #region list pages
-const showPageListModel: Ref<boolean> = ref(false)
-const toEditList: Ref<string[]> = ref([])
+const showPageListModel: Ref<boolean> = ref(false);
+const toEditList: Ref<string[]> = ref([]);
 watch(
   toEditList,
   (val) => {
     if (val.length === 0) {
-      errorMsg.value = t('find-and-replace.msg-no-page-needs-editing')
+      errorMsg.value = t("find-and-replace.msg-no-page-needs-editing");
     }
   },
   { immediate: true },
-)
-const currentPageIndex: Ref<number> = ref(0)
-const selectPagesValue: Ref<'xlsx' | 'txt'> = ref('txt')
+);
+const currentPageIndex: Ref<number> = ref(0);
+const selectPagesValue: Ref<"xlsx" | "txt"> = ref("txt");
 const selectPagesOptions: Ref<SelectOption[]> = ref([
   {
-    label: t('find-and-replace.label-select-pages-by-txt'),
-    value: 'txt',
+    label: t("find-and-replace.label-select-pages-by-txt"),
+    value: "txt",
   },
   {
-    label: t('find-and-replace.label-select-pages-by-xlsx'),
-    value: 'xlsx',
+    label: t("find-and-replace.label-select-pages-by-xlsx"),
+    value: "xlsx",
     disabled: true,
   },
   {
-    label: t('find-and-replace.label-select-pages-by-category'),
-    value: 'category',
+    label: t("find-and-replace.label-select-pages-by-category"),
+    value: "category",
     disabled: true,
   },
-])
+]);
 const search = {
   txt: () => {
-    const input = document.createElement('input')
-    input.type = 'file'
-    input.accept = '.txt'
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = ".txt";
     input.onchange = async () => {
-      if (!input.files) return
-      let txtString = await input.files[0].text()
-      if (!txtString) return
+      if (!input.files) return;
+      let txtString = await input.files[0].text();
+      if (!txtString) return;
       // normalise line breaks
-      txtString = txtString.replace(/\r\n/g, '\n')
+      txtString = txtString.replace(/\r\n/g, "\n");
       // split by line breaks
-      let list = txtString.split('\n')
+      let list = txtString.split("\n");
       // trim
-      list = list.map((item) => item.trim())
+      list = list.map((item) => item.trim());
       // remove empty
-      list = list.filter((item) => item !== '')
+      list = list.filter((item) => item !== "");
       // remove duplicate
-      list = [...new Set(list)]
-      toEditList.value = list
-    }
-    input.click()
+      list = [...new Set(list)];
+      toEditList.value = list;
+    };
+    input.click();
   },
-}
+};
 // #endregion
 
 // #region find and replace terms
-const showFindAndReplaceModel: Ref<boolean> = ref(false)
+const showFindAndReplaceModel: Ref<boolean> = ref(false);
 const regexList: Ref<
   {
-    isCheck: boolean
-    useRegex: boolean
-    search: string
-    replace: string
+    isCheck: boolean;
+    useRegex: boolean;
+    search: string;
+    replace: string;
   }[]
-> = ref([])
+> = ref([]);
 function applyRegex() {
-  if (toEditList.value.length === 0) return
+  if (toEditList.value.length === 0) return;
   try {
-    const newCode = getNewCode(orgCode.value)
+    const newCode = getNewCode(orgCode.value);
     editorInstance.setModel({
-      original: createMonacoModel(orgCode.value, 'wikitext'),
-      modified: createMonacoModel(newCode, 'wikitext'),
-    })
+      original: createMonacoModel(orgCode.value, "wikitext"),
+      modified: createMonacoModel(newCode, "wikitext"),
+    });
     if (newCode === orgCode.value) {
-      window.$message.info(t('find-and-replace.msg-no-change'))
+      window.$message.info(t("find-and-replace.msg-no-change"));
     }
-    errorMsg.value = ''
+    errorMsg.value = "";
   } catch (error) {
-    errNotify(t('general.error'), error)
+    errNotify(t("general.error"), error);
   }
 }
 // #endregion
 
 // #region monaco editor
-const monacoEditorEle: Ref<HTMLElement | null> = ref(null)
-let editorInstance: editor.IStandaloneDiffEditor
-let setMonacoTheme: (theme: string) => void
+const monacoEditorEle: Ref<HTMLElement | null> = ref(null);
+let editorInstance: editor.IStandaloneDiffEditor;
+let setMonacoTheme: (theme: string) => void;
 let createMonacoModel: (
   value: string,
   language?: string,
   uri?: Uri,
-) => editor.ITextModel
-let resolveWaitMonaco: () => void
+) => editor.ITextModel;
+let resolveWaitMonaco: () => void;
 const waitMonaco = new Promise<void>((resolve) => {
-  resolveWaitMonaco = resolve
-})
+  resolveWaitMonaco = resolve;
+});
 onMounted(async () => {
-  if (!monacoEditorEle.value) throw new Error('monacoEditor is null')
+  if (!monacoEditorEle.value) throw new Error("monacoEditor is null");
 
   // #region get language code for monaco
   function getLangCode(input: string): string {
     const supported = new Set([
-      'en',
-      'de',
-      'es',
-      'fr',
-      'it',
-      'ja',
-      'ko',
-      'ru',
-      'zh-cn',
-      'zh-tw',
-    ])
+      "en",
+      "de",
+      "es",
+      "fr",
+      "it",
+      "ja",
+      "ko",
+      "ru",
+      "zh-cn",
+      "zh-tw",
+    ]);
 
     try {
-      let locale: Intl.Locale
+      let locale: Intl.Locale;
       try {
-        locale = new Intl.Locale(input)
+        locale = new Intl.Locale(input);
       } catch {
         // Handle invalid locale format
-        return 'en'
+        return "en";
       }
 
       // Attempt to maximize the locale to get the most specific information
-      locale = locale.maximize()
+      locale = locale.maximize();
 
-      const baseLang = locale.language.toLowerCase()
+      const baseLang = locale.language.toLowerCase();
 
       // Handle non-Chinese supported languages
       if (supported.has(baseLang)) {
-        return baseLang
+        return baseLang;
       }
 
       // Handle Chinese variants
-      if (baseLang === 'zh') {
-        const region = (locale.region || '').toUpperCase()
-        const script = (locale.script || '').toLowerCase()
+      if (baseLang === "zh") {
+        const region = (locale.region || "").toUpperCase();
+        const script = (locale.script || "").toLowerCase();
 
         // Region-based matching
-        if (['CN', 'SG'].includes(region)) return 'zh-cn'
-        if (['TW', 'HK', 'MO'].includes(region)) return 'zh-tw'
+        if (["CN", "SG"].includes(region)) return "zh-cn";
+        if (["TW", "HK", "MO"].includes(region)) return "zh-tw";
 
         // Script-based matching
-        if (script === 'hans') return 'zh-cn'
-        if (script === 'hant') return 'zh-tw'
+        if (script === "hans") return "zh-cn";
+        if (script === "hant") return "zh-tw";
 
         // Default for Chinese (Simplified Chinese)
-        return 'zh-cn'
+        return "zh-cn";
       }
     } catch (e) {
       // Fall through to default return
     }
 
-    return 'en'
+    return "en";
   }
   //  #endregion
 
   const highlighter = await createHighlighter({
-    themes: ['dark-plus', 'light-plus'],
-    langs: ['wikitext', 'json', 'html', 'javascript', 'css', 'lua'],
-  })
+    themes: ["dark-plus", "light-plus"],
+    langs: ["wikitext", "json", "html", "javascript", "css", "lua"],
+  });
 
   loader.config({
-    'vs/nls': {
+    "vs/nls": {
       availableLanguages: {
-        '*': getLangCode(langCode.value),
+        "*": getLangCode(langCode.value),
       },
     },
-  })
+  });
 
-  const monacoInstance = await loader.init()
-  monacoInstance.languages.register({ id: 'wikitext' })
-  shikiToMonaco(highlighter, monacoInstance)
+  const monacoInstance = await loader.init();
+  monacoInstance.languages.register({ id: "wikitext" });
+  shikiToMonaco(highlighter, monacoInstance);
 
   // Initialize diff editor
   const {
     editor: { setTheme, createDiffEditor, createModel },
-  } = monacoInstance
+  } = monacoInstance;
   editorInstance = createDiffEditor(monacoEditorEle.value, {
-    theme: isDark.value ? 'dark-plus' : 'light-plus',
+    theme: isDark.value ? "dark-plus" : "light-plus",
     automaticLayout: true,
     scrollBeyondLastLine: false,
-    wordWrap: 'on',
+    wordWrap: "on",
     /*
      * TODO: see if any updates in this issue: https://github.com/microsoft/monaco-editor/discussions/4454#discussioncomment-11111244
      * somehow `useInlineViewWhenSpaceIsLimited` must be set to false
@@ -449,76 +449,76 @@ onMounted(async () => {
     hideUnchangedRegions: {
       enabled: true,
     },
-  })
-  setMonacoTheme = setTheme
-  createMonacoModel = createModel
+  });
+  setMonacoTheme = setTheme;
+  createMonacoModel = createModel;
 
-  resolveWaitMonaco()
-})
+  resolveWaitMonaco();
+});
 // Theme Management
-const isDark = usePreferredDark()
+const isDark = usePreferredDark();
 watch(isDark, async () => {
-  await waitMonaco
-  setMonacoTheme(isDark.value ? 'dark-plus' : 'light-plus')
-})
+  await waitMonaco;
+  setMonacoTheme(isDark.value ? "dark-plus" : "light-plus");
+});
 // display the diff editor
-const orgCode = ref('')
+const orgCode = ref("");
 watch(
   () => toEditList.value[currentPageIndex.value],
   async () => {
-    loading.value = true
+    loading.value = true;
     try {
-      await waitMonaco
-      const pageName = toEditList.value[currentPageIndex.value]
+      await waitMonaco;
+      const pageName = toEditList.value[currentPageIndex.value];
       if (!pageName) {
-        errorMsg.value = t('find-and-replace.msg-no-page-needs-editing')
-        return
+        errorMsg.value = t("find-and-replace.msg-no-page-needs-editing");
+        return;
       }
-      const pageContent = await getPage(pageName)
+      const pageContent = await getPage(pageName);
       if (!pageContent) {
-        errorMsg.value = t('find-and-replace.msg-page-not-found')
-        return
+        errorMsg.value = t("find-and-replace.msg-page-not-found");
+        return;
       }
-      orgCode.value = pageContent.content
-      const newCode = getNewCode(orgCode.value)
+      orgCode.value = pageContent.content;
+      const newCode = getNewCode(orgCode.value);
       if (newCode === orgCode.value) {
-        window.$message.info(t('find-and-replace.msg-no-change'))
+        window.$message.info(t("find-and-replace.msg-no-change"));
       }
       editorInstance.setModel({
-        original: createMonacoModel(orgCode.value, 'wikitext'),
-        modified: createMonacoModel(newCode, 'wikitext'),
-      })
-      errorMsg.value = ''
+        original: createMonacoModel(orgCode.value, "wikitext"),
+        modified: createMonacoModel(newCode, "wikitext"),
+      });
+      errorMsg.value = "";
     } catch (error) {
-      console.error(error)
-      errNotify(t('general.error'), error)
+      console.error(error);
+      errNotify(t("general.error"), error);
     } finally {
-      loading.value = false
+      loading.value = false;
     }
   },
-)
+);
 function getNewCode(orgCode: string): string {
-  let newCode = orgCode
+  let newCode = orgCode;
   for (let index = 0; index < regexList.value.length; index++) {
-    const element = regexList.value[index]
-    if (!element.isCheck || !element.search) continue
+    const element = regexList.value[index];
+    if (!element.isCheck || !element.search) continue;
     // check regex valid and replace
     try {
       if (element.useRegex) {
         newCode = newCode.replace(
-          new RegExp(element.search, 'g'),
+          new RegExp(element.search, "g"),
           // JSON.parse to process special characters like \n
           JSON.parse('"' + element.replace.replace(/"/g, '\\"') + '"'),
-        )
+        );
       } else {
         // escape regex
-        newCode = newCode.replaceAll(element.search, element.replace)
+        newCode = newCode.replaceAll(element.search, element.replace);
       }
     } catch (error) {
-      errNotify(t('general.error'), error)
+      errNotify(t("general.error"), error);
     }
   }
-  return newCode
+  return newCode;
 }
 // #endregion
 </script>

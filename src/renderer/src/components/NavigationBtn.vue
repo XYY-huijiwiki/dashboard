@@ -29,40 +29,40 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { Icon } from '@iconify/vue'
+import { ref } from "vue";
+import { Icon } from "@iconify/vue";
 
-const emits = defineEmits(['click'])
+const emits = defineEmits(["click"]);
 const props = defineProps<{
-  collapsed: boolean
-}>()
-const isPressed = ref(false)
-const pressStartTime = ref(0)
-let animationTimeout: NodeJS.Timeout | null = null
+  collapsed: boolean;
+}>();
+const isPressed = ref(false);
+const pressStartTime = ref(0);
+let animationTimeout: NodeJS.Timeout | null = null;
 
 function handleStart(event: MouseEvent | TouchEvent) {
-  if (event.cancelable) event.preventDefault()
-  pressStartTime.value = Date.now()
-  isPressed.value = true
+  if (event.cancelable) event.preventDefault();
+  pressStartTime.value = Date.now();
+  isPressed.value = true;
 
   // Clear any existing timeout
   if (animationTimeout) {
-    clearTimeout(animationTimeout)
-    animationTimeout = null
+    clearTimeout(animationTimeout);
+    animationTimeout = null;
   }
 }
 
 function handleEnd(event: MouseEvent | TouchEvent) {
-  if (event.cancelable) event.preventDefault()
-  const elapsed = Date.now() - pressStartTime.value
+  if (event.cancelable) event.preventDefault();
+  const elapsed = Date.now() - pressStartTime.value;
 
   if (elapsed < 300) {
-    const remaining = 300 - elapsed
+    const remaining = 300 - elapsed;
     animationTimeout = setTimeout(() => {
-      isPressed.value = false
-    }, remaining)
+      isPressed.value = false;
+    }, remaining);
   } else {
-    isPressed.value = false
+    isPressed.value = false;
   }
 }
 </script>

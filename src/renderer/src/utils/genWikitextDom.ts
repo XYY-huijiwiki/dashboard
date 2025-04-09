@@ -1,21 +1,21 @@
-import { parse } from 'wikity'
-import { h, type VNode } from 'vue'
+import { parse } from "wikity";
+import { h, type VNode } from "vue";
 
 function genWikitextDom(wikitext: string): VNode {
-  const rawHtmlStr = parse(wikitext)
+  const rawHtmlStr = parse(wikitext);
 
   // Ensure all the links open in the external browser
-  const articleEle = document.createElement('article')
-  articleEle.innerHTML = rawHtmlStr
-  const links = articleEle.querySelectorAll('a')
+  const articleEle = document.createElement("article");
+  articleEle.innerHTML = rawHtmlStr;
+  const links = articleEle.querySelectorAll("a");
   links.forEach((link) => {
-    link.setAttribute('target', '_blank')
-  })
+    link.setAttribute("target", "_blank");
+  });
 
-  return h('article', {
+  return h("article", {
     innerHTML: articleEle.innerHTML,
-    class: 'markdown-body',
-  })
+    class: "markdown-body",
+  });
 }
 
-export default genWikitextDom
+export default genWikitextDom;

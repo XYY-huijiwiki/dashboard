@@ -34,98 +34,98 @@
 </template>
 
 <script setup lang="ts">
-import { ref, h, computed, type Ref } from 'vue'
-import { useI18n } from 'vue-i18n'
-import { onBeforeRouteLeave } from 'vue-router'
-import type { DataTableColumn, SelectOption } from 'naive-ui'
-import { NA, NFlex, NTag } from 'naive-ui'
-import { read, utils } from 'xlsx'
+import { ref, h, computed, type Ref } from "vue";
+import { useI18n } from "vue-i18n";
+import { onBeforeRouteLeave } from "vue-router";
+import type { DataTableColumn, SelectOption } from "naive-ui";
+import { NA, NFlex, NTag } from "naive-ui";
+import { read, utils } from "xlsx";
 
-import { renamePage } from '@renderer/utils/mwApi'
-import { sleep } from '@renderer/utils'
-import { isArray } from 'lodash-es'
+import { renamePage } from "@renderer/utils/mwApi";
+import { sleep } from "@renderer/utils";
+import { isArray } from "lodash-es";
 
 // router guard to prevent leaving page when deleting or undeleting
 onBeforeRouteLeave(() => {
   if (loading.value) {
     window.$dialog.error({
-      title: t('general.text-leave-warning-title'),
-      content: t('general.text-leave-warning-content'),
-      positiveText: t('general.btn-confirm'),
+      title: t("general.text-leave-warning-title"),
+      content: t("general.text-leave-warning-content"),
+      positiveText: t("general.btn-confirm"),
       autoFocus: false,
-      transformOrigin: 'center',
-    })
-    return false
+      transformOrigin: "center",
+    });
+    return false;
   } else {
-    return true
+    return true;
   }
-})
+});
 
-const { t } = useI18n()
-const summary: Ref<string | undefined> = ref()
-const loading = ref(false)
+const { t } = useI18n();
+const summary: Ref<string | undefined> = ref();
+const loading = ref(false);
 
 async function rename() {
   if (!summary.value) {
     window.$message.error(
-      t('delete-and-undelete.delete.error-no-delete-reason'),
-    )
-    return
+      t("delete-and-undelete.delete.error-no-delete-reason"),
+    );
+    return;
   }
 
-  loading.value = true
+  loading.value = true;
 
   for (const row of data.value) {
-    if (row.status !== 'to-do') continue
+    if (row.status !== "to-do") continue;
     const renameResult = await renamePage({
       from: row.titleFrom,
       to: row.titleTo,
       reason: summary.value,
       noredirect: true,
-    })
+    });
     if (renameResult.ok) {
-      row.status = 'done'
+      row.status = "done";
     } else {
       const errorTypeMapper: Record<string, string> = {
-        missingtitle: t('rename-pages.errors.missingtitle'),
-        nofrom: t('rename-pages.errors.nofrom'),
-        noto: t('rename-pages.errors.noto'),
-        notoken: t('rename-pages.errors.notoken'),
-        'cantmove-anon': t('rename-pages.errors.cantmove-anon'),
-        cantmove: t('rename-pages.errors.cantmove'),
-        cantmovefile: t('rename-pages.errors.cantmovefile'),
-        selfmove: t('rename-pages.errors.selfmove'),
-        immobilenamespace: t('rename-pages.errors.immobilenamespace'),
-        articleexists: t('rename-pages.errors.articleexists'),
-        redirectexists: t('rename-pages.errors.redirectexists'),
-        protectedpage: t('rename-pages.errors.protectedpage'),
-        protectedtitle: t('rename-pages.errors.protectedtitle'),
-        nonfilenamespace: t('rename-pages.errors.nonfilenamespace'),
-        filetypemismatch: t('rename-pages.errors.filetypemismatch'),
-        mustbeposted: t('rename-pages.errors.mustbeposted'),
-      }
-      const error = renameResult.body
-      const errorDetail = errorTypeMapper[error] || error
-      row.errorDetail = errorDetail
-      row.status = 'error'
+        missingtitle: t("rename-pages.errors.missingtitle"),
+        nofrom: t("rename-pages.errors.nofrom"),
+        noto: t("rename-pages.errors.noto"),
+        notoken: t("rename-pages.errors.notoken"),
+        "cantmove-anon": t("rename-pages.errors.cantmove-anon"),
+        cantmove: t("rename-pages.errors.cantmove"),
+        cantmovefile: t("rename-pages.errors.cantmovefile"),
+        selfmove: t("rename-pages.errors.selfmove"),
+        immobilenamespace: t("rename-pages.errors.immobilenamespace"),
+        articleexists: t("rename-pages.errors.articleexists"),
+        redirectexists: t("rename-pages.errors.redirectexists"),
+        protectedpage: t("rename-pages.errors.protectedpage"),
+        protectedtitle: t("rename-pages.errors.protectedtitle"),
+        nonfilenamespace: t("rename-pages.errors.nonfilenamespace"),
+        filetypemismatch: t("rename-pages.errors.filetypemismatch"),
+        mustbeposted: t("rename-pages.errors.mustbeposted"),
+      };
+      const error = renameResult.body;
+      const errorDetail = errorTypeMapper[error] || error;
+      row.errorDetail = errorDetail;
+      row.status = "error";
     }
 
-    await sleep(500)
+    await sleep(500);
   }
-  loading.value = false
+  loading.value = false;
 }
 
 // #region Data Table
 type RenameState = {
-  titleFrom: string
-  titleTo: string
-  status: 'to-do' | 'doing' | 'done' | 'error'
-  errorDetail?: string
-}
-const data: Ref<RenameState[]> = ref([])
+  titleFrom: string;
+  titleTo: string;
+  status: "to-do" | "doing" | "done" | "error";
+  errorDetail?: string;
+};
+const data: Ref<RenameState[]> = ref([]);
 const columns: Ref<DataTableColumn<RenameState>[]> = computed(() => [
   {
-    key: 'title-from',
+    key: "title-from",
     ellipsis: { tooltip: true },
     resizable: true,
     minWidth: 240,
@@ -134,15 +134,15 @@ const columns: Ref<DataTableColumn<RenameState>[]> = computed(() => [
       return h(
         NA,
         {
-          href: location.origin + '/wiki/' + rowData.titleFrom,
-          target: '_blank',
+          href: location.origin + "/wiki/" + rowData.titleFrom,
+          target: "_blank",
         },
         () => rowData.titleFrom,
-      )
+      );
     },
   },
   {
-    key: 'title-to',
+    key: "title-to",
     ellipsis: { tooltip: true },
     resizable: true,
     minWidth: 240,
@@ -151,15 +151,15 @@ const columns: Ref<DataTableColumn<RenameState>[]> = computed(() => [
       return h(
         NA,
         {
-          href: location.origin + '/wiki/' + rowData.titleTo,
-          target: '_blank',
+          href: location.origin + "/wiki/" + rowData.titleTo,
+          target: "_blank",
         },
         () => rowData.titleTo,
-      )
+      );
     },
   },
   {
-    key: 'status',
+    key: "status",
     title: () => t(`rename-pages.label-table-status`),
     resizable: true,
     minWidth: 240,
@@ -177,48 +177,48 @@ const columns: Ref<DataTableColumn<RenameState>[]> = computed(() => [
           NTag,
           {
             type:
-              rowData.status === 'to-do'
-                ? 'info'
-                : rowData.status === 'doing'
-                  ? 'warning'
-                  : rowData.status === 'done'
-                    ? 'success'
-                    : 'error',
+              rowData.status === "to-do"
+                ? "info"
+                : rowData.status === "doing"
+                  ? "warning"
+                  : rowData.status === "done"
+                    ? "success"
+                    : "error",
             bordered: false,
-            class: [rowData.errorDetail && 'cursor-help'],
+            class: [rowData.errorDetail && "cursor-help"],
           },
           () => {
             const mapper = {
-              'to-do': t('rename-pages.label-status-to-do'),
-              doing: t('rename-pages.label-status-doing'),
-              done: t('rename-pages.label-status-done'),
-              error: t('general.error'),
-            }
-            return mapper[rowData.status]
+              "to-do": t("rename-pages.label-status-to-do"),
+              doing: t("rename-pages.label-status-doing"),
+              done: t("rename-pages.label-status-done"),
+              error: t("general.error"),
+            };
+            return mapper[rowData.status];
           },
         ),
-        h('span', rowData.errorDetail),
-      ])
+        h("span", rowData.errorDetail),
+      ]);
     },
   },
-])
+]);
 // #endregion
 
 // #region select pages
-const selectPagesValue: Ref<'xlsx'> = ref('xlsx')
+const selectPagesValue: Ref<"xlsx"> = ref("xlsx");
 const selectPagesOptions: Ref<SelectOption[]> = ref([
   {
-    label: t('rename-pages.label-select-pages-by-xlsx'),
-    value: 'xlsx',
+    label: t("rename-pages.label-select-pages-by-xlsx"),
+    value: "xlsx",
   },
-])
+]);
 const search = {
   xlsx: () => {
-    const input = document.createElement('input')
-    input.type = 'file'
-    input.accept = '.xlsx'
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = ".xlsx";
     input.onchange = async () => {
-      if (!input.files) return
+      if (!input.files) return;
 
       /*
         convert
@@ -230,26 +230,26 @@ const search = {
           { titleFrom: orgPageName_2, titleTo: newPageName_2, status: 'to-do' }
         ]
       */
-      const file = input.files[0]
-      const fileArrayBuffer = await file.arrayBuffer()
-      const workbook = read(fileArrayBuffer)
-      const sheetName = workbook.SheetNames[0]
-      const worksheet = workbook.Sheets[sheetName]
-      const json = utils.sheet_to_json(worksheet, { header: 1 })
+      const file = input.files[0];
+      const fileArrayBuffer = await file.arrayBuffer();
+      const workbook = read(fileArrayBuffer);
+      const sheetName = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[sheetName];
+      const json = utils.sheet_to_json(worksheet, { header: 1 });
       const renameData: RenameState[] = json.map((row) => {
         if (!isArray(row) || row.length !== 2)
-          throw new Error('Invalid data format')
+          throw new Error("Invalid data format");
         return {
           titleFrom: `${row[0]}`,
           titleTo: `${row[1]}`,
-          status: 'to-do',
-        }
-      })
-      data.value = renameData
-    }
-    input.click()
+          status: "to-do",
+        };
+      });
+      data.value = renameData;
+    };
+    input.click();
   },
-}
+};
 // #endregion
 </script>
 

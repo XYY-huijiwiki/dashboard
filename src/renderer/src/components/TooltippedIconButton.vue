@@ -16,12 +16,12 @@
 </template>
 
 <script setup lang="ts">
-import { NTooltip, NButton } from 'naive-ui'
+import { NTooltip, NButton } from "naive-ui";
 defineProps<{
-  text: string
-  disabled?: boolean
-}>()
-const emit = defineEmits(['click'])
+  text: string;
+  disabled?: boolean;
+}>();
+const emit = defineEmits(["click"]);
 </script>
 
 <style scoped></style>

@@ -36,9 +36,9 @@
                   center
                   @click="
                     (e: MouseEvent) => {
-                      if (e.ctrlKey || e.metaKey) return
-                      checkedRowKeys = [item.file_name]
-                      emit('file-preview')
+                      if (e.ctrlKey || e.metaKey) return;
+                      checkedRowKeys = [item.file_name];
+                      emit('file-preview');
                     }
                   "
                 >
@@ -48,7 +48,7 @@
                 {{
                   dayjs(
                     item.is_deleted ? item.deleted_at : item.updated_at,
-                  ).format('ll')
+                  ).format("ll")
                 }}
               </div>
               <n-checkbox
@@ -56,12 +56,12 @@
                 :checked="checkedRowKeys.includes(item.file_name)"
                 @click="
                   (e: MouseEvent) => {
-                    e.stopPropagation()
+                    e.stopPropagation();
                     checkedRowKeys.includes(item.file_name)
                       ? (checkedRowKeys = checkedRowKeys.filter(
                           (i) => i !== item.file_name,
                         ))
-                      : (checkedRowKeys = [...checkedRowKeys, item.file_name])
+                      : (checkedRowKeys = [...checkedRowKeys, item.file_name]);
                   }
                 "
               />
@@ -89,57 +89,57 @@
 </template>
 
 <script setup lang="ts">
-import type { DataTableCreateRowKey } from 'naive-ui'
-import { nextTick, ref } from 'vue'
-import dayjs from 'dayjs'
-import { dayjsLocales } from '@renderer/stores/locales'
-import localizedFormat from 'dayjs/plugin/localizedFormat'
-import { DragSelect, DragSelectOption } from '@coleqiu/vue-drag-select'
-import { genThumbUrl } from '@renderer/utils/genUrl'
+import type { DataTableCreateRowKey } from "naive-ui";
+import { nextTick, ref } from "vue";
+import dayjs from "dayjs";
+import { dayjsLocales } from "@renderer/stores/locales";
+import localizedFormat from "dayjs/plugin/localizedFormat";
+import { DragSelect, DragSelectOption } from "@coleqiu/vue-drag-select";
+import { genThumbUrl } from "@renderer/utils/genUrl";
 
-dayjs.extend(localizedFormat).locale(dayjsLocales.value)
+dayjs.extend(localizedFormat).locale(dayjsLocales.value);
 
 const emit = defineEmits([
-  'file-preview',
-  'file-details',
-  'link-copy',
-  'file-download',
-  'file-delete',
-  'file-rename',
-  'new-file',
-  'load-more',
-])
+  "file-preview",
+  "file-details",
+  "link-copy",
+  "file-download",
+  "file-delete",
+  "file-rename",
+  "new-file",
+  "load-more",
+]);
 
 const { data, checkedItems, loading, preset } = defineProps<{
-  data: FileRecord[]
-  checkedItems: FileRecord[]
-  loading: boolean
-  preset: 'default' | 'recycle-bin'
-}>()
+  data: FileRecord[];
+  checkedItems: FileRecord[];
+  loading: boolean;
+  preset: "default" | "recycle-bin";
+}>();
 const checkedRowKeys = defineModel<ReturnType<DataTableCreateRowKey>[]>(
-  'checkedRowKeys',
+  "checkedRowKeys",
   {
     required: true,
   },
-)
+);
 
 // select and context menu
-const showDropdown = ref(false)
-const dropdownX = ref(0)
-const dropdownY = ref(0)
+const showDropdown = ref(false);
+const dropdownX = ref(0);
+const dropdownY = ref(0);
 async function handleContextMenu(
   item: FileRecord,
   e: MouseEvent,
 ): Promise<void> {
-  e.preventDefault()
+  e.preventDefault();
   // if this row is unchecked, cancel other checked rows and check this row
   if (!checkedRowKeys.value.includes(item.file_name)) {
-    checkedRowKeys.value = [item.file_name]
+    checkedRowKeys.value = [item.file_name];
   }
-  await nextTick()
-  dropdownX.value = e.clientX
-  dropdownY.value = e.clientY
-  showDropdown.value = true
+  await nextTick();
+  dropdownX.value = e.clientX;
+  dropdownY.value = e.clientY;
+  showDropdown.value = true;
 }
 </script>
 
@@ -172,7 +172,7 @@ async function handleContextMenu(
       0 0 2px rgba(0, 0, 0, 0.12),
       0 2px 4px rgba(0, 0, 0, 0.14);
   }
-  .tile:has(.checkbox[aria-checked='true']) {
+  .tile:has(.checkbox[aria-checked="true"]) {
     background-color: rgba(255, 255, 255, 0.2);
     border: 2px solid var(--primary-color);
   }
@@ -210,7 +210,7 @@ async function handleContextMenu(
     margin: 8px;
     visibility: hidden;
   }
-  .checkbox[aria-checked='true'] {
+  .checkbox[aria-checked="true"] {
     visibility: visible;
   }
   .tile:hover .checkbox {

@@ -27,15 +27,15 @@
 </template>
 
 <script setup lang="ts">
-import '@google/model-viewer'
-import { ref, watch } from 'vue'
-import type { Ref } from 'vue'
-import type { ModelViewerElement } from '@google/model-viewer'
+import "@google/model-viewer";
+import { ref, watch } from "vue";
+import type { Ref } from "vue";
+import type { ModelViewerElement } from "@google/model-viewer";
 
-const modelViewer: Ref<ModelViewerElement | null> = ref(null)
-const animation: Ref<string> = ref('')
-const animations: Ref<string[]> = ref([])
-const loading = ref(true)
+const modelViewer: Ref<ModelViewerElement | null> = ref(null);
+const animation: Ref<string> = ref("");
+const animations: Ref<string[]> = ref([]);
+const loading = ref(true);
 
 defineProps({
   modelUrl: {
@@ -46,20 +46,20 @@ defineProps({
     type: String,
     required: true,
   },
-})
+});
 
 // watch modelViewer load
 watch(
   modelViewer,
   () => {
-    modelViewer.value?.addEventListener('load', () => {
-      animations.value = modelViewer.value?.availableAnimations || []
-      animation.value = modelViewer.value?.availableAnimations[0] || ''
-      loading.value = false
-    })
+    modelViewer.value?.addEventListener("load", () => {
+      animations.value = modelViewer.value?.availableAnimations || [];
+      animation.value = modelViewer.value?.availableAnimations[0] || "";
+      loading.value = false;
+    });
   },
   { once: true },
-)
+);
 </script>
 
 <style scoped></style>

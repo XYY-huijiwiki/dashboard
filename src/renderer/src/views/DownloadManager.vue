@@ -60,13 +60,13 @@
                 <n-text class="text-xs" strong>
                   {{
                     {
-                      pending: t('download-manager.label-pending'),
-                      downloading: t('download-manager.label-downloading'),
-                      completed: t('download-manager.label-completed'),
-                      error: t('download-manager.label-error'),
-                      cancelled: t('download-manager.label-cancelled'),
-                      deleted: t('download-manager.label-deleted'),
-                      paused: t('download-manager.label-paused'),
+                      pending: t("download-manager.label-pending"),
+                      downloading: t("download-manager.label-downloading"),
+                      completed: t("download-manager.label-completed"),
+                      error: t("download-manager.label-error"),
+                      cancelled: t("download-manager.label-cancelled"),
+                      deleted: t("download-manager.label-deleted"),
+                      paused: t("download-manager.label-paused"),
                     }[download.status]
                   }}
                 </n-text>
@@ -76,7 +76,7 @@
                   class="text-xs"
                 >
                   {{
-                    t('download-manager.msg-downloading-info', {
+                    t("download-manager.msg-downloading-info", {
                       downloadedSize: filesize(download.transferredBytes),
                       totalSize: filesize(download.totalBytes),
                       speed: filesize(download.downloadRateBytesPerSecond),
@@ -91,7 +91,7 @@
                   size="tiny"
                   @click="showInFolder(download.path)"
                 >
-                  {{ t('download-manager.btn-show-in-folder') }}
+                  {{ t("download-manager.btn-show-in-folder") }}
                 </n-button>
                 <n-button
                   v-if="download.status === 'downloading'"
@@ -101,7 +101,7 @@
                     (download.status = 'paused'))
                   "
                 >
-                  {{ t('download-manager.btn-pause') }}
+                  {{ t("download-manager.btn-pause") }}
                 </n-button>
                 <n-button
                   v-if="download.status === 'paused'"
@@ -111,7 +111,7 @@
                     (download.status = 'downloading'))
                   "
                 >
-                  {{ t('download-manager.btn-resume') }}
+                  {{ t("download-manager.btn-resume") }}
                 </n-button>
                 <n-button
                   v-if="['downloading', 'paused'].includes(download.status)"
@@ -121,7 +121,7 @@
                     (download.status = 'cancelled'))
                   "
                 >
-                  {{ t('download-manager.btn-cancel') }}
+                  {{ t("download-manager.btn-cancel") }}
                 </n-button>
               </n-flex>
             </n-flex>
@@ -130,72 +130,72 @@
       </n-list-item>
     </n-list>
     <n-empty v-else>
-      {{ t('download-manager.msg-no-downloads') }}
+      {{ t("download-manager.msg-no-downloads") }}
     </n-empty>
   </n-scrollbar>
 </template>
 
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
-import { remove } from 'lodash-es'
-import { Icon } from '@iconify/vue'
-import { useI18n } from 'vue-i18n'
-import { filesize as filesizeNoLocale } from 'filesize'
-import type { ProgressStatus } from 'naive-ui'
+import { storeToRefs } from "pinia";
+import { remove } from "lodash-es";
+import { Icon } from "@iconify/vue";
+import { useI18n } from "vue-i18n";
+import { filesize as filesizeNoLocale } from "filesize";
+import type { ProgressStatus } from "naive-ui";
 
-import { useLocalesStore } from '@renderer/stores/locales'
-import { useDownloadStore } from '@renderer/stores/download'
-import { onMounted } from 'vue'
+import { useLocalesStore } from "@renderer/stores/locales";
+import { useDownloadStore } from "@renderer/stores/download";
+import { onMounted } from "vue";
 
-const { t } = useI18n()
-const { langCode } = storeToRefs(useLocalesStore())
+const { t } = useI18n();
+const { langCode } = storeToRefs(useLocalesStore());
 const filesize = (size: number): string =>
-  filesizeNoLocale(size, { locale: langCode.value })
-const { pauseDownload, resumeDownload, cancelDownload } = useDownloadStore()
-const { downloads } = storeToRefs(useDownloadStore())
+  filesizeNoLocale(size, { locale: langCode.value });
+const { pauseDownload, resumeDownload, cancelDownload } = useDownloadStore();
+const { downloads } = storeToRefs(useDownloadStore());
 
 function removeDownload(uuid: string) {
   document.startViewTransition(() =>
     remove(downloads.value, (download) => download.uuid === uuid),
-  )
+  );
 }
 
 function getOrigin(url: string) {
-  const _url = new URL(url)
-  return _url.origin
+  const _url = new URL(url);
+  return _url.origin;
 }
 
 function showInFolder(path: string | null) {
-  if (!path) throw new Error('Path is not available')
-  window.api.showInFolder(path)
+  if (!path) throw new Error("Path is not available");
+  window.api.showInFolder(path);
 }
 
 function openFile(path: string | null) {
-  if (!path) throw new Error('Path is not available')
-  window.api.openFile(path)
+  if (!path) throw new Error("Path is not available");
+  window.api.openFile(path);
 }
 
 const progressStatusMapper: Record<string, ProgressStatus> = {
-  pending: 'default',
-  downloading: 'default',
-  completed: 'success',
-  error: 'error',
-  cancelled: 'warning',
-  deleted: 'error',
-  paused: 'warning',
-}
+  pending: "default",
+  downloading: "default",
+  completed: "success",
+  error: "error",
+  cancelled: "warning",
+  deleted: "error",
+  paused: "warning",
+};
 
 onMounted(async () => {
   for (const download of downloads.value) {
-    if (download.status === 'completed') {
-      if (await window.api.isFileExists(download.path || '')) {
-        download.status = 'completed'
+    if (download.status === "completed") {
+      if (await window.api.isFileExists(download.path || "")) {
+        download.status = "completed";
       } else {
-        download.status = 'deleted'
+        download.status = "deleted";
       }
     }
   }
-})
+});
 </script>
 
 <style scoped>

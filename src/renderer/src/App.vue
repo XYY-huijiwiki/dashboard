@@ -1,61 +1,61 @@
 <script lang="ts" setup>
-import { useI18n } from 'vue-i18n'
-import { computed, ref, watch } from 'vue'
-import type { Ref } from 'vue'
+import { useI18n } from "vue-i18n";
+import { computed, ref, watch } from "vue";
+import type { Ref } from "vue";
 import {
   useDialog,
   useMessage,
   useModal,
   useLoadingBar,
   useNotification,
-} from 'naive-ui'
-import { useTitle, useFullscreen } from '@vueuse/core'
-import { Icon } from '@iconify/vue'
-import { useRouter } from 'vue-router'
-import { storeToRefs } from 'pinia'
+} from "naive-ui";
+import { useTitle, useFullscreen } from "@vueuse/core";
+import { Icon } from "@iconify/vue";
+import { useRouter } from "vue-router";
+import { storeToRefs } from "pinia";
 
-import { useSettingsStore } from '@renderer/stores/settings'
-import NavigationBtn from './components/NavigationBtn.vue'
-import { is } from '@renderer/utils'
+import { useSettingsStore } from "@renderer/stores/settings";
+import NavigationBtn from "./components/NavigationBtn.vue";
+import { is } from "@renderer/utils";
 
-const { settings } = storeToRefs(useSettingsStore())
-const router = useRouter()
-const { t } = useI18n()
+const { settings } = storeToRefs(useSettingsStore());
+const router = useRouter();
+const { t } = useI18n();
 
 // naive-ui register
-window.$dialog = useDialog()
-window.$message = useMessage()
-window.$modal = useModal()
-window.$loadingBar = useLoadingBar()
-window.$notification = useNotification()
+window.$dialog = useDialog();
+window.$message = useMessage();
+window.$modal = useModal();
+window.$loadingBar = useLoadingBar();
+window.$notification = useNotification();
 
 // set title
-useTitle(computed(() => t('home.title')))
+useTitle(computed(() => t("home.title")));
 
 // reactive navigation controls display
-const canBack = ref(false)
-const canForward = ref(false)
+const canBack = ref(false);
+const canForward = ref(false);
 watch(
   () => router.currentRoute.value,
   () => {
-    canBack.value = router.options.history.state.back !== null
-    canForward.value = router.options.history.state.forward !== null
+    canBack.value = router.options.history.state.back !== null;
+    canForward.value = router.options.history.state.forward !== null;
   },
   { immediate: true },
-)
+);
 
 // #region fullscreen
-const fullscreenHTML: Ref<null | HTMLElement> = ref(null)
-const { isFullscreen: isFullscreenWeb, toggle } = useFullscreen(fullscreenHTML)
-const isFullscreen = !is.web ? ref(false) : isFullscreenWeb
+const fullscreenHTML: Ref<null | HTMLElement> = ref(null);
+const { isFullscreen: isFullscreenWeb, toggle } = useFullscreen(fullscreenHTML);
+const isFullscreen = !is.web ? ref(false) : isFullscreenWeb;
 const toggleFullscreen = async () => {
   if (!is.web) {
-    isFullscreen.value = !isFullscreen.value
-    window.api.toggleFullScreen()
+    isFullscreen.value = !isFullscreen.value;
+    window.api.toggleFullScreen();
   } else {
-    toggle()
+    toggle();
   }
-}
+};
 // #endregion
 </script>
 
@@ -123,24 +123,24 @@ const toggleFullscreen = async () => {
               </template>
             </n-button>
             <!-- dev tag -->
-            <n-tag v-if="is.dev">{{ t('general.dev-tag') }}</n-tag>
+            <n-tag v-if="is.dev">{{ t("general.dev-tag") }}</n-tag>
             <!-- navigation title -->
             {{
               {
-                'file-explorer': t('file-explorer.title'),
-                'file-preview': t('file-preview.title'),
-                'recycle-bin': t('recycle-bin.title'),
-                'download-manager': t('download-manager.title'),
-                'miui-themes': t('miui-themes.title'),
-                'rename-pages': t('rename-pages.title'),
-                'find-and-replace': t('find-and-replace.title'),
-                'delete-and-undelete': t('delete-and-undelete.title'),
-                'episodes-data': t('episodes-data.title'),
-                settings: t('settings.title'),
-                init: t('init.title'),
-                error: t('error.title'),
-                loading: t('general.loading'),
-              }[$route.name || 'loading']
+                "file-explorer": t("file-explorer.title"),
+                "file-preview": t("file-preview.title"),
+                "recycle-bin": t("recycle-bin.title"),
+                "download-manager": t("download-manager.title"),
+                "miui-themes": t("miui-themes.title"),
+                "rename-pages": t("rename-pages.title"),
+                "find-and-replace": t("find-and-replace.title"),
+                "delete-and-undelete": t("delete-and-undelete.title"),
+                "episodes-data": t("episodes-data.title"),
+                settings: t("settings.title"),
+                init: t("init.title"),
+                error: t("error.title"),
+                loading: t("general.loading"),
+              }[$route.name || "loading"]
             }}
           </n-space>
         </template>

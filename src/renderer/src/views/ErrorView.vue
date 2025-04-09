@@ -9,8 +9,8 @@
 </template>
 
 <script setup lang="ts">
-import { Icon } from '@iconify/vue'
-import { useI18n } from 'vue-i18n'
+import { Icon } from "@iconify/vue";
+import { useI18n } from "vue-i18n";
 
-const { t } = useI18n()
+const { t } = useI18n();
 </script>

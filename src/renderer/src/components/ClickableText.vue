@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-const emit = defineEmits(['click'])
+const emit = defineEmits(["click"]);
 const { text, center } = defineProps({
   text: {
     type: String,
@@ -21,5 +21,5 @@ const { text, center } = defineProps({
     type: Boolean,
     default: false,
   },
-})
+});
 </script>
