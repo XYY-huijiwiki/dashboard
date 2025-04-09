@@ -1,3 +1,15 @@
+## [0.2.10](https://github.com/XYY-huijiwiki/dashboard/compare/v0.2.9...v0.2.10) (2025-04-09)
+
+### Bug Fixes
+
+- correct a type error ([8243bda](https://github.com/XYY-huijiwiki/dashboard/commit/8243bda83fd7122b6c88fbc55f65fa5fff93c51d))
+
+### Features
+
+- add animation switcher below 3D model viewer for models with animations ([7e41ee5](https://github.com/XYY-huijiwiki/dashboard/commit/7e41ee53e5858fe3692d0f9fcbe970a3df73abc9))
+- add recycle bin page for viewing deleted files ([8abc91a](https://github.com/XYY-huijiwiki/dashboard/commit/8abc91a31c59326d56fa19fd3002819cd495be05))
+- show loading ring in `<view-model />` while model is loading ([c3327b3](https://github.com/XYY-huijiwiki/dashboard/commit/c3327b37c28363883c97a09c80085362a519226e))
+
 ## [0.2.9](https://github.com/XYY-huijiwiki/dashboard/compare/v0.2.8...v0.2.9) (2025-04-08)
 
 ### Bug Fixes
