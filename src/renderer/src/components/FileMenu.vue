@@ -1,18 +1,16 @@
 <template>
-  <div>
-    <n-dropdown
-      v-model:show="show"
-      placement="bottom-start"
-      trigger="manual"
-      :x="props.position ? props.position.x : undefined"
-      :y="props.position ? props.position.y : undefined"
-      :options="options"
-      @clickoutside="show = false"
-      @select="(key) => emit(key)"
-    >
-      <slot></slot>
-    </n-dropdown>
-  </div>
+  <n-dropdown
+    v-model:show="show"
+    placement="bottom-start"
+    trigger="manual"
+    :x="props.position ? props.position.x : undefined"
+    :y="props.position ? props.position.y : undefined"
+    :options="options"
+    @clickoutside="show = false"
+    @select="(key) => emit(key)"
+  >
+    <slot></slot>
+  </n-dropdown>
 </template>
 
 <script setup lang="ts">
@@ -34,7 +32,7 @@ const props = defineProps<{
 }>()
 
 // show
-const show = defineModel<boolean>('show')
+const show = defineModel<boolean>('show', { required: true })
 // on-preview
 const emit = defineEmits([
   'preview',
