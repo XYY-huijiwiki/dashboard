@@ -77,7 +77,7 @@
       </template>
     </n-split>
     <teleport :to="dropZoneRef">
-      <div v-if="isOverDropZone" class="absolute inset-0 bg-black/80 z-10 p-16">
+      <div v-if="isOverDropZone" class="absolute inset-0 bg-black/90 z-10 p-16">
         <n-element class="upload-dragger">
           <div>
             <div style="margin-bottom: 12px">
@@ -86,11 +86,10 @@
               </n-icon>
             </div>
             <n-text style="font-size: 16px">
-              Click or drag a file to this area to upload
+              {{ t("file-explorer.upload-prompt") }}
             </n-text>
             <n-p depth="3" style="margin: 8px 0 0 0">
-              Strictly prohibit from uploading sensitive information. For
-              example, your bank card PIN or your credit card expiry date.
+              {{ t("file-explorer.upload-warning") }}
             </n-p>
           </div>
         </n-element>

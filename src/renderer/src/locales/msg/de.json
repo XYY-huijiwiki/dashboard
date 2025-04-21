@@ -164,7 +164,9 @@
     "title": "Datei-Explorer",
     "label-filtered-type": "Gefilterter Typ: ",
     "label-filtered-status": "Gefilterter Status: ",
-    "btn-clear-filters": "Filter zurücksetzen"
+    "btn-clear-filters": "Filter zurücksetzen",
+    "upload-prompt": "Datei hierher ziehen, um sie hochzuladen",
+    "upload-warning": "Nur eine Datei auf einmal."
   },
   "file-preview": {
     "title": "Dateivorschau",

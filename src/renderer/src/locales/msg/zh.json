@@ -164,7 +164,9 @@
     "title": "文件浏览器",
     "label-filtered-type": "已筛选的类型：",
     "label-filtered-status": "已筛选的状态：",
-    "btn-clear-filters": "清除筛选"
+    "btn-clear-filters": "清除筛选",
+    "upload-prompt": "将文件拖放到此处以上传",
+    "upload-warning": "一次仅支持一个文件。"
   },
   "file-preview": {
     "title": "文件预览",

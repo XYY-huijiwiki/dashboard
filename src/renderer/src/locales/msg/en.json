@@ -164,7 +164,9 @@
     "title": "File Explorer",
     "label-filtered-type": "Filtered type: ",
     "label-filtered-status": "Filtered status: ",
-    "btn-clear-filters": "Clear Filters"
+    "btn-clear-filters": "Clear Filters",
+    "upload-prompt": "Drop a file here to upload",
+    "upload-warning": "Only one file at a time."
   },
   "file-preview": {
     "title": "File Preview",
