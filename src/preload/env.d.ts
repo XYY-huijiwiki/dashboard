@@ -1,13 +1,6 @@
 import { ElectronAPI } from "@electron-toolkit/preload";
 import { DownloadItem } from "electron";
 
-type FileMetadata = {
-  name: string;
-  path: string;
-  size: number;
-  type: string;
-};
-
 type UploadParams = {
   ghToken: string;
   owner: string;
@@ -54,7 +47,7 @@ type GhAssetUploadResponse = {
 };
 
 type CustomApi = {
-  openFileDialog: () => Promise<FileMetadata | null>;
+  getPathForFile: (file: File) => string;
   uploadToGitHub: (params: UploadParams) => Promise<GhAssetUploadResponse>;
   ghLogin: () => Promise<string>;
 

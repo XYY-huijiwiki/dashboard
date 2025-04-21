@@ -5,9 +5,7 @@
         {{ t("github-files.msg-space-replacement-warning") }}
       </n-alert>
       <n-alert
-        v-if="
-          is.web && selectedFileWeb && selectedFileWeb.size > 20 * 1024 * 1024
-        "
+        v-if="is.web && selectedFile && selectedFile.size > 20 * 1024 * 1024"
         type="warning"
       >
         {{ t("github-files.msg-file-size-warning") }}
@@ -25,10 +23,7 @@
         <n-button @click="handleSelectFile">
           {{ t("github-files.btn-select-file") }}
         </n-button>
-        <n-input
-          v-model:value="fileName"
-          :disabled="!selectedFile && !selectedFileWeb"
-        ></n-input>
+        <n-input v-model:value="fileName" :disabled="!selectedFile"></n-input>
       </n-input-group>
       <n-select
         v-model:value="fileLicense"
@@ -83,28 +78,24 @@ dayjs.extend(localizedFormat).locale(dayjsLocales.value);
 
 const { t } = useI18n();
 const { settings } = storeToRefs(useSettingsStore());
+const selectedFile = defineModel<undefined | null | File>("selectedFile");
 const loading = ref(false);
 const fileName = ref("");
+watch(
+  selectedFile,
+  (v) => {
+    if (v) fileName.value = v.name;
+  },
+  { immediate: true },
+);
 const fileLicense: Ref<null | string> = ref(null);
 const fileSource: Ref<null | string> = ref(null);
-const selectedFile = ref<Awaited<
-  ReturnType<typeof window.api.openFileDialog>
-> | null>(null);
-const selectedFileWeb: Ref<null | File> = ref(null);
 const canUpload = computed(
   () =>
-    // Electron Only
-    (!is.web &&
-      !!selectedFile.value &&
-      !!fileName.value &&
-      !!fileLicense.value &&
-      !!fileSource.value) ||
-    // Web Only
-    (is.web &&
-      !!selectedFileWeb.value &&
-      !!fileName.value &&
-      !!fileLicense.value &&
-      !!fileSource.value),
+    !!selectedFile.value &&
+    !!fileName.value &&
+    !!fileLicense.value &&
+    !!fileSource.value,
 );
 const fileDialog = useFileDialog();
 
@@ -115,31 +106,18 @@ watch(loading, (v) => {
 });
 
 async function handleSelectFile(): Promise<void> {
-  // Web Only
-  if (is.web) {
-    await fileDialog.open({
-      multiple: false,
-    });
-    fileDialog.onChange(() => {
-      if (fileDialog.files.value === null) return;
-      selectedFileWeb.value = fileDialog.files.value[0];
-      fileName.value = fileDialog.files.value[0].name;
-    });
-  }
-  // Electron Only
-  else {
-    const file = await window.api.openFileDialog();
-    if (!file) return;
-    selectedFile.value = file;
-    fileName.value = file.name;
-  }
+  await fileDialog.open({
+    multiple: false,
+  });
+  fileDialog.onChange(() => {
+    if (fileDialog.files.value === null) return;
+    selectedFile.value = fileDialog.files.value[0];
+  });
 }
 
 async function confirmNewFile(): Promise<void> {
-  // if no file selected, do nothing (Electron only)
-  if (!is.web && !selectedFile.value) return;
-  // if no file selected, do nothing (Web only)
-  if (is.web && !selectedFileWeb.value) return;
+  // if no file selected, do nothing
+  if (!selectedFile.value) return;
   // if no file name, do nothing
   if (!fileName.value) return;
   // if file name is too long
@@ -149,11 +127,11 @@ async function confirmNewFile(): Promise<void> {
     return;
   }
 
-  // start loading
-  loading.value = true;
-
   // replace space with underscore in file name
   const fileNameToBeUsed = fileName.value.trim().replaceAll(" ", "_");
+
+  // start loading
+  loading.value = true;
 
   try {
     let ghRes: GhAssetUploadResponse;
@@ -167,10 +145,10 @@ async function confirmNewFile(): Promise<void> {
       ghRes = await ky
         .post(url, {
           headers: {
-            "Content-Type": selectedFileWeb.value?.type,
+            "Content-Type": selectedFile.value?.type,
             Authorization: `token ${settings.value.ghToken}`,
           },
-          body: selectedFileWeb.value,
+          body: selectedFile.value,
         })
         .json();
     }
@@ -181,7 +159,7 @@ async function confirmNewFile(): Promise<void> {
         repo: settings.value.ghRepo,
         releaseId: `${settings.value.rootReleaseId}`,
         ghToken: settings.value.ghToken,
-        filePath: selectedFile.value?.path as string,
+        filePath: window.api.getPathForFile(selectedFile.value),
         fileName: fileNameToBeUsed,
       });
     }

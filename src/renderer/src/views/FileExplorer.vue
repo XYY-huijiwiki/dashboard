@@ -76,6 +76,26 @@
         />
       </template>
     </n-split>
+    <teleport :to="dropZoneRef">
+      <div v-if="isOverDropZone" class="absolute inset-0 bg-black/80 z-10 p-16">
+        <n-element class="upload-dragger">
+          <div>
+            <div style="margin-bottom: 12px">
+              <n-icon size="48" :depth="3">
+                <icon icon="fluent:cloud-arrow-up-48-regular" />
+              </n-icon>
+            </div>
+            <n-text style="font-size: 16px">
+              Click or drag a file to this area to upload
+            </n-text>
+            <n-p depth="3" style="margin: 8px 0 0 0">
+              Strictly prohibit from uploading sensitive information. For
+              example, your bank card PIN or your credit card expiry date.
+            </n-p>
+          </div>
+        </n-element>
+      </div>
+    </teleport>
   </n-flex>
 </template>
 
@@ -90,6 +110,8 @@ import { storeToRefs } from "pinia";
 import ky from "ky";
 import { debounce } from "lodash-es";
 import { useRouter } from "vue-router";
+import { NElement } from "naive-ui";
+import { Icon } from "@iconify/vue";
 
 import { dayjsLocales } from "@renderer/stores/locales";
 import db from "@renderer/utils/queryDB";
@@ -319,7 +341,7 @@ watch(
 );
 
 // new file
-async function newFile(): Promise<void> {
+async function newFile(file: File | undefined | null): Promise<void> {
   const NewFileDialog = (await import("@renderer/components/NewFileDialog.vue"))
     .default;
   const modalInstance = window.$modal.create({
@@ -330,6 +352,7 @@ async function newFile(): Promise<void> {
     style: "width: 480px; max-width: 100%",
     content: () =>
       h(NewFileDialog, {
+        selectedFile: file,
         onClose: () => modalInstance.destroy(),
         onDone: () => queryData(),
         onLoadingStart: () => {
@@ -438,4 +461,44 @@ async function editFile(): Promise<void> {
       }),
   });
 }
+
+// #region Drop File
+import { useDropZone } from "@vueuse/core";
+const dropZoneRef = ref<HTMLDivElement>(
+  document.querySelector("#bodyContent") as HTMLDivElement,
+);
+
+async function onDrop(files: File[] | null) {
+  // called when files are dropped on zone
+  newFile(files![0]);
+}
+const { isOverDropZone } = useDropZone(dropZoneRef, {
+  onDrop,
+  multiple: false,
+  preventDefaultForUnhandled: false,
+});
+
+// #endregion
 </script>
+
+<style scoped>
+.upload-dragger {
+  cursor: pointer;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: var(--border-radius);
+  padding: 24px;
+  opacity: 1;
+  transition:
+    opacity 0.3s var(--cubic-bezier-ease-in-out),
+    border-color 0.3s var(--cubic-bezier-ease-in-out),
+    background-color 0.3s var(--cubic-bezier-ease-in-out);
+  background-color: var(--action-color);
+  border: 1px dashed var(--border-color);
+}
+</style>

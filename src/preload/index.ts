@@ -1,10 +1,10 @@
-import { contextBridge, ipcRenderer } from "electron";
+import { contextBridge, ipcRenderer, webUtils } from "electron";
 import { electronAPI } from "@electron-toolkit/preload";
 
 // Custom APIs for renderer
 const api: typeof window.api = {
   // upload
-  openFileDialog: () => ipcRenderer.invoke("open-file-dialog"),
+  getPathForFile: (file) => webUtils.getPathForFile(file),
   uploadToGitHub: (params) => ipcRenderer.invoke("upload-to-github", params),
   ghLogin: () => ipcRenderer.invoke("gh-login"),
   // download
