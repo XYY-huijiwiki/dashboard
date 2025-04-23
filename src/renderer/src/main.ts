@@ -10,7 +10,8 @@ import { userLang, langPacks } from "@renderer/stores/locales";
 
 // ===== i18n =====
 const language = JSON.parse(
-  localStorage.getItem("settings") || `{"language":"auto"}`,
+  localStorage.getItem("[Ov23liXwSttWUEILSEqe] settings") ||
+    `{"language":"auto"}`,
 ).language;
 const locale = language === "auto" ? userLang : language;
 const i18n = createI18n({
