@@ -1,3 +1,19 @@
+## [0.2.12](https://github.com/XYY-huijiwiki/dashboard/compare/v0.2.11...v0.2.12) (2025-04-24)
+
+### Bug Fixes
+
+- **i18n:** resolve issue where language always fell back to browser default ([dc9a37f](https://github.com/XYY-huijiwiki/dashboard/commit/dc9a37f8581fddd80e455b5d385446502baf0023))
+- **ui:** prevent clicks on disabled sidebar buttons ([0e87e56](https://github.com/XYY-huijiwiki/dashboard/commit/0e87e56919c36e7c704e43c65cad74b9d9100a0a))
+
+### Features
+
+- **i18n:** add translations for drag-and-drop file upload ([8a1b485](https://github.com/XYY-huijiwiki/dashboard/commit/8a1b485b91cb48230537ee8d3e78b82e7e4b6849))
+- **upload:** support drag-and-drop to upload files ([076be4d](https://github.com/XYY-huijiwiki/dashboard/commit/076be4d2583f288f21ea939f21472c16884d40d7))
+
+### Performance Improvements
+
+- embed shrinked manifest into `entry.js` to improve web startup speed ([ee9fa17](https://github.com/XYY-huijiwiki/dashboard/commit/ee9fa170e14234d883f7839a03110ae726967997))
+
 ## [0.2.11](https://github.com/XYY-huijiwiki/dashboard/compare/v0.2.10...v0.2.11) (2025-04-09)
 
 ### Features
