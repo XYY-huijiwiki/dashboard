@@ -12,6 +12,7 @@ interface Settings {
   sidebarCollapsed: boolean;
   episodesDataExportType: "json" | "xlsx";
   themeSource: "system" | "light" | "dark";
+  backgroundMaterial: "auto" | "none" | "mica" | "acrylic";
 }
 
 export const useSettingsStore = defineStore("settings", () => {
@@ -23,6 +24,7 @@ export const useSettingsStore = defineStore("settings", () => {
     sidebarCollapsed: false,
     episodesDataExportType: "xlsx",
     themeSource: "system",
+    backgroundMaterial: "auto",
   };
   // init settings from localStorage or use default settings
   const settings: Ref<Settings> = useLocalStorage(
@@ -55,6 +57,17 @@ export const useSettingsStore = defineStore("settings", () => {
       () => settings.value.themeSource,
       (newThemeSource) => {
         window.api.setThemeSource(newThemeSource);
+      },
+      { immediate: true },
+    );
+  }
+  if (is.win) {
+    watch(
+      () => settings.value.backgroundMaterial,
+      (newMaterial) => {
+        if (is.win) {
+          window.api.setBackgroundMaterial(newMaterial);
+        }
       },
       { immediate: true },
     );

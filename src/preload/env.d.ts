@@ -99,6 +99,9 @@ type CustomApi = {
   isFileExists: (filePath: string) => Promise<boolean>;
 
   setThemeSource: (themeSource: "system" | "light" | "dark") => Promise<void>;
+  setBackgroundMaterial: (
+    material: "auto" | "none" | "mica" | "acrylic",
+  ) => Promise<void>;
 };
 
 declare global {

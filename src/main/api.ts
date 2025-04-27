@@ -3,6 +3,7 @@ import path from "path";
 import fs from "fs";
 import mime from "mime-types";
 import { ElectronDownloadManager } from "electron-dl-manager";
+import { platform } from "@electron-toolkit/utils";
 
 import base62 from "./utils/base62.js";
 import ghLogin from "./utils/ghLogin.js";
@@ -176,6 +177,20 @@ function registerIPC(): void {
     "set-theme-source",
     (_event, themeSource: "system" | "light" | "dark") => {
       nativeTheme.themeSource = themeSource;
+    },
+  );
+  // #endregion
+
+  // #region background material
+  ipcMain.handle(
+    "set-background-material",
+    (event, material: "auto" | "none" | "mica" | "acrylic") => {
+      if (!platform.isWindows) return; // Ensure this only applies to Windows
+
+      const win = BrowserWindow.fromWebContents(event.sender);
+      if (!win) throw new Error("No BrowserWindow found");
+
+      win.setBackgroundMaterial(material);
     },
   );
   // #endregion

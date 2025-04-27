@@ -34,6 +34,8 @@ const api: typeof window.api = {
   isFileExists: (filePath) => ipcRenderer.invoke("is-file-exists", filePath),
   setThemeSource: (themeSource) =>
     ipcRenderer.invoke("set-theme-source", themeSource),
+  setBackgroundMaterial: (material) =>
+    ipcRenderer.invoke("set-background-material", material),
 };
 
 // Use `contextBridge` APIs to expose Electron APIs to

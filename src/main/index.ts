@@ -1,5 +1,6 @@
-import { app, shell, BrowserWindow } from "electron";
-import { electronApp, optimizer, is } from "@electron-toolkit/utils";
+import { app, shell, BrowserWindow, nativeTheme } from "electron";
+import type { BrowserWindowConstructorOptions } from "electron";
+import { electronApp, optimizer, is, platform } from "@electron-toolkit/utils";
 import { join } from "path";
 import { fileURLToPath } from "url";
 import debug from "electron-debug";
@@ -37,10 +38,38 @@ function createWindow(): void {
       preload: fileURLToPath(new URL("../preload/index.mjs", import.meta.url)),
       sandbox: false,
     },
+    ...generateWindowsOnlyConfig(),
+    ...generateMacOSOnlyConfig(),
+    ...generateLinuxOnlyConfig(),
   });
 
+  function generateWindowsOnlyConfig(): BrowserWindowConstructorOptions {
+    return platform.isWindows
+      ? {
+          autoHideMenuBar: true,
+          titleBarStyle: "hidden",
+          titleBarOverlay: {
+            color: "#00000000",
+            symbolColor: nativeTheme.shouldUseDarkColors
+              ? "#FFFFFF"
+              : "#000000",
+            height: 30, // the smallest size of the title bar on windows 11
+          },
+          frame: false,
+          backgroundMaterial: "mica", // must init with some value to enable the feature
+        }
+      : {};
+  }
+
+  function generateMacOSOnlyConfig(): BrowserWindowConstructorOptions {
+    return platform.isMacOS ? {} : {};
+  }
+
+  function generateLinuxOnlyConfig(): BrowserWindowConstructorOptions {
+    return platform.isLinux ? {} : {};
+  }
+
   mainWindow.removeMenu();
-  mainWindow.setBackgroundMaterial("mica");
 
   mainWindow.on("ready-to-show", () => {
     mainWindow.show();
@@ -58,6 +87,17 @@ function createWindow(): void {
   } else {
     mainWindow.loadFile(join(__dirname, "../renderer/index.html"));
   }
+
+  // Listen for theme changes and update symbolColor dynamically
+  nativeTheme.on("updated", () => {
+    const newSymbolColor = nativeTheme.shouldUseDarkColors
+      ? "#FFFFFF"
+      : "#000000";
+    mainWindow.setTitleBarOverlay({
+      color: "#00000000",
+      symbolColor: newSymbolColor,
+    });
+  });
 }
 
 // This method will be called when Electron has finished

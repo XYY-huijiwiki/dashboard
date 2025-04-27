@@ -21,6 +21,9 @@ import { is } from "@renderer/utils";
 const { settings } = storeToRefs(useSettingsStore());
 const router = useRouter();
 const { t } = useI18n();
+const isEnableWindowsMaterial = computed(
+  () => settings.value.backgroundMaterial !== "auto" && is.win,
+);
 
 // naive-ui register
 window.$dialog = useDialog();
@@ -30,7 +33,8 @@ window.$loadingBar = useLoadingBar();
 window.$notification = useNotification();
 
 // set title
-useTitle(computed(() => t("home.title")));
+const title = computed(() => t("home.title"));
+useTitle(title);
 
 // reactive navigation controls display
 const canBack = ref(false);
@@ -60,13 +64,20 @@ const toggleFullscreen = async () => {
 </script>
 
 <template>
-  <n-layout ref="fullscreenHTML" has-sider>
+  <title-bar v-if="is.win" :title="title" />
+  <n-layout
+    ref="fullscreenHTML"
+    has-sider
+    :class="isEnableWindowsMaterial ? '!bg-transparent' : ''"
+    embedded
+  >
     <n-layout-sider
-      bordered
+      :bordered="!isEnableWindowsMaterial"
       :native-scrollbar="false"
       :collapsed="settings.sidebarCollapsed"
       collapse-mode="width"
       :collapsed-width="62"
+      :class="isEnableWindowsMaterial ? '!bg-transparent' : ''"
     >
       <navigation-btn
         :collapsed="settings.sidebarCollapsed"
@@ -74,7 +85,9 @@ const toggleFullscreen = async () => {
       />
       <side-menu :collapsed="settings.sidebarCollapsed" />
     </n-layout-sider>
-    <n-layout-content>
+    <n-layout-content
+      :class="isEnableWindowsMaterial ? 'rounded-tl-lg overflow-hidden' : ''"
+    >
       <n-card
         content-class="shrink-0 h-0"
         class="!rounded-none !border-none"
@@ -146,7 +159,7 @@ const toggleFullscreen = async () => {
         </template>
 
         <!-- 卡片右上角按钮：fullscreen -->
-        <template #header-extra>
+        <template v-if="!is.win" #header-extra>
           <n-button
             quaternary
             circle

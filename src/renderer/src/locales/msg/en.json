@@ -24,12 +24,17 @@
     "label-github-token": "GitHub Token",
     "label-source-code": "Source Code",
     "btn-github": "GitHub",
-    "label-toggle-devtools": "Toggle Devtools",
+    "label-toggle-devtools": "Toggle Developer Tools",
     "btn-toggle": "Toggle",
     "label-theme-mode": "Theme Mode",
     "text-theme-system": "System",
     "text-theme-light": "Light",
-    "text-theme-dark": "Dark"
+    "text-theme-dark": "Dark",
+    "label-background-material": "Background Material",
+    "text-material-auto": "Auto",
+    "text-material-none": "None",
+    "text-material-mica": "Mica",
+    "text-material-acrylic": "Acrylic"
   },
   "home": {
     "title": "XYY Huijiwiki Dashboard"

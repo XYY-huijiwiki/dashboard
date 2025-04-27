@@ -24,12 +24,17 @@
     "label-github-token": "GitHub Token",
     "label-source-code": "源代码",
     "btn-github": "GitHub",
-    "label-toggle-devtools": "切换开发者工具",
+    "label-toggle-devtools": "切换开发人员工具",
     "btn-toggle": "切换",
     "label-theme-mode": "主题模式",
     "text-theme-system": "系统",
     "text-theme-light": "浅色",
-    "text-theme-dark": "深色"
+    "text-theme-dark": "深色",
+    "label-background-material": "背景材质",
+    "text-material-auto": "自动",
+    "text-material-none": "无",
+    "text-material-mica": "云母",
+    "text-material-acrylic": "亚克力"
   },
   "home": {
     "title": "羊羊百科控制中心"
