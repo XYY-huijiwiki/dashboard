@@ -1,3 +1,15 @@
+## [0.2.13](https://github.com/XYY-huijiwiki/dashboard/compare/v0.2.12...v0.2.13) (2025-04-27)
+
+### Bug Fixes
+
+- **file-preview:** resolve naming conflict causing self-containment ([6cdf7a3](https://github.com/XYY-huijiwiki/dashboard/commit/6cdf7a3e0fa0dc41f98f383bb45e8bcf3c5d8a8e))
+
+### Features
+
+- **file-explorer:** allow multiple file uploads ([dae8465](https://github.com/XYY-huijiwiki/dashboard/commit/dae8465b90124e620aa2b5d6ce73e8a246dd6cea))
+- **file-explorer:** optimise start-up loading speed ([3c4b0cf](https://github.com/XYY-huijiwiki/dashboard/commit/3c4b0cf5b92b13f384120351f83d53a44c81d914))
+- **theme:** support theme switching (dark, light, or system default) ([418d3e7](https://github.com/XYY-huijiwiki/dashboard/commit/418d3e72837749d3cad8def7c197500ce80c3042))
+
 ## [0.2.12](https://github.com/XYY-huijiwiki/dashboard/compare/v0.2.11...v0.2.12) (2025-04-24)
 
 ### Bug Fixes
