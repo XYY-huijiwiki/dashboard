@@ -25,7 +25,7 @@
       class="flex-1 shrink-0 !h-0"
     >
       <template #1>
-        <file-preview v-if="preview" v-model="preview" :closable="true" />
+        <file-preview-card v-if="preview" v-model="preview" :closable="true" />
         <template v-else>
           <file-list-table
             v-if="

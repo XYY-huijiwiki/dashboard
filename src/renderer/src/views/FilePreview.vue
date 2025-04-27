@@ -14,7 +14,7 @@
     class="h-full w-full"
   >
     <template #1>
-      <file-preview v-model="fileRecord" :closable="false" />
+      <file-preview-card v-model="fileRecord" :closable="false" />
     </template>
     <template #2>
       <file-details :file-details="[fileRecord]" :uncontrolled="true" />
@@ -43,9 +43,7 @@ onMounted(async () => {
     .where("is_deleted", null)
     .toString();
   console.log(queryStr);
-  const queryUrl = new URL(
-    "https://xyy-huijiwiki-gh-files-db.karsten-zhou-773.workers.dev/",
-  );
+  const queryUrl = new URL(import.meta.env.VITE_CF_DATABASE_URL);
   queryUrl.searchParams.set("query", queryStr);
   const result = (await fetch(queryUrl.toString()).then((res) => res.json()))[0]
     .results as [FileRecord] | [];
