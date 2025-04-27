@@ -6,13 +6,9 @@ import { storeToRefs } from "pinia";
 import { computed } from "vue";
 import App from "./App.vue";
 
-const { settings, shouldUseDarkColors } = storeToRefs(useSettingsStore());
+const { shouldUseDarkColors } = storeToRefs(useSettingsStore());
 
-const theme = computed(() => {
-  if (settings.value.themeSource === "dark") return darkTheme;
-  if (settings.value.themeSource === "light") return null;
-  return shouldUseDarkColors.value ? darkTheme : null;
-});
+const theme = computed(() => (shouldUseDarkColors.value ? darkTheme : null));
 const { langPackNaiveUI } = storeToRefs(useLocalesStore());
 const { globalLoading } = storeToRefs(useSettingsStore());
 </script>
@@ -23,6 +19,10 @@ const { globalLoading } = storeToRefs(useSettingsStore());
     :locale="langPackNaiveUI.locale"
     :date-locale="langPackNaiveUI.dateLocale"
     inline-theme-disabled
+    :style="{
+      colorScheme: shouldUseDarkColors ? 'dark' : 'light',
+    }"
+    :class="shouldUseDarkColors ? 'dark' : ''"
   >
     <n-dialog-provider>
       <n-message-provider>

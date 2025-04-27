@@ -145,7 +145,7 @@ useCopyCode();
 
 <style>
 /* color for dark mode */
-@media (prefers-color-scheme: dark) {
+.dark {
   .shiki,
   .shiki span {
     color: var(--shiki-dark) !important;
@@ -300,7 +300,7 @@ div[class*="language-"] {
   --vp-code-copy-code-bg: #f6f6f7;
   --vp-code-block-bg: #f6f6f7;
 }
-@media (prefers-color-scheme: dark) {
+.dark {
   :root {
     --vp-code-lang-color: #98989f;
     --vp-code-copy-code-hover-bg: #1b1b1f;

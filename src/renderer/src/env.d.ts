@@ -5,6 +5,7 @@ import type {
   NotificationApi,
   ModalApi,
 } from "naive-ui";
+import type { Config } from "tailwindcss";
 
 declare global {
   type ViewMode = "details" | "list" | "tiles";
@@ -26,6 +27,9 @@ declare global {
     $modal: ModalApi;
     $loadingBar: LoadingBarApi;
     $notification: NotificationApi;
+    tailwind?: {
+      config: Config;
+    };
   }
 
   // new

@@ -11,10 +11,8 @@ interface Settings {
   fileListPageSize: number;
   sidebarCollapsed: boolean;
   episodesDataExportType: "json" | "xlsx";
-  themeSource: UserTheme;
+  themeSource: "system" | "light" | "dark";
 }
-
-type UserTheme = "system" | "light" | "dark";
 
 export const useSettingsStore = defineStore("settings", () => {
   // define default settings
