@@ -25,7 +25,11 @@
     "label-source-code": "Source Code",
     "btn-github": "GitHub",
     "label-toggle-devtools": "Toggle Devtools",
-    "btn-toggle": "Toggle"
+    "btn-toggle": "Toggle",
+    "label-theme-mode": "Theme Mode",
+    "text-theme-system": "System",
+    "text-theme-light": "Light",
+    "text-theme-dark": "Dark"
   },
   "home": {
     "title": "XYY Huijiwiki Dashboard"

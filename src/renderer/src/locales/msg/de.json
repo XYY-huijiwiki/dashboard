@@ -25,7 +25,11 @@
     "label-source-code": "Quellcode",
     "btn-github": "GitHub",
     "label-toggle-devtools": "Entwicklerwerkzeuge umschalten",
-    "btn-toggle": "Umschalten"
+    "btn-toggle": "Umschalten",
+    "label-theme-mode": "Themenmodus",
+    "text-theme-system": "System",
+    "text-theme-light": "Hell",
+    "text-theme-dark": "Dunkel"
   },
   "home": {
     "title": "XYY Huijiwiki Dashboard"

@@ -1,4 +1,4 @@
-import { ipcMain, BrowserWindow, shell } from "electron";
+import { ipcMain, BrowserWindow, shell, nativeTheme } from "electron";
 import path from "path";
 import fs from "fs";
 import mime from "mime-types";
@@ -169,6 +169,15 @@ function registerIPC(): void {
     return fs.existsSync(filePath);
   });
 
+  // #endregion
+
+  // #region theme
+  ipcMain.handle(
+    "set-theme-source",
+    (_event, themeSource: "system" | "light" | "dark") => {
+      nativeTheme.themeSource = themeSource;
+    },
+  );
   // #endregion
 }
 

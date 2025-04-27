@@ -1,7 +1,9 @@
 import { defineStore } from "pinia";
 import { useLocalStorage } from "@vueuse/core";
-import { type Ref, ref } from "vue";
+import { computed, type Ref, ref, watch } from "vue";
 import { cloneDeep } from "lodash-es";
+import { usePreferredColorScheme } from "@vueuse/core";
+import { is } from "@renderer/utils";
 
 interface Settings {
   language: string | "auto";
@@ -9,7 +11,10 @@ interface Settings {
   fileListPageSize: number;
   sidebarCollapsed: boolean;
   episodesDataExportType: "json" | "xlsx";
+  themeSource: UserTheme;
 }
+
+type UserTheme = "system" | "light" | "dark";
 
 export const useSettingsStore = defineStore("settings", () => {
   // define default settings
@@ -19,6 +24,7 @@ export const useSettingsStore = defineStore("settings", () => {
     fileListPageSize: 50,
     sidebarCollapsed: false,
     episodesDataExportType: "xlsx",
+    themeSource: "system",
   };
   // init settings from localStorage or use default settings
   const settings: Ref<Settings> = useLocalStorage(
@@ -37,5 +43,24 @@ export const useSettingsStore = defineStore("settings", () => {
   // global state
   const globalLoading = ref(false);
 
-  return { settings, resetSettings, globalLoading };
+  // global theme
+  const systemTheme = usePreferredColorScheme();
+  const shouldUseDarkColors: Ref<boolean> = computed(() => {
+    if (settings.value.themeSource === "system") {
+      return systemTheme.value === "dark";
+    }
+    return settings.value.themeSource === "dark";
+  });
+  if (!is.web) {
+    // set theme source to main process (Electron only)
+    watch(
+      () => settings.value.themeSource,
+      (newThemeSource) => {
+        window.api.setThemeSource(newThemeSource);
+      },
+      { immediate: true },
+    );
+  }
+
+  return { settings, resetSettings, globalLoading, shouldUseDarkColors };
 });

@@ -61,6 +61,25 @@ function toggleDevtools(): void {
         </n-space>
       </n-radio-group>
     </n-form-item>
+    <!-- theme mode -->
+    <n-form-item>
+      <template #label>
+        {{ t("settings.label-theme-mode") }}
+      </template>
+      <n-radio-group v-model:value="settings.themeSource" name="themeMode">
+        <n-space>
+          <n-radio key="system" value="system">
+            {{ t("settings.text-theme-system") }}
+          </n-radio>
+          <n-radio key="light" value="light">
+            {{ t("settings.text-theme-light") }}
+          </n-radio>
+          <n-radio key="dark" value="dark">
+            {{ t("settings.text-theme-dark") }}
+          </n-radio>
+        </n-space>
+      </n-radio-group>
+    </n-form-item>
     <!-- github token -->
     <n-form-item>
       <template #label>

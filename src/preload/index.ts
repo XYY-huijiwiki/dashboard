@@ -32,6 +32,8 @@ const api: typeof window.api = {
   showInFolder: (filePath) => ipcRenderer.invoke("show-in-folder", filePath),
   openFile: (filePath) => ipcRenderer.invoke("open-file", filePath),
   isFileExists: (filePath) => ipcRenderer.invoke("is-file-exists", filePath),
+  setThemeSource: (themeSource) =>
+    ipcRenderer.invoke("set-theme-source", themeSource),
 };
 
 // Use `contextBridge` APIs to expose Electron APIs to

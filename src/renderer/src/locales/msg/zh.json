@@ -25,7 +25,11 @@
     "label-source-code": "源代码",
     "btn-github": "GitHub",
     "label-toggle-devtools": "切换开发者工具",
-    "btn-toggle": "切换"
+    "btn-toggle": "切换",
+    "label-theme-mode": "主题模式",
+    "text-theme-system": "系统",
+    "text-theme-light": "浅色",
+    "text-theme-dark": "深色"
   },
   "home": {
     "title": "羊羊百科控制中心"

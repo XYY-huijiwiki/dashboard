@@ -97,6 +97,8 @@ type CustomApi = {
   showInFolder: (filePath: string) => Promise<void>;
   openFile: (filePath: string) => Promise<void>;
   isFileExists: (filePath: string) => Promise<boolean>;
+
+  setThemeSource: (themeSource: "system" | "light" | "dark") => Promise<void>;
 };
 
 declare global {
