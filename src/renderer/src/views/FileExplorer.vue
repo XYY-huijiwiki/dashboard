@@ -29,7 +29,7 @@
     >
       <template #1>
         <file-preview-card v-if="preview" v-model="preview" :closable="true" />
-        <template v-else>
+        <div v-else ref="dropZoneRef" class="relative h-full">
           <file-list-table
             v-if="
               explorerState.viewMode === 'details' ||
@@ -66,7 +66,24 @@
             @file-rename="renameFile"
             @new-file="newFile"
           />
-        </template>
+          <div
+            v-if="isOverDropZone"
+            class="absolute inset-0 bg-white/90 dark:bg-black/90 z-10 p-16 rounded"
+          >
+            <n-element class="upload-dragger">
+              <div>
+                <div style="margin-bottom: 12px">
+                  <n-icon size="48" :depth="3">
+                    <icon icon="fluent:cloud-arrow-up-48-regular" />
+                  </n-icon>
+                </div>
+                <n-text style="font-size: 16px">
+                  {{ t("file-explorer.upload-prompt") }}
+                </n-text>
+              </div>
+            </n-element>
+          </div>
+        </div>
       </template>
       <template v-if="showDetailsPane" #2>
         <file-details
@@ -76,30 +93,11 @@
         />
       </template>
     </n-split>
-    <teleport :to="dropZoneRef">
-      <div v-if="isOverDropZone" class="absolute inset-0 bg-black/90 z-10 p-16">
-        <n-element class="upload-dragger">
-          <div>
-            <div style="margin-bottom: 12px">
-              <n-icon size="48" :depth="3">
-                <icon icon="fluent:cloud-arrow-up-48-regular" />
-              </n-icon>
-            </div>
-            <n-text style="font-size: 16px">
-              {{ t("file-explorer.upload-prompt") }}
-            </n-text>
-            <n-p depth="3" style="margin: 8px 0 0 0">
-              {{ t("file-explorer.upload-warning") }}
-            </n-p>
-          </div>
-        </n-element>
-      </div>
-    </teleport>
   </n-flex>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, watch, h } from "vue";
+import { computed, onMounted, ref, watch, h, useTemplateRef } from "vue";
 import type { Ref } from "vue";
 import type { DataTableRowKey } from "naive-ui";
 import { useI18n } from "vue-i18n";
@@ -343,20 +341,23 @@ watch(
 );
 
 // new file
-async function newFile(file: File | undefined | null): Promise<void> {
+async function newFile(files?: File[]): Promise<void> {
   const NewFileDialog = (await import("@renderer/components/NewFileDialog.vue"))
     .default;
   const modalInstance = window.$modal.create({
     autoFocus: false,
     title: t("github-files.title-new"),
-    preset: "dialog",
+    preset: "card",
     showIcon: false,
-    style: "width: 480px; max-width: 100%",
+    style: {
+      width: "480px",
+      maxWidth: "100%",
+    },
+
     content: () =>
       h(NewFileDialog, {
-        selectedFile: file,
+        selectedFiles: files ? files : [],
         onClose: () => modalInstance.destroy(),
-        onDone: () => queryData(),
         onLoadingStart: () => {
           modalInstance.closable = false;
           modalInstance.closeOnEsc = false;
@@ -466,17 +467,15 @@ async function editFile(): Promise<void> {
 
 // #region Drop File
 import { useDropZone } from "@vueuse/core";
-const dropZoneRef = ref<HTMLDivElement>(
-  document.querySelector("#bodyContent") as HTMLDivElement,
-);
+const dropZoneRef = useTemplateRef("dropZoneRef");
 
 async function onDrop(files: File[] | null) {
   // called when files are dropped on zone
-  newFile(files![0]);
+  if (!files) return;
+  newFile(files);
 }
 const { isOverDropZone } = useDropZone(dropZoneRef, {
   onDrop,
-  multiple: false,
   preventDefaultForUnhandled: false,
 });
 

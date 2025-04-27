@@ -28,4 +28,21 @@ function fileNameLengthLimitFromOrg(fileName: string): boolean {
   return fileNameBase62.length <= 255;
 }
 
-export { fileNameOrgToBase62, fileNameBase62ToOrg, fileNameLengthLimitFromOrg };
+function getFileExt(fileName: string): string {
+  const fileExt = fileName.split(".").pop();
+  if (!fileExt) return "";
+  return fileExt;
+}
+
+function getFilenameWithoutExt(fileName: string): string {
+  const fileExt = getFileExt(fileName);
+  return fileName.slice(0, fileName.length - fileExt.length - 1);
+}
+
+export {
+  fileNameOrgToBase62,
+  fileNameBase62ToOrg,
+  fileNameLengthLimitFromOrg,
+  getFileExt,
+  getFilenameWithoutExt,
+};

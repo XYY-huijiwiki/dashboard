@@ -44,9 +44,7 @@
     "btn-search": "Suchen",
     "btn-new": "Neu",
     "title-new": "Datei hochladen",
-    "msg-space-replacement-warning": "Leerzeichen in Dateinamen werden durch Unterstriche ersetzt, um den Dateinamenanforderungen des Wikis zu entsprechen.",
-    "msg-upload-success": "Hochladen erfolgreich",
-    "msg-upload-failed": "Hochladen fehlgeschlagen",
+    "msg-space-replacement-warning": "Leerzeichen in Dateinamen werden durch Unterstriche ersetzt.",
     "btn-details": "Details",
     "btn-preview": "Vorschau",
     "btn-link-copy": "Link kopieren",
@@ -67,7 +65,6 @@
     "title-edit": "Dateiquelle und Dateilizenz bearbeiten",
     "msg-edit-success": "Bearbeitung erfolgreich",
     "msg-edit-failed": "Bearbeitung fehlgeschlagen",
-    "btn-select-file": "Datei auswählen",
     "msg-number-files-selected": "{0} Dateien ausgewählt",
     "btn-view-in-XYY-wiki": "In XYY-Wiki anzeigen",
     "msg-no-preview": "Für diese Datei scheint es keine Vorschau zu geben, die wir Ihnen zeigen können.",
@@ -126,9 +123,7 @@
     },
     "btn-copy-code": "Code kopieren",
     "label-copied": "Kopiert",
-    "msg-file-name-too-long": "Ups, der Dateiname ist zu lang!",
-    "msg-file-size-warning": "Das Hochladen einer so großen Datei könnte in Ihrem Browser fehlschlagen. Ziehen Sie in Betracht, die App herunterzuladen, um eine reibungslosere Erfahrung zu machen.",
-    "btn-download-latest-release": "Neueste Version herunterladen"
+    "msg-file-name-too-long": "Ups, der Dateiname ist zu lang!"
   },
   "init": {
     "title": "Initialisierung",
@@ -162,11 +157,23 @@
   },
   "file-explorer": {
     "title": "Datei-Explorer",
-    "label-filtered-type": "Gefilterter Typ: ",
-    "label-filtered-status": "Gefilterter Status: ",
+    "label-filtered-type": "Gefilterter Typ:",
+    "label-filtered-status": "Gefilterter Status:",
     "btn-clear-filters": "Filter zurücksetzen",
-    "upload-prompt": "Datei hierher ziehen, um sie hochzuladen",
-    "upload-warning": "Nur eine Datei auf einmal."
+    "upload-prompt": "Klicke oder ziehe deine Dateien hierher, um sie hochzuladen.",
+    "label-file-licence": "Dateilizenz",
+    "label-file-source": "Dateiquelle",
+    "msg-file-source-empty": "Bitte gib die Quelle der Datei an.",
+    "btn-upload": "Hochladen",
+    "title-upload-failed": "Hochladen fehlgeschlagen",
+    "msg-file-name-empty": "Der Dateiname darf nicht leer sein.",
+    "msg-file-name-too-long": "Der Dateiname ist zu lang.",
+    "msg-space-in-file-name": "Leerzeichen im Dateinamen werden durch Unterstriche ersetzt.",
+    "msg-file-size-too-large-for-web": "Große Dateien sind für den Web-Upload nicht ideal. Lade unsere App herunter für eine reibungslosere Erfahrung.",
+    "msg-file-size-too-large": "Die Datei ist zu groß. Jede Datei darf maximal 2 GiB groß sein.",
+    "msg-unknown-file-type": "Unbekannter Dateityp. Überprüfe, ob du die richtige Datei hochlädst.",
+    "msg-file-licence-empty": "Bitte wähle eine Dateilizenz aus.",
+    "btn-download-latest-release": "Neueste Version herunterladen"
   },
   "file-preview": {
     "title": "Dateivorschau",

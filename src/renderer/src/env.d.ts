@@ -104,17 +104,4 @@ declare global {
     file_name_before_deleted?: string;
     thumb_id?: number;
   };
-
-  type UploadRecord = {
-    file: File;
-    filename: string;
-    source: string;
-    licence: string;
-    status: {
-      upload: "invalid" | "pending" | "uploading" | "done" | "failed";
-      beingEdited: ("filename" | "source")[];
-    };
-    warnings: string[];
-    invalidWarnings: string[];
-  };
 }

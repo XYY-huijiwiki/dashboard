@@ -27,6 +27,7 @@ import { onMounted, ref } from "vue";
 import type { Ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
+import ky from "ky";
 
 import db from "@renderer/utils/queryDB";
 import { errNotify } from "@renderer/utils";
@@ -45,8 +46,11 @@ onMounted(async () => {
   console.log(queryStr);
   const queryUrl = new URL(import.meta.env.VITE_CF_DATABASE_URL);
   queryUrl.searchParams.set("query", queryStr);
-  const result = (await fetch(queryUrl.toString()).then((res) => res.json()))[0]
-    .results as [FileRecord] | [];
+  const result = (
+    await ky
+      .get<[{ results: FileRecord[]; success: boolean }]>(queryUrl.href)
+      .json()
+  )[0].results;
   if (result.length !== 1) {
     errNotify(
       t("file-preview.title-file-not-found"),

@@ -44,9 +44,7 @@
     "btn-search": "搜索",
     "btn-new": "新建",
     "title-new": "上传文件",
-    "msg-space-replacement-warning": "文件名中的空格将被替换为下划线以符合Wiki对文件名的要求。",
-    "msg-upload-success": "上传成功",
-    "msg-upload-failed": "上传失败",
+    "msg-space-replacement-warning": "文件名中的空格将被替换为下划线。",
     "btn-details": "详细信息",
     "btn-preview": "预览",
     "btn-link-copy": "复制链接",
@@ -67,7 +65,6 @@
     "title-edit": "编辑文件来源和文件许可",
     "msg-edit-success": "编辑成功",
     "msg-edit-failed": "编辑失败",
-    "btn-select-file": "选择文件",
     "msg-number-files-selected": "已选择{0}个文件",
     "btn-view-in-XYY-wiki": "在羊羊百科中查看",
     "msg-no-preview": "嗯… 看起来此文件没有可向你显示的预览。",
@@ -126,8 +123,6 @@
     },
     "btn-copy-code": "复制代码",
     "msg-file-name-too-long": "哎呀，文件名太长了！",
-    "msg-file-size-warning": "在浏览器中上传如此大的文件很可能会失败。考虑下载应用程序以获得更流畅的体验。",
-    "btn-download-latest-release": "下载最新版本",
     "label-copied": "已复制"
   },
   "init": {
@@ -161,12 +156,24 @@
     "title": "回收站"
   },
   "file-explorer": {
-    "title": "文件浏览器",
-    "label-filtered-type": "已筛选的类型：",
-    "label-filtered-status": "已筛选的状态：",
+    "title": "文件资源管理器",
+    "label-filtered-type": "筛选类型：",
+    "label-filtered-status": "筛选状态：",
     "btn-clear-filters": "清除筛选",
-    "upload-prompt": "将文件拖放到此处以上传",
-    "upload-warning": "一次仅支持一个文件。"
+    "upload-prompt": "点击或拖拽文件到这里上传。",
+    "label-file-licence": "文件许可",
+    "label-file-source": "文件来源",
+    "msg-file-source-empty": "请输入文件来源。",
+    "btn-upload": "上传",
+    "title-upload-failed": "上传失败",
+    "msg-file-name-empty": "文件名不能为空。",
+    "msg-file-name-too-long": "文件名太长了。",
+    "msg-space-in-file-name": "文件名中的空格将替换为下划线。",
+    "msg-file-size-too-large-for-web": "大文件不建议通过网页上传。请下载我们的应用程序以获得更流畅的上传体验。",
+    "msg-file-size-too-large": "文件过大，每个文件最大不能超过 2 GiB。",
+    "msg-unknown-file-type": "未知文件类型，请确认上传的是正确的文件。",
+    "msg-file-licence-empty": "请选择文件许可。",
+    "btn-download-latest-release": "下载最新版本"
   },
   "file-preview": {
     "title": "文件预览",

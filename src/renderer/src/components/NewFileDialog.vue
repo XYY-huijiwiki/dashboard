@@ -1,78 +1,69 @@
 <template>
   <n-flex vertical>
-    <n-flex vertical class="my-8">
-      <n-alert v-if="fileName.match(/\s/)" type="warning">
-        {{ t("github-files.msg-space-replacement-warning") }}
-      </n-alert>
-      <n-alert
-        v-if="is.web && selectedFile && selectedFile.size > 20 * 1024 * 1024"
-        type="warning"
-      >
-        {{ t("github-files.msg-file-size-warning") }}
-        <a
-          target="_blank"
-          href="https://github.com/XYY-huijiwiki/dashboard/releases/latest"
-        >
-          <img
-            :src="`https://img.shields.io/github/v/release/XYY-huijiwiki/dashboard?label=${t('github-files.btn-download-latest-release')}&style=for-the-badge`"
-            :alt="t('github-files.btn-download-latest-release')"
-          />
-        </a>
-      </n-alert>
-      <n-input-group>
-        <n-button @click="handleSelectFile">
-          {{ t("github-files.btn-select-file") }}
-        </n-button>
-        <n-input v-model:value="fileName" :disabled="!selectedFile"></n-input>
-      </n-input-group>
-      <n-select
-        v-model:value="fileLicense"
-        :placeholder="t('github-files.label-file-licence')"
-        :options="licenceOptions"
-      ></n-select>
+    <!-- content -->
+    <n-upload
+      v-model:file-list="fileList"
+      :default-upload="false"
+      :multiple="true"
+      :show-retry-button="false"
+      :disabled="loading"
+    >
+      <n-upload-dragger>
+        <div style="margin-bottom: 12px">
+          <n-icon size="48" :depth="3">
+            <icon icon="fluent:cloud-arrow-up-48-regular" />
+          </n-icon>
+        </div>
+        <n-text style="font-size: 16px">
+          {{ t("file-explorer.upload-prompt") }}
+        </n-text>
+      </n-upload-dragger>
+    </n-upload>
+
+    <!-- footer -->
+    <n-input-group>
       <n-input
         v-model:value="fileSource"
-        type="textarea"
-        :placeholder="t('github-files.label-file-source')"
+        :placeholder="t('file-explorer.label-file-source')"
+        :disabled="loading"
       ></n-input>
-      <component :is="genWikitextDom(fileSource)" v-if="fileSource" />
-    </n-flex>
-    <!-- footer (action) -->
-    <n-flex justify="end">
-      <n-button :disabled="loading" @click="$emit('close')">
-        {{ t("general.btn-cancel") }}
+      <n-select
+        v-model:value="fileLicense"
+        :placeholder="t('file-explorer.label-file-licence')"
+        :disabled="loading"
+        :options="licenceOptions"
+        :render-tag="({ option }) => h('div', option.value)"
+        :consistent-menu-width="false"
+      ></n-select>
+      <n-button :loading="loading" type="primary" @click="confirmNewFile()">
+        {{ t("file-explorer.btn-upload") }}
       </n-button>
-      <n-button
-        :loading="loading"
-        type="primary"
-        :disabled="!canUpload"
-        @click="confirmNewFile()"
-      >
-        {{ t("general.btn-confirm") }}
-      </n-button>
-    </n-flex>
+    </n-input-group>
   </n-flex>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, type Ref, watch } from "vue";
+import { ref, watch, onMounted, h } from "vue";
+import type { Ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { storeToRefs } from "pinia";
 import dayjs from "dayjs";
 import localizedFormat from "dayjs/plugin/localizedFormat";
 import ky from "ky";
-import { useFileDialog } from "@vueuse/core";
+import { Icon } from "@iconify/vue";
+import { NFlex } from "naive-ui";
+import type { UploadFileInfo } from "naive-ui";
+import { createId } from "seemly";
 
 import { useSettingsStore } from "@renderer/stores/settings";
 import { dayjsLocales } from "@renderer/stores/locales";
 import db from "@renderer/utils/queryDB";
 import licenceOptions from "@renderer/utils/licenceOptions";
-import genWikitextDom from "@renderer/utils/genWikitextDom";
 import {
   fileNameLengthLimitFromOrg,
   fileNameOrgToBase62,
 } from "@renderer/utils/fileName";
-import { is } from "@renderer/utils";
+import { errNotify, is } from "@renderer/utils";
 
 const corsProxy = import.meta.env.VITE_CORS_PROXY;
 const ghOwner = import.meta.env.VITE_GH_OWNER;
@@ -84,128 +75,230 @@ dayjs.extend(localizedFormat).locale(dayjsLocales.value);
 
 const { t } = useI18n();
 const { settings } = storeToRefs(useSettingsStore());
-const selectedFile = defineModel<undefined | null | File>("selectedFile");
-const loading = ref(false);
-const fileName = ref("");
-watch(
-  selectedFile,
-  (v) => {
-    if (v) fileName.value = v.name;
-  },
-  { immediate: true },
-);
+const { selectedFiles } = defineProps<{ selectedFiles: File[] }>();
+const fileList: Ref<UploadFileInfo[]> = ref([]);
+onMounted(() => {
+  // map `selectedFiles` to `fileList` when initialized
+  for (let index = 0; index < selectedFiles.length; index++) {
+    const element = selectedFiles[index];
+    fileList.value.push({
+      id: createId(),
+      name: element.name,
+      status: "pending",
+      file: element,
+      type: element.type,
+    });
+  }
+});
 const fileLicense: Ref<null | string> = ref(null);
 const fileSource: Ref<null | string> = ref(null);
-const canUpload = computed(
-  () =>
-    !!selectedFile.value &&
-    !!fileName.value &&
-    !!fileLicense.value &&
-    !!fileSource.value,
-);
-const fileDialog = useFileDialog();
-
-const emit = defineEmits(["close", "done", "loading-start", "loading-end"]);
+const loading = ref(false);
+const emit = defineEmits(["close", "loading-start", "loading-end"]);
 watch(loading, (v) => {
   if (v) emit("loading-start");
   else emit("loading-end");
 });
 
-async function handleSelectFile(): Promise<void> {
-  await fileDialog.open({
-    multiple: false,
-  });
-  fileDialog.onChange(() => {
-    if (fileDialog.files.value === null) return;
-    selectedFile.value = fileDialog.files.value[0];
-  });
-}
-
-async function confirmNewFile(): Promise<void> {
-  // if no file selected, do nothing
-  if (!selectedFile.value) return;
-  // if no file name, do nothing
-  if (!fileName.value) return;
-  // if file name is too long
-  const orgName = fileName.value;
-  if (!fileNameLengthLimitFromOrg(orgName)) {
-    window.$message.error(t("github-files.msg-file-name-too-long"));
+function preUploadValidate(uploadFileInfo: UploadFileInfo): void {
+  if (uploadFileInfo.file === undefined || uploadFileInfo.file === null) {
+    uploadFileInfo.status = "error";
+    errNotify(
+      t("general.unknown-error"),
+      new Error("`uploadFileInfo.file` is undefined or null"),
+    );
     return;
   }
 
-  // replace space with underscore in file name
-  const fileNameToBeUsed = fileName.value.trim().replaceAll(" ", "_");
+  const filename = uploadFileInfo.name;
+  const filetype = uploadFileInfo.type;
+  const fileSize = uploadFileInfo.file.size;
 
-  // start loading
-  loading.value = true;
+  // nofilename
+  if (filename === "") {
+    uploadFileInfo.status = "error";
+    errNotify(filename, t("file-explorer.msg-file-name-empty"));
+  }
 
-  try {
-    let ghRes: GhAssetUploadResponse;
-    // step 1: upload to github (Web only)
-    if (is.web) {
-      const url = new URL(
-        `${corsProxy}https://uploads.github.com/repos/${ghOwner}/${ghRepo}/releases/${ghFileReleaseId}/assets`,
-      );
-      url.searchParams.set("name", fileNameOrgToBase62(fileName.value));
-      ghRes = await ky
-        .post(url, {
-          headers: {
-            "Content-Type": selectedFile.value?.type,
-            Authorization: `token ${settings.value.ghToken}`,
-          },
-          body: selectedFile.value,
-        })
-        .json();
-    }
-    // step 1: upload to github (Electron only)
-    else {
-      ghRes = await window.api.uploadToGitHub({
-        owner: ghOwner,
-        repo: ghRepo,
-        releaseId: `${ghFileReleaseId}`,
-        ghToken: settings.value.ghToken,
-        filePath: window.api.getPathForFile(selectedFile.value),
-        fileName: fileNameToBeUsed,
-      });
-    }
-    console.log("ghRes", ghRes);
+  // file name too long
+  if (!fileNameLengthLimitFromOrg(filename)) {
+    uploadFileInfo.status = "error";
+    errNotify(filename, t("file-explorer.msg-file-name-too-long"));
+  }
 
-    // step 2: update database
-    const wikitext = ``;
-    const query = db("files")
-      .insert({
-        id: ghRes.id,
-        file_name: fileNameToBeUsed,
-        file_name_base62: ghRes.name,
-        file_size: ghRes.size,
-        content_type: ghRes.content_type,
-        uploader: ghRes.uploader.login,
-        updated_at: ghRes.updated_at,
-        wikitext,
-        licence: fileLicense.value,
-        source: fileSource.value,
-      })
-      .toString();
-    const url = new URL(databaseUrl);
-    url.searchParams.set("query", query);
-    url.searchParams.set("gh_token", settings.value.ghToken);
-    const dbRes = await fetch(url.href);
-    console.log("dbRes", dbRes);
-
-    window.$message.success(t("github-files.msg-upload-success"));
-    emit("done");
-  } catch (error) {
-    console.dir(error);
-    window.$notification.error({
-      title: t("github-files.msg-upload-failed"),
-      content: `${error}`,
+  // file name contains space (not fatal)
+  if (filename.match(/\s/)) {
+    window.$notification.warning({
+      title: filename,
+      content: t("file-explorer.msg-space-in-file-name"),
       meta: dayjs().format("lll"),
     });
-  } finally {
-    loading.value = false;
-    emit("close");
   }
+
+  // file size too large (20MiB in web) (not fatal)
+  if (is.web && fileSize > 20 * 1024 * 1024) {
+    window.$notification.warning({
+      title: filename,
+      content: () =>
+        h(NFlex, { vertical: true }, () => [
+          t("file-explorer.msg-file-size-too-large-for-web"),
+          h(
+            "a",
+            {
+              target: "_blank",
+              href: "https://github.com/XYY-huijiwiki/dashboard/releases/latest",
+            },
+            [
+              h("img", {
+                src: `https://img.shields.io/github/v/release/XYY-huijiwiki/dashboard?label=${t("file-explorer.btn-download-latest-release")}&style=for-the-badge`,
+                alt: t("file-explorer.btn-download-latest-release"),
+              }),
+            ],
+          ),
+        ]),
+      meta: dayjs().format("lll"),
+    });
+  }
+
+  // file size too large (2GiB forbidden)
+  if (fileSize > 2 * 1024 * 1024 * 1024) {
+    uploadFileInfo.status = "error";
+    errNotify(filename, t("file-explorer.msg-file-size-too-large"));
+  }
+
+  // unknown file type (not fatal)
+  if (filetype === "") {
+    window.$notification.warning({
+      title: filename,
+      content: t("file-explorer.msg-unknown-file-type"),
+      meta: dayjs().format("lll"),
+    });
+  }
+}
+
+async function confirmNewFile(): Promise<void> {
+  // check file license and file source
+  if (fileSource.value === null) {
+    window.$message.warning(t("file-explorer.msg-file-source-empty"));
+    return;
+  }
+  if (fileLicense.value === null) {
+    window.$message.warning(t("file-explorer.msg-file-licence-empty"));
+    return;
+  }
+
+  loading.value = true;
+
+  for (let index = 0; index < fileList.value.length; index++) {
+    const uploadFileInfo = fileList.value[index];
+
+    // validate file info
+    preUploadValidate(uploadFileInfo);
+
+    // only process pending files
+    if (uploadFileInfo.status !== "pending") {
+      continue;
+    }
+
+    // replace spaces with underlines in file name
+    const fileNameToBeUsed = uploadFileInfo.name.trim().replaceAll(" ", "_");
+
+    try {
+      // step 1: upload to github (both Electron and Web)
+      uploadFileInfo.status = "uploading";
+      uploadFileInfo.percentage = 0;
+      let ghAssetUploadResponse: GhAssetUploadResponse;
+      // step 1: upload to github (Web only)
+      if (is.web) {
+        const url = new URL(
+          `${corsProxy}https://uploads.github.com/repos/${ghOwner}/${ghRepo}/releases/${ghFileReleaseId}/assets`,
+        );
+        url.searchParams.set("name", fileNameOrgToBase62(fileNameToBeUsed));
+        ghAssetUploadResponse = await ky
+          .post(url, {
+            headers: {
+              "Content-Type":
+                uploadFileInfo.file?.type || "application/octet-stream",
+              Authorization: `token ${settings.value.ghToken}`,
+            },
+            body: uploadFileInfo.file,
+          })
+          .json();
+      }
+      // step 1: upload to github (Electron only)
+      else {
+        ghAssetUploadResponse = await window.api.uploadToGitHub({
+          owner: ghOwner,
+          repo: ghRepo,
+          releaseId: ghFileReleaseId,
+          ghToken: settings.value.ghToken,
+          filePath: window.api.getPathForFile(uploadFileInfo.file!),
+          fileName: fileNameToBeUsed,
+        });
+      }
+      if (is.dev) console.log("ghRes", ghAssetUploadResponse);
+
+      // step 2: update database
+      const query = db("files")
+        .insert({
+          id: ghAssetUploadResponse.id,
+          file_name: fileNameToBeUsed,
+          file_name_base62: ghAssetUploadResponse.name,
+          file_size: ghAssetUploadResponse.size,
+          content_type: ghAssetUploadResponse.content_type,
+          uploader: ghAssetUploadResponse.uploader.login,
+          updated_at: ghAssetUploadResponse.updated_at,
+          wikitext: "",
+          licence: fileLicense.value,
+          source: fileSource.value,
+        })
+        .toString();
+      const url = new URL(databaseUrl);
+      url.searchParams.set("query", query);
+      url.searchParams.set("gh_token", settings.value.ghToken);
+      const dbRes = await ky.post(url.href).json();
+      if (is.dev) console.log("dbRes", dbRes);
+      uploadFileInfo.percentage = 100;
+      uploadFileInfo.status = "finished";
+      uploadFileInfo.url = `https://xyy.huijiwiki.com/wiki/Project:控制中心#/preview/${uploadFileInfo.name}`;
+    } catch (error) {
+      uploadFileInfo.status = "error";
+      errNotify(t("file-explorer.title-upload-failed"), error);
+    }
+  }
+
+  loading.value = false;
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.upload-dragger {
+  cursor: pointer;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: var(--border-radius);
+  padding: 24px;
+  opacity: 1;
+  transition:
+    opacity 0.3s var(--cubic-bezier-ease-in-out),
+    border-color 0.3s var(--cubic-bezier-ease-in-out),
+    background-color 0.3s var(--cubic-bezier-ease-in-out);
+  background-color: var(--action-color);
+  border: 1px dashed var(--border-color);
+  &:hover,
+  &.hover {
+    border-color: var(--primary-color);
+  }
+}
+.upload-list :deep(.n-thing-avatar) {
+  flex: none;
+}
+.upload-list :deep(.n-thing-header__title) {
+  flex: auto;
+  width: 0;
+}
+</style>

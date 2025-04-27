@@ -17,6 +17,7 @@ const { globalLoading } = storeToRefs(useSettingsStore());
     :theme="theme"
     :locale="langPackNaiveUI.locale"
     :date-locale="langPackNaiveUI.dateLocale"
+    inline-theme-disabled
   >
     <n-dialog-provider>
       <n-message-provider>

@@ -44,9 +44,7 @@
     "btn-search": "Search",
     "btn-new": "New",
     "title-new": "Upload File",
-    "msg-space-replacement-warning": "Spaces in file names will be replaced with underscores to comply with the Wiki's file name requirements.",
-    "msg-upload-success": "Upload successful",
-    "msg-upload-failed": "Upload failed",
+    "msg-space-replacement-warning": "Spaces in file names will be replaced with underscores.",
     "btn-details": "Details",
     "btn-preview": "Preview",
     "btn-link-copy": "Copy Link",
@@ -67,7 +65,6 @@
     "title-edit": "Edit file source and file licence",
     "msg-edit-success": "Edit successful",
     "msg-edit-failed": "Edit failed",
-    "btn-select-file": "Select File",
     "msg-number-files-selected": "{0} files selected",
     "btn-view-in-XYY-wiki": "View in XYY Wiki",
     "msg-no-preview": "Hmm… looks like this file doesn't have a preview we can show you.",
@@ -125,9 +122,7 @@
       "btn-tiles": "Tiles"
     },
     "btn-copy-code": "Copy code",
-    "msg-file-name-too-long": "Oops, the file name’s too long!",
-    "msg-file-size-warning": "Uploading such a large file might fail in your browser. Consider downloading the app for a smoother experience.",
-    "btn-download-latest-release": "Download Latest Release",
+    "msg-file-name-too-long": "Oops, the file name's too long!",
     "label-copied": "Copied"
   },
   "init": {
@@ -162,11 +157,23 @@
   },
   "file-explorer": {
     "title": "File Explorer",
-    "label-filtered-type": "Filtered type: ",
-    "label-filtered-status": "Filtered status: ",
-    "btn-clear-filters": "Clear Filters",
-    "upload-prompt": "Drop a file here to upload",
-    "upload-warning": "Only one file at a time."
+    "label-filtered-type": "Filtered type:",
+    "label-filtered-status": "Filtered status:",
+    "btn-clear-filters": "Clear filters",
+    "upload-prompt": "Click or drag your files here to upload.",
+    "label-file-licence": "File licence",
+    "label-file-source": "File source",
+    "msg-file-source-empty": "Please enter the file source.",
+    "btn-upload": "Upload",
+    "title-upload-failed": "Upload Failed",
+    "msg-file-name-empty": "File name can't be empty.",
+    "msg-file-name-too-long": "File name is too long.",
+    "msg-space-in-file-name": "Spaces in file names will be replaced with underscores.",
+    "msg-file-size-too-large-for-web": "Large files are not recommended for web upload. Download our app for smoother uploads.",
+    "msg-file-size-too-large": "File is too large. Each file must be under 2 GiB.",
+    "msg-unknown-file-type": "Unknown file type. Double-check if you're uploading the right one.",
+    "msg-file-licence-empty": "Please choose a file licence.",
+    "btn-download-latest-release": "Download Latest Release"
   },
   "file-preview": {
     "title": "File Preview",

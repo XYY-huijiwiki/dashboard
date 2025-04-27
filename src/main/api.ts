@@ -1,4 +1,4 @@
-import { ipcMain, dialog, BrowserWindow, shell } from "electron";
+import { ipcMain, BrowserWindow, shell } from "electron";
 import path from "path";
 import fs from "fs";
 import mime from "mime-types";
@@ -12,24 +12,6 @@ const dlManager = new ElectronDownloadManager();
 
 function registerIPC(): void {
   // #region file upload
-
-  ipcMain.handle("open-file-dialog", async () => {
-    const { canceled, filePaths } = await dialog.showOpenDialog({
-      properties: ["openFile"],
-    });
-
-    if (canceled) return null;
-
-    const filePath = filePaths[0];
-    const stats = fs.statSync(filePath);
-    return {
-      name: path.basename(filePath),
-      path: filePath,
-      size: stats.size,
-      type: mime.lookup(filePath) || "application/octet-stream",
-    };
-  });
-
   ipcMain.handle(
     "upload-to-github",
     async (_, { ghToken, owner, repo, releaseId, filePath, fileName }) => {
