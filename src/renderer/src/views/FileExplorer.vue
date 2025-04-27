@@ -192,10 +192,11 @@ onMounted(async () => {
 
   try {
     console.time("init fetching");
-    await Promise.all([
-      (filesInUse.value = await fetchFilesInUse()),
+    const [filesInUseResult, _] = await Promise.all([
+      fetchFilesInUse(),
       queryData(),
     ]);
+    filesInUse.value = filesInUseResult;
     console.timeEnd("init fetching");
   } catch (error) {
     console.dir(error);
