@@ -74,6 +74,12 @@ import {
 } from "@renderer/utils/fileName";
 import { is } from "@renderer/utils";
 
+const corsProxy = import.meta.env.VITE_CORS_PROXY;
+const ghOwner = import.meta.env.VITE_GH_OWNER;
+const ghRepo = import.meta.env.VITE_GH_REPO;
+const ghFileReleaseId = import.meta.env.VITE_GH_FILE_RELEASE_ID;
+const databaseUrl = import.meta.env.VITE_CF_DATABASE_URL;
+
 dayjs.extend(localizedFormat).locale(dayjsLocales.value);
 
 const { t } = useI18n();
@@ -137,9 +143,8 @@ async function confirmNewFile(): Promise<void> {
     let ghRes: GhAssetUploadResponse;
     // step 1: upload to github (Web only)
     if (is.web) {
-      const corsProxy = `https://cors-proxy.24218079.xyz/`;
       const url = new URL(
-        `${corsProxy}https://uploads.github.com/repos/${settings.value.ghOwner}/${settings.value.ghRepo}/releases/${settings.value.rootReleaseId}/assets`,
+        `${corsProxy}https://uploads.github.com/repos/${ghOwner}/${ghRepo}/releases/${ghFileReleaseId}/assets`,
       );
       url.searchParams.set("name", fileNameOrgToBase62(fileName.value));
       ghRes = await ky
@@ -155,9 +160,9 @@ async function confirmNewFile(): Promise<void> {
     // step 1: upload to github (Electron only)
     else {
       ghRes = await window.api.uploadToGitHub({
-        owner: settings.value.ghOwner,
-        repo: settings.value.ghRepo,
-        releaseId: `${settings.value.rootReleaseId}`,
+        owner: ghOwner,
+        repo: ghRepo,
+        releaseId: `${ghFileReleaseId}`,
         ghToken: settings.value.ghToken,
         filePath: window.api.getPathForFile(selectedFile.value),
         fileName: fileNameToBeUsed,
@@ -181,7 +186,7 @@ async function confirmNewFile(): Promise<void> {
         source: fileSource.value,
       })
       .toString();
-    const url = new URL(settings.value.databaseUrl);
+    const url = new URL(databaseUrl);
     url.searchParams.set("query", query);
     url.searchParams.set("gh_token", settings.value.ghToken);
     const dbRes = await fetch(url.href);

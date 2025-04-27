@@ -183,7 +183,7 @@
 
 <script setup lang="ts">
 import loader from "@monaco-editor/loader";
-import { ref, type Ref, watch, onMounted } from "vue";
+import { ref, type Ref, watch, onMounted, useTemplateRef } from "vue";
 import type { editor, Uri } from "monaco-editor";
 import { useI18n } from "vue-i18n";
 import type { SelectOption } from "naive-ui";
@@ -338,7 +338,7 @@ function applyRegex() {
 // #endregion
 
 // #region monaco editor
-const monacoEditorEle: Ref<HTMLElement | null> = ref(null);
+const monacoEditorEle = useTemplateRef("monacoEditorEle");
 let editorInstance: editor.IStandaloneDiffEditor;
 let setMonacoTheme: (theme: string) => void;
 let createMonacoModel: (

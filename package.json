@@ -1,7 +1,7 @@
 {
   "name": "xyy-huijiwiki-dashboard",
   "version": "0.2.12",
-  "description": "A convenient file manager for accessing and managing files stored on GitHub, (almost) seamlessly integrated with XYY Wiki.",
+  "description": "A sleek and modern dashboard for XYY Huijiwiki.",
   "main": "./out/main/index.js",
   "author": "Karsten Zhou",
   "homepage": "https://github.com/XYY-huijiwiki/dashboard",
@@ -36,7 +36,7 @@
     "base-x": "^5.0.0",
     "dayjs": "^1.11.13",
     "electron-debug": "^4.1.0",
-    "electron-dl-manager": "^3.2.1",
+    "electron-dl-manager": "^4.0.0",
     "file64": "^1.0.4",
     "filesize": "^10.1.6",
     "is-electron": "^2.2.2",

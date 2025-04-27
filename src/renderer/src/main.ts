@@ -10,7 +10,7 @@ import { userLang, langPacks } from "@renderer/stores/locales";
 
 // ===== i18n =====
 const language = JSON.parse(
-  localStorage.getItem("[Ov23liXwSttWUEILSEqe] settings") ||
+  localStorage.getItem(`[${import.meta.env.VITE_APP_ID}] settings`) ||
     `{"language":"auto"}`,
 ).language;
 const locale = language === "auto" ? userLang : language;

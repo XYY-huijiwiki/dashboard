@@ -94,7 +94,7 @@ async function confirmDelete(): Promise<void> {
         console.log(gh_res_thumb);
       }
 
-      const url = new URL(settings.value.databaseUrl);
+      const url = new URL(import.meta.env.VITE_CF_DATABASE_URL);
       url.searchParams.set("query", query);
       url.searchParams.set("gh_token", settings.value.ghToken);
 

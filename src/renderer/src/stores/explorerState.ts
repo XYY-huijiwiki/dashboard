@@ -25,7 +25,7 @@ export const useExplorerStateStore = defineStore("explorerState", () => {
   };
   // init store from localStorage or use default
   const explorerState: Ref<explorerState> = useLocalStorage(
-    "[Ov23liXwSttWUEILSEqe] explorerState",
+    `[${import.meta.env.VITE_APP_ID}] explorerState`,
     defaultExplorerState,
     {
       mergeDefaults: true,

@@ -121,6 +121,8 @@ import fetchFilesInUse from "@renderer/utils/fetchFilesInUse";
 import { useDownloadStore } from "@renderer/stores/download";
 import { is } from "@renderer/utils";
 
+const databaseUrl = import.meta.env.VITE_CF_DATABASE_URL;
+
 const { t } = useI18n();
 const { startDownload } = useDownloadStore();
 const { settings } = storeToRefs(useSettingsStore());
@@ -287,7 +289,7 @@ async function queryData(type: "more" | "refresh" = "refresh"): Promise<void> {
 
     // get total item count
     async function getTotalItemCount(): Promise<number> {
-      const url = new URL(settings.value.databaseUrl);
+      const url = new URL(databaseUrl);
       const queryStr = query.clone().count().toString();
       url.searchParams.set("query", queryStr);
       return ((await ky.get(url.href).json()) as DbResponse)[0]["results"][0][
@@ -297,7 +299,7 @@ async function queryData(type: "more" | "refresh" = "refresh"): Promise<void> {
 
     // get data from database
     async function getItems(): Promise<FileRecord[]> {
-      const url = new URL(settings.value.databaseUrl);
+      const url = new URL(databaseUrl);
       const queryStr = query.clone().toString();
       url.searchParams.set("query", queryStr);
       return ((await ky.get(url.href).json()) as DbResponse)[0].results;

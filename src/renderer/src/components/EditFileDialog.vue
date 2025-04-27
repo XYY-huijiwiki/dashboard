@@ -86,7 +86,7 @@ async function confirmEdit(): Promise<void> {
       })
       .toString();
 
-    const url = new URL(settings.value.databaseUrl);
+    const url = new URL(import.meta.env.VITE_CF_DATABASE_URL);
     url.searchParams.set("query", query);
     url.searchParams.set("gh_token", settings.value.ghToken);
 

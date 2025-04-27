@@ -11,10 +11,10 @@ const octokit = new Octokit({
   auth: store.settings.ghToken,
 });
 
-const owner = store.settings.ghOwner;
-const repo = store.settings.ghRepo;
-const files_release_id = store.settings.rootReleaseId;
-const thumbs_release_id = store.settings.thumbsReleaseId;
+const GH_OWNER = import.meta.env.VITE_GH_OWNER;
+const GH_REPO = import.meta.env.VITE_GH_REPO;
+const GH_FILE_RELEASE_ID = import.meta.env.VITE_GH_FILE_RELEASE_ID;
+const GH_THUMB_RELEASE_ID = import.meta.env.VITE_GH_THUMB_RELEASE_ID;
 const headers = { "X-GitHub-Api-Version": "2022-11-28" };
 
 // general GitHub API
@@ -38,8 +38,8 @@ async function ghVerify() {
   return (
     await octokit.request("GET /repos/{owner}/{repo}", {
       headers,
-      owner,
-      repo,
+      owner: GH_OWNER,
+      repo: GH_REPO,
     })
   ).data;
 }
@@ -48,8 +48,8 @@ async function ghVerify() {
 async function ghNewRelease(tag: string, body: string) {
   return (
     await octokit.request(`POST /repos/{owner}/{repo}/releases`, {
-      owner,
-      repo,
+      owner: GH_OWNER,
+      repo: GH_REPO,
       tag_name: base62.encode(tag),
       body,
       headers,
@@ -64,9 +64,12 @@ async function ghUpdateRelease(
 ) {
   return (
     await octokit.request(`PATCH /repos/{owner}/{repo}/releases/{release_id}`, {
-      owner,
-      repo,
-      release_id: release === "files" ? files_release_id : thumbs_release_id,
+      owner: GH_OWNER,
+      repo: GH_REPO,
+      release_id:
+        release === "files"
+          ? parseInt(GH_FILE_RELEASE_ID)
+          : parseInt(GH_THUMB_RELEASE_ID),
       body,
       headers,
     })
@@ -78,8 +81,8 @@ async function ghGetRelease(tag: string) {
   const encodedTag = base62.encode(tag);
   return (
     await octokit.request(`GET /repos/{owner}/{repo}/releases/tags/{tag}`, {
-      owner,
-      repo,
+      owner: GH_OWNER,
+      repo: GH_REPO,
       headers,
       tag: encodedTag,
     })
@@ -96,9 +99,12 @@ async function ghGetAssets(
     await octokit.request(
       `GET /repos/{owner}/{repo}/releases/{release_id}/assets`,
       {
-        owner,
-        repo,
-        release_id: release === "files" ? files_release_id : thumbs_release_id,
+        owner: GH_OWNER,
+        repo: GH_REPO,
+        release_id:
+          release === "files"
+            ? parseInt(GH_FILE_RELEASE_ID)
+            : parseInt(GH_THUMB_RELEASE_ID),
         headers,
         per_page,
         page,
@@ -113,8 +119,8 @@ async function ghGetAsset(assetId: number) {
     await octokit.request(
       `GET /repos/{owner}/{repo}/releases/assets/{asset_id}`,
       {
-        owner,
-        repo,
+        owner: GH_OWNER,
+        repo: GH_REPO,
         asset_id: assetId,
         headers,
       },
@@ -128,8 +134,8 @@ async function ghUpdateAsset(assetId: number, name: string) {
     await octokit.request(
       `PATCH /repos/{owner}/{repo}/releases/assets/{asset_id}`,
       {
-        owner,
-        repo,
+        owner: GH_OWNER,
+        repo: GH_REPO,
         asset_id: assetId,
         name,
         headers,
