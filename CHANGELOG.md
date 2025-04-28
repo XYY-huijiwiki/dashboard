@@ -1,3 +1,15 @@
+## [0.2.14](https://github.com/XYY-huijiwiki/dashboard/compare/v0.2.13...v0.2.14) (2025-04-28)
+
+### Bug Fixes
+
+- **theme:** resolve issue with customised CSS not respecting user-selected colour scheme ([565913b](https://github.com/XYY-huijiwiki/dashboard/commit/565913b33aff2fe9c98ba73b4fc9bfbc84afdad1))
+
+### Features
+
+- optimise layout structure ([e53aebb](https://github.com/XYY-huijiwiki/dashboard/commit/e53aebbc8879f23e72df03de42d8ed18782fcba6))
+- **settings:** allow users to change background material (Windows only) ([bd5e3d0](https://github.com/XYY-huijiwiki/dashboard/commit/bd5e3d01bf723043e1a44241d705527ee82ee311))
+- **UI:** support background material switching on Windows ([c7fb4a5](https://github.com/XYY-huijiwiki/dashboard/commit/c7fb4a5dddd2ffc7e8e88a17c1d7c936ecb358a1))
+
 ## [0.2.13](https://github.com/XYY-huijiwiki/dashboard/compare/v0.2.12...v0.2.13) (2025-04-27)
 
 ### Bug Fixes
