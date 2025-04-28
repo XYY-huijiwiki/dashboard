@@ -88,17 +88,6 @@ function createWindow(): void {
   } else {
     mainWindow.loadFile(join(__dirname, "../renderer/index.html"));
   }
-
-  // Listen for theme changes and update symbolColor dynamically
-  nativeTheme.on("updated", () => {
-    const newSymbolColor = nativeTheme.shouldUseDarkColors
-      ? "#FFFFFF"
-      : "#000000";
-    mainWindow.setTitleBarOverlay({
-      color: "#00000000",
-      symbolColor: newSymbolColor,
-    });
-  });
 }
 
 // This method will be called when Electron has finished

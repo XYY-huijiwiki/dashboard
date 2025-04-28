@@ -64,36 +64,55 @@ const toggleFullscreen = async () => {
 </script>
 
 <template>
-  <title-bar v-if="is.win" :title="title" />
   <n-layout
     ref="fullscreenHTML"
     has-sider
-    :class="isEnableWindowsMaterial ? '!bg-transparent' : ''"
     embedded
+    :class="[
+      is.web && !isFullscreen ? 'h-[80vh]' : 'h-screen',
+      isEnableWindowsMaterial ? '!bg-transparent' : '',
+    ]"
   >
     <n-layout-sider
       :bordered="!isEnableWindowsMaterial"
-      :native-scrollbar="false"
       :collapsed="settings.sidebarCollapsed"
       collapse-mode="width"
       :collapsed-width="62"
       :class="isEnableWindowsMaterial ? '!bg-transparent' : ''"
     >
-      <navigation-btn
-        :collapsed="settings.sidebarCollapsed"
-        @click="settings.sidebarCollapsed = !settings.sidebarCollapsed"
-      />
-      <side-menu :collapsed="settings.sidebarCollapsed" />
+      <n-flex vertical class="h-full" :size="0">
+        <backward-btn
+          :disabled="!canBack"
+          :collapsed="settings.sidebarCollapsed"
+          @click="router.back()"
+        />
+        <navigation-btn
+          :collapsed="settings.sidebarCollapsed"
+          @click="settings.sidebarCollapsed = !settings.sidebarCollapsed"
+        />
+        <n-scrollbar class="h-0 flex-1">
+          <side-menu :collapsed="settings.sidebarCollapsed" />
+        </n-scrollbar>
+        <n-divider class="!my-2" />
+        <settings-btn
+          :collapsed="settings.sidebarCollapsed"
+          @click="router.push({ name: 'settings' })"
+        />
+      </n-flex>
     </n-layout-sider>
     <n-layout-content
-      :class="isEnableWindowsMaterial ? 'rounded-tl-lg overflow-hidden' : ''"
+      content-class="flex flex-col"
+      :class="isEnableWindowsMaterial ? '!bg-transparent' : ''"
     >
+      <title-bar v-if="is.win" />
       <n-card
         content-class="shrink-0 h-0"
-        class="!rounded-none !border-none"
-        :class="[is.web && !isFullscreen ? 'h-[80vh]' : 'h-screen']"
+        class="!rounded-none !border-none h-0 flex-1"
+        :class="[
+          isEnableWindowsMaterial ? '!rounded-tl-lg overflow-hidden' : '',
+        ]"
       >
-        <!-- 卡片左上角：返回 | 前进 | 刷新  | 标题 -->
+        <!-- 卡片左上角： 刷新  | 标题 -->
         <template #header>
           <n-space
             id="title-bar"
@@ -101,32 +120,6 @@ const toggleFullscreen = async () => {
             :wrap="false"
             :wrap-item="false"
           >
-            <!-- back btn -->
-            <n-button
-              quaternary
-              circle
-              :disabled="!canBack"
-              @click="router.back()"
-            >
-              <template #icon>
-                <n-icon :size="24">
-                  <icon icon="fluent:arrow-left-24-regular" />
-                </n-icon>
-              </template>
-            </n-button>
-            <!-- forward btn -->
-            <n-button
-              v-show="canForward"
-              quaternary
-              circle
-              @click="router.forward()"
-            >
-              <template #icon>
-                <n-icon :size="24">
-                  <icon icon="fluent:arrow-right-24-regular" />
-                </n-icon>
-              </template>
-            </n-button>
             <!-- refresh btn -->
             <n-button quaternary circle @click="router.go(0)">
               <template #icon>
@@ -168,8 +161,6 @@ const toggleFullscreen = async () => {
           >
             <template #icon>
               <n-icon :size="24">
-                <!-- <full-screen-minimize24-regular v-if="isFullscreen" class="hvr-icon" />
-                <full-screen-maximize24-regular v-else class="hvr-icon" /> -->
                 <icon
                   v-if="isFullscreen"
                   icon="fluent:full-screen-minimize-24-regular"

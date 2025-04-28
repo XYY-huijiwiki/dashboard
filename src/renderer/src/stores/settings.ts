@@ -1,8 +1,10 @@
 import { defineStore } from "pinia";
 import { useLocalStorage } from "@vueuse/core";
-import { computed, type Ref, ref, watch } from "vue";
+import { computed, ref, watch, watchEffect } from "vue";
+import type { Ref } from "vue";
 import { cloneDeep } from "lodash-es";
 import { usePreferredColorScheme } from "@vueuse/core";
+
 import { is } from "@renderer/utils";
 
 interface Settings {
@@ -71,6 +73,20 @@ export const useSettingsStore = defineStore("settings", () => {
       },
       { immediate: true },
     );
+  }
+  if (!is.web) {
+    watchEffect(() => {
+      window.api.setTitleBarOverlay({
+        color:
+          settings.value.backgroundMaterial !== "auto"
+            ? "#00000000"
+            : shouldUseDarkColors.value
+              ? "#18181c"
+              : "#FFFFFF",
+        symbolColor: shouldUseDarkColors.value ? "#FFFFFF" : "#000000",
+        height: 30, // the smallest size of the title bar on windows 11
+      });
+    });
   }
 
   return { settings, resetSettings, globalLoading, shouldUseDarkColors };

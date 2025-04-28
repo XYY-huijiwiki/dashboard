@@ -1,22 +1,33 @@
 <template>
-  <div
-    class="title-bar flex items-center h-[30px] mr-[138px]"
-    style="app-region: drag"
-  >
-    <div
-      class="app-icon inline-block w-[30px] h-[30px] bg-no-repeat bg-center"
-      :style="{ backgroundImage: `url(${iconImg})`, backgroundSize: '1rem' }"
-    ></div>
-    <div>
-      <n-text class="align-middle">{{ props.title }}</n-text>
-    </div>
-  </div>
+  <n-element
+    class="title-bar"
+    :style="{
+      backgroundColor:
+        is.win && settings.backgroundMaterial !== 'auto'
+          ? 'transparent'
+          : 'var(--card-color)',
+    }"
+  ></n-element>
 </template>
 
 <script setup lang="ts">
-import iconImg from "@renderer/assets/icon.png?url";
+import { is } from "@renderer/utils";
+import { storeToRefs } from "pinia";
 
-const props = defineProps<{ title: string }>();
+import { useSettingsStore } from "@renderer/stores/settings";
+
+const { settings } = storeToRefs(useSettingsStore());
 </script>
 
-<style scoped></style>
+<style scoped>
+.title-bar {
+  height: 30px;
+  padding-right: 138px;
+  app-region: drag;
+  transition:
+    color 0.3s var(--cubic-bezier-ease-in-out),
+    background-color 0.3s var(--cubic-bezier-ease-in-out),
+    box-shadow 0.3s var(--cubic-bezier-ease-in-out),
+    border-color 0.3s var(--cubic-bezier-ease-in-out);
+}
+</style>

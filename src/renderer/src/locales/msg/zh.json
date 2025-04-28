@@ -11,7 +11,10 @@
     "btn-confirm": "确认",
     "text-leave-warning-title": "注意",
     "text-leave-warning-content": "我们仍在处理。请不要离开本页面。",
-    "unknown-error": "未知错误"
+    "unknown-error": "未知错误",
+    "btn-back": "返回",
+    "btn-close-navigation": "关闭导航",
+    "btn-open-navigation": "打开导航"
   },
   "settings": {
     "title": "设置",

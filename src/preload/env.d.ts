@@ -1,5 +1,6 @@
 import { ElectronAPI } from "@electron-toolkit/preload";
 import { DownloadItem } from "electron";
+import type { TitleBarOverlayOptions } from "electron";
 
 type UploadParams = {
   ghToken: string;
@@ -102,6 +103,7 @@ type CustomApi = {
   setBackgroundMaterial: (
     material: "auto" | "none" | "mica" | "acrylic",
   ) => Promise<void>;
+  setTitleBarOverlay: (options: TitleBarOverlayOptions) => Promise<void>;
 };
 
 declare global {

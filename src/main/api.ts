@@ -1,4 +1,5 @@
 import { ipcMain, BrowserWindow, shell, nativeTheme } from "electron";
+import type { TitleBarOverlayOptions } from "electron";
 import path from "path";
 import fs from "fs";
 import mime from "mime-types";
@@ -172,16 +173,13 @@ function registerIPC(): void {
 
   // #endregion
 
-  // #region theme
+  // #region themes
   ipcMain.handle(
     "set-theme-source",
     (_event, themeSource: "system" | "light" | "dark") => {
       nativeTheme.themeSource = themeSource;
     },
   );
-  // #endregion
-
-  // #region background material
   ipcMain.handle(
     "set-background-material",
     (event, material: "auto" | "none" | "mica" | "acrylic") => {
@@ -191,6 +189,17 @@ function registerIPC(): void {
       if (!win) throw new Error("No BrowserWindow found");
 
       win.setBackgroundMaterial(material);
+    },
+  );
+  ipcMain.handle(
+    "set-title-bar-overlay",
+    (event, options: TitleBarOverlayOptions) => {
+      if (!platform.isWindows) return; // Ensure this only applies to Windows
+
+      const win = BrowserWindow.fromWebContents(event.sender);
+      if (!win) throw new Error("No BrowserWindow found");
+
+      win.setTitleBarOverlay(options);
     },
   );
   // #endregion

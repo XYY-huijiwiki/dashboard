@@ -133,16 +133,6 @@ const options: Ref<MenuOption[]> = computed(() => [
     disabled: getDisabledState("miui-themes"),
     icon: () => h(Icon, { icon: `simple-icons:xiaomi` }),
   },
-  {
-    label: renderLabel(
-      t("settings.title"),
-      "settings",
-      getDisabledState("settings"),
-    ),
-    key: "settings",
-    disabled: getDisabledState("settings"),
-    icon: renderIcon("settings"),
-  },
 ]);
 </script>
 

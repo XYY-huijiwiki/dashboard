@@ -11,7 +11,10 @@
     "btn-confirm": "Confirm",
     "text-leave-warning-title": "Attention",
     "text-leave-warning-content": "We are still working on it. Please do not leave this page.",
-    "unknown-error": "Unkown Error"
+    "unknown-error": "Unkown Error",
+    "btn-open-navigation": "Open Navigation",
+    "btn-close-navigation": "Close Navigation",
+    "btn-back": "Back"
   },
   "settings": {
     "title": "Settings",

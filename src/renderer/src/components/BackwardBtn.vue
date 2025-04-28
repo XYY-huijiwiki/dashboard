@@ -1,7 +1,7 @@
 <template>
   <div
     :class="[
-      'mt-[6px]',
+      'mt-[10px]',
       'transition-all',
       props.collapsed ? 'ml-[8px]' : 'ml-[18px]',
       props.collapsed ? 'mr-[8px]' : 'mr-[18px]',
@@ -21,7 +21,7 @@
         >
           <template #icon>
             <icon
-              icon="fluent:navigation-20-regular"
+              icon="fluent:arrow-left-20-regular"
               width="20px"
               :class="{ shrink: isPressed, shrinkable: true }"
             />
@@ -29,11 +29,7 @@
         </n-button>
       </template>
       <template #default>
-        {{
-          collapsed
-            ? t("general.btn-open-navigation")
-            : t("general.btn-close-navigation")
-        }}
+        {{ t("general.btn-back") }}
       </template>
     </n-tooltip>
   </div>
@@ -45,8 +41,10 @@ import { Icon } from "@iconify/vue";
 import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
+
 const emits = defineEmits(["click"]);
 const props = defineProps<{
+  disabled: boolean;
   collapsed: boolean;
 }>();
 const isPressed = ref(false);
@@ -84,10 +82,10 @@ function handleEnd(event: MouseEvent | TouchEvent) {
 .shrinkable {
   display: inline-flex;
   transition: transform 0.3s ease;
-  transform-origin: center;
+  transform-origin: right;
 }
 
 .shrink {
-  transform: scale(0.5, 1);
+  transform: scale(0.75, 1);
 }
 </style>

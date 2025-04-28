@@ -299,9 +299,7 @@ div[class*="language-"] {
   --vp-code-copy-code-border-color: #e2e2e3;
   --vp-code-copy-code-bg: #f6f6f7;
   --vp-code-block-bg: #f6f6f7;
-}
-.dark {
-  :root {
+  .dark {
     --vp-code-lang-color: #98989f;
     --vp-code-copy-code-hover-bg: #1b1b1f;
     --vp-code-copy-code-active-text: #98989f;
