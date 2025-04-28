@@ -1,6 +1,7 @@
 import { app, shell, BrowserWindow, nativeTheme } from "electron";
 import type { BrowserWindowConstructorOptions } from "electron";
 import { electronApp, optimizer, is, platform } from "@electron-toolkit/utils";
+import { installExtension, VUEJS_DEVTOOLS } from "electron-devtools-installer";
 import { join } from "path";
 import { fileURLToPath } from "url";
 import debug from "electron-debug";
@@ -104,6 +105,11 @@ function createWindow(): void {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
+  // Setup devtools
+  if (is.dev) {
+    installExtension(VUEJS_DEVTOOLS);
+  }
+
   // Set app user model id for windows
   electronApp.setAppUserModelId("com.electron");
 
