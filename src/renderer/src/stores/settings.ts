@@ -76,14 +76,15 @@ export const useSettingsStore = defineStore("settings", () => {
   }
   if (!is.web) {
     watchEffect(() => {
+      // TODO: replace the hardcoded colors
       window.api.setTitleBarOverlay({
         color:
           settings.value.backgroundMaterial !== "auto"
             ? "#00000000"
             : shouldUseDarkColors.value
               ? "#18181c"
-              : "#FFFFFF",
-        symbolColor: shouldUseDarkColors.value ? "#FFFFFF" : "#000000",
+              : "#fafafc",
+        symbolColor: shouldUseDarkColors.value ? "#fafafc" : "#000000",
         height: 30, // the smallest size of the title bar on windows 11
       });
     });

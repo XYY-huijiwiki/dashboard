@@ -46,7 +46,7 @@ function toggleDevtools(): void {
           {{ t("settings.label-language") }}
         </template>
         <n-radio-group v-model:value="settings.language" name="radiogroup">
-          <n-space>
+          <n-flex>
             <n-radio key="auto" value="auto">
               {{
                 t("settings.text-auto-language", [
@@ -59,7 +59,7 @@ function toggleDevtools(): void {
             <n-radio v-for="lang in supportedLangs" :key="lang" :value="lang">
               {{ new Intl.DisplayNames([lang], { type: "language" }).of(lang) }}
             </n-radio>
-          </n-space>
+          </n-flex>
         </n-radio-group>
       </n-form-item>
       <!-- theme mode -->
@@ -68,7 +68,7 @@ function toggleDevtools(): void {
           {{ t("settings.label-theme-mode") }}
         </template>
         <n-radio-group v-model:value="settings.themeSource" name="themeMode">
-          <n-space>
+          <n-flex>
             <n-radio key="system" value="system">
               {{ t("settings.text-theme-system") }}
             </n-radio>
@@ -78,7 +78,7 @@ function toggleDevtools(): void {
             <n-radio key="dark" value="dark">
               {{ t("settings.text-theme-dark") }}
             </n-radio>
-          </n-space>
+          </n-flex>
         </n-radio-group>
       </n-form-item>
       <!-- background material -->
@@ -90,7 +90,7 @@ function toggleDevtools(): void {
           v-model:value="settings.backgroundMaterial"
           name="backgroundMaterial"
         >
-          <n-space>
+          <n-flex>
             <n-radio key="auto" value="auto">
               {{ t("settings.text-material-auto") }}
             </n-radio>
@@ -103,7 +103,7 @@ function toggleDevtools(): void {
             <n-radio key="acrylic" value="acrylic">
               {{ t("settings.text-material-acrylic") }}
             </n-radio>
-          </n-space>
+          </n-flex>
         </n-radio-group>
       </n-form-item>
       <!-- github token -->
@@ -127,7 +127,7 @@ function toggleDevtools(): void {
       </n-form-item>
       <!-- source code -->
       <n-form-item :label="t('settings.label-source-code')">
-        <n-space>
+        <n-flex>
           <n-button
             tag="a"
             href="//github.com/XYY-huijiwiki/dashboard"
@@ -135,7 +135,7 @@ function toggleDevtools(): void {
           >
             {{ t("settings.btn-github") }}
           </n-button>
-        </n-space>
+        </n-flex>
       </n-form-item>
     </n-form>
   </n-scrollbar>

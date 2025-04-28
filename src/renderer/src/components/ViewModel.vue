@@ -17,11 +17,11 @@
   <n-divider v-if="animations.length > 0" />
   <div v-if="animations.length > 0" class="w-full">
     <n-radio-group v-model:value="animation">
-      <n-space>
+      <n-flex>
         <n-radio v-for="item in animations" :key="item" :value="item">
           {{ item }}
         </n-radio>
-      </n-space>
+      </n-flex>
     </n-radio-group>
   </div>
 </template>

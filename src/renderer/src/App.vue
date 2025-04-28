@@ -18,7 +18,7 @@ import { useSettingsStore } from "@renderer/stores/settings";
 import NavigationBtn from "./components/NavigationBtn.vue";
 import { is } from "@renderer/utils";
 
-const { settings } = storeToRefs(useSettingsStore());
+const { settings, shouldUseDarkColors } = storeToRefs(useSettingsStore());
 const router = useRouter();
 const { t } = useI18n();
 const isEnableWindowsMaterial = computed(
@@ -67,7 +67,6 @@ const toggleFullscreen = async () => {
   <n-layout
     ref="fullscreenHTML"
     has-sider
-    embedded
     :class="[
       is.web && !isFullscreen ? 'h-[80vh]' : 'h-screen',
       isEnableWindowsMaterial ? '!bg-transparent' : '',
@@ -105,32 +104,29 @@ const toggleFullscreen = async () => {
       :class="isEnableWindowsMaterial ? '!bg-transparent' : ''"
     >
       <title-bar v-if="is.win" />
-      <n-card
-        content-class="shrink-0 h-0"
-        class="!rounded-none !border-none h-0 flex-1"
-        :class="[
-          isEnableWindowsMaterial ? '!rounded-tl-lg overflow-hidden' : '',
-        ]"
+      <n-element
+        class="h-0 flex-1 p-6 gap-6 flex flex-col"
+        :class="[isEnableWindowsMaterial ? '!rounded-tl-lg ' : '']"
+        :style="{
+          backgroundColor: shouldUseDarkColors
+            ? 'var(--card-color)'
+            : 'var(--action-color)',
+        }"
       >
-        <!-- 卡片左上角： 刷新  | 标题 -->
-        <template #header>
-          <n-space
-            id="title-bar"
-            align="center"
-            :wrap="false"
-            :wrap-item="false"
-          >
-            <!-- refresh btn -->
-            <n-button quaternary circle @click="router.go(0)">
-              <template #icon>
-                <n-icon :size="24">
-                  <icon icon="fluent:arrow-clockwise-24-regular" />
-                </n-icon>
-              </template>
-            </n-button>
-            <!-- dev tag -->
-            <n-tag v-if="is.dev">{{ t("general.dev-tag") }}</n-tag>
-            <!-- navigation title -->
+        <!-- header -->
+        <n-flex :wrap="false" :align="'center'">
+          <!-- refresh btn -->
+          <n-button quaternary circle @click="router.go(0)">
+            <template #icon>
+              <n-icon :size="24">
+                <icon icon="fluent:arrow-clockwise-24-regular" />
+              </n-icon>
+            </template>
+          </n-button>
+          <!-- dev tag -->
+          <n-tag v-if="is.dev">{{ t("general.dev-tag") }}</n-tag>
+          <!-- navigation title -->
+          <n-text strong class="text-lg">
             {{
               {
                 "file-explorer": t("file-explorer.title"),
@@ -148,12 +144,12 @@ const toggleFullscreen = async () => {
                 loading: t("general.loading"),
               }[$route.name || "loading"]
             }}
-          </n-space>
-        </template>
-
-        <!-- 卡片右上角按钮：fullscreen -->
-        <template v-if="!is.win" #header-extra>
+          </n-text>
+          <!-- search bar -->
+          <div id="title-bar" class="w-0 flex-1"></div>
+          <!-- fullscreen btn -->
           <n-button
+            v-if="!is.win"
             quaternary
             circle
             :class="isFullscreen ? 'hvr-icon-push' : 'hvr-icon-pop'"
@@ -174,15 +170,14 @@ const toggleFullscreen = async () => {
               </n-icon>
             </template>
           </n-button>
-        </template>
-
-        <!-- 卡片主体部分：路由 -->
-        <template #default>
+        </n-flex>
+        <!-- body -->
+        <div class="h-0 flex-1">
           <router-view v-slot="{ Component }">
             <component :is="Component" />
           </router-view>
-        </template>
-      </n-card>
+        </div>
+      </n-element>
     </n-layout-content>
   </n-layout>
 </template>

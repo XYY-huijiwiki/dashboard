@@ -33,7 +33,7 @@
 <script setup lang="ts">
 import { h, ref, nextTick } from "vue";
 import type { Ref, VNode } from "vue";
-import { NText, NTag, NSpace } from "naive-ui";
+import { NText, NTag, NFlex } from "naive-ui";
 import type { DataTableColumns, DataTableCreateRowKey } from "naive-ui";
 import { useI18n } from "vue-i18n";
 import dayjs from "dayjs";
@@ -173,7 +173,7 @@ const columns: Ref<DataTableColumns<FileRecord>> = ref([
       if (!row.licence) warnings.push("no licence");
       if (!row.source) warnings.push("no source");
       if (!filesInUse.includes(row.file_name)) warnings.push("unused");
-      return h(NSpace, () => [
+      return h(NFlex, () => [
         warnings.length === 0
           ? h(NTag, { type: "success", size: "small" }, () =>
               t("github-files.status-normal"),
@@ -190,10 +190,10 @@ const columns: Ref<DataTableColumns<FileRecord>> = ref([
             ),
       ]);
       // equivalent to HTML
-      // <n-space>
+      // <n-flex>
       //    <n-tag v-if="row.warnings.length === 0" type="success" size="small">Normal</n-tag>
       //    <n-tag v-else v-for="warning in row.warnings" type="error" size="small">{{ warning }}</n-tag>
-      // </n-space>
+      // </n-flex>
     },
   },
 ]);

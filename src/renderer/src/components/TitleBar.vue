@@ -5,7 +5,9 @@
       backgroundColor:
         is.win && settings.backgroundMaterial !== 'auto'
           ? 'transparent'
-          : 'var(--card-color)',
+          : shouldUseDarkColors
+            ? 'var(--card-color)'
+            : 'var(--action-color)',
     }"
   ></n-element>
 </template>
@@ -16,7 +18,7 @@ import { storeToRefs } from "pinia";
 
 import { useSettingsStore } from "@renderer/stores/settings";
 
-const { settings } = storeToRefs(useSettingsStore());
+const { settings, shouldUseDarkColors } = storeToRefs(useSettingsStore());
 </script>
 
 <style scoped>
