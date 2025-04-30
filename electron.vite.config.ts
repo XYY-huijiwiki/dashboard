@@ -57,7 +57,9 @@ export default defineConfig({
           resolvers: [NaiveUiResolver()],
         }),
         tailwindcss(),
-        nodePolyfills(),
+        nodePolyfills({
+          include: ["stream", "timers", "tty", "fs", "crypto", "vm"],
+        }),
       ],
     };
   }),

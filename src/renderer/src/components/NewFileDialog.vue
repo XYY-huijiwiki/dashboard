@@ -59,10 +59,7 @@ import { useSettingsStore } from "@renderer/stores/settings";
 import { dayjsLocales } from "@renderer/stores/locales";
 import db from "@renderer/utils/queryDB";
 import licenceOptions from "@renderer/utils/licenceOptions";
-import {
-  fileNameLengthLimitFromOrg,
-  fileNameOrgToBase62,
-} from "@renderer/utils/fileName";
+import { isValidFilenameLength, getBase62Name } from "@renderer/utils/filename";
 import { errNotify, is } from "@renderer/utils";
 
 const corsProxy = import.meta.env.VITE_CORS_PROXY;
@@ -120,7 +117,7 @@ function preUploadValidate(uploadFileInfo: UploadFileInfo): void {
   }
 
   // file name too long
-  if (!fileNameLengthLimitFromOrg(filename)) {
+  if (!isValidFilenameLength(filename)) {
     uploadFileInfo.status = "error";
     errNotify(filename, t("file-explorer.msg-file-name-too-long"));
   }
@@ -212,7 +209,7 @@ async function confirmNewFile(): Promise<void> {
         const url = new URL(
           `${corsProxy}https://uploads.github.com/repos/${ghOwner}/${ghRepo}/releases/${ghFileReleaseId}/assets`,
         );
-        url.searchParams.set("name", fileNameOrgToBase62(fileNameToBeUsed));
+        url.searchParams.set("name", getBase62Name(fileNameToBeUsed));
         ghAssetUploadResponse = await ky
           .post(url, {
             headers: {

@@ -11,7 +11,7 @@
         @keydown.enter="confirmRename"
       >
         <template #suffix>
-          {{ fileExt }}
+          {{ "." + fileExt }}
         </template>
       </n-input>
     </n-flex>
@@ -36,7 +36,6 @@
 import { ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { storeToRefs } from "pinia";
-import path from "path";
 import dayjs from "dayjs";
 import localizedFormat from "dayjs/plugin/localizedFormat";
 
@@ -45,9 +44,11 @@ import { ghUpdateAsset } from "@renderer/utils/octokit";
 import { useSettingsStore } from "@renderer/stores/settings";
 import { dayjsLocales } from "@renderer/stores/locales";
 import {
-  fileNameLengthLimitFromOrg,
-  fileNameOrgToBase62,
-} from "@renderer/utils/fileName";
+  getBase62Name,
+  isValidFilenameLength,
+  getFileExtname,
+  getFileBasename,
+} from "@renderer/utils/filename";
 
 dayjs.extend(localizedFormat).locale(dayjsLocales.value);
 const { t } = useI18n();
@@ -57,8 +58,8 @@ const { fileRecord } = defineProps<{
   fileRecord: FileRecord;
 }>();
 
-const fileExt = path.extname(fileRecord.file_name);
-const fileNameWithoutExt = path.basename(fileRecord.file_name, fileExt);
+const fileExt = getFileExtname(fileRecord.file_name);
+const fileNameWithoutExt = getFileBasename(fileRecord.file_name);
 
 const loading = ref(false);
 const newName = ref(fileNameWithoutExt);
@@ -75,8 +76,8 @@ async function confirmRename(): Promise<void> {
   // if new name is the same as the current name, do nothing
   if (newName.value === fileNameWithoutExt) return;
   // if file name is too long
-  const orgName = `${newName.value}${fileExt}`;
-  if (!fileNameLengthLimitFromOrg(orgName)) {
+  const orgName = `${newName.value}.${fileExt}`;
+  if (!isValidFilenameLength(orgName)) {
     window.$message.error(t("github-files.msg-file-name-too-long"));
     return;
   }
@@ -85,7 +86,7 @@ async function confirmRename(): Promise<void> {
 
   try {
     // Update filename in GitHub
-    const base62Name = fileNameOrgToBase62(orgName);
+    const base62Name = getBase62Name(orgName);
     const ghRes = await ghUpdateAsset(fileRecord.id, base62Name);
     console.log("Renaming result:", ghRes);
 
@@ -93,7 +94,7 @@ async function confirmRename(): Promise<void> {
     const query = db("files")
       .where("id", fileRecord.id)
       .update({
-        file_name: newName.value.trim().replaceAll(" ", "_") + fileExt,
+        file_name: newName.value.trim().replaceAll(" ", "_") + "." + fileExt,
         file_name_base62: ghRes.name,
         updated_at: ghRes.updated_at,
       })

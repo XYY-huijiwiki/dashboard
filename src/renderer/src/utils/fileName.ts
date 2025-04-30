@@ -1,48 +1,48 @@
 import base62 from "./base62";
 
-function fileNameOrgToBase62(fileName: string): string {
-  const fileExt = fileName.split(".").pop();
+function getBase62Name(originalName: string): string {
+  const fileExt = originalName.split(".").pop();
   if (!fileExt) throw new Error("File name must have an extension");
-  const fileNameWithoutExt = fileName.slice(
+  const fileNameWithoutExt = originalName.slice(
     0,
-    fileName.length - fileExt.length - 1,
+    originalName.length - fileExt.length - 1,
   );
   return `${base62.encode(fileNameWithoutExt)}.${fileExt}`;
 }
 
-function fileNameBase62ToOrg(fileName: string): string {
-  const fileExt = fileName.split(".").pop();
+function getOriginalName(Base62Name: string): string {
+  const fileExt = Base62Name.split(".").pop();
   if (!fileExt) throw new Error("File name must have an extension");
-  const fileNameWithoutExtBase62 = fileName.slice(
+  const fileNameWithoutExtBase62 = Base62Name.slice(
     0,
-    fileName.length - fileExt.length - 1,
+    Base62Name.length - fileExt.length - 1,
   );
   return `${base62.decode(fileNameWithoutExtBase62)}.${fileExt}`;
 }
 
-function fileNameLengthLimitFromOrg(fileName: string): boolean {
-  const fileNameBase62 = fileNameOrgToBase62(fileName);
+function isValidFilenameLength(filename: string): boolean {
+  const fileNameBase62 = getBase62Name(filename);
   console.log(
-    `file name length: ${fileName.length}, base62 length: ${fileNameBase62.length}`,
+    `file name length: ${filename.length}, base62 length: ${fileNameBase62.length}`,
   );
   return fileNameBase62.length <= 255;
 }
 
-function getFileExt(fileName: string): string {
-  const fileExt = fileName.split(".").pop();
+function getFileExtname(filename: string): string {
+  const fileExt = filename.split(".").pop();
   if (!fileExt) return "";
   return fileExt;
 }
 
-function getFilenameWithoutExt(fileName: string): string {
-  const fileExt = getFileExt(fileName);
-  return fileName.slice(0, fileName.length - fileExt.length - 1);
+function getFileBasename(filename: string): string {
+  const fileExt = getFileExtname(filename);
+  return filename.slice(0, filename.length - fileExt.length - 1);
 }
 
 export {
-  fileNameOrgToBase62,
-  fileNameBase62ToOrg,
-  fileNameLengthLimitFromOrg,
-  getFileExt,
-  getFilenameWithoutExt,
+  getBase62Name,
+  getOriginalName,
+  isValidFilenameLength,
+  getFileExtname,
+  getFileBasename,
 };
