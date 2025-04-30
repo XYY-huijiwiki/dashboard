@@ -23,7 +23,6 @@ The **[XYY Huijiwiki Dashboard](https://xyy.huijiwiki.com/wiki/Project:控制中
 ## 📝 To-Do List
 
 - [ ] Implement transactional operations (because nobody likes accidental data loss!)
-- [ ] Remove `any` from `src/renderer/src/components/file-list-grid.vue` once `@coleqiu/vue-drag-select` fixes [this issue](https://github.com/credred/vue-drag-select/issues/41)
 - [ ] Automatic updates (so you always have the latest and greatest version)
 
 ---

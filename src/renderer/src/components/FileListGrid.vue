@@ -2,11 +2,7 @@
   <n-spin :show="loading" class="h-full" content-class="h-full">
     <n-card class="h-full" content-class="shrink-0 h-0">
       <n-infinite-scroll :distance="270" @load="emit('load-more')">
-        <drag-select
-          v-model="checkedRowKeys as any"
-          class="h-full"
-          @click="showDropdown = false"
-        >
+        <drag-select v-model="checkedRowKeys" @click="showDropdown = false">
           <drag-select-option
             v-for="item in data"
             :key="item.file_name"
