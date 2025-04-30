@@ -1,3 +1,15 @@
+## [0.2.16](https://github.com/XYY-huijiwiki/dashboard/compare/v0.2.15...v0.2.16) (2025-04-30)
+
+### Bug Fixes
+
+- **about:** fix incorrect build date display ([09bd841](https://github.com/XYY-huijiwiki/dashboard/commit/09bd841491a0465f7b375dea6382a9933b0c25f7))
+- **file-explorer:** resolve issue where `<drag-select />` doesn't work when view is scrolled down ([88f7e73](https://github.com/XYY-huijiwiki/dashboard/commit/88f7e7378d299801e56ec7e4ed0fc74fbda8211f))
+- prevent crash in caused by web/platform detection ([f2a5faa](https://github.com/XYY-huijiwiki/dashboard/commit/f2a5faa02d5d0437c26e00fe846086ca383fd838))
+
+### Performance Improvements
+
+- reduce `entry.js` file size by removing unnecessary manifest info ([12aecd5](https://github.com/XYY-huijiwiki/dashboard/commit/12aecd5f9c8c2765d2e6b6dd6042b8ebe7edc179))
+
 ## [0.2.15](https://github.com/XYY-huijiwiki/dashboard/compare/v0.2.14...v0.2.15) (2025-04-30)
 
 ### Features
