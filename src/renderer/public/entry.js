@@ -1,12 +1,10 @@
 (async () => {
-  // 获取vite构建的manifest.json文件
-  let data = JSON.parse(`{{{manifest}}}`);
-  // 导入js
+  // import js
   let moduleUrl =
-    "https://xyy-huijiwiki.github.io/dashboard/" + data["index.html"]["file"];
+    "https://xyy-huijiwiki.github.io/dashboard/" + JSON.parse(`{{{js}}}`);
   import(moduleUrl);
-  // 导入css
-  let cssUrls = data["index.html"]["css"];
+  // import css
+  let cssUrls = JSON.parse(`{{{css}}}`);
   cssUrls.forEach((url) => {
     let link = document.createElement("link");
     link.rel = "stylesheet";

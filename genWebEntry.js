@@ -15,7 +15,8 @@ const template = readFileSync(
 );
 
 const data = {
-  manifest: JSON.stringify({ "index.html": manifest["index.html"] }),
+  js: JSON.stringify(manifest["index.html"]["file"]),
+  css: JSON.stringify(manifest["index.html"]["css"]),
 };
 
 const output = mustache.render(template, data);
