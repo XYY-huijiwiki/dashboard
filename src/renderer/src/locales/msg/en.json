@@ -38,7 +38,9 @@
     "text-material-mica": "Mica",
     "text-material-acrylic": "Acrylic",
     "label-about": "About",
-    "label-version": "Version"
+    "label-version": "Version",
+    "label-release-date": "Release Date",
+    "label-website": "Website"
   },
   "home": {
     "title": "XYY Huijiwiki Dashboard"

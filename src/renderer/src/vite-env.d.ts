@@ -7,7 +7,7 @@ declare const __APP_VERSION__: string;
 declare const __APP_HOMEPAGE__: string;
 declare const __APP_ID__: string;
 declare const __APP_URL__: string;
-declare const __APP_LAST_COMMIT_DATE__: number;
+declare const __APP_BUILD_DATE__: number;
 
 // proxies
 declare const __IMAGE_PROXY__: string;

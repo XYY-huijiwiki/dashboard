@@ -10,7 +10,6 @@ import { NaiveUiResolver } from "unplugin-vue-components/resolvers";
 import Components from "unplugin-vue-components/vite";
 import tailwindcss from "@tailwindcss/vite";
 import { nodePolyfills } from "vite-plugin-node-polyfills";
-import { execSync } from "node:child_process";
 
 export default defineConfig({
   main: {
@@ -64,15 +63,6 @@ export default defineConfig({
         }),
       ],
       define: (() => {
-        let lastCommitDate = 0;
-        // Check if Git is available
-        try {
-          lastCommitDate = parseInt(
-            execSync("git log -1 --format=%ct").toString(),
-          );
-        } catch {
-          console.warn("Git is not available. Skipping commit date retrieval.");
-        }
         const packageJson = JSON.parse(
           readFileSync(resolve("package.json"), "utf-8"),
         );
@@ -84,7 +74,7 @@ export default defineConfig({
           __APP_URL__: JSON.stringify(
             "https://xyy.huijiwiki.com/wiki/Project:控制中心",
           ),
-          __APP_LAST_COMMIT_DATE__: JSON.stringify(lastCommitDate),
+          __APP_BUILD_DATE__: JSON.stringify(Date.now()),
 
           // proxies
           __IMAGE_PROXY__: JSON.stringify("https://karsten-zhou.gumlet.io/"),

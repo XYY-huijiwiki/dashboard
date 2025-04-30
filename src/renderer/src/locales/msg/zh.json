@@ -38,7 +38,9 @@
     "text-material-mica": "云母",
     "text-material-acrylic": "亚克力",
     "label-about": "关于",
-    "label-version": "版本"
+    "label-version": "版本",
+    "label-release-date": "发布日期",
+    "label-website": "网站"
   },
   "home": {
     "title": "羊羊百科控制中心"

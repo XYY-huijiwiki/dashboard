@@ -24,8 +24,9 @@ const { resetSettings } = useSettingsStore();
 const { t } = useI18n();
 
 const homepage = __APP_HOMEPAGE__;
+const website = __APP_URL__;
 const version = __APP_VERSION__;
-const lastCommitDate = dayjs(__APP_LAST_COMMIT_DATE__).format("lll");
+const lastCommitDate = dayjs(__APP_BUILD_DATE__).format("ll");
 
 function clearData(): void {
   window.$dialog.warning({
@@ -136,14 +137,20 @@ function toggleDevtools(): void {
       </n-form-item>
       <!-- about -->
       <n-form-item :label="t('settings.label-about')">
-        <n-flex>
+        <n-flex :align="'center'">
           <n-a :href="homepage" target="_blank">
             {{ t("settings.label-github") }}
           </n-a>
           <n-divider vertical />
+          <n-a :href="website" target="_blank">
+            {{ t("settings.label-website") }}
+          </n-a>
+          <n-divider vertical />
           <n-text>{{ `${t("settings.label-version")} ${version}` }}</n-text>
           <n-divider vertical />
-          <n-text>{{ lastCommitDate }}</n-text>
+          <n-text>
+            {{ `${t("settings.label-release-date")} ${lastCommitDate}` }}
+          </n-text>
         </n-flex>
       </n-form-item>
     </n-form>
