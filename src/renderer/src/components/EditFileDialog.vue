@@ -8,10 +8,7 @@
         ></n-select>
       </n-form-item>
       <n-form-item :label="t('github-files.label-file-source')">
-        <n-flex vertical class="w-full">
-          <n-input v-model:value="newSource" type="textarea" />
-          <component :is="genWikitextDom(newSource)" v-if="newSource" />
-        </n-flex>
+        <n-input v-model:value="newSource" type="textarea" />
       </n-form-item>
     </n-form>
     <!-- footer (action) -->
@@ -42,7 +39,6 @@ import db from "@renderer/utils/queryDB";
 import { useSettingsStore } from "@renderer/stores/settings";
 import { dayjsLocales } from "@renderer/stores/locales";
 import licenceOptions from "@renderer/utils/licenceOptions";
-import genWikitextDom from "@renderer/utils/genWikitextDom";
 
 dayjs.extend(localizedFormat).locale(dayjsLocales.value);
 const { t } = useI18n();
