@@ -1,6 +1,6 @@
 {
   "name": "xyy-huijiwiki-dashboard",
-  "version": "0.2.14",
+  "version": "0.2.15",
   "description": "A sleek and modern dashboard for XYY Huijiwiki.",
   "main": "./out/main/index.js",
   "author": "Karsten Zhou",

@@ -1,3 +1,9 @@
+## [0.2.15](https://github.com/XYY-huijiwiki/dashboard/compare/v0.2.14...v0.2.15) (2025-04-30)
+
+### Features
+
+- **settings:** add more information to the 'About' section ([928c451](https://github.com/XYY-huijiwiki/dashboard/commit/928c4512d5fd0b833699a0e3c986f38051d2cd85))
+
 ## [0.2.14](https://github.com/XYY-huijiwiki/dashboard/compare/v0.2.13...v0.2.14) (2025-04-28)
 
 ### Bug Fixes
