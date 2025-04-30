@@ -1,4 +1,3 @@
-import isElectron from "is-electron";
 import dayjs from "dayjs";
 import localizedFormat from "dayjs/plugin/localizedFormat";
 
@@ -8,15 +7,25 @@ async function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-const __IS_DEV__ = import.meta.env.DEV;
+const isDev = import.meta.env.DEV;
+const isWeb = isDev
+  ? window.electron?.process?.platform === undefined
+  : __IS_WEB__;
+const isWin = isDev
+  ? window.electron?.process?.platform === "win32"
+  : __IS_WIN__;
+const isMac = isDev
+  ? window.electron?.process?.platform === "darwin"
+  : __IS_MAC__;
+const isLinux = isDev
+  ? window.electron?.process?.platform === "linux"
+  : __IS_LINUX__;
 const is = {
-  dev: __IS_DEV__,
-  web: __IS_DEV__ ? !isElectron() : __IS_WEB__,
-  win: __IS_DEV__ ? window.electron.process.platform === "win32" : __IS_WIN__,
-  mac: __IS_DEV__ ? window.electron.process.platform === "darwin" : __IS_MAC__,
-  linux: __IS_DEV__
-    ? window.electron.process.platform === "linux"
-    : __IS_LINUX__,
+  dev: isDev,
+  web: isWeb,
+  win: isWin,
+  mac: isMac,
+  linux: isLinux,
 };
 
 function errNotify(title: string, error: unknown) {
