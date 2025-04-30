@@ -8,12 +8,15 @@ async function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+const __IS_DEV__ = import.meta.env.DEV;
 const is = {
-  dev: import.meta.env.DEV,
-  web: !isElectron(),
-  win: isElectron() && window.electron.process.platform === "win32",
-  mac: isElectron() && window.electron.process.platform === "darwin",
-  linux: isElectron() && window.electron.process.platform === "linux",
+  dev: __IS_DEV__,
+  web: __IS_DEV__ ? !isElectron() : __IS_WEB__,
+  win: __IS_DEV__ ? window.electron.process.platform === "win32" : __IS_WIN__,
+  mac: __IS_DEV__ ? window.electron.process.platform === "darwin" : __IS_MAC__,
+  linux: __IS_DEV__
+    ? window.electron.process.platform === "linux"
+    : __IS_LINUX__,
 };
 
 function errNotify(title: string, error: unknown) {

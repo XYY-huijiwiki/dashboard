@@ -24,4 +24,10 @@ declare const __GH_THUMB_RELEASE_ID__: string;
 // cloudflare config
 declare const __CF_DATABASE_URL__: string;
 
+// other
+declare const __IS_WEB__: boolean;
+declare const __IS_WIN__: boolean;
+declare const __IS_MAC__: boolean;
+declare const __IS_LINUX__: boolean;
+
 // #endregion

@@ -141,8 +141,8 @@ function toggleDevtools(): void {
           <n-a :href="homepage" target="_blank">
             {{ t("settings.label-github") }}
           </n-a>
-          <n-divider vertical />
-          <n-a :href="website" target="_blank">
+          <n-divider v-if="!is.web" vertical />
+          <n-a v-if="!is.web" :href="website" target="_blank">
             {{ t("settings.label-website") }}
           </n-a>
           <n-divider vertical />

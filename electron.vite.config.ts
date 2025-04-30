@@ -66,6 +66,7 @@ export default defineConfig({
         const packageJson = JSON.parse(
           readFileSync(resolve("package.json"), "utf-8"),
         );
+
         return {
           // app info
           __APP_VERSION__: JSON.stringify(packageJson.version),
@@ -91,6 +92,18 @@ export default defineConfig({
           // cloudflare config
           __CF_DATABASE_URL__: JSON.stringify(
             "https://xyy-file-db.24218079.xyz/",
+          ),
+
+          // other
+          __IS_WEB__: JSON.stringify(mode === "web"),
+          __IS_WIN__: JSON.stringify(
+            mode !== "web" && process.platform === "win32",
+          ),
+          __IS_MAC__: JSON.stringify(
+            mode !== "web" && process.platform === "darwin",
+          ),
+          __IS_LINUX__: JSON.stringify(
+            mode !== "web" && process.platform === "linux",
           ),
         };
       })(),
