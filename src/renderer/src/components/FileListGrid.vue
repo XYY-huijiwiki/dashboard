@@ -143,7 +143,7 @@ async function handleContextMenu(
 }
 </script>
 
-<style lang="less">
+<style>
 .n-scrollbar-content:has(> .drag-select__wrapper) {
   height: 100%;
 }
