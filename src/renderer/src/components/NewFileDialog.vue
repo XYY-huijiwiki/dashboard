@@ -62,11 +62,11 @@ import licenceOptions from "@renderer/utils/licenceOptions";
 import { isValidFilenameLength, getBase62Name } from "@renderer/utils/filename";
 import { errNotify, is } from "@renderer/utils";
 
-const corsProxy = import.meta.env.VITE_CORS_PROXY;
-const ghOwner = import.meta.env.VITE_GH_OWNER;
-const ghRepo = import.meta.env.VITE_GH_REPO;
-const ghFileReleaseId = import.meta.env.VITE_GH_FILE_RELEASE_ID;
-const databaseUrl = import.meta.env.VITE_CF_DATABASE_URL;
+const corsProxy = __CORS_PROXY__;
+const ghOwner = __GH_OWNER__;
+const ghRepo = __GH_REPO__;
+const ghFileReleaseId = __GH_FILE_RELEASE_ID__;
+const databaseUrl = __CF_DATABASE_URL__;
 
 dayjs.extend(localizedFormat).locale(dayjsLocales.value);
 
@@ -256,7 +256,7 @@ async function confirmNewFile(): Promise<void> {
       if (is.dev) console.log("dbRes", dbRes);
       uploadFileInfo.percentage = 100;
       uploadFileInfo.status = "finished";
-      uploadFileInfo.url = `https://xyy.huijiwiki.com/wiki/Project:控制中心#/preview/${uploadFileInfo.name}`;
+      uploadFileInfo.url = `${__APP_URL__}#/preview/${uploadFileInfo.name}`;
     } catch (error) {
       uploadFileInfo.status = "error";
       errNotify(t("file-explorer.title-upload-failed"), error);

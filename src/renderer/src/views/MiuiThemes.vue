@@ -228,7 +228,7 @@ async function clickNext() {
         squareImgLink: res.downloadUrl,
       };
     }
-    const corsProxy = "https://cors-proxy.24218079.xyz/";
+    const corsProxy = __CORS_PROXY__;
     const link = cleanURL(themeInput.value.link || "");
     const url = new URL(link);
     url.searchParams.delete("miref");

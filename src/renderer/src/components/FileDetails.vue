@@ -156,9 +156,7 @@ const { fileDetails } = defineProps<{
 const emit = defineEmits(["close", "edit-file"]);
 
 function viewInXYYWiki(): void {
-  window.open(
-    `https://xyy.huijiwiki.com/wiki/Project:迷你控制中心#/github-file/${fileDetails[0].file_name}`,
-  );
+  window.open(`${__APP_URL__}#/github-file/${fileDetails[0].file_name}`);
 }
 
 const fileUsageLoading = ref(false);

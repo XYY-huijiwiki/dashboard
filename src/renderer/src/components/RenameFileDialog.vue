@@ -100,7 +100,7 @@ async function confirmRename(): Promise<void> {
       })
       .toString();
 
-    const url = new URL(import.meta.env.VITE_CF_DATABASE_URL);
+    const url = new URL(__CF_DATABASE_URL__);
     url.searchParams.set("query", query);
     url.searchParams.set("gh_token", settings.value.ghToken);
 

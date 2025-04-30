@@ -25,8 +25,7 @@
     "label-language": "Sprache",
     "text-auto-language": "Automatisch ({0})",
     "label-github-token": "GitHub-Token",
-    "label-source-code": "Quellcode",
-    "btn-github": "GitHub",
+    "label-github": "GitHub",
     "label-toggle-devtools": "Entwicklertools umschalten",
     "btn-toggle": "Umschalten",
     "label-theme-mode": "Themenmodus",
@@ -37,7 +36,9 @@
     "text-material-auto": "Auto",
     "text-material-none": "Keines",
     "text-material-mica": "Mica",
-    "text-material-acrylic": "Acryl"
+    "text-material-acrylic": "Acryl",
+    "label-about": "Info",
+    "label-version": "Version"
   },
   "home": {
     "title": "XYY Huijiwiki Dashboard"

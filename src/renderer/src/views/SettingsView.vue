@@ -1,7 +1,10 @@
 <script lang="ts" setup>
 import { useI18n } from "vue-i18n";
 import { storeToRefs } from "pinia";
+import dayjs from "dayjs";
+import localizedFormat from "dayjs/plugin/localizedFormat";
 
+import { dayjsLocales } from "@renderer/stores/locales";
 import { useSettingsStore } from "@renderer/stores/settings";
 import {
   useLocalesStore,
@@ -10,6 +13,8 @@ import {
 } from "@renderer/stores/locales";
 import { is } from "@renderer/utils";
 
+dayjs.extend(localizedFormat).locale(dayjsLocales.value);
+
 const { langCode } = storeToRefs(useLocalesStore());
 
 const { settings } = storeToRefs(useSettingsStore());
@@ -17,6 +22,10 @@ const { settings } = storeToRefs(useSettingsStore());
 const { resetSettings } = useSettingsStore();
 
 const { t } = useI18n();
+
+const homepage = __APP_HOMEPAGE__;
+const version = __APP_VERSION__;
+const lastCommitDate = dayjs(__APP_LAST_COMMIT_DATE__).format("lll");
 
 function clearData(): void {
   window.$dialog.warning({
@@ -125,16 +134,16 @@ function toggleDevtools(): void {
           {{ t("settings.btn-toggle") }}
         </n-button>
       </n-form-item>
-      <!-- source code -->
-      <n-form-item :label="t('settings.label-source-code')">
+      <!-- about -->
+      <n-form-item :label="t('settings.label-about')">
         <n-flex>
-          <n-button
-            tag="a"
-            href="//github.com/XYY-huijiwiki/dashboard"
-            target="_blank"
-          >
-            {{ t("settings.btn-github") }}
-          </n-button>
+          <n-a :href="homepage" target="_blank">
+            {{ t("settings.label-github") }}
+          </n-a>
+          <n-divider vertical />
+          <n-text>{{ `${t("settings.label-version")} ${version}` }}</n-text>
+          <n-divider vertical />
+          <n-text>{{ lastCommitDate }}</n-text>
         </n-flex>
       </n-form-item>
     </n-form>

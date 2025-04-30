@@ -27,8 +27,7 @@ if (is.web && !is.dev) {
 
 // ===== i18n =====
 const language = JSON.parse(
-  localStorage.getItem(`[${import.meta.env.VITE_APP_ID}] settings`) ||
-    `{"language":"auto"}`,
+  localStorage.getItem(`[${__APP_ID__}] settings`) || `{"language":"auto"}`,
 ).language;
 const locale = language === "auto" ? userLang : language;
 const i18n = createI18n({

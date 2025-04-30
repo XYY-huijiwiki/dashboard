@@ -34,7 +34,7 @@ interface downloadRecord {
 export const useDownloadStore = defineStore("download", () => {
   // State
   const downloads: Ref<downloadRecord[]> = useLocalStorage(
-    `[${import.meta.env.VITE_APP_ID}] downloads`,
+    `[${__APP_ID__}] downloads`,
     [],
   );
 

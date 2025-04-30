@@ -30,7 +30,7 @@ export const useSettingsStore = defineStore("settings", () => {
   };
   // init settings from localStorage or use default settings
   const settings: Ref<Settings> = useLocalStorage(
-    `[${import.meta.env.VITE_APP_ID}] settings`,
+    `[${__APP_ID__}] settings`,
     defaultSettings,
     {
       mergeDefaults: true,

@@ -257,7 +257,7 @@ async function queryData(type: "more" | "refresh" = "refresh"): Promise<void> {
 
     // get total item count
     async function getTotalItemCount(): Promise<number> {
-      const url = new URL(import.meta.env.VITE_CF_DATABASE_URL);
+      const url = new URL(__CF_DATABASE_URL__);
       const queryStr = query.clone().count().toString();
       url.searchParams.set("query", queryStr);
       return ((await ky.get(url.href).json()) as DbResponse)[0]["results"][0][
@@ -267,7 +267,7 @@ async function queryData(type: "more" | "refresh" = "refresh"): Promise<void> {
 
     // get data from database
     async function getItems(): Promise<FileRecord[]> {
-      const url = new URL(import.meta.env.VITE_CF_DATABASE_URL);
+      const url = new URL(__CF_DATABASE_URL__);
       const queryStr = query.clone().toString();
       url.searchParams.set("query", queryStr);
       return ((await ky.get(url.href).json()) as DbResponse)[0].results;

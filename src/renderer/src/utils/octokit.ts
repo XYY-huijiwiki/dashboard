@@ -11,10 +11,10 @@ const octokit = new Octokit({
   auth: store.settings.ghToken,
 });
 
-const GH_OWNER = import.meta.env.VITE_GH_OWNER;
-const GH_REPO = import.meta.env.VITE_GH_REPO;
-const GH_FILE_RELEASE_ID = import.meta.env.VITE_GH_FILE_RELEASE_ID;
-const GH_THUMB_RELEASE_ID = import.meta.env.VITE_GH_THUMB_RELEASE_ID;
+const GH_OWNER = __GH_OWNER__;
+const GH_REPO = __GH_REPO__;
+const GH_FILE_RELEASE_ID = __GH_FILE_RELEASE_ID__;
+const GH_THUMB_RELEASE_ID = __GH_THUMB_RELEASE_ID__;
 const headers = { "X-GitHub-Api-Version": "2022-11-28" };
 
 // general GitHub API

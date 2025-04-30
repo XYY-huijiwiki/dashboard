@@ -1,31 +1,27 @@
 /// <reference types="vite/client" />
 
-interface ViteTypeOptions {
-  // By adding this line, you can make the type of ImportMetaEnv strict
-  // to disallow unknown keys.
-  strictImportMetaEnv: unknown;
-}
+// #region global constants defined in /electron.vite.config.ts
 
-interface ImportMetaEnv {
-  // app info
-  readonly VITE_APP_ID: string;
+// app info
+declare const __APP_VERSION__: string;
+declare const __APP_HOMEPAGE__: string;
+declare const __APP_ID__: string;
+declare const __APP_URL__: string;
+declare const __APP_LAST_COMMIT_DATE__: number;
 
-  // proxies
-  readonly VITE_IMAGE_PROXY: string;
-  readonly VITE_CORS_PROXY: string;
+// proxies
+declare const __IMAGE_PROXY__: string;
+declare const __CORS_PROXY__: string;
 
-  // github config
-  readonly VITE_GH_OWNER: string;
-  readonly VITE_GH_REPO: string;
-  readonly VITE_GH_FILE_RELEASE: string;
-  readonly VITE_GH_FILE_RELEASE_ID: string;
-  readonly VITE_GH_THUMB_RELEASE: string;
-  readonly VITE_GH_THUMB_RELEASE_ID: string;
+// github config
+declare const __GH_OWNER__: string;
+declare const __GH_REPO__: string;
+declare const __GH_FILE_RELEASE__: string;
+declare const __GH_FILE_RELEASE_ID__: string;
+declare const __GH_THUMB_RELEASE__: string;
+declare const __GH_THUMB_RELEASE_ID__: string;
 
-  // cloudflare config
-  readonly VITE_CF_DATABASE_URL: string;
-}
+// cloudflare config
+declare const __CF_DATABASE_URL__: string;
 
-interface ImportMeta {
-  readonly env: ImportMetaEnv;
-}
+// #endregion

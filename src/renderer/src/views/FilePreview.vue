@@ -44,7 +44,7 @@ onMounted(async () => {
     .where("is_deleted", null)
     .toString();
   console.log(queryStr);
-  const queryUrl = new URL(import.meta.env.VITE_CF_DATABASE_URL);
+  const queryUrl = new URL(__CF_DATABASE_URL__);
   queryUrl.searchParams.set("query", queryStr);
   const result = (
     await ky

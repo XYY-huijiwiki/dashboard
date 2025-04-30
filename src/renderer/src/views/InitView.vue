@@ -106,10 +106,7 @@ onMounted(async () => {
           window.$dialog.warning({
             autoFocus: false,
             title: t("init.permission-denied-title"),
-            content: t(
-              "init.permission-denied-content",
-              import.meta.env.VITE_GH_REPO,
-            ),
+            content: t("init.permission-denied-content", __GH_REPO__),
           });
         }
 

@@ -1,11 +1,11 @@
 import { is } from "@renderer/utils";
 
-const imageProxy = import.meta.env.VITE_IMAGE_PROXY;
-const corsProxy = import.meta.env.VITE_CORS_PROXY;
-const ghOwner = import.meta.env.VITE_GH_OWNER;
-const ghRepo = import.meta.env.VITE_GH_REPO;
-const ghFileRelease = import.meta.env.VITE_GH_FILE_RELEASE;
-const ghThumbRelease = import.meta.env.VITE_GH_THUMB_RELEASE;
+const imageProxy = __IMAGE_PROXY__;
+const corsProxy = __CORS_PROXY__;
+const ghOwner = __GH_OWNER__;
+const ghRepo = __GH_REPO__;
+const ghFileRelease = __GH_FILE_RELEASE__;
+const ghThumbRelease = __GH_THUMB_RELEASE__;
 
 function genRawFileUrl(file: FileRecord): string {
   let needCorsProxy = false;

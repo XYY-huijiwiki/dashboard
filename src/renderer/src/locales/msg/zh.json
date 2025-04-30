@@ -25,8 +25,7 @@
     "label-language": "语言",
     "text-auto-language": "自动（{0}）",
     "label-github-token": "GitHub Token",
-    "label-source-code": "源代码",
-    "btn-github": "GitHub",
+    "label-github": "GitHub",
     "label-toggle-devtools": "切换开发人员工具",
     "btn-toggle": "切换",
     "label-theme-mode": "主题模式",
@@ -37,7 +36,9 @@
     "text-material-auto": "自动",
     "text-material-none": "无",
     "text-material-mica": "云母",
-    "text-material-acrylic": "亚克力"
+    "text-material-acrylic": "亚克力",
+    "label-about": "关于",
+    "label-version": "版本"
   },
   "home": {
     "title": "羊羊百科控制中心"

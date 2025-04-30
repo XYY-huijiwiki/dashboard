@@ -119,7 +119,7 @@ import fetchFilesInUse from "@renderer/utils/fetchFilesInUse";
 import { useDownloadStore } from "@renderer/stores/download";
 import { is } from "@renderer/utils";
 
-const databaseUrl = import.meta.env.VITE_CF_DATABASE_URL;
+const databaseUrl = __CF_DATABASE_URL__;
 
 const { t } = useI18n();
 const { startDownload } = useDownloadStore();
