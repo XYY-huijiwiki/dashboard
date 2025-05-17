@@ -20,7 +20,8 @@
       <video
         v-if="fileRecord?.content_type?.startsWith('video')"
         controls
-        class="w-full h-0 flex-1 object-contain bg-black"
+        class="w-full flex-1 object-contain bg-black"
+        :class="is.web ? '!h-0' : 'h-0'"
         :poster="genThumbUrl(fileRecord)"
         preload="metadata"
         :src="genRawFileUrl(fileRecord)"
@@ -29,7 +30,8 @@
       <img
         v-else-if="fileRecord?.content_type?.startsWith('image')"
         :src="genRawFileUrl(fileRecord)"
-        class="w-full h-0 flex-1 object-contain bg-black"
+        class="w-full flex-1 object-contain bg-black"
+        :class="is.web ? '!h-0' : 'h-0'"
       />
       <!-- audio -->
       <audio
@@ -81,6 +83,7 @@ import { defineAsyncComponent } from "vue";
 
 import fileIcon from "./FileIcon.vue";
 import { genThumbUrl, genRawFileUrl } from "@renderer/utils/genUrl";
+import { is } from "@renderer/utils";
 
 const { t } = useI18n();
 const fileRecord = defineModel<FileRecord>();
