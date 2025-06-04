@@ -186,6 +186,34 @@ async function confirmNewFile(): Promise<void> {
   loading.value = true;
 
   for (let index = 0; index < fileList.value.length; index++) {
+    // helper functions
+    async function uploadToGitHubWeb(): Promise<GhAssetUploadResponse> {
+      const url = new URL(
+        `${corsProxy}https://uploads.github.com/repos/${ghOwner}/${ghRepo}/releases/${ghFileReleaseId}/assets`,
+      );
+      url.searchParams.set("name", getBase62Name(fileNameToBeUsed));
+      return await ky
+        .post(url, {
+          headers: {
+            "Content-Type":
+              uploadFileInfo.file?.type || "application/octet-stream",
+            Authorization: `token ${settings.value.ghToken}`,
+          },
+          body: uploadFileInfo.file,
+        })
+        .json();
+    }
+    async function uploadToGitHubElectron(): Promise<GhAssetUploadResponse> {
+      return await window.api.uploadToGitHub({
+        owner: ghOwner,
+        repo: ghRepo,
+        releaseId: ghFileReleaseId,
+        ghToken: settings.value.ghToken,
+        filePath: window.api.getPathForFile(uploadFileInfo.file!),
+        fileName: fileNameToBeUsed,
+      });
+    }
+
     const uploadFileInfo = fileList.value[index];
 
     // validate file info
@@ -200,38 +228,12 @@ async function confirmNewFile(): Promise<void> {
     const fileNameToBeUsed = uploadFileInfo.name.trim().replaceAll(" ", "_");
 
     try {
-      // step 1: upload to github (both Electron and Web)
+      // step 1: upload to github
       uploadFileInfo.status = "uploading";
       uploadFileInfo.percentage = 0;
-      let ghAssetUploadResponse: GhAssetUploadResponse;
-      // step 1: upload to github (Web only)
-      if (is.web) {
-        const url = new URL(
-          `${corsProxy}https://uploads.github.com/repos/${ghOwner}/${ghRepo}/releases/${ghFileReleaseId}/assets`,
-        );
-        url.searchParams.set("name", getBase62Name(fileNameToBeUsed));
-        ghAssetUploadResponse = await ky
-          .post(url, {
-            headers: {
-              "Content-Type":
-                uploadFileInfo.file?.type || "application/octet-stream",
-              Authorization: `token ${settings.value.ghToken}`,
-            },
-            body: uploadFileInfo.file,
-          })
-          .json();
-      }
-      // step 1: upload to github (Electron only)
-      else {
-        ghAssetUploadResponse = await window.api.uploadToGitHub({
-          owner: ghOwner,
-          repo: ghRepo,
-          releaseId: ghFileReleaseId,
-          ghToken: settings.value.ghToken,
-          filePath: window.api.getPathForFile(uploadFileInfo.file!),
-          fileName: fileNameToBeUsed,
-        });
-      }
+      const ghAssetUploadResponse = is.web
+        ? await uploadToGitHubWeb()
+        : await uploadToGitHubElectron();
       if (is.dev) console.log("ghRes", ghAssetUploadResponse);
 
       // step 2: update database
@@ -256,7 +258,7 @@ async function confirmNewFile(): Promise<void> {
       if (is.dev) console.log("dbRes", dbRes);
       uploadFileInfo.percentage = 100;
       uploadFileInfo.status = "finished";
-      uploadFileInfo.url = `${__APP_URL__}#/preview/${uploadFileInfo.name}`;
+      uploadFileInfo.url = `${__APP_URL__}#/file-preview/${uploadFileInfo.name}`;
     } catch (error) {
       uploadFileInfo.status = "error";
       errNotify(t("file-explorer.title-upload-failed"), error);
