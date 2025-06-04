@@ -81,12 +81,14 @@ async function confirmRename(): Promise<void> {
     window.$message.error(t("github-files.msg-file-name-too-long"));
     return;
   }
+  // replace spaces with underlines in file name
+  const fileNameToBeUsed = orgName.trim().replaceAll(" ", "_");
 
   loading.value = true;
 
   try {
     // Update filename in GitHub
-    const base62Name = getBase62Name(orgName);
+    const base62Name = getBase62Name(fileNameToBeUsed);
     const ghRes = await ghUpdateAsset(fileRecord.id, base62Name);
     console.log("Renaming result:", ghRes);
 
