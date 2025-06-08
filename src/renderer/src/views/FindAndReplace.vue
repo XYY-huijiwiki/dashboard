@@ -197,6 +197,7 @@ import { getPage, editPage } from "@renderer/utils/mwApi";
 import { errNotify } from "@renderer/utils";
 import { useLocalesStore } from "@renderer/stores/locales";
 import { xor } from "lodash-es";
+import { getPagesByCategory } from "@renderer/utils/mwApi/getPages";
 
 const { t } = useI18n();
 const loading = ref(false);
@@ -280,7 +281,6 @@ const selectPagesOptions: Ref<SelectOption[]> = ref([
   {
     label: t("find-and-replace.label-select-pages-by-category"),
     value: "category",
-    disabled: true,
   },
 ]);
 const search = {
@@ -305,6 +305,12 @@ const search = {
       toEditList.value = list;
     };
     input.click();
+  },
+  category: async () => {
+    // TODO: i18n, loading mask, and error handling
+    const categoryName = prompt(t("find-and-replace.category-name-prompt"));
+    if (!categoryName) return;
+    toEditList.value = await getPagesByCategory(categoryName);
   },
 };
 // #endregion
