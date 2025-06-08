@@ -49,6 +49,7 @@ watch(
 );
 
 // #region fullscreen
+// TODO: fullscreen in web cause all modals to be hidden, need to fix this
 const fullscreenHTML: Ref<null | HTMLElement> = ref(null);
 const { isFullscreen: isFullscreenWeb, toggle } = useFullscreen(fullscreenHTML);
 const isFullscreen = !is.web ? ref(false) : isFullscreenWeb;

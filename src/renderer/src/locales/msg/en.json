@@ -313,6 +313,8 @@
     "msg-no-change": "No change made",
     "msg-page-not-found": "Page not found",
     "msg-no-page-needs-editing": "No page needs editing",
-    "label-use-regular-expression": "Use Regular Expression"
+    "label-use-regular-expression": "Use Regular Expression",
+    "category-name-prompt": "Please enter the name of the category",
+    "msg-no-page-under-category": "No page under this category"
   }
 }

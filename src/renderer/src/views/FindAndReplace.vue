@@ -87,18 +87,20 @@
     class="!w-2xl"
   >
     <template #default>
-      <n-flex class="my-8" vertical>
-        <n-input-group>
-          <n-select
-            v-model:value="selectPagesValue"
-            :options="selectPagesOptions"
-          />
-          <n-button type="info" @click="search[selectPagesValue]">
-            {{ t(`find-and-replace.btn-search`) }}
-          </n-button>
-        </n-input-group>
-        <n-dynamic-tags v-model:value="toEditList" />
-      </n-flex>
+      <n-spin :show="loading">
+        <n-flex class="my-8" vertical>
+          <n-input-group>
+            <n-select
+              v-model:value="selectPagesValue"
+              :options="selectPagesOptions"
+            />
+            <n-button type="info" @click="search[selectPagesValue]">
+              {{ t(`find-and-replace.btn-search`) }}
+            </n-button>
+          </n-input-group>
+          <n-dynamic-tags v-model:value="toEditList" />
+        </n-flex>
+      </n-spin>
     </template>
     <template #action>
       <n-button type="primary" @click="showPageListModel = false">
@@ -197,6 +199,7 @@ import { getPage, editPage } from "@renderer/utils/mwApi";
 import { errNotify } from "@renderer/utils";
 import { useLocalesStore } from "@renderer/stores/locales";
 import { xor } from "lodash-es";
+import { getPagesByCategory } from "@renderer/utils/mwApi/getPages";
 
 const { t } = useI18n();
 const loading = ref(false);
@@ -280,7 +283,6 @@ const selectPagesOptions: Ref<SelectOption[]> = ref([
   {
     label: t("find-and-replace.label-select-pages-by-category"),
     value: "category",
-    disabled: true,
   },
 ]);
 const search = {
@@ -305,6 +307,21 @@ const search = {
       toEditList.value = list;
     };
     input.click();
+  },
+  category: async () => {
+    try {
+      const categoryName = prompt(t("find-and-replace.category-name-prompt"));
+      if (!categoryName) return;
+      loading.value = true;
+      const newList = await getPagesByCategory(categoryName);
+      loading.value = false;
+      if (newList.length === 0) {
+        window.$message.info(t("find-and-replace.msg-no-page-under-category"));
+      }
+      toEditList.value = toEditList.value.concat(newList);
+    } catch (error) {
+      errNotify(t("general.error"), error);
+    }
   },
 };
 // #endregion
@@ -354,6 +371,7 @@ onMounted(async () => {
   if (!monacoEditorEle.value) throw new Error("monacoEditor is null");
 
   // #region get language code for monaco
+  // TODO: can be optimised
   function getLangCode(input: string): string {
     const supported = new Set([
       "en",
@@ -409,7 +427,7 @@ onMounted(async () => {
 
     return "en";
   }
-  //  #endregion
+  // #endregion
 
   const highlighter = await createHighlighter({
     themes: ["dark-plus", "light-plus"],
@@ -437,12 +455,6 @@ onMounted(async () => {
     automaticLayout: true,
     scrollBeyondLastLine: false,
     wordWrap: "on",
-    /*
-     * TODO: see if any updates in this issue: https://github.com/microsoft/monaco-editor/discussions/4454#discussioncomment-11111244
-     * somehow `useInlineViewWhenSpaceIsLimited` must be set to false
-     * to force the left side editor wrap words
-     */
-    useInlineViewWhenSpaceIsLimited: false,
     unicodeHighlight: {
       ambiguousCharacters: false, // avoid highlight Chinese punctuation
     },

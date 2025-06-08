@@ -313,6 +313,8 @@
     "msg-no-change": "Keine Änderungen vorgenommen",
     "msg-page-not-found": "Seite nicht gefunden",
     "msg-no-page-needs-editing": "Keine Seite benötigt Bearbeitung",
-    "label-use-regular-expression": "Regulären Ausdruck verwenden"
+    "label-use-regular-expression": "Regulären Ausdruck verwenden",
+    "category-name-prompt": "Bitte geben Sie den Namen der Kategorie ein",
+    "msg-no-page-under-category": "Keine Seite unter dieser Kategorie"
   }
 }
