@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { useI18n } from "vue-i18n";
-import { computed, ref, watch } from "vue";
-import type { Ref } from "vue";
+import { computed, ref, useTemplateRef, watch } from "vue";
 import {
   useDialog,
   useMessage,
@@ -9,7 +8,7 @@ import {
   useLoadingBar,
   useNotification,
 } from "naive-ui";
-import { useTitle, useFullscreen } from "@vueuse/core";
+import { useTitle } from "@vueuse/core";
 import { Icon } from "@iconify/vue";
 import { useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
@@ -48,28 +47,25 @@ watch(
   { immediate: true },
 );
 
-// #region fullscreen
-// TODO: fullscreen in web cause all modals to be hidden, need to fix this
-const fullscreenHTML: Ref<null | HTMLElement> = ref(null);
-const { isFullscreen: isFullscreenWeb, toggle } = useFullscreen(fullscreenHTML);
-const isFullscreen = !is.web ? ref(false) : isFullscreenWeb;
-const toggleFullscreen = async () => {
-  if (!is.web) {
-    isFullscreen.value = !isFullscreen.value;
-    window.api.toggleFullScreen();
+// #region fullscreen (web only)
+const isFullscreen = ref(false);
+const toggleFullscreen = () => {
+  if (isFullscreen.value) {
+    document.querySelector("html")?.style.removeProperty("overflow");
   } else {
-    toggle();
+    document.querySelector("html")?.style.setProperty("overflow", "hidden");
   }
+  isFullscreen.value = !isFullscreen.value;
 };
 // #endregion
 </script>
 
 <template>
   <n-layout
-    ref="fullscreenHTML"
     has-sider
     :class="[
       is.web && !isFullscreen ? 'h-[80vh]' : 'h-screen',
+      is.web && isFullscreen ? 'fixed inset-0 z-[1000]' : '',
       isEnableWindowsMaterial ? '!bg-transparent' : '',
     ]"
   >
@@ -150,7 +146,7 @@ const toggleFullscreen = async () => {
           <div id="title-bar" class="w-0 flex-1"></div>
           <!-- fullscreen btn -->
           <n-button
-            v-if="!is.win"
+            v-if="is.web"
             quaternary
             circle
             :class="isFullscreen ? 'hvr-icon-push' : 'hvr-icon-pop'"
