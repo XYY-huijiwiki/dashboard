@@ -1,3 +1,16 @@
+## [0.2.17](https://github.com/XYY-huijiwiki/dashboard/compare/v0.2.16...v0.2.17) (2025-07-02)
+
+### Bug Fixes
+
+- correct hyperlink in `<new-file-dialog/>` ([49c07fb](https://github.com/XYY-huijiwiki/dashboard/commit/49c07fb38fae50bf72c26b570a33739a6ea2c71d))
+- resolve inconsistency in file naming between upload and rename operations ([b1e5a6f](https://github.com/XYY-huijiwiki/dashboard/commit/b1e5a6f5550867f1c0a3d322a1ef678a733c6c0a))
+- **web:** resolve abnormal image and video previews caused by CSS conflict ([36b0f94](https://github.com/XYY-huijiwiki/dashboard/commit/36b0f942491e6dc948a9c14760be5f7a3187099b))
+
+### Features
+
+- **find-and-replace:** allow users to select pages by category ([a326d4c](https://github.com/XYY-huijiwiki/dashboard/commit/a326d4cf5a977ffeaf5e04ed98e0828f9c556fa0))
+- **find-and-replace:** allow users to select pages by category ([a835f89](https://github.com/XYY-huijiwiki/dashboard/commit/a835f8952b4d3167a040dca1271d1bf0c2e433c8))
+
 ## [0.2.16](https://github.com/XYY-huijiwiki/dashboard/compare/v0.2.15...v0.2.16) (2025-04-30)
 
 ### Bug Fixes
