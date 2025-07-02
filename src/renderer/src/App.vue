@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { useI18n } from "vue-i18n";
-import { computed, ref, useTemplateRef, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import {
   useDialog,
   useMessage,

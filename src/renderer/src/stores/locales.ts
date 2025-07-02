@@ -3,6 +3,7 @@ import { type Ref, computed, watch } from "vue";
 import { useSettingsStore } from "@renderer/stores/settings";
 import { asyncComputed } from "@vueuse/core";
 import { useI18n } from "vue-i18n";
+import { match } from "@formatjs/intl-localematcher";
 
 /**
  * Creates an object of language packs from the `locales` directory.
@@ -28,26 +29,18 @@ const langPacks = Object.fromEntries(
  */
 const supportedLangs: string[] = Object.keys(langPacks);
 
-const userLangs = navigator.languages.map((lang) => lang.slice(0, 2));
-const userLang = ((): string => {
-  let userLang = "en";
-  for (let index = 0; index < userLangs.length; index++) {
-    const element = userLangs[index];
-    if (supportedLangs.includes(element)) {
-      userLang = element;
-      break;
-    }
-  }
-  return userLang;
-})();
+const userLang = match(
+  navigator.languages,
+  supportedLangs,
+  "en", // default language if no match is found
+);
 
 const useLocalesStore = defineStore("locales", () => {
   // language code
   const { settings } = storeToRefs(useSettingsStore());
   const langCode: Ref<string> = computed(() => {
     if (settings.value.language === "auto") {
-      // if the language in the settings is auto and supported, use the language in the settings
-      // if the language in the settings is auto and not supported, use English (en)
+      // if the language in the settings is auto, use the match result
       return userLang;
     } else {
       // if the language in the settings is not auto, use the language in the settings
