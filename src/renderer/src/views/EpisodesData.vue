@@ -1,73 +1,107 @@
 <template>
-  <n-flex verticle>
-    <n-divider>
-      {{ t("episodes-data.label-data-export") }}
-    </n-divider>
-    <n-alert class="w-full" type="info">
-      {{ t("episodes-data.backup-tip") }}
-    </n-alert>
-    <n-input-group>
-      <n-select v-model:value="value" :options="cartoonList" filterable />
-      <n-select
-        v-model:value="settings.episodesDataExportType"
-        class="!w-36"
-        :options="[
-          { label: '.json', value: 'json' },
-          { label: '.xlsx', value: 'xlsx' },
-        ]"
-      />
-      <n-button :loading="btnLoading" @click="getDataFile(value)">
-        {{ t("episodes-data.btn-export") }}
-      </n-button>
-    </n-input-group>
-    <n-divider>
-      {{ t("episodes-data.label-data-import") }}
-    </n-divider>
-    <n-grid cols="2">
-      <n-grid-item>
-        <n-statistic :label="t('episodes-data.label-file-name')">
-          {{ dataInfo.name }}
-        </n-statistic>
-      </n-grid-item>
-      <n-grid-item>
-        <n-statistic :label="t('episodes-data.label-episodes')">
-          {{ dataInfo.length }}
-        </n-statistic>
-      </n-grid-item>
-    </n-grid>
+  <n-flex>
+    <n-card size="small" class="w-lg flex-1">
+      <template #header>
+        {{ t("episodes-data.label-data-export") }}
+      </template>
+      <template #default>
+        <n-flex>
+          <n-alert class="w-full" type="info">
+            {{ t("episodes-data.backup-tip") }}
+          </n-alert>
+          <n-input-group>
+            <n-select
+              v-model:value="value"
+              :options="cartoonList"
+              filterable
+              size="small"
+            />
+            <n-select
+              v-model:value="settings.episodesDataExportType"
+              class="!w-36"
+              :options="[
+                { label: '.json', value: 'json' },
+                { label: '.xlsx', value: 'xlsx' },
+              ]"
+              size="small"
+            />
+            <n-button
+              :loading="btnLoading"
+              size="small"
+              @click="getDataFile(value)"
+            >
+              {{ t("episodes-data.btn-export") }}
+            </n-button>
+          </n-input-group>
+        </n-flex>
+      </template>
+    </n-card>
 
-    <n-progress
-      :percentage="
-        dataInfo.length === 0 ? 0 : Math.floor((count / dataInfo.length) * 100)
-      "
-      :show-indicator="true"
-      indicator-placement="inside"
-      :status="importing ? 'info' : 'success'"
-      :processing="importing"
-    />
+    <n-card size="small" class="w-lg flex-1">
+      <template #header>
+        {{ t("episodes-data.label-data-import") }}
+      </template>
+      <template #default>
+        <n-flex vertical>
+          <n-grid cols="2">
+            <n-grid-item>
+              <n-statistic :label="t('episodes-data.label-file-name')">
+                {{ dataInfo.name }}
+              </n-statistic>
+            </n-grid-item>
+            <n-grid-item>
+              <n-statistic :label="t('episodes-data.label-episodes')">
+                {{ dataInfo.length }}
+              </n-statistic>
+            </n-grid-item>
+          </n-grid>
 
-    <n-input-group>
-      <n-input
-        v-model:value="summary"
-        :placeholder="t('episodes-data.label-edit-summary')"
-      />
-      <n-upload
-        abstract
-        :accept="`.` + settings.episodesDataExportType"
-        :show-file-list="false"
-        :on-update:file-list="refreshData"
-        :default-upload="false"
-      >
-        <n-upload-trigger #="{ handleClick }" abstract>
-          <n-button :disabled="importing" @click="handleClick">
-            {{ t("episodes-data.label-select-file") }}
-          </n-button>
-        </n-upload-trigger>
-      </n-upload>
-      <n-button :disabled="!fileList[0] || count !== 0" @click="importData()">
-        {{ t("episodes-data.btn-import") }}
-      </n-button>
-    </n-input-group>
+          <n-progress
+            :percentage="
+              dataInfo.length === 0
+                ? 0
+                : Math.floor((count / dataInfo.length) * 100)
+            "
+            :show-indicator="true"
+            indicator-placement="inside"
+            :status="importing ? 'info' : 'success'"
+            :processing="importing"
+          />
+
+          <n-input-group>
+            <n-input
+              v-model:value="summary"
+              size="small"
+              :placeholder="t('episodes-data.label-edit-summary')"
+            />
+            <n-upload
+              abstract
+              :accept="`.` + settings.episodesDataExportType"
+              :show-file-list="false"
+              :on-update:file-list="refreshData"
+              :default-upload="false"
+            >
+              <n-upload-trigger #="{ handleClick }" abstract>
+                <n-button
+                  :disabled="importing"
+                  size="small"
+                  @click="handleClick"
+                >
+                  {{ t("episodes-data.label-select-file") }}
+                </n-button>
+              </n-upload-trigger>
+            </n-upload>
+            <n-button
+              :disabled="!fileList[0] || count !== 0"
+              size="small"
+              @click="importData()"
+            >
+              {{ t("episodes-data.btn-import") }}
+            </n-button>
+          </n-input-group>
+        </n-flex>
+      </template>
+    </n-card>
   </n-flex>
 </template>
 
