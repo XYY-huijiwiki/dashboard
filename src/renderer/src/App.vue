@@ -65,7 +65,7 @@ const toggleFullscreen = () => {
     has-sider
     :class="[
       is.web && !isFullscreen ? 'h-[80vh]' : 'h-screen',
-      is.web && isFullscreen ? 'fixed inset-0 z-[1000]' : '',
+      is.web && isFullscreen ? 'fixed inset-0 !z-[1000]' : '',
       isEnableWindowsMaterial ? '!bg-transparent' : '',
     ]"
   >
@@ -171,7 +171,9 @@ const toggleFullscreen = () => {
         <!-- body -->
         <div class="h-0 flex-1">
           <router-view v-slot="{ Component }">
-            <component :is="Component" />
+            <keep-alive :include="['FileExplorer']">
+              <component :is="Component" />
+            </keep-alive>
           </router-view>
         </div>
       </n-element>

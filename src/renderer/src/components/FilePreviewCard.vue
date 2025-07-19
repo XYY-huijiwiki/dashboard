@@ -2,8 +2,8 @@
   <n-card
     class="w-full h-full"
     content-style="height: 0; display: flex; flex-direction: column;"
-    :closable="props.closable"
-    @close="fileRecord = undefined"
+    :closable="true"
+    @close="emits('close')"
   >
     <template #header>
       <n-ellipsis>
@@ -87,9 +87,7 @@ import { is } from "@renderer/utils";
 
 const { t } = useI18n();
 const fileRecord = defineModel<FileRecord>();
-const props = defineProps<{
-  closable?: boolean;
-}>();
+const emits = defineEmits(["close"]);
 
 const ViewModelAsync = defineAsyncComponent(() => import("./ViewModel.vue"));
 </script>

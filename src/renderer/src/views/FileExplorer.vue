@@ -9,9 +9,9 @@
       v-model:checked-row-keys="checkedRowKeys"
       v-model:show-details-pane="showDetailsPane"
       preset="default"
-      @file-preview="preview = checkedItems[0]"
+      @file-preview="preview"
       @link-copy="linkCopy"
-      @file-download="fileDownload"
+      @file-download="fileDownload(checkedItems)"
       @file-delete="deleteFiles"
       @file-rename="renameFile"
       @new-file="newFile"
@@ -28,8 +28,7 @@
       class="flex-1 shrink-0 !h-0"
     >
       <template #1>
-        <file-preview-card v-if="preview" v-model="preview" :closable="true" />
-        <div v-else ref="dropZoneRef" class="relative h-full">
+        <div ref="dropZoneRef" class="relative h-full">
           <file-list-table
             v-if="
               explorerState.viewMode === 'details' ||
@@ -42,10 +41,10 @@
             :loading="loading"
             :files-in-use="filesInUse"
             @load-more="!loading && queryData('more')"
-            @file-preview="preview = checkedItems[0]"
+            @file-preview="preview"
             @file-details="showDetailsPane = true"
             @link-copy="linkCopy"
-            @file-download="fileDownload"
+            @file-download="fileDownload(checkedItems)"
             @file-delete="deleteFiles"
             @file-rename="renameFile"
             @new-file="newFile"
@@ -58,10 +57,10 @@
             :checked-items="checkedItems"
             :loading="loading"
             @load-more="!loading && queryData('more')"
-            @file-preview="preview = checkedItems[0]"
+            @file-preview="preview"
             @file-details="showDetailsPane = true"
             @link-copy="linkCopy"
-            @file-download="fileDownload"
+            @file-download="fileDownload(checkedItems)"
             @file-delete="deleteFiles"
             @file-rename="renameFile"
             @new-file="newFile"
@@ -105,7 +104,6 @@ import dayjs from "dayjs";
 import localizedFormat from "dayjs/plugin/localizedFormat";
 import { storeToRefs } from "pinia";
 import ky from "ky";
-import { debounce } from "lodash-es";
 import { useRouter } from "vue-router";
 import { NElement } from "naive-ui";
 import { Icon } from "@iconify/vue";
@@ -116,32 +114,16 @@ import { genRawFileUrl } from "@renderer/utils/genUrl";
 import { useSettingsStore } from "@renderer/stores/settings";
 import { useExplorerStateStore } from "@renderer/stores/explorerState";
 import fetchFilesInUse from "@renderer/utils/fetchFilesInUse";
-import { useDownloadStore } from "@renderer/stores/download";
-import { is } from "@renderer/utils";
+import { fileDownload } from "@renderer/utils/download";
 
 const databaseUrl = __CF_DATABASE_URL__;
 
 const { t } = useI18n();
-const { startDownload } = useDownloadStore();
 const { settings } = storeToRefs(useSettingsStore());
 const { explorerState } = storeToRefs(useExplorerStateStore());
 const router = useRouter();
 
 dayjs.extend(localizedFormat).locale(dayjsLocales.value);
-
-const fileDownload = debounce(fileDownloadUndebounced, 300);
-async function fileDownloadUndebounced() {
-  if (is.web) {
-    const a = document.createElement("a");
-    a.href = genRawFileUrl(checkedItems.value[0]);
-    a.click();
-  } else {
-    router.push({ name: "download-manager" });
-    for (const item of checkedItems.value) {
-      startDownload(item);
-    }
-  }
-}
 
 function linkCopy(): void {
   navigator.clipboard.writeText(
@@ -151,7 +133,17 @@ function linkCopy(): void {
 }
 
 // preview
-const preview: Ref<FileRecord | undefined> = ref(undefined);
+function preview(): void {
+  router.push({
+    name: "file-preview",
+    params: {
+      filename: checkedItems.value[0].file_name.replace(/ /g, "_"),
+    },
+    query: {
+      fileRecord: JSON.stringify(checkedItems.value[0]),
+    },
+  });
+}
 
 const loading: Ref<boolean> = ref(true);
 
@@ -209,7 +201,6 @@ onMounted(async () => {
 });
 
 function handleSearch() {
-  preview.value = undefined;
   queryData();
 }
 const searchText = ref("");

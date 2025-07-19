@@ -1,6 +1,6 @@
 <template>
   <Teleport to="#title-bar">
-    <n-input-group class="flex-1">
+    <n-input-group v-show="isActivated" class="flex-1">
       <n-input
         ref="searchBarEle"
         v-model:value="searchText"
@@ -41,7 +41,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, onActivated, onDeactivated } from "vue";
 import { useI18n } from "vue-i18n";
 import { Icon } from "@iconify/vue";
 
@@ -53,6 +53,14 @@ const props = defineProps<{
   loading: boolean;
 }>();
 const searchedText = ref("");
+
+const isActivated = ref(false);
+onActivated(() => {
+  isActivated.value = true;
+});
+onDeactivated(() => {
+  isActivated.value = false;
+});
 
 function cancelSearch(): void {
   searchText.value = ``;

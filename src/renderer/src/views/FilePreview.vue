@@ -14,7 +14,10 @@
     class="h-full w-full"
   >
     <template #1>
-      <file-preview-card v-model="fileRecord" :closable="false" />
+      <file-preview-card
+        v-model="fileRecord"
+        @close="router.push({ name: 'file-explorer' })"
+      />
     </template>
     <template #2>
       <file-details :file-details="[fileRecord]" :uncontrolled="true" />
@@ -38,6 +41,14 @@ const router = useRouter();
 const fileRecord: Ref<FileRecord | undefined> = ref(undefined);
 
 onMounted(async () => {
+  if ("fileRecord" in route.query) {
+    try {
+      fileRecord.value = JSON.parse(route.query.fileRecord as string);
+      return;
+    } catch (e) {
+      errNotify(t("general.error"), e);
+    }
+  }
   const fileName = (route.params.filename as string).replace(/ /g, "_");
   const queryStr = db("files")
     .where("file_name", fileName)

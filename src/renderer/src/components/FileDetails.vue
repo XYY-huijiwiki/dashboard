@@ -3,6 +3,7 @@
     class="h-full"
     :closable="!uncontrolled"
     content-class="h-0  "
+    size="small"
     @close="emit('close')"
   >
     <!-- for non single selected situtation -->
@@ -125,8 +126,8 @@
     </template>
     <!-- action btns -->
     <template v-if="fileDetails.length === 1" #action>
-      <n-button @click="viewInXYYWiki">
-        {{ t("github-files.btn-view-in-XYY-wiki") }}
+      <n-button size="small" @click="fileDownload(fileDetails[0])">
+        {{ t("github-files.btn-download") }}
       </n-button>
     </template>
   </n-card>
@@ -144,6 +145,7 @@ import { Icon } from "@iconify/vue";
 import { useLocalesStore } from "@renderer/stores/locales";
 import { genThumbUrl } from "@renderer/utils/genUrl";
 import getWhatLinksHere from "@renderer/utils/getWhatLinksHere";
+import { fileDownload } from "@renderer/utils/download";
 
 const { langCode } = storeToRefs(useLocalesStore());
 const filesize = (size: number): string =>
@@ -154,10 +156,6 @@ const { fileDetails } = defineProps<{
   uncontrolled?: boolean;
 }>();
 const emit = defineEmits(["close", "edit-file"]);
-
-function viewInXYYWiki(): void {
-  window.open(`${__APP_URL__}#/github-file/${fileDetails[0].file_name}`);
-}
 
 const fileUsageLoading = ref(false);
 const fileUsageData: Ref<string[]> = computedAsync(
