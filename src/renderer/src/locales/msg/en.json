@@ -316,7 +316,7 @@
     "category-name-prompt": "Please enter the name of the category",
     "msg-no-page-under-category": "No page under this category",
     "label-select-pages-by-keyword": "Keyword",
-    "find-and-replace.keyword-prompt": "Please enter the keyword to search",
-    "find-and-replace.msg-no-page-under-keyword": "No search results found"
+    "keyword-prompt": "Please enter the keyword to search",
+    "msg-no-page-under-keyword": "No search results found"
   }
 }

@@ -316,7 +316,7 @@
     "category-name-prompt": "请输入分类名称",
     "msg-no-page-under-category": "此分类下没有页面",
     "label-select-pages-by-keyword": "关键词",
-    "find-and-replace.keyword-prompt": "请输入要搜索的关键词",
-    "find-and-replace.msg-no-page-under-keyword": "未找到相关页面"
+    "keyword-prompt": "请输入要搜索的关键词",
+    "msg-no-page-under-keyword": "未找到相关页面"
   }
 }
