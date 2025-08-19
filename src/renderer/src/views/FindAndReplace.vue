@@ -184,17 +184,15 @@
 </template>
 
 <script setup lang="ts">
-import loader from "@monaco-editor/loader";
 import { ref, type Ref, watch, onMounted, useTemplateRef } from "vue";
 import type { editor, Uri } from "monaco-editor";
 import { useI18n } from "vue-i18n";
 import type { SelectOption } from "naive-ui";
-import { shikiToMonaco } from "@shikijs/monaco";
-import { createHighlighter } from "shiki";
 import { storeToRefs } from "pinia";
 import { usePreferredDark } from "@vueuse/core";
 import { Icon } from "@iconify/vue";
 import { match } from "@formatjs/intl-localematcher";
+import { monacoInstance } from "@karsten_zhou/utils";
 
 import { getPage, editPage } from "@renderer/utils/mwApi";
 import { errNotify } from "@renderer/utils";
@@ -390,46 +388,18 @@ function applyRegex() {
 // #region monaco editor
 const monacoEditorEle = useTemplateRef("monacoEditorEle");
 let editorInstance: editor.IStandaloneDiffEditor;
-let setMonacoTheme: (theme: string) => void;
 let createMonacoModel: (
   value: string,
   language?: string,
   uri?: Uri,
 ) => editor.ITextModel;
-let resolveWaitMonaco: () => void;
-const waitMonaco = new Promise<void>((resolve) => {
-  resolveWaitMonaco = resolve;
-});
 onMounted(async () => {
   if (!monacoEditorEle.value) throw new Error("monacoEditor is null");
-
-  const highlighter = await createHighlighter({
-    themes: ["dark-plus", "light-plus"],
-    langs: ["wikitext", "json", "html", "javascript", "css", "lua"],
-  });
-
-  loader.config({
-    "vs/nls": {
-      availableLanguages: {
-        "*": match(
-          [langCode.value],
-          ["en", "de", "es", "fr", "it", "ja", "ko", "ru", "zh-cn", "zh-tw"],
-          "en",
-        ),
-      },
-    },
-  });
-
-  const monacoInstance = await loader.init();
-  monacoInstance.languages.register({ id: "wikitext" });
-  shikiToMonaco(highlighter, monacoInstance);
-
   // Initialize diff editor
   const {
     editor: { setTheme, createDiffEditor, createModel },
   } = monacoInstance;
   editorInstance = createDiffEditor(monacoEditorEle.value, {
-    theme: isDark.value ? "dark-plus" : "light-plus",
     automaticLayout: true,
     scrollBeyondLastLine: false,
     wordWrap: "on",
@@ -440,16 +410,7 @@ onMounted(async () => {
       enabled: true,
     },
   });
-  setMonacoTheme = setTheme;
   createMonacoModel = createModel;
-
-  resolveWaitMonaco();
-});
-// Theme Management
-const isDark = usePreferredDark();
-watch(isDark, async () => {
-  await waitMonaco;
-  setMonacoTheme(isDark.value ? "dark-plus" : "light-plus");
 });
 // display the diff editor
 const orgCode = ref("");
@@ -458,7 +419,6 @@ watch(
   async () => {
     loading.value = true;
     try {
-      await waitMonaco;
       const pageName = toEditList.value[currentPageIndex.value];
       if (!pageName) {
         errorMsg.value = t("find-and-replace.msg-no-page-needs-editing");
