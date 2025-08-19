@@ -48,4 +48,52 @@ async function getPagesByCategory(category: string): Promise<string[]> {
   return result;
 }
 
-export { getPagesByCategory };
+async function getPagesByKeyword(keyword: string): Promise<string[]> {
+  type SearchResponse = {
+    continue?: {
+      sroffset: number;
+      continue: string;
+    };
+    query: {
+      search: Array<{
+        title: string;
+        pageid: number;
+        ns: number;
+      }>;
+    };
+  };
+
+  const result: string[] = [];
+  let sroffset = 0;
+
+  while (true) {
+    const params = new URLSearchParams({
+      action: "query",
+      list: "search",
+      srsearch: `insource:"${keyword.replace(/"/g, '\\"')}"`,
+      srlimit: "500",
+      sroffset: sroffset.toString(),
+      format: "json",
+    });
+
+    const response = await ky
+      .get(`${url}?${params.toString()}`)
+      .json<SearchResponse>();
+
+    const pages = response.query.search;
+    if (!pages || pages.length === 0) {
+      break;
+    }
+
+    result.push(...pages.map((page) => page.title));
+
+    if (!response.continue) {
+      break;
+    }
+    sroffset = response.continue.sroffset;
+  }
+
+  return result;
+}
+
+export { getPagesByCategory, getPagesByKeyword };

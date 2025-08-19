@@ -314,6 +314,9 @@
     "msg-no-page-needs-editing": "Keine Seite benötigt Bearbeitung",
     "label-use-regular-expression": "Regulären Ausdruck verwenden",
     "category-name-prompt": "Bitte geben Sie den Namen der Kategorie ein",
-    "msg-no-page-under-category": "Keine Seite unter dieser Kategorie"
+    "msg-no-page-under-category": "Keine Seite unter dieser Kategorie",
+    "label-select-pages-by-keyword": "Keyword",
+    "find-and-replace.keyword-prompt": "Bitte geben Sie das Such-Keyword ein",
+    "find-and-replace.msg-no-page-under-keyword": "Keine Suchergebnisse gefunden"
   }
 }

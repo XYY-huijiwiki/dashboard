@@ -200,7 +200,10 @@ import { getPage, editPage } from "@renderer/utils/mwApi";
 import { errNotify } from "@renderer/utils";
 import { useLocalesStore } from "@renderer/stores/locales";
 import { xor } from "lodash-es";
-import { getPagesByCategory } from "@renderer/utils/mwApi/getPages";
+import {
+  getPagesByCategory,
+  getPagesByKeyword,
+} from "@renderer/utils/mwApi/getPages";
 
 const { t } = useI18n();
 const loading = ref(false);
@@ -285,6 +288,10 @@ const selectPagesOptions: Ref<SelectOption[]> = ref([
     label: t("find-and-replace.label-select-pages-by-category"),
     value: "category",
   },
+  {
+    label: t("find-and-replace.label-select-pages-by-keyword"),
+    value: "keyword",
+  },
 ]);
 const search = {
   txt: () => {
@@ -322,6 +329,22 @@ const search = {
       toEditList.value = toEditList.value.concat(newList);
     } catch (error) {
       errNotify(t("general.error"), error);
+    }
+  },
+  keyword: async () => {
+    const keyword = prompt(t("find-and-replace.keyword-prompt"));
+    if (!keyword) return;
+    loading.value = true;
+    try {
+      const newList = await getPagesByKeyword(keyword);
+      if (newList.length === 0) {
+        window.$message.info(t("find-and-replace.msg-no-page-under-keyword"));
+      }
+      toEditList.value = toEditList.value.concat(newList);
+    } catch (error) {
+      errNotify(t("general.error"), error);
+    } finally {
+      loading.value = false;
     }
   },
 };
@@ -402,7 +425,7 @@ onMounted(async () => {
     scrollBeyondLastLine: false,
     wordWrap: "on",
     unicodeHighlight: {
-      ambiguousCharacters: false, // avoid highlight Chinese punctuation
+      ambiguousCharacters: false, // avoid highlighting Chinese punctuation
     },
     hideUnchangedRegions: {
       enabled: true,
