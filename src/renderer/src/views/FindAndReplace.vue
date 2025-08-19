@@ -273,6 +273,15 @@ watch(
   { immediate: true },
 );
 const currentPageIndex: Ref<number> = ref(0);
+// ensure `currentPageIndex` in range
+watch(
+  () => toEditList.value.length,
+  (val) => {
+    if (currentPageIndex.value >= val) {
+      currentPageIndex.value = val - 1;
+    }
+  },
+);
 const selectPagesValue: Ref<"xlsx" | "txt"> = ref("txt");
 const selectPagesOptions: Ref<SelectOption[]> = ref([
   {
