@@ -188,16 +188,12 @@ import { ref, type Ref, watch, onMounted, useTemplateRef } from "vue";
 import type { editor, Uri } from "monaco-editor";
 import { useI18n } from "vue-i18n";
 import type { SelectOption } from "naive-ui";
-import { storeToRefs } from "pinia";
-import { usePreferredDark } from "@vueuse/core";
 import { Icon } from "@iconify/vue";
-import { match } from "@formatjs/intl-localematcher";
 import { monacoInstance } from "@karsten_zhou/utils";
+import { xor } from "lodash-es";
 
 import { getPage, editPage } from "@renderer/utils/mwApi";
 import { errNotify } from "@renderer/utils";
-import { useLocalesStore } from "@renderer/stores/locales";
-import { xor } from "lodash-es";
 import {
   getPagesByCategory,
   getPagesByKeyword,
@@ -205,7 +201,6 @@ import {
 
 const { t } = useI18n();
 const loading = ref(false);
-const { langCode } = storeToRefs(useLocalesStore());
 const summary: Ref<undefined | string> = ref();
 const errorMsg: Ref<string> = ref("");
 
@@ -397,7 +392,7 @@ onMounted(async () => {
   if (!monacoEditorEle.value) throw new Error("monacoEditor is null");
   // Initialize diff editor
   const {
-    editor: { setTheme, createDiffEditor, createModel },
+    editor: { createDiffEditor, createModel },
   } = monacoInstance;
   editorInstance = createDiffEditor(monacoEditorEle.value, {
     automaticLayout: true,
