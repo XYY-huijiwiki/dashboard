@@ -1,3 +1,15 @@
+## [0.2.19](https://github.com/XYY-huijiwiki/dashboard/compare/v0.2.18...v0.2.19) (2025-08-19)
+
+### Bug Fixes
+
+- fix out-of-range currentPageIndex on edit list change ([c8fe9c9](https://github.com/XYY-huijiwiki/dashboard/commit/c8fe9c9562c121fafb740031d7da1cec848b9bf6))
+- incorrect i18n keys ([94db95c](https://github.com/XYY-huijiwiki/dashboard/commit/94db95c80d987994d683fbda618ea5ffa02fe02e))
+- remove unused values ([2e69d49](https://github.com/XYY-huijiwiki/dashboard/commit/2e69d4964f585851a715bae8698e3d0aebb21987))
+
+### Features
+
+- add keyword search for selecting pages in FindAndReplace ([ed0a885](https://github.com/XYY-huijiwiki/dashboard/commit/ed0a88570e3ba88c913e6feb5259b738759e2f52))
+
 ## [0.2.18](https://github.com/XYY-huijiwiki/dashboard/compare/v0.2.17...v0.2.18) (2025-07-19)
 
 ## [0.2.17](https://github.com/XYY-huijiwiki/dashboard/compare/v0.2.16...v0.2.17) (2025-07-02)
